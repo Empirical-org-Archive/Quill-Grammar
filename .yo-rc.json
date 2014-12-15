@@ -1,0 +1,17 @@
+{
+  "generator-quill": {
+    "project": "quill-grammar",
+    "scripts": {
+      "name": "js",
+      "extensions": ".js"
+    },
+    "styles": {
+      "name": "sass",
+      "extensions": ".scss"
+    },
+    "templates": {
+      "name": "jade",
+      "extensions": ".jade"
+    }
+  }
+}

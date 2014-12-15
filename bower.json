@@ -1,0 +1,11 @@
+{
+  "name": "quill-grammar",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.3.6",
+    "ui-router": "~0.2.11",
+    "angularfire": "0.9.0",
+    "bourbon": "4.0.2",
+    "neat": "1.7.0"
+  }
+}
