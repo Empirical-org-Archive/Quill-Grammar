@@ -1,6 +1,10 @@
 'use strict';
 
 module.exports = /*@ngInject*/
-  function configure ($urlRouterProvider) {
-    $urlRouterProvider.otherwise('/welcome/');
+  function configure ($urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('/');
+
+    $locationProvider.html5Mode({
+      enabled: true
+    });
   };
