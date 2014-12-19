@@ -109,7 +109,7 @@ var configuration = {
     dest: dest
   },
   templates: {
-    src: path.join(src, scripts, '**/**/*.jade'),
+    src: [path.join(src, scripts, '**/**/*.jade'), path.join(src, scripts, '**/**/*.html')],
     jade: {},
     templateCache: {
       filename: tmp_templates_output,
