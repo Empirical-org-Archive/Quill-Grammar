@@ -4,7 +4,7 @@ function categoriesList() {
   return {
     restrict: 'E',
     templateUrl: 'categories.list.html',
-    controller: 'GrammarCMSCtrl'
+    controller: 'GrammarCmsCtrl'
   };
 }
 

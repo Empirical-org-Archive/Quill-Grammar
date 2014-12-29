@@ -1,6 +1,13 @@
 'use-strict';
 
-module.exports = function cmsController($scope) {
+  
+  
+function cmsController($scope) {
 
+  $scope.saveCategory = function(category) {
 
-};
+  };
+
+}
+
+module.exports = ['$scope', cmsController];
