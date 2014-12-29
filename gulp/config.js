@@ -128,7 +128,7 @@ var configuration = {
     lint: path.join(src, scripts, scripts_app, '**/*.js'),
     index: path.join(src, scripts, scripts_index),
     config: path.join(src, scripts, scripts_config),
-    templates: path.join(src, scripts, scripts_app, '**/*.jade'),
+    templates: [path.join(src, scripts, '**/*.jade'), path.join(src, scripts, '**/**/*.html')],
     styles: path.join(src, styles, '**/*.scss'),
     styles_output: styles_output + '.min.css',
     reload: path.join(dest, '**/*.{js,html}')
