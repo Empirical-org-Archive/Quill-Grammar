@@ -1,0 +1,6 @@
+<ul>
+  <li ng-repeat="category in categories">
+    <grammar-cms-category category="category"></grammar-cms-category>
+    <grammar-cms-rule rule="rule" ng-repeat="rule in category.rules"></grammar-cms-rule>
+  <li>
+</ul>
