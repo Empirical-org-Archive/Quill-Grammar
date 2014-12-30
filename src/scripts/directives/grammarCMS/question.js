@@ -11,3 +11,22 @@ function show() {
 }
 
 module.exports.show = show;
+
+function panel() {
+  return {
+    restrict: 'E',
+    controller: 'QuestionCtrl',
+    templateUrl: 'question.edit.html',
+    scope: {
+      question: '='
+    }
+  };
+}
+
+module.exports.panel = panel;
+
+function controller($scope) {
+
+}
+
+module.exports.controller = ['$scope', controller];

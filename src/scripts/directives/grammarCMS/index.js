@@ -11,6 +11,8 @@ angular
   .directive('grammarCmsCategoryPanel', require('./category.edit.js').panel)
   .directive('grammarCmsRulePanel', require('./rule.edit.js').panel)
   .directive('grammarCmsRuleQuestion', require('./question.js').show)
+  .directive('grammarCmsRuleQuestionPanel', require('./question.js').panel)
   .controller('RuleCtrl', require('./rule.edit.js').controller)
   .controller('CategoryCtrl', require('./category.edit.js').controller)
+  .controller('QuestionCtrl', require('./question.js').controller)
   .controller('GrammarCmsCtrl', require('./cms.controller.js'));

@@ -11,25 +11,25 @@ function cmsController($scope) {
     {
       title: 'Proper Nouns {|11}',
       questions: [
-        "Someday I will go to China",
-        "John Drops his son off at school",
-        "The paintings in Italy are Amazing"
+        {displayText: "Someday I will go to China"},
+        {displayText: "John Drops his son off at school"},
+        {displayText: "The paintings in Italy are Amazing"},
       ]
     },
     {
       title: 'Common Nouns {|10}',
       questions: [
-        "A cute duck is sewn onto the bag.",
-        "My father is a policeman",
-        "Did you see any sculptures in museum?"
+        {displayText: "A cute duck is sewn onto the bag."},
+        {displayText: "My father is a policeman"},
+        {displayText: "Did you see any sculptures in museum?"},
       ]
     },
     {
       title: 'Possive Nouns {|12}',
       questions: [
-        "Andy's favorite sport is basketball.",
-        "The church's towers are magnificent.",
-        "The ship's sail flaps in the wind.",
+        {displayText: "Andy's favorite sport is basketball."},
+        {displayText: "The church's towers are magnificent."},
+        {displayText: "The ship's sail flaps in the wind."},
       ]
     }
   ]}];
