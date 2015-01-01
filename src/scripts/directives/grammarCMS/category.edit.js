@@ -12,7 +12,13 @@ function panel() {
 module.exports.panel = panel;
 
 function controller($scope) {
+  $scope.deleteCategory = function(category) {
+    console.log(category);
+  };
 
+  $scope.editCategory = function(category) {
+    console.log(category);
+  };
 }
 
 module.exports.controller = ['$scope', controller];
