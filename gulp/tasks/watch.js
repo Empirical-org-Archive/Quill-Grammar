@@ -29,6 +29,10 @@ gulp.task('watch', function () {
     });
   });
 
+  watch(config.assets, function() {
+    gulp.start('assets');
+  });
+
   watch(config.reload, function() {
     browserSync.reload();
   });
