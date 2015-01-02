@@ -1,7 +1,13 @@
 'use strict';
 
 function controller($scope) {
+  $scope.deleteRule = function(rule) {
+    console.log("deleting rule " + rule);
+  };
 
+  $scope.editRule = function(rule) {
+    console.log("editing rule " + rule);
+  };
 }
 
 module.exports.controller = ['$scope', controller];
