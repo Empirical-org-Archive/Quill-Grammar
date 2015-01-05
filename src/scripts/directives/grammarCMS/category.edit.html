@@ -6,7 +6,7 @@
 
 <grammar-cms-modal-dialog show='showNewRuleModal'>
   <form validate>
-    <label for="category">Rule Title</label>
+    <p>New Rule for {{category.title}}</p>
     <input type="text" name="rule" placeholder="Rule Name" ng-model="rule.title" />
     <input type="submit" ng-click="saveRule(rule)" value="Add Rule" />
   </form>
