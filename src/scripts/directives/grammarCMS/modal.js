@@ -18,6 +18,28 @@ function modal() {
 
 module.exports.modal = modal;
 
+function deleteModal() {
+  return {
+    restrict: 'E',
+    scope: {
+      show: '=',
+      onDelete: '=',
+      item: '='
+    },
+    replace: true,
+    transclude: true,
+    templateUrl: 'deleteModal.html',
+    controller: 'ModalDialogCtrl',
+    link: function(scope, element, attrs) {
+      scope.hideModal = function() {
+        scope.show = false;
+      };
+    }
+  };
+}
+
+module.exports.deleteModal = deleteModal;
+
 
 function controller($scope) {
 

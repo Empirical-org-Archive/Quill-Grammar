@@ -11,9 +11,12 @@ function panel() {
 
 module.exports.panel = panel;
 
-function controller($scope) {
+function controller($scope, $q) {
   $scope.deleteCategory = function(category) {
     console.log(category);
+    var p = $q.defer();
+    p.resolve();
+    return p.promise;
   };
 
   $scope.editCategory = function(category) {
@@ -22,6 +25,10 @@ function controller($scope) {
 
   $scope.newRule = function(category) {
     $scope.showNewRuleModal = true;
+  };
+
+  $scope.showDeleteCategory = function() {
+    $scope.showDeleteCategoryModal = true;
   };
 }
 

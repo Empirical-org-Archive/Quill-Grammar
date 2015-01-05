@@ -13,6 +13,7 @@ angular
   .directive('grammarCmsRuleQuestion', require('./question.js').show)
   .directive('grammarCmsRuleQuestionPanel', require('./question.js').panel)
   .directive('grammarCmsModalDialog', require('./modal.js').modal)
+  .directive('grammarCmsDeleteModalDialog', require('./modal.js').deleteModal)
   .controller('ModalDialogCtrl', require('./modal.js').controller)
   .controller('RuleCtrl', require('./rule.edit.js').controller)
   .controller('CategoryCtrl', require('./category.edit.js').controller)

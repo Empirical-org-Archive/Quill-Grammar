@@ -1,6 +1,6 @@
 <ul>
   <li><img src="assets/images/newrule.png" ng-click='newRule()' alt="Add Rule" title="Add Rule"/></li>
-  <li><img src="assets/images/delete.png" ng-click="deleteCategory(category)" alt="Delete Category" title="Delete Category"/></li>
+  <li><img src="assets/images/delete.png" ng-click="showDeleteCategory()" alt="Delete Category" title="Delete Category"/></li>
   <li><img src="assets/images/edit.png" ng-click="editCategory(category)" alt="Edit Category" title="Edit Category"/></li>
 </ul>
 
@@ -11,3 +11,7 @@
     <input type="submit" ng-click="saveRule(rule)" value="Add Rule" />
   </form>
 </grammar-cms-modal-dialog>
+
+<grammar-cms-delete-modal-dialog show='showDeleteCategoryModal' on-delete="deleteCategory(category)" item="category.name">
+  <p>Deleting this will delete all rules and practice questions.</p>
+</grammar-cms-delete-modal-dialog>
