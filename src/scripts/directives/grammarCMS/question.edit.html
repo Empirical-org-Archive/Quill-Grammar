@@ -1,5 +1,8 @@
 <ul>
   <li><span class="spacer"></span></li>
-  <li><img src="assets/images/delete.png" ng-click="deleteRuleQuestion(question)" alt="Delete Rule Question" title="Delete Rule Question"/></li>
+  <li><img src="assets/images/delete.png" ng-click="showDeleteRuleQuestion()" alt="Delete Rule Question" title="Delete Rule Question"/></li>
   <li><img src="assets/images/edit.png" ng-click="editRuleQuestion(question)" alt="Edit Rule Question"/title="Edit Rule Question"></li>
 </ul>
+
+<grammar-cms-delete-modal-dialog show='showDeleteRuleQuestionModal' on-delete="deleteRuleQuestion" item="{title:question}">
+</grammar-cms-delete-modal-dialog>
