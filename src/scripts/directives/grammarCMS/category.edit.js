@@ -19,6 +19,10 @@ function controller($scope) {
   $scope.editCategory = function(category) {
     console.log(category);
   };
+
+  $scope.newRule = function(category) {
+    $scope.showNewRuleModal = true;
+  };
 }
 
 module.exports.controller = ['$scope', controller];
