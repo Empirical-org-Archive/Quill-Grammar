@@ -2,12 +2,17 @@ function modal() {
   return {
     restrict: 'E',
     scope: {
-      title: '=',
-      onSubmit: '=',
-      onCancel: '=',
+      show: '='
     },
+    replace: true,
+    transclude: true,
     templateUrl: 'modal.html',
-    controller: 'ModalDialogCtrl'
+    controller: 'ModalDialogCtrl',
+    link: function(scope, element, attrs) {
+      scope.hideModal = function() {
+        scope.show = false;
+      };
+    }
   };
 }
 

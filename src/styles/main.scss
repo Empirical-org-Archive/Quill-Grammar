@@ -5,7 +5,10 @@
 @import "base/base";
 
 @import "my-refills/_search-bar.scss";
-@import "my-refills/grammar-cms/base.scss";
+
+.grammar-cms {
+  @import "my-refills/grammar-cms/base.scss";
+}
 
 body {
   @include outer-container;

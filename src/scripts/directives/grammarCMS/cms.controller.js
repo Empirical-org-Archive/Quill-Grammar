@@ -38,6 +38,10 @@ function cmsController($scope) {
 
   };
 
+  $scope.toggleCategoryModal = function() {
+    $scope.showNewCategoryModal = true;
+  };
+
 }
 
 module.exports = ['$scope', cmsController];

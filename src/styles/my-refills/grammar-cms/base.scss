@@ -4,5 +4,6 @@
 
 .grammar-cms-section {
   @import "section";
-  @import "modal";
 }
+
+@import "modal";
