@@ -2,7 +2,11 @@
 
 function controller($scope) {
   $scope.deleteRule = function(rule) {
-    console.log("deleting rule " + rule);
+    console.log("deleting rule ", rule);
+  };
+
+  $scope.showDeleteRule = function() {
+    $scope.showDeleteRuleModal = true;
   };
 
   $scope.editRule = function(rule) {

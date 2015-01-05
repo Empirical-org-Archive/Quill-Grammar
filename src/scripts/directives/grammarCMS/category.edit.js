@@ -13,7 +13,7 @@ module.exports.panel = panel;
 
 function controller($scope) {
   $scope.deleteCategory = function(category) {
-
+    console.log('deleting category ', category);
   };
 
   $scope.editCategory = function(category) {

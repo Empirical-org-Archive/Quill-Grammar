@@ -3,9 +3,9 @@
   <div class="modal-window">
     <div class="modal-inner">
       <label class="modal-close" ng-click="hideModal()"></label>
-      <p>Delete {{item}}?<p>
+      <p>Delete {{item.title}}?<p>
       <div ng-transclude></div>
-      <button ng-click="onDelete()">Delete</button>
+      <button ng-click="onDelete(item)">Delete</button>
     </div>
   </div>
 </div>
