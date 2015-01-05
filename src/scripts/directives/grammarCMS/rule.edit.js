@@ -8,6 +8,14 @@ function controller($scope) {
   $scope.editRule = function(rule) {
     console.log("editing rule " + rule);
   };
+
+  $scope.showRuleQuestionModal = function() {
+    $scope.showNewRuleQuestionModal = true;
+  };
+
+  $scope.addPracticeQuestion = function(rule, question) {
+    console.log(rule, question);
+  };
 }
 
 module.exports.controller = ['$scope', controller];
