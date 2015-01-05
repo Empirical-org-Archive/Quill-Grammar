@@ -11,12 +11,9 @@ function panel() {
 
 module.exports.panel = panel;
 
-function controller($scope, $q) {
+function controller($scope) {
   $scope.deleteCategory = function(category) {
-    console.log(category);
-    var p = $q.defer();
-    p.resolve();
-    return p.promise;
+
   };
 
   $scope.editCategory = function(category) {
