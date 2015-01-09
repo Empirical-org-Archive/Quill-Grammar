@@ -3,5 +3,11 @@
     "browser": true,
     "globals": {
         "angular": false
-    }
+    },
+    "camelcase": true,
+    "curly": true,
+    "immed": true,
+    "undef": true,
+    "unused": true,
+    "quotmark": true
 }
