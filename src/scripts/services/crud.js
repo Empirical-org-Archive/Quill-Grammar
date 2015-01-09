@@ -5,9 +5,32 @@ angular.module('quill-grammar.services.crud', [
   'firebase'
 ])
 
-.factory('CrudService', function($firebase, $q) {
+.factory('CrudService', function(firebaseUrl, $firebase, $q) {
   function crud(entity) {
-  };
+    if (firebaseUrl[firebaseUrl.length - 1] !== '/') {
+      firebaseUrl = firebaseUrl + '/';
+    }
+    if (!entity || entity === '') {
+      throw new Error('Firebase Entity MUST be defined');
+    }
+    var baseRef = new Firebase(firebaseUrl + entity);
+    var baseCollection = $firebase(baseRef).$asArray();
+    function save(entityItem) {
+      var d = $q.defer();
+      baseCollection.$loaded().then(function() {
+        baseCollection.$add(entityItem).then(function(ref) {
+          d.resolve(ref.key());
+        }, function(error){
+          d.reject(error);
+        });
+      });
+      return d.promise;
+    }
+
+    return {
+      save: save,
+    };
+  }
 
   return crud;
 });
