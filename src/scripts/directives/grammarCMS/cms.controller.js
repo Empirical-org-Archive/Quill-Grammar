@@ -1,8 +1,8 @@
 'use-strict';
 
-  
-  
-function cmsController($scope) {
+
+
+function cmsController($scope, cs) {
 
   /*
    * $scope initializers
@@ -35,7 +35,9 @@ function cmsController($scope) {
   ]}];
 
   $scope.saveCategory = function(category) {
-
+    cs.saveCategory(category).then(function() {
+      console.log("Saved", category);
+    });
   };
 
   $scope.toggleCategoryModal = function() {
@@ -44,4 +46,4 @@ function cmsController($scope) {
 
 }
 
-module.exports = ['$scope', cmsController];
+module.exports = ['$scope', 'CategoryService', cmsController];
