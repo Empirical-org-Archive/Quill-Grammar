@@ -1,0 +1,11 @@
+$image-width: 3em;
+li {
+  display: inline;
+  img {
+    width: $image-width;
+  }
+  span.spacer {
+    margin-right: $image-width;
+  }
+}
+

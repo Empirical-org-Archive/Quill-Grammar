@@ -1,5 +1,17 @@
 <ul>
-  <li>Add new Rule Question</li>
-  <li>Delete this Rule</li>
-  <li>Edit this Rule</li>
+  <li><img src="assets/images/newrulequestion.png" ng-click='showRuleQuestionModal()' alt="Add Rule Question" title="Add Rule Question"/></li>
+  <li><img src="assets/images/delete.png" ng-click="showDeleteRule()" alt="Delete Rule" title="Delete Rule"/></li>
+  <li><img src="assets/images/edit.png" ng-click="editRule(rule)" alt="Edit Rule" title="Edit Rule"/></li>
 </ul>
+
+<grammar-cms-modal-dialog show='showNewRuleQuestionModal'>
+  <form validate>
+    <p>Adding practice question for {{rule.title}}</p>
+    <input type="text" name="question" placeholder="question Name" ng-model="question.title" />
+    <input type="submit" ng-click="addPracticeQuestion(rule, question)" value="Add Practice Question" />
+  </form>
+</grammar-cms-modal-dialog>
+
+<grammar-cms-delete-modal-dialog show='showDeleteRuleModal' on-delete="deleteRule" item="rule">
+  <p>This will delete all practice questions for this rule.</p>
+</grammar-cms-delete-modal-dialog>

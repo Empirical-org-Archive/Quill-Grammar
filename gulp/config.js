@@ -131,7 +131,8 @@ var configuration = {
     templates: [path.join(src, scripts, '**/*.jade'), path.join(src, scripts, '**/**/*.html')],
     styles: path.join(src, styles, '**/*.scss'),
     styles_output: styles_output + '.min.css',
-    reload: path.join(dest, '**/*.{js,html}')
+    reload: path.join(dest, '**/*.{js,html}'),
+    assets: path.join(src, assets, '**/**/*')
   }
 };
 

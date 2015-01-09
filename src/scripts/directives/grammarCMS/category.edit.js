@@ -12,7 +12,21 @@ function panel() {
 module.exports.panel = panel;
 
 function controller($scope) {
+  $scope.deleteCategory = function(category) {
+    console.log('deleting category ', category);
+  };
 
+  $scope.editCategory = function(category) {
+    console.log(category);
+  };
+
+  $scope.newRule = function(category) {
+    $scope.showNewRuleModal = true;
+  };
+
+  $scope.showDeleteCategory = function() {
+    $scope.showDeleteCategoryModal = true;
+  };
 }
 
 module.exports.controller = ['$scope', controller];

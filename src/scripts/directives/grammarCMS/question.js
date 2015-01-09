@@ -26,7 +26,13 @@ function panel() {
 module.exports.panel = panel;
 
 function controller($scope) {
+  $scope.showDeleteRuleQuestion = function() {
+    $scope.showDeleteRuleQuestionModal = true;
+  };
 
+  $scope.deleteRuleQuestion = function(question) {
+    console.log(question);
+  };
 }
 
 module.exports.controller = ['$scope', controller];
