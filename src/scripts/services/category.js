@@ -2,12 +2,13 @@
 
 module.exports =
 angular.module('quill-grammar.services.category', [
+  require('./crud.js').name,
 ])
 
-.factory('CategoryService', function($http, $q) {
+.factory('CategoryService', function(CrudService) {
+  var crud = new CrudService('categories');
   this.saveCategory = function(category) {
-    var d = $q.defer();
-    return d.promise;
+    return crud.save(category);
   };
   return this;
 });
