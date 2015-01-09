@@ -3,6 +3,7 @@ module.exports =
 
 angular
   .module('quill-grammar.directives.grammarCMS', [
+    require('./../../services/category.js').name,
   ])
   .directive('grammarCmsCategoriesNew', require('./categories.new.js'))
   .directive('grammarCmsCategoriesList', require('./categories.list.js'))
