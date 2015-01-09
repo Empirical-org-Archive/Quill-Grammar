@@ -2,7 +2,8 @@
     "node": true,
     "browser": true,
     "globals": {
-        "angular": false
+        "angular": false,
+        "Firebase": false
     },
     "camelcase": true,
     "curly": true,
