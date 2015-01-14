@@ -2,7 +2,8 @@ function modal() {
   return {
     restrict: 'E',
     scope: {
-      show: '='
+      show: '=',
+      action: '='
     },
     replace: true,
     transclude: true,
@@ -11,6 +12,11 @@ function modal() {
     link: function(scope, element, attrs) {
       scope.hideModal = function() {
         scope.show = false;
+      };
+      scope.doAction = function(item) {
+        scope.action(item).then(function() {
+          scope.hideModal();
+        });
       };
     }
   };
@@ -29,10 +35,16 @@ function deleteModal() {
     replace: true,
     transclude: true,
     templateUrl: 'deleteModal.html',
-    controller: 'ModalDialogCtrl',
     link: function(scope, element, attrs) {
       scope.hideModal = function() {
         scope.show = false;
+      };
+      scope._onDelete = function() {
+        scope.onDelete(scope.item).then(function() {
+          scope.hideModal();
+        }, function(error) {
+          scope.error = error;
+        });
       };
     }
   };

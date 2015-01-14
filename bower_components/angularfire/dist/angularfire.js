@@ -4,9 +4,9 @@
  * provides you with the $firebase service which allows you to easily keep your $scope
  * variables in sync with your Firebase backend.
  *
- * AngularFire 0.9.0
+ * AngularFire 0.9.1
  * https://github.com/firebase/angularfire/
- * Date: 11/18/2014
+ * Date: 01/08/2015
  * License: MIT
  */
 (function(exports) {
@@ -581,30 +581,31 @@
   ]);
 })();
 
-/* istanbul ignore next */
 (function() {
   'use strict';
   var FirebaseAuth;
 
   // Define a service which provides user authentication and management.
   angular.module('firebase').factory('$firebaseAuth', [
-    '$q', function($q) {
-      // This factory returns an object containing the current authentication state of the client.
-      // This service takes one argument:
-      //
-      //   * `ref`: A Firebase reference.
-      //
-      // The returned object contains methods for authenticating clients, retrieving authentication
-      // state, and managing users.
+    '$q', '$firebaseUtils', '$log', function($q, $firebaseUtils, $log) {
+      /**
+       * This factory returns an object allowing you to manage the client's authentication state.
+       *
+       * @param {Firebase} ref A Firebase reference to authenticate.
+       * @return {object} An object containing methods for authenticating clients, retrieving
+       * authentication state, and managing users.
+       */
       return function(ref) {
-        var auth = new FirebaseAuth($q, ref);
+        var auth = new FirebaseAuth($q, $firebaseUtils, $log, ref);
         return auth.construct();
       };
     }
   ]);
 
-  FirebaseAuth = function($q, ref) {
+  FirebaseAuth = function($q, $firebaseUtils, $log, ref) {
     this._q = $q;
+    this._utils = $firebaseUtils;
+    this._log = $log;
 
     if (typeof ref === 'string') {
       throw new Error('Please provide a Firebase reference instead of a URL when creating a `$firebaseAuth` object.');
@@ -633,7 +634,9 @@
         // User management methods
         $createUser: this.createUser.bind(this),
         $changePassword: this.changePassword.bind(this),
+        $changeEmail: this.changeEmail.bind(this),
         $removeUser: this.removeUser.bind(this),
+        $resetPassword: this.resetPassword.bind(this),
         $sendPasswordResetEmail: this.sendPasswordResetEmail.bind(this)
       };
 
@@ -644,70 +647,137 @@
     /********************/
     /*  Authentication  */
     /********************/
-    // Common login completion handler for all authentication methods.
-    _onLoginHandler: function(deferred, error, authData) {
-      if (error !== null) {
-        deferred.reject(error);
-      } else {
-        deferred.resolve(authData);
-      }
-    },
 
-    // Authenticates the Firebase reference with a custom authentication token.
+    /**
+     * Authenticates the Firebase reference with a custom authentication token.
+     *
+     * @param {string} authToken An authentication token or a Firebase Secret. A Firebase Secret
+     * should only be used for authenticating a server process and provides full read / write
+     * access to the entire Firebase.
+     * @param {Object} [options] An object containing optional client arguments, such as configuring
+     * session persistence.
+     * @return {Promise<Object>} A promise fulfilled with an object containing authentication data.
+     */
     authWithCustomToken: function(authToken, options) {
       var deferred = this._q.defer();
 
-      this._ref.authWithCustomToken(authToken, this._onLoginHandler.bind(this, deferred), options);
+      try {
+        this._ref.authWithCustomToken(authToken, this._utils.makeNodeResolver(deferred), options);
+      } catch (error) {
+        deferred.reject(error);
+      }
 
       return deferred.promise;
     },
 
-    // Authenticates the Firebase reference anonymously.
+    /**
+     * Authenticates the Firebase reference anonymously.
+     *
+     * @param {Object} [options] An object containing optional client arguments, such as configuring
+     * session persistence.
+     * @return {Promise<Object>} A promise fulfilled with an object containing authentication data.
+     */
     authAnonymously: function(options) {
       var deferred = this._q.defer();
 
-      this._ref.authAnonymously(this._onLoginHandler.bind(this, deferred), options);
+      try {
+        this._ref.authAnonymously(this._utils.makeNodeResolver(deferred), options);
+      } catch (error) {
+        deferred.reject(error);
+      }
 
       return deferred.promise;
     },
 
-    // Authenticates the Firebase reference with an email/password user.
+    /**
+     * Authenticates the Firebase reference with an email/password user.
+     *
+     * @param {Object} credentials An object containing email and password attributes corresponding
+     * to the user account.
+     * @param {Object} [options] An object containing optional client arguments, such as configuring
+     * session persistence.
+     * @return {Promise<Object>} A promise fulfilled with an object containing authentication data.
+     */
     authWithPassword: function(credentials, options) {
       var deferred = this._q.defer();
 
-      this._ref.authWithPassword(credentials, this._onLoginHandler.bind(this, deferred), options);
+      try {
+        this._ref.authWithPassword(credentials, this._utils.makeNodeResolver(deferred), options);
+      } catch (error) {
+        deferred.reject(error);
+      }
 
       return deferred.promise;
     },
 
-    // Authenticates the Firebase reference with the OAuth popup flow.
+    /**
+     * Authenticates the Firebase reference with the OAuth popup flow.
+     *
+     * @param {string} provider The unique string identifying the OAuth provider to authenticate
+     * with, e.g. google.
+     * @param {Object} [options] An object containing optional client arguments, such as configuring
+     * session persistence.
+     * @return {Promise<Object>} A promise fulfilled with an object containing authentication data.
+     */
     authWithOAuthPopup: function(provider, options) {
       var deferred = this._q.defer();
 
-      this._ref.authWithOAuthPopup(provider, this._onLoginHandler.bind(this, deferred), options);
+      try {
+        this._ref.authWithOAuthPopup(provider, this._utils.makeNodeResolver(deferred), options);
+      } catch (error) {
+        deferred.reject(error);
+      }
 
       return deferred.promise;
     },
 
-    // Authenticates the Firebase reference with the OAuth redirect flow.
+    /**
+     * Authenticates the Firebase reference with the OAuth redirect flow.
+     *
+     * @param {string} provider The unique string identifying the OAuth provider to authenticate
+     * with, e.g. google.
+     * @param {Object} [options] An object containing optional client arguments, such as configuring
+     * session persistence.
+     * @return {Promise<Object>} A promise fulfilled with an object containing authentication data.
+     */
     authWithOAuthRedirect: function(provider, options) {
       var deferred = this._q.defer();
 
-      this._ref.authWithOAuthRedirect(provider, this._onLoginHandler.bind(this, deferred), options);
+      try {
+        this._ref.authWithOAuthRedirect(provider, this._utils.makeNodeResolver(deferred), options);
+      } catch (error) {
+        deferred.reject(error);
+      }
 
       return deferred.promise;
     },
 
-    // Authenticates the Firebase reference with an OAuth token.
+    /**
+     * Authenticates the Firebase reference with an OAuth token.
+     *
+     * @param {string} provider The unique string identifying the OAuth provider to authenticate
+     * with, e.g. google.
+     * @param {string|Object} credentials Either a string, such as an OAuth 2.0 access token, or an
+     * Object of key / value pairs, such as a set of OAuth 1.0a credentials.
+     * @param {Object} [options] An object containing optional client arguments, such as configuring
+     * session persistence.
+     * @return {Promise<Object>} A promise fulfilled with an object containing authentication data.
+     */
     authWithOAuthToken: function(provider, credentials, options) {
       var deferred = this._q.defer();
 
-      this._ref.authWithOAuthToken(provider, credentials, this._onLoginHandler.bind(this, deferred), options);
+      try {
+        this._ref.authWithOAuthToken(provider, credentials, this._utils.makeNodeResolver(deferred), options);
+      } catch (error) {
+        deferred.reject(error);
+      }
 
       return deferred.promise;
     },
 
-    // Unauthenticates the Firebase reference.
+    /**
+     * Unauthenticates the Firebase reference.
+     */
     unauth: function() {
       if (this.getAuth() !== null) {
         this._ref.unauth();
@@ -718,134 +788,262 @@
     /**************************/
     /*  Authentication State  */
     /**************************/
-    // Asynchronously fires the provided callback with the current authentication data every time
-    // the authentication data changes. It also fires as soon as the authentication data is
-    // retrieved from the server.
+    /**
+     * Asynchronously fires the provided callback with the current authentication data every time
+     * the authentication data changes. It also fires as soon as the authentication data is
+     * retrieved from the server.
+     *
+     * @param {function} callback A callback that fires when the client's authenticate state
+     * changes. If authenticated, the callback will be passed an object containing authentication
+     * data according to the provider used to authenticate. Otherwise, it will be passed null.
+     * @param {string} [context] If provided, this object will be used as this when calling your
+     * callback.
+     * @return {function} A function which can be used to deregister the provided callback.
+     */
     onAuth: function(callback, context) {
       var self = this;
 
-      this._ref.onAuth(callback, context);
+      var fn = this._utils.debounce(callback, context, 0);
+      this._ref.onAuth(fn);
 
       // Return a method to detach the `onAuth()` callback.
       return function() {
-        self._ref.offAuth(callback, context);
+        self._ref.offAuth(fn);
       };
     },
 
-    // Synchronously retrieves the current authentication data.
+    /**
+     * Synchronously retrieves the current authentication data.
+     *
+     * @return {Object} The client's authentication data.
+     */
     getAuth: function() {
       return this._ref.getAuth();
     },
 
-    // Helper onAuth() callback method for the two router-related methods.
-    _routerMethodOnAuthCallback: function(deferred, rejectIfAuthDataIsNull, authData) {
-      if (authData !== null) {
-        deferred.resolve(authData);
-      } else if (rejectIfAuthDataIsNull) {
-        deferred.reject("AUTH_REQUIRED");
-      } else {
-        deferred.resolve(null);
+    /**
+     * Helper onAuth() callback method for the two router-related methods.
+     *
+     * @param {boolean} rejectIfAuthDataIsNull Determines if the returned promise should be
+     * resolved or rejected upon an unauthenticated client.
+     * @return {Promise<Object>} A promise fulfilled with the client's authentication state or
+     * rejected if the client is unauthenticated and rejectIfAuthDataIsNull is true.
+     */
+    _routerMethodOnAuthPromise: function(rejectIfAuthDataIsNull) {
+      var ref = this._ref;
+      var deferred = this._q.defer();
+
+      function callback(authData) {
+        if (authData !== null) {
+          deferred.resolve(authData);
+        } else if (rejectIfAuthDataIsNull) {
+          deferred.reject("AUTH_REQUIRED");
+        } else {
+          deferred.resolve(null);
+        }
+
+        // Turn off this onAuth() callback since we just needed to get the authentication data once.
+        ref.offAuth(callback);
       }
 
-      // Turn off this onAuth() callback since we just needed to get the authentication data once.
-      this._ref.offAuth(this._routerMethodOnAuthCallback);
+      ref.onAuth(callback);
+
+      return deferred.promise;
     },
 
-    // Returns a promise which is resolved if the client is authenticated and rejects otherwise.
-    // This can be used to require that a route has a logged in user.
+    /**
+     * Utility method which can be used in a route's resolve() method to require that a route has
+     * a logged in client.
+     *
+     * @returns {Promise<Object>} A promise fulfilled with the client's current authentication
+     * state or rejected if the client is not authenticated.
+     */
     requireAuth: function() {
-      var deferred = this._q.defer();
-
-      this._ref.onAuth(this._routerMethodOnAuthCallback.bind(this, deferred, /* rejectIfAuthDataIsNull */ true));
-
-      return deferred.promise;
+      return this._routerMethodOnAuthPromise(true);
     },
 
-    // Returns a promise which is resolved with the client's current authenticated data. This can
-    // be used in a route's resolve() method to grab the current authentication data.
+    /**
+     * Utility method which can be used in a route's resolve() method to grab the current
+     * authentication data.
+     *
+     * @returns {Promise<Object|null>} A promise fulfilled with the client's current authentication
+     * state, which will be null if the client is not authenticated.
+     */
     waitForAuth: function() {
-      var deferred = this._q.defer();
-
-      this._ref.onAuth(this._routerMethodOnAuthCallback.bind(this, deferred, /* rejectIfAuthDataIsNull */ false));
-
-      return deferred.promise;
+      return this._routerMethodOnAuthPromise(false);
     },
 
 
     /*********************/
     /*  User Management  */
     /*********************/
-    // Creates a new email/password user. Note that this function only creates the user, if you
-    // wish to log in as the newly created user, call $authWithPassword() after the promise for
-    // this method has been resolved.
-    createUser: function(email, password) {
+    /**
+     * Creates a new email/password user. Note that this function only creates the user, if you
+     * wish to log in as the newly created user, call $authWithPassword() after the promise for
+     * this method has been resolved.
+     *
+     * @param {Object|string} emailOrCredentials The email of the user to create or an object
+     * containing the email and password of the user to create.
+     * @param {string} [password] The password for the user to create.
+     * @return {Promise<Object>} A promise fulfilled with the user object, which contains the
+     * uid of the created user.
+     */
+    createUser: function(emailOrCredentials, password) {
       var deferred = this._q.defer();
 
-      this._ref.createUser({
-        email: email,
-        password: password
-      }, function(error) {
-        if (error !== null) {
-          deferred.reject(error);
-        } else {
-          deferred.resolve();
-        }
-      });
+      // Allow this method to take a single credentials argument or two separate string arguments
+      var credentials = emailOrCredentials;
+      if (typeof emailOrCredentials === "string") {
+        this._log.warn("Passing in credentials to $createUser() as individual arguments has been deprecated in favor of a single credentials argument. See the AngularFire API reference for details.");
+
+        credentials = {
+          email: emailOrCredentials,
+          password: password
+        };
+      }
+
+      try {
+        this._ref.createUser(credentials, this._utils.makeNodeResolver(deferred));
+      } catch (error) {
+        deferred.reject(error);
+      }
 
       return deferred.promise;
     },
 
-    // Changes the password for an email/password user.
-    changePassword: function(email, oldPassword, newPassword) {
+    /**
+     * Changes the password for an email/password user.
+     *
+     * @param {Object|string} emailOrCredentials The email of the user whose password is to change
+     * or an object containing the email, old password, and new password of the user whose password
+     * is to change.
+     * @param {string} [oldPassword] The current password for the user.
+     * @param {string} [newPassword] The new password for the user.
+     * @return {Promise<>} An empty promise fulfilled once the password change is complete.
+     */
+    changePassword: function(emailOrCredentials, oldPassword, newPassword) {
       var deferred = this._q.defer();
 
-      this._ref.changePassword({
-        email: email,
-        oldPassword: oldPassword,
-        newPassword: newPassword
-      }, function(error) {
-          if (error !== null) {
-            deferred.reject(error);
-          } else {
-            deferred.resolve();
-          }
-        }
-      );
+      // Allow this method to take a single credentials argument or three separate string arguments
+      var credentials = emailOrCredentials;
+      if (typeof emailOrCredentials === "string") {
+        this._log.warn("Passing in credentials to $changePassword() as individual arguments has been deprecated in favor of a single credentials argument. See the AngularFire API reference for details.");
+
+        credentials = {
+          email: emailOrCredentials,
+          oldPassword: oldPassword,
+          newPassword: newPassword
+        };
+      }
+
+      try {
+        this._ref.changePassword(credentials, this._utils.makeNodeResolver(deferred));
+      } catch (error) {
+        deferred.reject(error);
+      }
 
       return deferred.promise;
     },
 
-    // Removes an email/password user.
-    removeUser: function(email, password) {
+    /**
+     * Changes the email for an email/password user.
+     *
+     * @param {Object} credentials An object containing the old email, new email, and password of
+     * the user whose email is to change.
+     * @return {Promise<>} An empty promise fulfilled once the email change is complete.
+     */
+    changeEmail: function(credentials) {
+      if (typeof this._ref.changeEmail !== 'function') {
+        throw new Error('$firebaseAuth.$changeEmail() requires Firebase version 2.1.0 or greater.');
+      }
+
       var deferred = this._q.defer();
 
-      this._ref.removeUser({
-        email: email,
-        password: password
-      }, function(error) {
-        if (error !== null) {
-          deferred.reject(error);
-        } else {
-          deferred.resolve();
-        }
-      });
+      try {
+        this._ref.changeEmail(credentials, this._utils.makeNodeResolver(deferred));
+      } catch (error) {
+        deferred.reject(error);
+      }
 
       return deferred.promise;
     },
 
-    // Sends a password reset email to an email/password user.
-    sendPasswordResetEmail: function(email) {
+    /**
+     * Removes an email/password user.
+     *
+     * @param {Object|string} emailOrCredentials The email of the user to remove or an object
+     * containing the email and password of the user to remove.
+     * @param {string} [password] The password of the user to remove.
+     * @return {Promise<>} An empty promise fulfilled once the user is removed.
+     */
+    removeUser: function(emailOrCredentials, password) {
       var deferred = this._q.defer();
 
-      this._ref.resetPassword({
-        email: email
-      }, function(error) {
-        if (error !== null) {
-          deferred.reject(error);
-        } else {
-          deferred.resolve();
-        }
-      });
+      // Allow this method to take a single credentials argument or two separate string arguments
+      var credentials = emailOrCredentials;
+      if (typeof emailOrCredentials === "string") {
+        this._log.warn("Passing in credentials to $removeUser() as individual arguments has been deprecated in favor of a single credentials argument. See the AngularFire API reference for details.");
+
+        credentials = {
+          email: emailOrCredentials,
+          password: password
+        };
+      }
+
+      try {
+        this._ref.removeUser(credentials, this._utils.makeNodeResolver(deferred));
+      } catch (error) {
+        deferred.reject(error);
+      }
+
+      return deferred.promise;
+    },
+
+    /**
+     * Sends a password reset email to an email/password user. [DEPRECATED]
+     *
+     * @deprecated
+     * @param {Object|string} emailOrCredentials The email of the user to send a reset password
+     * email to or an object containing the email of the user to send a reset password email to.
+     * @return {Promise<>} An empty promise fulfilled once the reset password email is sent.
+     */
+    sendPasswordResetEmail: function(emailOrCredentials) {
+      this._log.warn("$sendPasswordResetEmail() has been deprecated in favor of the equivalent $resetPassword().");
+
+      try {
+        return this.resetPassword(emailOrCredentials);
+      } catch (error) {
+        return this._q(function(resolve, reject) {
+          return reject(error);
+        });
+      }
+    },
+
+    /**
+     * Sends a password reset email to an email/password user.
+     *
+     * @param {Object|string} emailOrCredentials The email of the user to send a reset password
+     * email to or an object containing the email of the user to send a reset password email to.
+     * @return {Promise<>} An empty promise fulfilled once the reset password email is sent.
+     */
+    resetPassword: function(emailOrCredentials) {
+      var deferred = this._q.defer();
+
+      // Allow this method to take a single credentials argument or a single string argument
+      var credentials = emailOrCredentials;
+      if (typeof emailOrCredentials === "string") {
+        this._log.warn("Passing in credentials to $resetPassword() as individual arguments has been deprecated in favor of a single credentials argument. See the AngularFire API reference for details.");
+
+        credentials = {
+          email: emailOrCredentials
+        };
+      }
+
+      try {
+        this._ref.resetPassword(credentials, this._utils.makeNodeResolver(deferred));
+      } catch (error) {
+        deferred.reject(error);
+      }
 
       return deferred.promise;
     }
@@ -879,7 +1077,7 @@
    */
   angular.module('firebase').factory('$FirebaseObject', [
     '$parse', '$firebaseUtils', '$log', '$interval',
-    function($parse, $firebaseUtils, $log, $interval) {
+    function($parse, $firebaseUtils, $log) {
       /**
        * This constructor should probably never be called manually. It is used internally by
        * <code>$firebase.$asObject()</code>.
@@ -1188,11 +1386,12 @@
               parsed.assign(scope, $firebaseUtils.scopeData(rec));
             }
 
+            var send = $firebaseUtils.debounce(function() {
+              rec.$$scopeUpdated(getScope())
+                ['finally'](function() { sending = false; });
+            }, 50, 500);
+
             var scopeUpdated = function() {
-              var send = $firebaseUtils.debounce(function() {
-                rec.$$scopeUpdated(getScope())
-                  ['finally'](function() { sending = false; });
-              }, 50, 500);
               if( !equals(rec) ) {
                 sending = true;
                 send();
@@ -1214,29 +1413,7 @@
               }
             }
 
-            // Okay, so this magic hack is um... magic. It increments a
-            // variable every 50 seconds (counterKey) so that whenever $digest
-            // is run, the variable will be dirty. This allows us to determine
-            // when $digest is invoked, manually check the meta vars, and
-            // manually invoke our watcher if the $ prefixed data has changed
-            (function() {
-              // create a counter and store it in scope
-              var counterKey = '_firebaseCounterForVar'+varName;
-              scope[counterKey] = 0;
-              // update the counter every 51ms
-              // why 51? because it must be greater than scopeUpdated's debounce
-              // or protractor has a conniption
-              var to = $interval(function() {
-                scope[counterKey]++;
-              }, 51, 0, false);
-              // watch the counter for changes (which means $digest ran)
-              self.subs.push(scope.$watch(counterKey, checkMetaVars));
-              // cancel our interval and clear var from scope if unbound
-              self.subs.push(function() {
-                $interval.cancel(to);
-                delete scope[counterKey];
-              });
-            })();
+            self.subs.push(scope.$watch(checkMetaVars));
 
             setScope(rec);
             self.subs.push(scope.$on('$destroy', self.unbind.bind(self)));
@@ -1349,7 +1526,7 @@
           },
 
           $remove: function (key) {
-            var ref = this._ref, self = this, promise;
+            var ref = this._ref, self = this;
             var def = $firebaseUtils.defer();
             if (arguments.length > 0) {
               ref = ref.ref().child(key);
@@ -1357,25 +1534,28 @@
             if( angular.isFunction(ref.remove) ) {
               // self is not a query, just do a flat remove
               ref.remove(self._handle(def, ref));
-              promise = def.promise;
             }
             else {
-              var promises = [];
               // self is a query so let's only remove the
               // items in the query and not the entire path
               ref.once('value', function(snap) {
+                var promises = [];
                 snap.forEach(function(ss) {
                   var d = $firebaseUtils.defer();
-                  promises.push(d);
-                  ss.ref().remove(self._handle(d, ss.ref()));
+                  promises.push(d.promise);
+                  ss.ref().remove(self._handle(d));
                 }, self);
+                $firebaseUtils.allPromises(promises)
+                  .then(function() {
+                    def.resolve(ref);
+                  },
+                  function(err){
+                    def.reject(err);
+                  }
+                );
               });
-              promise = $firebaseUtils.allPromises(promises)
-                .then(function() {
-                  return ref;
-                });
             }
-            return promise;
+            return def.promise;
           },
 
           $update: function (key, data) {
@@ -1821,6 +2001,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             var queue = [];
             var start;
             var cancelTimer;
+            var runScheduledForNextTick;
 
             // returns `fn` wrapped in a function that queues up each call event to be
             // invoked later inside fo runNow()
@@ -1836,14 +2017,17 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             }
 
             // clears the current wait timer and creates a new one
-            // however, if maxWait is exceeded, calles runNow() immediately
+            // however, if maxWait is exceeded, calls runNow() on the next tick.
             function resetTimer() {
               if( cancelTimer ) {
                 cancelTimer();
                 cancelTimer = null;
               }
               if( start && Date.now() - start > maxWait ) {
-                utils.compile(runNow);
+                if(!runScheduledForNextTick){
+                  runScheduledForNextTick = true;
+                  utils.compile(runNow);
+                }
               }
               else {
                 if( !start ) { start = Date.now(); }
@@ -1855,6 +2039,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             function runNow() {
               cancelTimer = null;
               start = null;
+              runScheduledForNextTick = false;
               var copyList = queue.slice(0);
               queue = [];
               angular.forEach(copyList, function(parts) {
@@ -1873,7 +2058,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
            * @param {int} [maxWait] max milliseconds to wait before sending out, defaults to wait * 10 or 100
            */
           debounce: function(fn, ctx, wait, maxWait) {
-            var start, cancelTimer, args;
+            var start, cancelTimer, args, runScheduledForNextTick;
             if( typeof(ctx) === 'number' ) {
               maxWait = wait;
               wait = ctx;
@@ -1889,14 +2074,17 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             if( !maxWait ) { maxWait = wait*10 || 100; }
 
             // clears the current wait timer and creates a new one
-            // however, if maxWait is exceeded, calles runNow() immediately
+            // however, if maxWait is exceeded, calls runNow() on the next tick.
             function resetTimer() {
               if( cancelTimer ) {
                 cancelTimer();
                 cancelTimer = null;
               }
               if( start && Date.now() - start > maxWait ) {
-                utils.compile(runNow);
+                if(!runScheduledForNextTick){
+                  runScheduledForNextTick = true;
+                  utils.compile(runNow);
+                }
               }
               else {
                 if( !start ) { start = Date.now(); }
@@ -1904,10 +2092,11 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
               }
             }
 
-            // Clears the queue and invokes all of the functions awaiting notification
+            // Clears the queue and invokes the debounced function with the most recent arguments
             function runNow() {
               cancelTimer = null;
               start = null;
+              runScheduledForNextTick = false;
               fn.apply(ctx, args);
             }
 
@@ -1984,6 +2173,20 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             var def = utils.defer();
             def.resolve.apply(def, arguments);
             return def.promise;
+          },
+
+          makeNodeResolver:function(deferred){
+            return function(err,result){
+              if(err === null){
+                if(arguments.length > 2){
+                  result = Array.prototype.slice.call(arguments,1);
+                }
+                deferred.resolve(result);
+              }
+              else {
+                deferred.reject(err);
+              }
+            };
           },
 
           wait: function(fn, wait) {

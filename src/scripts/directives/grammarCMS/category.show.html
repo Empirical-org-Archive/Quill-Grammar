@@ -1,4 +1,20 @@
 <div class="grammar-cms-section">
-  <h2>{{category.title}}</h2>
-  <grammar-cms-category-panel category="category" class="grammar-cms-panel"></grammar-cms-category-panel>
+  <div class="grammar-cms-heading">
+    <h2>{{category.title}}</h2>
+    <button
+      ng-show="!category.resolvedRules"
+      ng-click="showRules(category)"
+    >Show Rules</button>
+  </div>
+  <grammar-cms-category-panel
+    category="category"
+    class="grammar-cms-panel">
+  </grammar-cms-category-panel>
+</div>
+<div ng-show="category.resolvedRules">
+  <grammar-cms-rule
+    rule="rule"
+    ng-repeat="rule in category.resolvedRules">
+  </grammar-cms-rule>
+  <button ng-click="hideRules(category)">Hide Rules</button
 </div>

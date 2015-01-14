@@ -2,6 +2,13 @@
     "node": true,
     "browser": true,
     "globals": {
-        "angular": false
-    }
+        "angular": false,
+        "Firebase": false
+    },
+    "camelcase": true,
+    "curly": true,
+    "immed": true,
+    "undef": true,
+    "unused": true,
+    "quotmark": true
 }

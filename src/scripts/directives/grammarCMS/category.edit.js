@@ -11,9 +11,11 @@ function panel() {
 
 module.exports.panel = panel;
 
-function controller($scope) {
+function controller($scope, cs) {
   $scope.deleteCategory = function(category) {
-    console.log('deleting category ', category);
+    return cs.deleteCategory(category).then(function() {
+      console.log('deleting category ', category);
+    });
   };
 
   $scope.editCategory = function(category) {
@@ -29,5 +31,5 @@ function controller($scope) {
   };
 }
 
-module.exports.controller = ['$scope', controller];
+module.exports.controller = ['$scope', 'CategoryService', controller];
 
