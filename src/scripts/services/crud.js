@@ -27,8 +27,21 @@ angular.module('quill-grammar.services.crud', [
       return d.promise;
     }
 
+    function del(entityItem) {
+      var d = $q.defer();
+      baseCollection.$loaded().then(function() {
+        baseCollection.$remove(entityItem).then(function(ref) {
+          d.resolve(ref.key());
+        }, function(error){
+          d.reject(error);
+        });
+      });
+      return d.promise;
+    }
+
     return {
       save: save,
+      del: del,
     };
   }
 

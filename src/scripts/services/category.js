@@ -10,5 +10,8 @@ angular.module('quill-grammar.services.category', [
   this.saveCategory = function(category) {
     return crud.save(category);
   };
+  this.deleteCategory = function (category) {
+    return crud.del(category);
+  };
   return this;
 });

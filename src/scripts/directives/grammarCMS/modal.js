@@ -35,10 +35,16 @@ function deleteModal() {
     replace: true,
     transclude: true,
     templateUrl: 'deleteModal.html',
-    controller: 'ModalDialogCtrl',
     link: function(scope, element, attrs) {
       scope.hideModal = function() {
         scope.show = false;
+      };
+      scope._onDelete = function() {
+        scope.onDelete(scope.item).then(function() {
+          scope.hideModal();
+        }, function(error) {
+          scope.error = error;
+        });
       };
     }
   };

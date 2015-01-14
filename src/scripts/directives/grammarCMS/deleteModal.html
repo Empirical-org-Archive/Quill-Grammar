@@ -5,7 +5,8 @@
       <label class="modal-close" ng-click="hideModal()"></label>
       <p>Delete {{item.title}}?<p>
       <div ng-transclude></div>
-      <button ng-click="onDelete(item)">Delete</button>
+      <button ng-click="_onDelete(item)">Delete</button>
+      <p class="error" ng-show="error">{{error}}</p>
     </div>
   </div>
 </div>

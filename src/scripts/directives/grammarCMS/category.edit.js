@@ -13,7 +13,9 @@ module.exports.panel = panel;
 
 function controller($scope, cs) {
   $scope.deleteCategory = function(category) {
-    console.log('deleting category ', category);
+    return cs.deleteCategory(category).then(function() {
+      console.log('deleting category ', category);
+    });
   };
 
   $scope.editCategory = function(category) {
