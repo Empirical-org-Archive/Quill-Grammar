@@ -49,10 +49,24 @@ angular.module('quill-grammar.services.crud', [
       return d.promise;
     }
 
+    function get(entityId) {
+      var d = $q.defer();
+      baseCollection.$loaded().then(function() {
+        var record = baseCollection.$getRecord(entityId);
+        if (record) {
+          d.resolve(record);
+        } else {
+          d.reject(new Error('Record with ' + entityId + ' not found.'));
+        }
+      });
+      return d.promise;
+    }
+
     return {
       save: save,
       del: del,
       all: all,
+      get: get,
     };
   }
 

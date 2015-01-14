@@ -2,7 +2,7 @@
 
 
 
-function cmsController($scope, cs) {
+function cmsController($scope, cs, rs) {
 
   /*
    * $scope initializers
@@ -24,4 +24,4 @@ function cmsController($scope, cs) {
 
 }
 
-module.exports = ['$scope', 'CategoryService', cmsController];
+module.exports = ['$scope', 'CategoryService', 'RuleService', cmsController];
