@@ -37,6 +37,7 @@ function cmsController($scope, cs) {
   $scope.saveCategory = function(category) {
     return cs.saveCategory(category).then(function() {
       console.log('Saved', category);
+      category.title = '';
     });
   };
 
