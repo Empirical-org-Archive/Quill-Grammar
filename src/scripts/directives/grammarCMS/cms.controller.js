@@ -11,6 +11,18 @@ function cmsController($scope, cs, rs) {
     $scope.categories = categories;
   });
 
+  $scope.showRules = function(category) {
+    rs.getRules(category.rules).then(function(rules) {
+      category.resolvedRules = rules;
+    }, function(e) {
+      category.error = e;
+    });
+  };
+
+  $scope.hideRules = function(category) {
+    category.resolvedRules = null;
+  };
+
   $scope.saveCategory = function(category) {
     return cs.saveCategory(category).then(function() {
       console.log('Saved', category);

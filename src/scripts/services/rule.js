@@ -15,11 +15,17 @@ angular.module('quill-grammar.services.rule', [
   };
 
   this.getRules = function(ruleIds) {
+    var d = $q.defer();
     var promises = [];
-    angular.forEach(ruleIds, function(id) {
+    angular.forEach(ruleIds, function(value, id) {
       promises.push(crud.get(id));
     });
-    return $q.all(promises);
+    $q.all(promises).then(function(rules) {
+      d.resolve(rules);
+    }, function(error) {
+      d.reject(error);
+    });
+    return d.promise;
   };
   return this;
 });
