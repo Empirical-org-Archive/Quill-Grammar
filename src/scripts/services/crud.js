@@ -39,9 +39,20 @@ angular.module('quill-grammar.services.crud', [
       return d.promise;
     }
 
+    function all() {
+      var d = $q.defer();
+      baseCollection.$loaded().then(function() {
+        d.resolve(baseCollection);
+      }, function(error) {
+        d.reject(error);
+      });
+      return d.promise;
+    }
+
     return {
       save: save,
       del: del,
+      all: all,
     };
   }
 

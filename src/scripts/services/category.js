@@ -13,5 +13,9 @@ angular.module('quill-grammar.services.category', [
   this.deleteCategory = function (category) {
     return crud.del(category);
   };
+
+  this.getCategories = function() {
+    return crud.all();
+  };
   return this;
 });
