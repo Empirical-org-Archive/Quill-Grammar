@@ -2,11 +2,12 @@
 
 module.exports =
 angular.module('quill-grammar.services.crud', [
-  'firebase'
+  'firebase',
+  'underscore',
 ])
 
-.factory('CrudService', function(firebaseUrl, $firebase, $q) {
-  function crud(entity) {
+.factory('CrudService', function(firebaseUrl, $firebase, $q, _) {
+  function crud(entity, properties) {
     if (firebaseUrl[firebaseUrl.length - 1] !== '/') {
       firebaseUrl = firebaseUrl + '/';
     }
@@ -15,8 +16,17 @@ angular.module('quill-grammar.services.crud', [
     }
     var baseRef = new Firebase(firebaseUrl + entity);
     var baseCollection = $firebase(baseRef).$asArray();
-    function save(entityItem) {
+
+    function sanitize(item) {
+      if (properties) {
+        return _.pick(item, properties);
+      }
+      return item;
+    }
+
+    function save(item) {
       var d = $q.defer();
+      var entityItem = sanitize(item);
       baseCollection.$loaded().then(function() {
         baseCollection.$add(entityItem).then(function(ref) {
           d.resolve(ref.key());
@@ -27,7 +37,8 @@ angular.module('quill-grammar.services.crud', [
       return d.promise;
     }
 
-    function del(entityItem) {
+    function del(item) {
+      var entityItem = sanitize(item);
       var d = $q.defer();
       baseCollection.$loaded().then(function() {
         baseCollection.$remove(entityItem).then(function(ref) {
