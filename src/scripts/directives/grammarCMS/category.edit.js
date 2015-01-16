@@ -11,7 +11,7 @@ function panel() {
 
 module.exports.panel = panel;
 
-function controller($scope, cs) {
+function controller($scope, cs, rs, $q) {
   $scope.deleteCategory = function(category) {
     return cs.deleteCategory(category).then(function() {
       console.log('deleting category ', category);
@@ -31,9 +31,14 @@ function controller($scope, cs) {
   };
 
   $scope.saveRule = function(category, rule) {
-    console.log(category, rule);
+    var d = $q.defer();
+    rs.saveRule(rule).then(function(ruleId) {
+      category.rules[ruleId] = true;
+      cs.saveCategory(category).then(d.resolve,d.reject);
+    }, d.reject);
+    return d.promise;
   };
 }
 
-module.exports.controller = ['$scope', 'CategoryService', controller];
+module.exports.controller = ['$scope', 'CategoryService', 'RuleService', '$q', controller];
 
