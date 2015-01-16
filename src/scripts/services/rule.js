@@ -4,9 +4,15 @@ module.exports =
 angular.module('quill-grammar.services.rule', [
   require('./crud.js').name,
   require('./ruleQuestion.js').name,
+  require('./classification.js').name,
 ])
 
-.factory('RuleService', function(CrudService, RuleQuestionService, $q) {
+.factory('RuleService', function(
+  CrudService,
+  RuleQuestionService,
+  $q,
+  ClassificationService
+) {
   var crud = new CrudService('rules');
   this.saveRule = function(rule) {
     return crud.save(rule);
@@ -40,8 +46,27 @@ angular.module('quill-grammar.services.rule', [
       });
       return rqp.promise;
     }
+
+    function getClassificationForRules(rules) {
+      var cfr = $q.defer();
+      var cls = [];
+      angular.forEach(rules, function(rule) {
+        cls.push(ClassificationService.getClassification(rule.classification));
+      });
+      $q.all(cls).then(function(classifications) {
+        angular.forEach(rules, function(rule, index) {
+          rule.resolvedClassification = classifications[index];
+        });
+        cfr.resolve(rules);
+      }, function(errors){
+        cfr.reject(errors);
+      });
+      return cfr.promise;
+    }
+
     $q.all(promises)
     .then(getRuleQuestionsForRules)
+    .then(getClassificationForRules)
     .then(function(rules){
       d.resolve(rules);
     }, function(error){
