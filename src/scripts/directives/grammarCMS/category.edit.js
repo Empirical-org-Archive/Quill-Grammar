@@ -29,6 +29,10 @@ function controller($scope, cs) {
   $scope.showDeleteCategory = function() {
     $scope.showDeleteCategoryModal = true;
   };
+
+  $scope.saveRule = function(category, rule) {
+    console.log(category, rule);
+  };
 }
 
 module.exports.controller = ['$scope', 'CategoryService', controller];

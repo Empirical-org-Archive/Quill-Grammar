@@ -13,8 +13,8 @@ function modal() {
       scope.hideModal = function() {
         scope.show = false;
       };
-      scope.doAction = function(item) {
-        scope.action(item).then(function() {
+      scope.doAction = function() {
+        scope.action.apply(this, arguments).then(function() {
           scope.hideModal();
         });
       };

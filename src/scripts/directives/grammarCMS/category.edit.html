@@ -4,11 +4,13 @@
   <li><img src="assets/images/edit.png" ng-click="editCategory(category)" alt="Edit Category" title="Edit Category"/></li>
 </ul>
 
-<grammar-cms-modal-dialog show='showNewRuleModal'>
+<grammar-cms-modal-dialog
+  show='showNewRuleModal'
+  action='saveRule'>
   <form validate>
     <p>New Rule for {{category.title}}</p>
     <input type="text" name="rule" placeholder="Rule Name" ng-model="rule.title" />
-    <input type="submit" ng-click="saveRule(rule)" value="Add Rule" />
+    <input type="submit" ng-click="$parent.doAction(category, rule)" value="Add Rule" />
   </form>
 </grammar-cms-modal-dialog>
 
