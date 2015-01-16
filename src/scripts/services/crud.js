@@ -8,6 +8,11 @@ angular.module('quill-grammar.services.crud', [
 
 .factory('CrudService', function(firebaseUrl, $firebase, $q, _) {
   function crud(entity, properties) {
+    if (!properties) {
+      properties = [];
+    }
+    properties.push('$id');
+    properties.push('$value');
     if (firebaseUrl[firebaseUrl.length - 1] !== '/') {
       firebaseUrl = firebaseUrl + '/';
     }
@@ -73,11 +78,16 @@ angular.module('quill-grammar.services.crud', [
       return d.promise;
     }
 
+    function update(item) {
+      return baseCollection.$save(sanitize(item));
+    }
+
     return {
       save: save,
       del: del,
       all: all,
       get: get,
+      update: update,
     };
   }
 
