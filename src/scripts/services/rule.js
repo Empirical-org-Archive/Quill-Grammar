@@ -3,9 +3,10 @@
 module.exports =
 angular.module('quill-grammar.services.rule', [
   require('./crud.js').name,
+  require('./ruleQuestion.js').name,
 ])
 
-.factory('RuleService', function(CrudService, $q) {
+.factory('RuleService', function(CrudService, RuleQuestionService, $q) {
   var crud = new CrudService('rules');
   this.saveRule = function(rule) {
     return crud.save(rule);
