@@ -15,7 +15,13 @@ angular.module('quill-grammar.services.rule', [
 ) {
   var crud = new CrudService('rules');
   this.saveRule = function(rule) {
-    return crud.save(rule);
+    return ClassificationService.getClassificationIdByString(rule.classification)
+      .then(function(cid) {
+        rule.classification = cid;
+        return crud.save(rule);
+      }, function(error){
+        return error;
+      });
   };
   this.deleteRule = function (rule) {
     return crud.del(rule);
