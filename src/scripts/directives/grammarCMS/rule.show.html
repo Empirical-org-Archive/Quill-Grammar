@@ -1,10 +1,13 @@
 <div class="grammar-cms-section">
-  <h3>{{rule.title}}</h3>
+  <div class="grammar-cms-heading">
+    <h3>{{rule.title}}</h3>
+  </div>
   <grammar-cms-rule-panel class="grammar-cms-panel"
   rule="rule"></grammar-cms-rule-panel>
-  <ul>
-    <li ng-repeat="question in rule.questions">
-      <grammar-cms-rule-question question="question"></grammar-cms-rule-question>
-    </li>
-  </ul>
 </div>
+
+<ul>
+  <li ng-repeat="question in rule.questions">
+    <grammar-cms-rule-question question="question"></grammar-cms-rule-question>
+  </li>
+</ul>
