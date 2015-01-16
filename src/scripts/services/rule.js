@@ -21,7 +21,9 @@ angular.module('quill-grammar.services.rule', [
     angular.forEach(ruleIds, function(value, id) {
       promises.push(crud.get(id));
     });
-    $q.all(promises).then(function(rules) {
+
+    function getRuleQuestionsForRules(rules) {
+      var rqp = $q.defer();
       var ruleQuestionPromises = [];
       angular.forEach(rules, function(rule) {
         ruleQuestionPromises.push(
@@ -32,11 +34,17 @@ angular.module('quill-grammar.services.rule', [
         angular.forEach(rules, function(rule, index) {
           rule.resolvedRuleQuestions = ruleQuestions[index];
         });
-        d.resolve(rules);
+        rqp.resolve(rules);
       }, function(errors) {
-        d.reject(errors);
+        rqp.reject(errors);
       });
-    }, function(error) {
+      return rqp.promise;
+    }
+    $q.all(promises)
+    .then(getRuleQuestionsForRules)
+    .then(function(rules){
+      d.resolve(rules);
+    }, function(error){
       d.reject(error);
     });
     return d.promise;
