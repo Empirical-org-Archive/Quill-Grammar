@@ -1,4 +1,4 @@
 {
   "environment": "development",
-  "firebaseUrl": "https://quillgrammar.firebaseio.com/dev-safe-to-delete/"
+  "firebaseUrl": "https://quillgrammarstaging.firebaseio.com/"
 }
