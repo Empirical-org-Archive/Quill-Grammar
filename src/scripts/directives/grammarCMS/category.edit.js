@@ -35,6 +35,8 @@ function controller($scope, cs, rs, $q) {
     rs.saveRule(rule).then(function(ruleId) {
       category.rules[ruleId] = true;
       cs.updateCategory(category).then(function() {
+        category.resolvedRules.push(rule);
+        $scope.category = category;
         d.resolve();
       } ,d.reject);
     }, d.reject);
