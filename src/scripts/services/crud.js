@@ -17,8 +17,8 @@ angular.module('quill-grammar.services.crud', [
     if (!entity || entity === '') {
       throw new Error('Firebase Entity MUST be defined');
     }
-    var baseRef = new Firebase(firebaseUrl + entity);
-    var baseCollection = $firebase(baseRef).$asArray();
+    var baseRef = $firebase(new Firebase(firebaseUrl + entity));
+    var baseCollection = baseRef.$asObject();
 
     function sanitize(item) {
       if (properties) {
@@ -32,12 +32,10 @@ angular.module('quill-grammar.services.crud', [
     function save(item) {
       var d = $q.defer();
       var entityItem = sanitize(item);
-      baseCollection.$loaded().then(function() {
-        baseCollection.$add(entityItem).then(function(ref) {
-          d.resolve(ref.key());
-        }, function(error){
-          d.reject(error);
-        });
+      baseRef.$push(entityItem).then(function(ref) {
+        d.resolve(ref.key());
+      }, function(error){
+        d.reject(error);
       });
       return d.promise;
     }
@@ -68,11 +66,12 @@ angular.module('quill-grammar.services.crud', [
     function get(entityId) {
       var d = $q.defer();
       baseCollection.$loaded().then(function() {
-        var record = baseCollection.$getRecord(entityId);
+        var record = baseCollection[entityId];
         if (record) {
           d.resolve(record);
         } else {
-          d.reject(new Error('Record with ' + entityId + ' not found.'));
+          console.log(new Error('Record with ' + entityId + ' not found.'));
+          d.resolve();
         }
       });
       return d.promise;
