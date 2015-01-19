@@ -21,7 +21,7 @@ angular.module('quill-grammar.services.crud', [
     var baseCollection = baseRef.$asObject();
 
     function sanitize(item) {
-      if (properties) {
+      if (properties && typeof(item) === 'object') {
         return _.pick(item, function(value, key) {
           return key[0] === '$' || _.contains(properties, key);
         });
@@ -70,8 +70,7 @@ angular.module('quill-grammar.services.crud', [
         if (record) {
           d.resolve(record);
         } else {
-          console.log(new Error('Record with ' + entityId + ' not found.'));
-          d.resolve();
+          d.reject(new Error('Record with ' + entityId + ' not found.'));
         }
       });
       return d.promise;

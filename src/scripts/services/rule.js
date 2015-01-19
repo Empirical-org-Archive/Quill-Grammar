@@ -63,11 +63,14 @@ angular.module('quill-grammar.services.rule', [
       });
       $q.all(cls).then(function(classifications) {
         angular.forEach(rules, function(rule, index) {
-          rule.resolvedClassification = classifications[index];
+          if (rule && classifications[index]) {
+            rule.resolvedClassification = classifications[index];
+          }
         });
         cfr.resolve(rules);
-      }, function(errors){
-        cfr.reject(errors);
+      }, function(error){
+        console.log(error);
+        cfr.resolve(rules);
       });
       return cfr.promise;
     }

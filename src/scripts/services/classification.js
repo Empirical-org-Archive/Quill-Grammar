@@ -27,6 +27,7 @@ angular.module('quill-grammar.services.classification', [
         }
       });
       cfs.saveClassification(classificationString).then(function(id) {
+        console.log(id);
         d.resolve(id);
       }, d.reject);
     }, d.reject);
