@@ -5,16 +5,34 @@ angular.module('quill-grammar.services.classification', [
   require('./crud.js').name,
 ])
 
-.factory('ClassificationService', function(CrudService) {
+.factory('ClassificationService', function(CrudService, $q) {
   var crud = new CrudService('classifications');
-  this.saveClassification = function(classification) {
+  var cfs = this;
+  cfs.saveClassification = function(classification) {
     return crud.save(classification);
   };
-  this.deleteClassification = function (classification) {
+  cfs.deleteClassification = function (classification) {
     return crud.del(classification);
   };
-  this.getClassification = function(classificationId) {
+  cfs.getClassification = function(classificationId) {
     return crud.get(classificationId);
   };
-  return this;
+
+  cfs.getClassificationIdByString = function(classificationString) {
+    var d = $q.defer();
+    crud.all().then(function(classifications) {
+      angular.forEach(classifications, function(c, index) {
+        if (c.toLowerCase() === classificationString.toLowerCase()) {
+          d.resolve(index);
+        }
+      });
+      cfs.saveClassification(classificationString).then(function(id) {
+        console.log(id);
+        d.resolve(id);
+      }, d.reject);
+    }, d.reject);
+
+    return d.promise;
+  };
+  return cfs;
 });

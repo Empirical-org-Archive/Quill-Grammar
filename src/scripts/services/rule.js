@@ -13,9 +13,47 @@ angular.module('quill-grammar.services.rule', [
   $q,
   ClassificationService
 ) {
-  var crud = new CrudService('rules');
+  var crud = new CrudService('rules', [
+    'title', 'description', 'ruleNumber', 'classification'
+  ]);
   this.saveRule = function(rule) {
-    return crud.save(rule);
+    function getClassification(rule) {
+      return ClassificationService.getClassificationIdByString(rule.classification)
+        .then(function(cid) {
+          rule.classification = cid;
+          return rule;
+        }, function(error){
+          return error;
+        });
+    }
+
+    function addRuleNumber(rule) {
+      var ruleNumber = new CrudService('ruleNumberCounter').getRef();
+      ruleNumber.$transaction(function(currentRuleNumber) {
+        if (!currentRuleNumber) {
+          return 1;
+        }
+        if (currentRuleNumber < 0) {
+          return;
+        }
+        return currentRuleNumber + 1;
+      }).then(function(snapshot) {
+        if (snapshot === null) {
+          d.reject(new Error('current rule number error: snapshot null'));
+        } else {
+          rule.ruleNumber = snapshot.val();
+          d.resolve(rule);
+        }
+      }, function(error){
+        d.reject(error);
+      });
+      var d = $q.defer();
+      return d.promise;
+    }
+
+    return getClassification(rule)
+      .then(addRuleNumber)
+      .then(crud.save);
   };
   this.deleteRule = function (rule) {
     return crud.del(rule);
@@ -55,11 +93,14 @@ angular.module('quill-grammar.services.rule', [
       });
       $q.all(cls).then(function(classifications) {
         angular.forEach(rules, function(rule, index) {
-          rule.resolvedClassification = classifications[index];
+          if (rule && classifications[index]) {
+            rule.resolvedClassification = classifications[index];
+          }
         });
         cfr.resolve(rules);
-      }, function(errors){
-        cfr.reject(errors);
+      }, function(error){
+        console.log(error);
+        cfr.resolve(rules);
       });
       return cfr.promise;
     }

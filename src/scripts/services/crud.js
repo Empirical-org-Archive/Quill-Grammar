@@ -2,32 +2,50 @@
 
 module.exports =
 angular.module('quill-grammar.services.crud', [
-  'firebase'
+  'firebase',
+  'underscore',
 ])
 
-.factory('CrudService', function(firebaseUrl, $firebase, $q) {
-  function crud(entity) {
+.factory('CrudService', function(firebaseUrl, $firebase, $q, _) {
+  function crud(entity, properties) {
+    if (!properties) {
+      properties = [];
+    }
     if (firebaseUrl[firebaseUrl.length - 1] !== '/') {
       firebaseUrl = firebaseUrl + '/';
     }
     if (!entity || entity === '') {
       throw new Error('Firebase Entity MUST be defined');
     }
-    var baseRef = new Firebase(firebaseUrl + entity);
-    var baseCollection = $firebase(baseRef).$asArray();
-    function save(entityItem) {
-      var d = $q.defer();
-      baseCollection.$loaded().then(function() {
-        baseCollection.$add(entityItem).then(function(ref) {
-          d.resolve(ref.key());
-        }, function(error){
-          d.reject(error);
+    var baseRef = $firebase(new Firebase(firebaseUrl + entity));
+    var baseCollection = baseRef.$asObject();
+
+    function getRef() {
+      return baseRef;
+    }
+
+    function sanitize(item) {
+      if (properties && _.isObject(item)) {
+        return _.pick(item, function(value, key) {
+          return key[0] === '$' || _.contains(properties, key);
         });
+      }
+      return item;
+    }
+
+    function save(item) {
+      var d = $q.defer();
+      var entityItem = sanitize(item);
+      baseRef.$push(entityItem).then(function(ref) {
+        d.resolve(ref.key());
+      }, function(error){
+        d.reject(error);
       });
       return d.promise;
     }
 
-    function del(entityItem) {
+    function del(item) {
+      var entityItem = sanitize(item);
       var d = $q.defer();
       baseCollection.$loaded().then(function() {
         baseCollection.$remove(entityItem).then(function(ref) {
@@ -52,7 +70,7 @@ angular.module('quill-grammar.services.crud', [
     function get(entityId) {
       var d = $q.defer();
       baseCollection.$loaded().then(function() {
-        var record = baseCollection.$getRecord(entityId);
+        var record = baseCollection[entityId];
         if (record) {
           d.resolve(record);
         } else {
@@ -62,11 +80,29 @@ angular.module('quill-grammar.services.crud', [
       return d.promise;
     }
 
+    function update(item) {
+      var d = $q.defer();
+      baseCollection.$loaded().then(function() {
+        var index = item.$id;
+        baseCollection[index] = sanitize(item);
+        baseCollection.$save(index).then(function(ref) {
+          console.log(ref.key());
+          d.resolve(ref.key());
+        }, function(error){
+          console.log(error);
+          d.reject(error);
+        });
+      });
+      return d.promise;
+    }
+
     return {
       save: save,
       del: del,
       all: all,
       get: get,
+      update: update,
+      getRef: getRef,
     };
   }
 
