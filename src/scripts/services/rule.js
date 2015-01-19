@@ -17,13 +17,43 @@ angular.module('quill-grammar.services.rule', [
     'title', 'description', 'ruleNumber', 'classification'
   ]);
   this.saveRule = function(rule) {
-    return ClassificationService.getClassificationIdByString(rule.classification)
-      .then(function(cid) {
-        rule.classification = cid;
-        return crud.save(rule);
+    function getClassification(rule) {
+      return ClassificationService.getClassificationIdByString(rule.classification)
+        .then(function(cid) {
+          rule.classification = cid;
+          return rule;
+        }, function(error){
+          return error;
+        });
+    }
+
+    function addRuleNumber(rule) {
+      var ruleNumber = new CrudService('ruleNumberCounter').getRef();
+      ruleNumber.$transaction(function(currentRuleNumber) {
+        if (!currentRuleNumber) {
+          return 1;
+        }
+        if (currentRuleNumber < 0) {
+          return;
+        }
+        return currentRuleNumber + 1;
+      }).then(function(snapshot) {
+        if (snapshot === null) {
+          d.reject(new Error('current rule number error: snapshot null'));
+        } else {
+          rule.ruleNumber = snapshot.val();
+          d.resolve(rule);
+        }
       }, function(error){
-        return error;
+        d.reject(error);
       });
+      var d = $q.defer();
+      return d.promise;
+    }
+
+    return getClassification(rule)
+      .then(addRuleNumber)
+      .then(crud.save);
   };
   this.deleteRule = function (rule) {
     return crud.del(rule);

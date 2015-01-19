@@ -20,8 +20,12 @@ angular.module('quill-grammar.services.crud', [
     var baseRef = $firebase(new Firebase(firebaseUrl + entity));
     var baseCollection = baseRef.$asObject();
 
+    function getRef() {
+      return baseRef;
+    }
+
     function sanitize(item) {
-      if (properties && typeof(item) === 'object') {
+      if (properties && _.isObject(item)) {
         return _.pick(item, function(value, key) {
           return key[0] === '$' || _.contains(properties, key);
         });
@@ -98,6 +102,7 @@ angular.module('quill-grammar.services.crud', [
       all: all,
       get: get,
       update: update,
+      getRef: getRef,
     };
   }
 
