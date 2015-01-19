@@ -13,7 +13,9 @@ angular.module('quill-grammar.services.rule', [
   $q,
   ClassificationService
 ) {
-  var crud = new CrudService('rules');
+  var crud = new CrudService('rules', [
+    'title', 'description', 'ruleNumber', 'classification'
+  ]);
   this.saveRule = function(rule) {
     return ClassificationService.getClassificationIdByString(rule.classification)
       .then(function(cid) {

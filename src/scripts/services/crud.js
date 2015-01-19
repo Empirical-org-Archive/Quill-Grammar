@@ -11,8 +11,6 @@ angular.module('quill-grammar.services.crud', [
     if (!properties) {
       properties = [];
     }
-    properties.push('$id');
-    properties.push('$value');
     if (firebaseUrl[firebaseUrl.length - 1] !== '/') {
       firebaseUrl = firebaseUrl + '/';
     }
@@ -24,7 +22,9 @@ angular.module('quill-grammar.services.crud', [
 
     function sanitize(item) {
       if (properties) {
-        return _.pick(item, properties);
+        return _.pick(item, function(value, key) {
+          return key[0] === '$' || _.contains(properties, key);
+        });
       }
       return item;
     }
@@ -79,7 +79,19 @@ angular.module('quill-grammar.services.crud', [
     }
 
     function update(item) {
-      return baseCollection.$save(sanitize(item));
+      var d = $q.defer();
+      baseCollection.$loaded().then(function() {
+        var index = item.$id;
+        baseCollection[index] = sanitize(item);
+        baseCollection.$save(index).then(function(ref) {
+          console.log(ref.key());
+          d.resolve(ref.key());
+        }, function(error){
+          console.log(error);
+          d.reject(error);
+        });
+      });
+      return d.promise;
     }
 
     return {
