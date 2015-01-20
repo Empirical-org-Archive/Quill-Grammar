@@ -1,6 +1,6 @@
 'use strict';
 
-function controller($scope, rs) {
+function controller($scope, rs, rqs) {
   $scope.deleteRule = function() {
     var category = $scope.category;
     var rule = $scope.rule;
@@ -23,8 +23,15 @@ function controller($scope, rs) {
     $scope.showNewRuleQuestionModal = true;
   };
 
-  $scope.addPracticeQuestion = function(rule, question) {
-    console.log(rule, question);
+  $scope.saveRuleQuestion = function(rule, question) {
+    return rqs.saveRuleQuestion(question).then(function(questionId) {
+      if (!rule.ruleQuestions) {
+        rule.ruleQuestions = {};
+      }
+      console.log(questionId);
+      rule.ruleQuestions[questionId] = true;
+      return rs.updateRule(rule);
+    });
   };
   $scope.addAnswerToBody = function(question) {
     if (question && question.body && question.body.push && question.tempB) {
@@ -41,7 +48,7 @@ function controller($scope, rs) {
   };
 }
 
-module.exports.controller = ['$scope', 'RuleService', controller];
+module.exports.controller = ['$scope', 'RuleService', 'RuleQuestionService', controller];
 
 
 function panel() {

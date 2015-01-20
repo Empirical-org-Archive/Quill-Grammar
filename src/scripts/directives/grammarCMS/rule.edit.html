@@ -24,7 +24,8 @@
     <button type="button" ng-click="addAnswerToBody(question)">
       Add Correct Response
     </button>
-    <input required type="text" name="instructions" placeholder="Instructions"/>
+    <input required type="text" name="instructions" placeholder="Instructions"
+    ng-model="question.instructions"/>
     <input type="submit" value="Add Practice Question" />
   </form>
 </grammar-cms-modal-dialog>
