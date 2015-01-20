@@ -11,17 +11,20 @@
     <p>Adding rule question for rule "{{rule.title}}"</p>
     <input required type="text" name="prompt" placeholder="Prompt"
     ng-model="question.prompt" />
-    <input required type="text" name="hint" placeholder="Hint"
+    <input type="text" name="hint" placeholder="Hint"
     ng-model="question.hint" />
     <p><b>Body</b></p>
     <ul>
-      <li style="display: block;" ng-repeat="b in question.body">{{b}}</li>
+      <li style="display: block;" ng-repeat="b in question.body">
+        <input type="text" ng-model="b" />
+      </li>
     </ul>
-    <input required type="text" name="body" placeholder="Correct Response"
+    <input type="text" name="body" placeholder="Correct Response"
     ng-model="question.tempB" />
     <button type="button" ng-click="addAnswerToBody(question)">
-      Add Answer
+      Add Correct Response
     </button>
+    <input required type="text" name="instructions" placeholder="Instructions"/>
     <input type="submit" value="Add Practice Question" />
   </form>
 </grammar-cms-modal-dialog>
