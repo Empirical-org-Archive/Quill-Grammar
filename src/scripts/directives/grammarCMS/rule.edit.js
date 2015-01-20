@@ -1,8 +1,14 @@
 'use strict';
 
-function controller($scope) {
-  $scope.deleteRule = function(rule) {
-    console.log("deleting rule ", rule);
+function controller($scope, rs) {
+  $scope.deleteRule = function() {
+    var category = $scope.category;
+    var rule = $scope.rule;
+    return rs.deleteRule(category, rule).then(function(){
+      $scope.rule = null;
+    }, function(error) {
+      $scope.rule.error = error;
+    });
   };
 
   $scope.showDeleteRule = function() {
@@ -22,7 +28,7 @@ function controller($scope) {
   };
 }
 
-module.exports.controller = ['$scope', controller];
+module.exports.controller = ['$scope', 'RuleService', controller];
 
 
 function panel() {
@@ -30,9 +36,6 @@ function panel() {
     restrict: 'E',
     controller: 'RuleCtrl',
     templateUrl: 'rule.edit.html',
-    scope: {
-      rule: '='
-    }
   };
 }
 

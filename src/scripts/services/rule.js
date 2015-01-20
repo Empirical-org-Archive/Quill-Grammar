@@ -9,6 +9,7 @@ angular.module('quill-grammar.services.rule', [
 
 .factory('RuleService', function(
   CrudService,
+  CategoryService,
   RuleQuestionService,
   $q,
   ClassificationService
@@ -55,8 +56,10 @@ angular.module('quill-grammar.services.rule', [
       .then(addRuleNumber)
       .then(crud.save);
   };
-  this.deleteRule = function (rule) {
-    return crud.del(rule);
+  this.deleteRule = function (category, rule) {
+    return crud.del(rule).then(function() {
+      return CategoryService.removeRuleFromCategory(category, rule);
+    });
   };
 
   this.getRules = function(ruleIds) {

@@ -4,10 +4,7 @@ function ruleShow() {
   return {
     restrict: 'E',
     templateUrl: 'rule.show.html',
-    controller: 'GrammarCmsCtrl',
-    scope: {
-      rule: '='
-    }
+    controller: 'GrammarCmsCtrl'
   };
 }
 
