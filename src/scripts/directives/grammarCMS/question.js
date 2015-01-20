@@ -25,14 +25,17 @@ function panel() {
 
 module.exports.panel = panel;
 
-function controller($scope) {
+function controller($scope, rqs) {
   $scope.showDeleteRuleQuestion = function() {
     $scope.showDeleteRuleQuestionModal = true;
   };
 
   $scope.deleteRuleQuestion = function(question) {
-    console.log(question);
+    var rule = $scope.rule;
+    return rqs.deleteRuleQuestion(question, rule).then(function(){
+
+    });
   };
 }
 
-module.exports.controller = ['$scope', controller];
+module.exports.controller = ['$scope', 'RuleQuestionService', controller];

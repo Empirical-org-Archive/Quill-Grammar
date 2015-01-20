@@ -6,15 +6,19 @@ angular.module('quill-grammar.services.ruleQuestion', [
   require('./instruction.js').name,
 ])
 
-.factory('RuleQuestionService', function(CrudService, InstructionService, $q) {
+.factory('RuleQuestionService', function(
+  CrudService, InstructionService, $q, RuleService
+) {
   var crud = new CrudService('ruleQuestions', [
     'body', 'hint', 'instructions', 'prompt'
   ]);
   this.saveRuleQuestion = function(ruleQuestion) {
     return crud.save(ruleQuestion);
   };
-  this.deleteRuleQuestion = function (ruleQuestion) {
-    return crud.del(ruleQuestion);
+  this.deleteRuleQuestion = function (ruleQuestion, rule) {
+    return crud.del(ruleQuestion).then(function() {
+      return RuleService.removeRuleQuestionFromRule(rule, ruleQuestion);
+    });
   };
 
   this.getRuleQuestions = function(ruleQuestionIds) {

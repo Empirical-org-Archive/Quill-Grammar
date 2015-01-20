@@ -4,5 +4,6 @@
   <li><img src="assets/images/edit.png" ng-click="editRuleQuestion(question)" alt="Edit Rule Question"/title="Edit Rule Question"></li>
 </ul>
 
-<grammar-cms-delete-modal-dialog show='showDeleteRuleQuestionModal' on-delete="deleteRuleQuestion" item="{title:question}">
+<grammar-cms-delete-modal-dialog show='showDeleteRuleQuestionModal' on-delete="deleteRuleQuestion" item="question">
+  <p>{{question.prompt}}</p>
 </grammar-cms-delete-modal-dialog>
