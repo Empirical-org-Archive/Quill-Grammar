@@ -12,7 +12,8 @@ angular.module('quill-grammar.services.rule', [
   CategoryService,
   RuleQuestionService,
   $q,
-  ClassificationService
+  ClassificationService,
+  _
 ) {
   var crud = new CrudService('rules', [
     'title', 'description', 'ruleNumber', 'classification', 'ruleQuestions'
@@ -65,6 +66,18 @@ angular.module('quill-grammar.services.rule', [
     return crud.del(rule).then(function() {
       return CategoryService.removeRuleFromCategory(category, rule);
     });
+  };
+
+  this.removeRuleQuestionFromRule = function(rule, question) {
+    if (!rule || !rule.ruleQuestions) {
+      throw new Error('rule does not have any ruleQuestions to remove');
+    }
+    _.each(rule.ruleQuestions, function(r, key) {
+      if (key === question.$id) {
+        rule.ruleQuestions[key] = null;
+      }
+    });
+    return crud.update(rule);
   };
 
   this.getRules = function(ruleIds) {

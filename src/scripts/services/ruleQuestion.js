@@ -6,7 +6,9 @@ angular.module('quill-grammar.services.ruleQuestion', [
   require('./instruction.js').name,
 ])
 
-.factory('RuleQuestionService', function(CrudService, InstructionService, $q) {
+.factory('RuleQuestionService', function(
+  CrudService, InstructionService, $q
+) {
   var crud = new CrudService('ruleQuestions', [
     'body', 'hint', 'instructions', 'prompt'
   ]);
