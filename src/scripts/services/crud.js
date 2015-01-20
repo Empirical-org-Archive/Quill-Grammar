@@ -17,7 +17,8 @@ angular.module('quill-grammar.services.crud', [
     if (!entity || entity === '') {
       throw new Error('Firebase Entity MUST be defined');
     }
-    var baseRef = $firebase(new Firebase(firebaseUrl + entity));
+    var baseRoute = firebaseUrl + entity;
+    var baseRef = $firebase(new Firebase(baseRoute));
     var baseCollection = baseRef.$asObject();
 
     function getRef() {
@@ -71,13 +72,12 @@ angular.module('quill-grammar.services.crud', [
 
     function get(entityId) {
       var d = $q.defer();
-      baseCollection.$loaded().then(function() {
-        var record = baseCollection[entityId];
-        if (record) {
-          d.resolve(record);
-        } else {
-          d.reject(new Error('Record with ' + entityId + ' not found.'));
-        }
+      var entityRef = new Firebase(baseRoute + '/' + entityId);
+      var entity = $firebase(entityRef).$asObject();
+      entity.$loaded().then(function(entityData) {
+        d.resolve(entityData);
+      }, function(error) {
+        d.reject(error);
       });
       return d.promise;
     }

@@ -1,8 +1,8 @@
 'use strict';
 
-function controller($scope) {
+function controller($scope, rs) {
   $scope.deleteRule = function(rule) {
-    console.log("deleting rule ", rule);
+    return rs.deleteRule(rule);
   };
 
   $scope.showDeleteRule = function() {
@@ -22,7 +22,7 @@ function controller($scope) {
   };
 }
 
-module.exports.controller = ['$scope', controller];
+module.exports.controller = ['$scope', 'RuleService', controller];
 
 
 function panel() {
