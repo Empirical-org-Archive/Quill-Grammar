@@ -1,6 +1,6 @@
 {
-  "firebase": "quillgrammar",
-  "public": "dist",
+  "firebase": "quillgrammarstaging",
+  "public": "build",
   "ignore": [
     "firebase.json",
     "**/.*",
