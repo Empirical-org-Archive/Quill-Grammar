@@ -60,8 +60,9 @@ angular.module('quill-grammar.services.crud', [
 
     function all() {
       var d = $q.defer();
-      baseCollection.$loaded().then(function() {
-        d.resolve(baseCollection);
+      var a = baseRef.$asArray();
+      a.$loaded().then(function() {
+        d.resolve(a);
       }, function(error) {
         d.reject(error);
       });
