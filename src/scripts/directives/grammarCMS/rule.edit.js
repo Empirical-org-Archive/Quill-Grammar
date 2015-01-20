@@ -26,6 +26,19 @@ function controller($scope, rs) {
   $scope.addPracticeQuestion = function(rule, question) {
     console.log(rule, question);
   };
+  $scope.addAnswerToBody = function(question) {
+    if (question && question.body && question.body.push && question.tempB) {
+      question.body.push(question.tempB);
+      question.tempB = null;
+    }
+  };
+
+  /**
+   * Init the question scope variable
+   */
+  $scope.question = {
+    body: []
+  };
 }
 
 module.exports.controller = ['$scope', 'RuleService', controller];

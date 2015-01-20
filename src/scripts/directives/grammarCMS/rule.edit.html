@@ -4,11 +4,25 @@
   <li><img src="assets/images/edit.png" ng-click="editRule(rule)" alt="Edit Rule" title="Edit Rule"/></li>
 </ul>
 
-<grammar-cms-modal-dialog show='showNewRuleQuestionModal'>
-  <form validate>
-    <p>Adding practice question for {{rule.title}}</p>
-    <input type="text" name="question" placeholder="question Name" ng-model="question.title" />
-    <input type="submit" ng-click="addPracticeQuestion(rule, question)" value="Add Practice Question" />
+<grammar-cms-modal-dialog
+  show='showNewRuleQuestionModal'
+  action='saveRuleQuestion'>
+  <form validate ng-submit='$parent.doAction(rule, question)'>
+    <p>Adding rule question for rule "{{rule.title}}"</p>
+    <input required type="text" name="prompt" placeholder="Prompt"
+    ng-model="question.prompt" />
+    <input required type="text" name="hint" placeholder="Hint"
+    ng-model="question.hint" />
+    <p><b>Body</b></p>
+    <ul>
+      <li style="display: block;" ng-repeat="b in question.body">{{b}}</li>
+    </ul>
+    <input required type="text" name="body" placeholder="Correct Response"
+    ng-model="question.tempB" />
+    <button type="button" ng-click="addAnswerToBody(question)">
+      Add Answer
+    </button>
+    <input type="submit" value="Add Practice Question" />
   </form>
 </grammar-cms-modal-dialog>
 
