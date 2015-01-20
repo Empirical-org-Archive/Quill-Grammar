@@ -21,9 +21,10 @@ angular.module('quill-grammar.services.classification', [
   cfs.getClassificationIdByString = function(classificationString) {
     var d = $q.defer();
     crud.all().then(function(classifications) {
-      angular.forEach(classifications, function(c, index) {
+      angular.forEach(classifications, function(cl) {
+        var c = cl.$value;
         if (c.toLowerCase() === classificationString.toLowerCase()) {
-          d.resolve(index);
+          d.resolve(cl.$id);
         }
       });
       cfs.saveClassification(classificationString).then(function(id) {
