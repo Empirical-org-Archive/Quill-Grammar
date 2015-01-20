@@ -45,15 +45,16 @@ angular.module('quill-grammar.services.crud', [
     }
 
     function del(item) {
-      var entityItem = sanitize(item);
       var d = $q.defer();
-      baseCollection.$loaded().then(function() {
-        baseCollection.$remove(entityItem).then(function(ref) {
-          d.resolve(ref.key());
-        }, function(error){
-          d.reject(error);
-        });
+      if (!item || !item.$id) {
+        throw new Error('Item doesn\'t have an $id property');
+      }
+      baseRef.$remove(item.$id).then(function(ref) {
+        d.resolve(ref.key());
+      }, function(error) {
+        d.reject(error);
       });
+
       return d.promise;
     }
 
