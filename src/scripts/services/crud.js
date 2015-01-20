@@ -45,22 +45,24 @@ angular.module('quill-grammar.services.crud', [
     }
 
     function del(item) {
-      var entityItem = sanitize(item);
       var d = $q.defer();
-      baseCollection.$loaded().then(function() {
-        baseCollection.$remove(entityItem).then(function(ref) {
-          d.resolve(ref.key());
-        }, function(error){
-          d.reject(error);
-        });
+      if (!item || !item.$id) {
+        throw new Error('Item doesn\'t have an $id property');
+      }
+      baseRef.$remove(item.$id).then(function(ref) {
+        d.resolve(ref.key());
+      }, function(error) {
+        d.reject(error);
       });
+
       return d.promise;
     }
 
     function all() {
       var d = $q.defer();
-      baseCollection.$loaded().then(function() {
-        d.resolve(baseCollection);
+      var a = baseRef.$asArray();
+      a.$loaded().then(function() {
+        d.resolve(a);
       }, function(error) {
         d.reject(error);
       });
