@@ -33,8 +33,14 @@ function controller($scope, cs, rs, $q) {
   $scope.saveRule = function(category, rule) {
     var d = $q.defer();
     rs.saveRule(rule).then(function(ruleId) {
+      if (!category.rules) {
+        category.rules = {};
+      }
       category.rules[ruleId] = true;
       cs.updateCategory(category).then(function() {
+        if (!category.resolvedRules) {
+          category.resolvedRules = [];
+        }
         category.resolvedRules.push(rule);
         $scope.category = category;
         d.resolve();
