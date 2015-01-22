@@ -4,7 +4,7 @@ module.exports =
 /*@ngInject*/
 function index ($scope, RuleQuestionService) {
   RuleQuestionService._getAllRuleQuestionsWithInstructions().then(function(questions) {
-    var i = 39;
+    var i = 0;
     $scope.showNextQuestion = false;
     $scope.showPreviousQuestion = false;
     $scope.currentRuleQuestion = questions[i];
