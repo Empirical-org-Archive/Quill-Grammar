@@ -26,6 +26,9 @@ module.exports = function($scope, _) {
 
   function compareGrammarElementToBody(answer) {
     return function(b) {
+      if (!answer) {
+        return false;
+      }
       //This regex will only work for one occurence of {hey grammar element}
       //It needs to be changed for when the grammar elements are more than one
       //per body line.
@@ -45,16 +48,23 @@ module.exports = function($scope, _) {
     var answer = rq.response;
     var exactMatch = _.any(rq.body, compareEntireAnswerToBody(answer));
     if (exactMatch) {
-      console.log('exact match');
+      setMessage('Correct!');
       $scope.ruleQuestion.correct = true;
       return;
     }
     var grammarMatch = _.any(rq.body, compareGrammarElementToBody(answer));
     if (grammarMatch && !strictTypingMode) {
-      console.log('grammar match');
+      setMessage('You are correct, but you have some typing errors. You may correct them or continue');
       $scope.ruleQuestion.correct = true;
       return;
+    } else if (grammarMatch) {
+      setMessage('You are correct, but have some typing errors. Please fix them.');
     }
 
+    setMessage('Try again!');
   };
+
+  function setMessage(msg) {
+    $scope.message = msg;
+  }
 };
