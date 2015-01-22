@@ -3,7 +3,7 @@ module.exports =
 
 /*@ngInject*/
 function index ($scope, RuleQuestionService) {
-  RuleQuestionService._getCrud().all().then(function(questions) {
+  RuleQuestionService._getAllRuleQuestionsWithInstructions().then(function(questions) {
     var i = 0;
     $scope.currentRuleQuestion = questions[i];
     $scope.nextQuestion = function() {
