@@ -3,6 +3,8 @@
 /*@ngInject*/
 module.exports = function($scope, _) {
 
+  var strictTypingMode = false;
+
   var delim = {
     open: '{',
     close: '}'
@@ -18,8 +20,23 @@ module.exports = function($scope, _) {
   function compareEntireAnswerToBody(answer) {
     return function(b) {
       var cleaned = removeDelimeters(b);
-      console.log(cleaned);
       return answer === cleaned;
+    };
+  }
+
+  function compareGrammarElementToBody(answer) {
+    return function(b) {
+      //This regex will only work for one occurence of {hey grammar element}
+      //It needs to be changed for when the grammar elements are more than one
+      //per body line.
+      var reg = new RegExp(delim.open + '(.*)' + delim.close, 'g');
+      //[0]original string [1-n]substring matches
+      var results = reg.exec(b);
+      var grammarElements = _.rest(results);
+
+      return _.every(grammarElements, function(element) {
+        return answer.indexOf(element) !== -1;
+      });
     };
   }
 
@@ -28,7 +45,13 @@ module.exports = function($scope, _) {
     var answer = rq.response;
     var exactMatch = _.any(rq.body, compareEntireAnswerToBody(answer));
     if (exactMatch) {
-      console.log(exactMatch);
+      console.log('exact match');
+      $scope.ruleQuestion.correct = true;
+      return;
+    }
+    var grammarMatch = _.any(rq.body, compareGrammarElementToBody(answer));
+    if (grammarMatch && !strictTypingMode) {
+      console.log('grammar match');
       $scope.ruleQuestion.correct = true;
       return;
     }

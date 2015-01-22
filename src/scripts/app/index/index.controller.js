@@ -14,7 +14,6 @@ function index ($scope, RuleQuestionService) {
     };
 
     $scope.$watch('currentRuleQuestion', function() {
-      console.log($scope.currentRuleQuestion);
       if (!$scope.currentRuleQuestion) {
         $scope.finish();
       }
