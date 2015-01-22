@@ -65,6 +65,6 @@ module.exports = function($scope, _) {
   };
 
   function setMessage(msg) {
-    $scope.message = msg;
+    $scope.ruleQuestion.message = msg;
   }
 };
