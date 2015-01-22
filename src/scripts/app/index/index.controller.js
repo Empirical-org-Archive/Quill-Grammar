@@ -18,7 +18,10 @@ function index ($scope, RuleQuestionService) {
       if (!$scope.currentRuleQuestion) {
         $scope.finish();
       }
-    });
+      if ($scope.currentRuleQuestion && $scope.currentRuleQuestion.correct) {
+        $scope.nextQuestion();
+      }
+    }, true);
 
     $scope.finish = function() {
       console.log(i);

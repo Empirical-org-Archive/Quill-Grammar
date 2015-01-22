@@ -4,6 +4,7 @@ module.exports = function() {
     scope: {
       ruleQuestion: '='
     },
-    templateUrl: 'ruleQuestion.html'
+    templateUrl: 'ruleQuestion.html',
+    controller: 'GrammarRuleQuestionCtrl'
   };
 };

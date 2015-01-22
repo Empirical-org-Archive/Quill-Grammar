@@ -2,4 +2,6 @@
   <p>{{ruleQuestion.resolvedInstructions}}</p>
   <p>{{ruleQuestion.hint}}</p>
   <p>{{ruleQuestion.prompt | formatPrompt}}</p>
+  <input type="text" ng-model="ruleQuestion.response"/>
+  <button ng-click="checkAnswer()">Check Answer</button>
 </div>
