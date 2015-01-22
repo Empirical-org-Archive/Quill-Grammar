@@ -28,7 +28,7 @@ angular.module('quill-grammar.services.ruleQuestion', [
     });
     $q.all(ins).then(function(instructions) {
       angular.forEach(ruleQuestions, function(rq, index) {
-        rq.resolvedInstruction = instructions[index];
+        rq.resolvedInstructions = instructions[index].$value;
       });
       insp.resolve(ruleQuestions);
     }, function(errors) {
