@@ -1,4 +1,4 @@
-<button ng-click="nextQuestion()">Next Question</button>
+<button ng-show="showNextQuestion" ng-click="nextQuestion()">Next Question</button>
 <grammar-rule-question rule-question="currentRuleQuestion">
 </grammar-rule-question>
-<button ng-click="previousQuestion()">Previous Question</button>
+<button ng-show="showPreviousQuestion" ng-click="previousQuestion()">Previous Question</button>
