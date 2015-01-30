@@ -1,5 +1,3 @@
-<select ng-options="rule.title for rule in availableRules"
-  ng-init="newSentence.rules = []; _tempRule = {};"
-  ng-model="_tempRule"></select>
+<select ng-options="rule.title for rule in availableRules" ng-model="tempRule"></select>
 
-<button ng-click="newSentence.rules.push(_tempRule)">Add Rule</button>
+<button ng-click="addRule()">Add Rule</button>

@@ -3,7 +3,7 @@
 module.exports =
 
 /*@ngInject*/
-function sentences($scope, CategoryService, $state) {
+function sentences($scope, CategoryService, $state, RuleService) {
   $scope.newSentence = {};
   $scope.flags = [{$id:1, title: 'Production'}, {$id:2, title:'Beta'}];
 
@@ -12,6 +12,12 @@ function sentences($scope, CategoryService, $state) {
   });
 
   $scope.nextStep = function() {
-    $state.go('^.questions');
+    var ruleIds = $scope.newSentence.category.rules;
+    RuleService.getRules(ruleIds).then(function(rules) {
+      $scope.availableRules = rules;
+      $state.go('^.questions');
+    });
   };
+
+
 };
