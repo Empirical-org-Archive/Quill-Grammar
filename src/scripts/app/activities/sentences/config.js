@@ -5,22 +5,19 @@ module.exports =
 function configure ($stateProvider) {
   $stateProvider
   .state('sentences', {
-    abstract: true,
+    parent: 'activities',
     url: '/sentences',
     template: '<div ui-view></div>'
   })
-  .state('list', {
-    parent: 'sentences',
+  .state('sentences.list', {
     url: '/list',
     templateUrl: 'sentences.list.html'
   })
-  .state('edit', {
-    parent: 'sentences',
+  .state('sentences.edit', {
     url: '/edit/:id',
     templateUrl: 'sentences.edit.html'
   })
-  .state('new', {
-    parent: 'sentences',
+  .state('sentences.new', {
     url: '/new',
     templateUrl: 'sentences.new.html'
   });
