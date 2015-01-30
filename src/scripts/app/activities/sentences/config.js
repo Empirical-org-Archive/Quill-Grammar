@@ -3,9 +3,25 @@
 module.exports =
 /*@ngInject*/
 function configure ($stateProvider) {
-  $stateProvider.state('sentences', {
-    parent: 'activities',
+  $stateProvider
+  .state('sentences', {
+    abstract: true,
     url: '/sentences',
-    templateUrl: 'sentences.html'
+    template: '<div ui-view></div>'
+  })
+  .state('list', {
+    parent: 'sentences',
+    url: '/list',
+    templateUrl: 'sentences.list.html'
+  })
+  .state('edit', {
+    parent: 'sentences',
+    url: '/edit/:id',
+    templateUrl: 'sentences.edit.html'
+  })
+  .state('new', {
+    parent: 'sentences',
+    url: '/new',
+    templateUrl: 'sentences.new.html'
   });
 };
