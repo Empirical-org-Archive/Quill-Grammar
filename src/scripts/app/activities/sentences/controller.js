@@ -19,5 +19,11 @@ function sentences($scope, CategoryService, $state, RuleService) {
     });
   };
 
+  $scope.addRule = function(r) {
+    if (!$scope.newSentence.rules) {
+      $scope.newSentence.rules = [];
+    }
+    $scope.newSentence.rules.push(r);
+  };
 
 };

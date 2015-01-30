@@ -1,3 +1,13 @@
 <select ng-options="rule.title for rule in availableRules" ng-model="tempRule"></select>
 
 <button ng-click="addRule()">Add Rule</button>
+
+<ul ng-repeat="rule in newSentence.rules">
+  <li>
+    <h4>{{rule.title}}</h4>
+    <input type="text" ng-init="rule.quantity = 0"
+       ng-model="rule.quantity"/>
+  </li>
+</ul>
+
+<button ng-click="submitNewSentence" ng-show="newSentence.rules.length > 0">Submit</button>
