@@ -6,6 +6,7 @@ function configure ($stateProvider) {
   $stateProvider
   .state('sentences', {
     parent: 'activities',
+    controller: 'SentencesCtrl',
     url: '/sentences',
     template: '<div ui-view></div>'
   })
