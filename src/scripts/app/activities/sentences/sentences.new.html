@@ -1,11 +1,2 @@
-<form validate>
-  <label for="sentence.new">Practice Question</label>
-  <input type="text" name="sentence.new" placeholder="Name"
-    ng-model="newSentence.title" required/>
-  <input type="text" name="sentence.description" placeholder="Description"
-  ng-model="newSentence.description" required/>
-  <select ng-options="flag.title for flag in flags" ng-model="newSentence.flag"
-    placeholder="Flag" required/>
-  <select ng-options="cat.title for cat in availableCategories"
-    ng-model="newSentence.category" required/>
-</form>
+<h3>New Sentence Writing</h3>
+<div ui-view></div>
