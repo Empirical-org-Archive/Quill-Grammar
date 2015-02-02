@@ -12,5 +12,12 @@
     <button ng-click="removeRule(rule)">X Remove</button>
   </li>
 </ul>
+<div class="error" ng-show="error">
+  <p>{{error}}</p>
+</div>
 
-<button ng-click="submitNewSentence" ng-show="newSentence.rules.length > 0">Submit</button>
+<button
+    ng-click="submitNewSentence(newSentence)"
+    ng-show="newSentence.rules.length > 0">
+  Submit
+</button>

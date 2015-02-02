@@ -3,7 +3,7 @@
 module.exports =
 
 /*@ngInject*/
-function sentences($scope, CategoryService, $state, RuleService, _) {
+function sentences($scope, CategoryService, $state, RuleService, _, $timeout) {
   $scope.newSentence = {};
   $scope.flags = [{$id:1, title: 'Production'}, {$id:2, title:'Beta'}];
 
@@ -20,13 +20,17 @@ function sentences($scope, CategoryService, $state, RuleService, _) {
   };
 
   $scope.addRule = function(r) {
-    if (!$scope.newSentence.rules) {
-      $scope.newSentence.rules = [];
-    }
-    if (_.find($scope.newSentence.rules, r)) {
-      throw new Error('Cannot have two instances of the same rule ' + r.title);
-    } else {
-      $scope.newSentence.rules.push(r);
+    try {
+      if (!$scope.newSentence.rules) {
+        $scope.newSentence.rules = [];
+      }
+      if (_.find($scope.newSentence.rules, r)) {
+        throw new Error('Cannot have two instances of the same rule ' + r.title);
+      } else {
+        $scope.newSentence.rules.push(r);
+      }
+    } catch (e) {
+      setError(e.message);
     }
   };
 
@@ -35,5 +39,28 @@ function sentences($scope, CategoryService, $state, RuleService, _) {
       $scope.newSentence.rules = _.without($scope.newSentence.rules, r);
     }
   };
+
+  $scope.submitNewSentence = function(s) {
+    try {
+      var allPositiveQuantities = _.every(s.rules, function(r) {
+        return Number(r.quantity) > 0;
+      });
+
+      if (!allPositiveQuantities) {
+        throw new Error('Please make all rules have a quanity greater than zero');
+      }
+    } catch (e) {
+      setError(e.message);
+    }
+  };
+
+  function clearError() {
+    $scope.error = null;
+  }
+
+  function setError(msg) {
+    $scope.error = msg;
+    $timeout(clearError, 5000);
+  }
 
 };
