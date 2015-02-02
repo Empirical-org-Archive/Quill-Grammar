@@ -3,7 +3,10 @@
 module.exports =
 
 /*@ngInject*/
-function sentences($scope, CategoryService, $state, RuleService, _, $timeout) {
+function sentences(
+  $scope, CategoryService, $state, RuleService,
+  SentenceWritingService, _, $timeout
+) {
   $scope.newSentence = {};
   $scope.flags = [{$id:1, title: 'Production'}, {$id:2, title:'Beta'}];
 
@@ -26,7 +29,7 @@ function sentences($scope, CategoryService, $state, RuleService, _, $timeout) {
       }
       if (_.find($scope.newSentence.rules, r)) {
         throw new Error('Cannot have two instances of the same rule ' + r.title);
-      } else {
+      } else if (r) {
         $scope.newSentence.rules.push(r);
       }
     } catch (e) {
@@ -49,10 +52,16 @@ function sentences($scope, CategoryService, $state, RuleService, _, $timeout) {
       if (!allPositiveQuantities) {
         throw new Error('Please make all rules have a quanity greater than zero');
       }
+      SentenceWritingService.saveSentenceWriting(s).then(function(ref) {
+        console.log('saved %s', ref);
+      }, function(e) {
+        setError(e.message);
+      });
     } catch (e) {
       setError(e.message);
     }
   };
+
 
   function clearError() {
     $scope.error = null;
