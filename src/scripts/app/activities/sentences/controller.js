@@ -52,8 +52,8 @@ function sentences(
       if (!allPositiveQuantities) {
         throw new Error('Please make all rules have a quanity greater than zero');
       }
-      SentenceWritingService.saveSentenceWriting(s).then(function(ref) {
-        console.log('saved %s', ref);
+      SentenceWritingService.saveSentenceWriting(s).then(function() {
+        $state.go('^.^.list');
       }, function(e) {
         setError(e.message);
       });
