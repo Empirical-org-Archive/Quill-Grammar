@@ -39,7 +39,7 @@ angular.module('quill-grammar.services.ruleQuestion', [
 
   this._getAllRuleQuestionsWithInstructions = function() {
     return crud.all().then(getInstructionForRuleQuestion);
-  }
+  };
 
   this.getRuleQuestions = function(ruleQuestionIds) {
     var d = $q.defer();
