@@ -17,10 +17,12 @@ angular.module('quill-grammar.services.crud', [
     if (!entity || entity === '') {
       throw new Error('Firebase Entity MUST be defined');
     }
+    var baseUrl = String(firebaseUrl);
     if (prefix) {
-      firebaseUrl = firebaseUrl + prefix + '/';
+      baseUrl = baseUrl + prefix + '/';
     }
-    var baseRoute = firebaseUrl + entity;
+    console.log('Using ' + baseUrl);
+    var baseRoute = baseUrl + entity;
     var baseRef = $firebase(new Firebase(baseRoute));
     var baseCollection = baseRef.$asObject();
 
