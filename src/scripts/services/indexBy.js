@@ -24,7 +24,7 @@ angular.module('quill-grammar.services.index', [
 
     function addElementToEntry(entry, element) {
       return getEntry(entry).$loaded().then(function(list) {
-        return list.$push(element);
+        return list.$add(element);
       });
     }
 

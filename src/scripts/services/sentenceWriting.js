@@ -4,12 +4,15 @@
 module.exports =
 angular.module('quill-grammar.services.sentenceWriting', [
   require('./crud.js').name,
+  require('./indexBy.js').name,
 ])
 
-.factory('SentenceWritingService', function(CrudService, _) {
+.factory('SentenceWritingService', function(CrudService, _, IndexService) {
   var crud = new CrudService('sentenceWritings', [
     'flagId', 'categoryId', 'rules', 'title', 'description'
   ]);
+
+  var catIndex = new IndexService('sentenceWritingsByCategory');
   this.saveSentenceWriting = function(sentenceWritingActivity) {
     var valid = _.every(['category', 'flag'], function(k) {
       if (sentenceWritingActivity[k] && sentenceWritingActivity[k].$id) {
@@ -29,7 +32,9 @@ angular.module('quill-grammar.services.sentenceWriting', [
       };
     });
 
-    return crud.save(sentenceWritingActivity);
+    return crud.save(sentenceWritingActivity).then(function(ref) {
+      return catIndex.addElementToEntry(sentenceWritingActivity.categoryId, ref);
+    });
   };
   this.deleteSentenceWriting = function (sentenceWritingActivity) {
     return crud.del(sentenceWritingActivity);
