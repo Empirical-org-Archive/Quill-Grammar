@@ -6,7 +6,7 @@ angular.module('quill-grammar.services.instruction', [
 ])
 
 .factory('InstructionService', function(CrudService) {
-  var crud = new CrudService('instructions');
+  var crud = new CrudService('instructions', [], 'cms');
   this.saveInstruction = function(instruction) {
     return crud.save(instruction);
   };

@@ -8,7 +8,7 @@ angular.module('quill-grammar.services.category', [
 .factory('CategoryService', function(CrudService, _) {
   var crud = new CrudService('categories', [
     'title', 'rules'
-  ]);
+  ], 'cms');
   this.saveCategory = function(category) {
     return crud.save(category);
   };

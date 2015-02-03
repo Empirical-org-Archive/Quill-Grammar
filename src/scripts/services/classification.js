@@ -6,7 +6,7 @@ angular.module('quill-grammar.services.classification', [
 ])
 
 .factory('ClassificationService', function(CrudService, $q) {
-  var crud = new CrudService('classifications');
+  var crud = new CrudService('classifications', [], 'cms');
   var cfs = this;
   cfs.saveClassification = function(classification) {
     return crud.save(classification);

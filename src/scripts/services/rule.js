@@ -17,7 +17,7 @@ angular.module('quill-grammar.services.rule', [
 ) {
   var crud = new CrudService('rules', [
     'title', 'description', 'ruleNumber', 'classification', 'ruleQuestions'
-  ]);
+  ], 'cms');
 
   this.updateRule = function(rule) {
     return crud.update(rule);
