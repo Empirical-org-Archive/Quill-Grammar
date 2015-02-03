@@ -42,5 +42,9 @@ angular.module('quill-grammar.services.sentenceWriting', [
   this.getSentenceWriting = function(sentenceWritingActivityId) {
     return crud.get(sentenceWritingActivityId);
   };
+
+  this.getAllSentenceWritings = function() {
+    return crud.all();
+  };
   return this;
 });

@@ -10,6 +10,10 @@ function sentences(
   $scope.newSentence = {};
   $scope.flags = [{$id:1, title: 'Production'}, {$id:2, title:'Beta'}];
 
+  SentenceWritingService.getAllSentenceWritings().then(function(ss) {
+    $scope.sentences = ss;
+  });
+
   CategoryService.getCategories().then(function(cats) {
     $scope.availableCategories = cats;
   });
@@ -53,6 +57,7 @@ function sentences(
         throw new Error('Please make all rules have a quanity greater than zero');
       }
       SentenceWritingService.saveSentenceWriting(s).then(function() {
+        $scope.newSentence = {};
         $state.go('^.^.list');
       }, function(e) {
         setError(e.message);
