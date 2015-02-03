@@ -1,10 +1,10 @@
-<select ng-options="rule.title for rule in availableRules" ng-model="tempRule"></select>
+<select ng-options="(rule.ruleNumber + '. ' + rule.title) for rule in availableRules" ng-model="tempRule"></select>
 
 <button ng-click="addRule(tempRule)">Add Rule</button>
 
 <ul ng-repeat="rule in newSentence.rules">
   <li>
-    <h4>{{rule.title}}</h4>
+    <h4>{{rule.ruleNumber}}. {{rule.title}}</h4>
     <p>{{rule.description}}</p>
     <input type="text"
        placeholder="Number of Questions from this Rule"

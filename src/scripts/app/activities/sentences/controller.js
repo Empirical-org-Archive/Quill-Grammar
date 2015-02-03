@@ -14,12 +14,12 @@ function sentences(
     $scope.availableCategories = cats;
   });
 
+  RuleService.getAllRules().then(function(rules) {
+    $scope.availableRules = rules;
+  });
+
   $scope.nextStep = function() {
-    var ruleIds = $scope.newSentence.category.rules;
-    RuleService.getRules(ruleIds).then(function(rules) {
-      $scope.availableRules = rules;
-      $state.go('^.questions');
-    });
+    $state.go('^.questions');
   };
 
   $scope.addRule = function(r) {
