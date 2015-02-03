@@ -10,7 +10,7 @@ angular.module('quill-grammar.services.sentenceWriting', [
 .factory('SentenceWritingService', function(CrudService, _, IndexService) {
   var crud = new CrudService('sentenceWritings', [
     'flagId', 'categoryId', 'rules', 'title', 'description'
-  ]);
+  ], 'activities');
 
   var catIndex = new IndexService('sentenceWritingsByCategory');
   this.saveSentenceWriting = function(sentenceWritingActivity) {

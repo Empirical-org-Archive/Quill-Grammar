@@ -7,7 +7,7 @@ angular.module('quill-grammar.services.crud', [
 ])
 
 .factory('CrudService', function(firebaseUrl, $firebase, $q, _) {
-  function crud(entity, properties) {
+  function crud(entity, properties, prefix) {
     if (!properties) {
       properties = [];
     }
@@ -17,7 +17,12 @@ angular.module('quill-grammar.services.crud', [
     if (!entity || entity === '') {
       throw new Error('Firebase Entity MUST be defined');
     }
-    var baseRoute = firebaseUrl + entity;
+    var baseUrl = String(firebaseUrl);
+    if (prefix) {
+      baseUrl = baseUrl + prefix + '/';
+    }
+    console.log('Using ' + baseUrl);
+    var baseRoute = baseUrl + entity;
     var baseRef = $firebase(new Firebase(baseRoute));
     var baseCollection = baseRef.$asObject();
 

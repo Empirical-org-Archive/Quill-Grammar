@@ -11,7 +11,7 @@ angular.module('quill-grammar.services.ruleQuestion', [
 ) {
   var crud = new CrudService('ruleQuestions', [
     'body', 'hint', 'instructions', 'prompt'
-  ]);
+  ], 'cms');
 
   this.saveRuleQuestion = function(ruleQuestion) {
     return crud.save(ruleQuestion);
@@ -39,7 +39,7 @@ angular.module('quill-grammar.services.ruleQuestion', [
 
   this._getAllRuleQuestionsWithInstructions = function() {
     return crud.all().then(getInstructionForRuleQuestion);
-  }
+  };
 
   this.getRuleQuestions = function(ruleQuestionIds) {
     var d = $q.defer();
