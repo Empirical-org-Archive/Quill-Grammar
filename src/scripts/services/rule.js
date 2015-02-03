@@ -68,6 +68,10 @@ angular.module('quill-grammar.services.rule', [
     });
   };
 
+  this.getAllRules = function() {
+    return crud.all();
+  };
+
   this.removeRuleQuestionFromRule = function(rule, question) {
     if (!rule || !rule.ruleQuestions) {
       throw new Error('rule does not have any ruleQuestions to remove');
