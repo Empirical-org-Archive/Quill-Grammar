@@ -9,7 +9,7 @@ ng-model="editSentence.description" required/>
   ng-model="editSentence.category" required></select>
 <select ng-options="(rule.ruleNumber + '. ' + rule.title) for rule in availableRules" ng-model="tempRule"></select>
 
-<button ng-click="addRule(tempRule)">Add Rule</button>
+<button ng-click="addRule(editSentence, tempRule)">Add Rule</button>
 
 <ul ng-repeat="rule in editSentence.rules">
   <li>
@@ -18,7 +18,7 @@ ng-model="editSentence.description" required/>
     <input type="text"
        placeholder="Number of Questions from this Rule"
        ng-model="rule.quantity"/>
-    <button ng-click="removeRule(rule)">X Remove</button>
+    <button ng-click="removeRule(editSentence, rule)">X Remove</button>
   </li>
 </ul>
 <div class="error" ng-show="error">

@@ -26,24 +26,24 @@ function sentences(
     $state.go('^.questions');
   };
 
-  $scope.addRule = function(r) {
+  $scope.addRule = function(s, r) {
     try {
-      if (!$scope.newSentence.rules) {
-        $scope.newSentence.rules = [];
+      if (!s.rules) {
+        s.rules = [];
       }
-      if (_.find($scope.newSentence.rules, r)) {
+      if (_.find(s.rules, r)) {
         throw new Error('Cannot have two instances of the same rule ' + r.title);
       } else if (r) {
-        $scope.newSentence.rules.push(r);
+        s.rules.push(r);
       }
     } catch (e) {
       setError(e.message);
     }
   };
 
-  $scope.removeRule = function(r) {
-    if ($scope.newSentence.rules) {
-      $scope.newSentence.rules = _.without($scope.newSentence.rules, r);
+  $scope.removeRule = function(s, r) {
+    if (s) {
+      s.rules = _.without(s.rules, r);
     }
   };
 
