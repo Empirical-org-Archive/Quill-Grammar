@@ -16,6 +16,8 @@ function configure ($stateProvider) {
   })
   .state('sentences.edit', {
     url: '/edit/:id',
+    require: '^SentencesCtrl',
+    controller: 'EditSentenceCtrl',
     templateUrl: 'sentences.edit.html'
   })
   .state('sentences.new', {
