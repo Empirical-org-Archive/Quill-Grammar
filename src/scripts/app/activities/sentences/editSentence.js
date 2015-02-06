@@ -18,9 +18,15 @@ function EditSentence(
           return String(s);
         })
         .value();
-      s.rules = _.filter($scope.availableRules, function(r) {
-        return _.contains(tempList, String(r.$id));
-      });
+      s.rules = _.chain($scope.availableRules)
+        .filter(function(r) {
+          return _.contains(tempList, String(r.$id));
+        })
+        .map(function(r) {
+          r.quantity = _.findWhere(s.rules, {ruleId: r.$id}).quantity;
+          return r;
+        })
+        .value();
       s.flag = _.findWhere($scope.flags, function(f) {
         return f.$id == s.flagId;
       });
