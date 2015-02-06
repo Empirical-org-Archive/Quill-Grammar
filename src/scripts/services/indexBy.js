@@ -19,24 +19,27 @@ angular.module('quill-grammar.services.index', [
       return $firebase(new Firebase(firebaseUrl + indexName)).$asObject();
     }
     function getEntry(e) {
-      return $firebase(new Firebase(firebaseUrl + indexName + '/' + e)).$asArray();
+      return $firebase(new Firebase(firebaseUrl + indexName + '/' + e)).$asObject();
     }
 
     function addElementToEntry(entry, element) {
       return getEntry(entry).$loaded().then(function(list) {
-        return list.$add(element);
+        list[element] = true;
+        return list.$save();
       });
     }
 
     function removeElementFromEntry(entry, element) {
       return getEntry(entry).$loaded().then(function(list) {
-        return list.$remove(element);
+        delete(list[element]);
+        return list.$save();
       });
     }
 
     function removeEntry(entry) {
       return getEntries().$loaded().then(function(entries) {
-        return entries.$remove(entry);
+        entries[entry] = null;
+        return entries.$save();
       });
     }
 

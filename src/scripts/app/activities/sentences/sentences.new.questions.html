@@ -1,6 +1,6 @@
 <select ng-options="(rule.ruleNumber + '. ' + rule.title) for rule in availableRules" ng-model="tempRule"></select>
 
-<button ng-click="addRule(tempRule)">Add Rule</button>
+<button ng-click="addRule(newSentence, tempRule)">Add Rule</button>
 
 <ul ng-repeat="rule in newSentence.rules">
   <li>
@@ -9,7 +9,7 @@
     <input type="text"
        placeholder="Number of Questions from this Rule"
        ng-model="rule.quantity"/>
-    <button ng-click="removeRule(rule)">X Remove</button>
+    <button ng-click="removeRule(newSentence, rule)">X Remove</button>
   </li>
 </ul>
 <div class="error" ng-show="error">
@@ -17,7 +17,7 @@
 </div>
 
 <button
-    ng-click="submitNewSentence(newSentence)"
+    ng-click="submitSentence('^.^.list', newSentence)"
     ng-show="newSentence.rules.length > 0">
   Submit
 </button>

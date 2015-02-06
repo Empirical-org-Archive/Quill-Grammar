@@ -26,28 +26,36 @@ function sentences(
     $state.go('^.questions');
   };
 
-  $scope.addRule = function(r) {
+  $scope.addRule = function(s, r) {
     try {
-      if (!$scope.newSentence.rules) {
-        $scope.newSentence.rules = [];
+      if (!s.rules) {
+        s.rules = [];
       }
-      if (_.find($scope.newSentence.rules, r)) {
+      if (_.find(s.rules, r)) {
         throw new Error('Cannot have two instances of the same rule ' + r.title);
       } else if (r) {
-        $scope.newSentence.rules.push(r);
+        s.rules.push(r);
       }
     } catch (e) {
       setError(e.message);
     }
   };
 
-  $scope.removeRule = function(r) {
-    if ($scope.newSentence.rules) {
-      $scope.newSentence.rules = _.without($scope.newSentence.rules, r);
+  $scope.removeRule = function(s, r) {
+    if (s) {
+      s.rules = _.without(s.rules, r);
     }
   };
 
-  $scope.submitNewSentence = function(s) {
+  $scope.submitSentence = function(stateString, s, edit) {
+    function handleResult() {
+      $scope.newSentence = {};
+      $state.go(stateString);
+    }
+    function handlerError(e) {
+      console.error(e);
+      setError(e.message || e);
+    }
     try {
       var allPositiveQuantities = _.every(s.rules, function(r) {
         return Number(r.quantity) > 0;
@@ -56,12 +64,15 @@ function sentences(
       if (!allPositiveQuantities) {
         throw new Error('Please make all rules have a quanity greater than zero');
       }
-      SentenceWritingService.saveSentenceWriting(s).then(function() {
-        $scope.newSentence = {};
-        $state.go('^.^.list');
-      }, function(e) {
-        setError(e.message);
-      });
+
+      var p = null;
+      if (edit) {
+        p = SentenceWritingService.updateSentenceWriting(s);
+      } else {
+        p = SentenceWritingService.saveSentenceWriting(s);
+      }
+
+      return p.then(handleResult, handlerError);
     } catch (e) {
       setError(e.message);
     }
