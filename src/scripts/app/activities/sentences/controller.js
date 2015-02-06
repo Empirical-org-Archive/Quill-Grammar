@@ -47,7 +47,14 @@ function sentences(
     }
   };
 
-  $scope.submitNewSentence = function(s) {
+  $scope.submitSentence = function(s, edit) {
+    function handleResult() {
+      $scope.newSentence = {};
+      $state.go('^.^.list');
+    }
+    function handlerError(e) {
+      setError(e.message);
+    }
     try {
       var allPositiveQuantities = _.every(s.rules, function(r) {
         return Number(r.quantity) > 0;
@@ -56,12 +63,15 @@ function sentences(
       if (!allPositiveQuantities) {
         throw new Error('Please make all rules have a quanity greater than zero');
       }
-      SentenceWritingService.saveSentenceWriting(s).then(function() {
-        $scope.newSentence = {};
-        $state.go('^.^.list');
-      }, function(e) {
-        setError(e.message);
-      });
+
+      var p = null;
+      if (edit) {
+        p = SentenceWritingService.updateSentenceWriting(s);
+      } else {
+        p = SentenceWritingService.saveSentenceWriting(s);
+      }
+
+      return p.then(handleResult, handlerError);
     } catch (e) {
       setError(e.message);
     }

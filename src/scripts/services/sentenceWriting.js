@@ -13,10 +13,11 @@ angular.module('quill-grammar.services.sentenceWriting', [
   ], 'activities');
 
   var catIndex = new IndexService('sentenceWritingsByCategory');
-  this.saveSentenceWriting = function(sentenceWritingActivity) {
+
+  function checkAndFormatSentenceWritingActivity(swa) {
     var valid = _.every(['category', 'flag'], function(k) {
-      if (sentenceWritingActivity[k] && sentenceWritingActivity[k].$id) {
-        sentenceWritingActivity[k + 'Id'] = sentenceWritingActivity[k].$id;
+      if (swa[k] && swa[k].$id) {
+        swa[k + 'Id'] = swa[k].$id;
         return true;
       } else {
         return false;
@@ -25,17 +26,35 @@ angular.module('quill-grammar.services.sentenceWriting', [
     if (!valid) {
       throw new Error('SentenceWritingActivity did not contain category or flag');
     }
-    sentenceWritingActivity.rules = _.map(sentenceWritingActivity.rules, function(r) {
+    swa.rules = _.map(swa.rules, function(r) {
       return {
         ruleId: r.$id,
         quantity: r.quantity
       };
     });
+    return swa;
+  }
 
-    return crud.save(sentenceWritingActivity).then(function(ref) {
-      return catIndex.addElementToEntry(sentenceWritingActivity.categoryId, ref);
+  this.saveSentenceWriting = function(sentenceWritingActivity) {
+
+    var swa = checkAndFormatSentenceWritingActivity(sentenceWritingActivity);
+
+    return crud.save(swa).then(function(ref) {
+      return catIndex.addElementToEntry(swa.categoryId, ref);
     });
   };
+
+  this.updateSentenceWriting = function(sentenceWritingActivity) {
+
+    var swa = checkAndFormatSentenceWritingActivity(sentenceWritingActivity);
+
+    return catIndex.removeElementFromEntry(swa.oldCategoryId, swa.$id).then(function() {
+      return crud.update(swa).then(function() {
+        return catIndex.addElementToEntry(swa.categoryId, swa.$id);
+      });
+    });
+  };
+
   this.deleteSentenceWriting = function (sentenceWritingActivity) {
     return crud.del(sentenceWritingActivity);
   };
