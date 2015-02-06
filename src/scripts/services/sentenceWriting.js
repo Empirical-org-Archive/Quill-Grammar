@@ -48,6 +48,10 @@ angular.module('quill-grammar.services.sentenceWriting', [
 
     var swa = checkAndFormatSentenceWritingActivity(sentenceWritingActivity);
 
+    if (!swa.oldCategoryId) {
+      throw new Error('Old Category Id not defined');
+    }
+
     return catIndex.removeElementFromEntry(swa.oldCategoryId, swa.$id).then(function() {
       return crud.update(swa).then(function() {
         return catIndex.addElementToEntry(swa.categoryId, swa.$id);
