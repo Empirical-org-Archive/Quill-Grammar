@@ -9,9 +9,9 @@ function EditSentence(
   SentenceWritingService.getSentenceWriting($state.params.id)
     .then(function(s) {
       s.oldCategoryId = _.clone(s.categoryId);
-      s.category = _.findWhere($scope.availableCategories, function(o) {
+      s.category = _.first(_.filter($scope.availableCategories, function(o) {
         return o.$id == s.categoryId;
-      });
+      }));
       var tempList = _.chain(s.rules)
         .pluck('ruleId')
         .toArray()
