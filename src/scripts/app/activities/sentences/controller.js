@@ -53,7 +53,8 @@ function sentences(
       $state.go('^.^.list');
     }
     function handlerError(e) {
-      setError(e.message);
+      console.error(e);
+      setError(e.message || e);
     }
     try {
       var allPositiveQuantities = _.every(s.rules, function(r) {

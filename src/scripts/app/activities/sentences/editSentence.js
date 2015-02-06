@@ -8,6 +8,7 @@ function EditSentence(
 ) {
   SentenceWritingService.getSentenceWriting($state.params.id)
     .then(function(s) {
+      s.oldCategoryId = _.clone(s.categoryId);
       s.category = _.findWhere($scope.availableCategories, function(o) {
         return o.$id == s.categoryId;
       });
