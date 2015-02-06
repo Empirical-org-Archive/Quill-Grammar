@@ -26,7 +26,7 @@ ng-model="editSentence.description" required/>
 </div>
 
 <button
-    ng-click="submitSentence(editSentence, true)"
+    ng-click="submitSentence('^.list', editSentence, true)"
     ng-show="editSentence.rules.length > 0">
   Update
 </button>

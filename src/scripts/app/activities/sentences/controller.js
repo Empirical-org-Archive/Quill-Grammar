@@ -47,10 +47,10 @@ function sentences(
     }
   };
 
-  $scope.submitSentence = function(s, edit) {
+  $scope.submitSentence = function(stateString, s, edit) {
     function handleResult() {
       $scope.newSentence = {};
-      $state.go('^.^.list');
+      $state.go(stateString);
     }
     function handlerError(e) {
       console.error(e);
