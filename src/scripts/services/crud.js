@@ -8,20 +8,19 @@ angular.module('quill-grammar.services.crud', [
 
 .factory('CrudService', function(firebaseUrl, $firebase, $q, _) {
   function crud(entity, properties, prefix) {
+    if (!entity || entity === '') {
+      throw new Error('Firebase Entity MUST be defined');
+    }
     if (!properties) {
-      properties = [];
+      throw new Error('Please define the properties for your entity ' + entity);
     }
     if (firebaseUrl[firebaseUrl.length - 1] !== '/') {
       firebaseUrl = firebaseUrl + '/';
-    }
-    if (!entity || entity === '') {
-      throw new Error('Firebase Entity MUST be defined');
     }
     var baseUrl = String(firebaseUrl);
     if (prefix) {
       baseUrl = baseUrl + prefix + '/';
     }
-    console.log('Using ' + baseUrl);
     var baseRoute = baseUrl + entity;
     var baseRef = $firebase(new Firebase(baseRoute));
     var baseCollection = baseRef.$asObject();
@@ -37,6 +36,10 @@ angular.module('quill-grammar.services.crud', [
         });
       }
       return item;
+    }
+
+    function isValid(item) {
+      return !(_.has(item, '$value')) || !_.isUndefined(item.$value);
     }
 
     function save(item) {
@@ -80,7 +83,13 @@ angular.module('quill-grammar.services.crud', [
       var entityRef = new Firebase(baseRoute + '/' + entityId);
       var entity = $firebase(entityRef).$asObject();
       entity.$loaded().then(function(entityData) {
-        d.resolve(entityData);
+        if (isValid(entityData)) {
+          d.resolve(entityData);
+        } else {
+          console.error(entityId);
+          console.error(entityData);
+          d.reject(new Error('Entity did not meet the properties requirement'));
+        }
       }, function(error) {
         d.reject(error);
       });
