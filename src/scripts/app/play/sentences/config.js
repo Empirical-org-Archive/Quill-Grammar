@@ -7,6 +7,7 @@ function configure ($stateProvider) {
   .state('play-sw', {
     parent: 'app',
     templateUrl: 'sentences.play.html',
+    controller: 'SentencePlayCtrl',
     url: '/play/sw/:id'
   });
 };

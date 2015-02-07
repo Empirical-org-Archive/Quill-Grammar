@@ -2,6 +2,6 @@
 module.exports =
 
 /*@ngInject*/
-function activities($scope) {
-
+function SentencePlayCtrl($scope, $state) {
+  $scope.id = $state.params.id;
 };
