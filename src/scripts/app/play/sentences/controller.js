@@ -8,8 +8,10 @@ function SentencePlayCtrl(
   $scope.id = $state.params.id;
 
   SentenceWritingService.getSentenceWriting($scope.id).then(function(sw) {
+    console.log(sw);
     var ruleIds = _.pluck(sw.rules, 'ruleId');
     var quantities = _.pluck(sw.rules, 'quantity');
+    console.log(ruleIds);
     RuleService.getRules(ruleIds).then(function(resolvedRules) {
       $scope.swSet = _.chain(resolvedRules)
         .map(function(rr, i) {
@@ -17,8 +19,14 @@ function SentencePlayCtrl(
           return rr;
         })
         .value();
+    }, function() {
+      //errorStateChange();
     });
   }, function() {
-    $state.go('index');
+    //errorStateChange();
   });
+
+  function errorStateChange() {
+    $state.go('index');
+  }
 };

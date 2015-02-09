@@ -7,7 +7,7 @@ angular.module('quill-grammar.services.ruleQuestion', [
 ])
 
 .factory('RuleQuestionService', function(
-  CrudService, InstructionService, $q
+  CrudService, InstructionService, $q, _
 ) {
   var crud = new CrudService('ruleQuestions', [
     'body', 'hint', 'instructions', 'prompt'
@@ -23,11 +23,11 @@ angular.module('quill-grammar.services.ruleQuestion', [
   function getInstructionForRuleQuestion(ruleQuestions) {
     var insp = $q.defer();
     var ins = [];
-    angular.forEach(ruleQuestions, function(rq) {
+    _.each(ruleQuestions, function(rq) {
       ins.push(InstructionService.getInstruction(rq.instructions));
     });
     $q.all(ins).then(function(instructions) {
-      angular.forEach(ruleQuestions, function(rq, index) {
+      _.each(ruleQuestions, function(rq, index) {
         rq.resolvedInstructions = instructions[index].$value;
       });
       insp.resolve(ruleQuestions);
@@ -43,9 +43,11 @@ angular.module('quill-grammar.services.ruleQuestion', [
 
   this.getRuleQuestions = function(ruleQuestionIds) {
     var d = $q.defer();
-    var promises = [];
-    angular.forEach(ruleQuestionIds, function(value, id) {
-      promises.push(crud.get(id));
+    var promises = _.map(ruleQuestionIds, function(id, key) {
+      if (!_.isArray(ruleQuestionIds)) {
+        id = key;
+      }
+      return crud.get(id);
     });
 
     $q.all(promises)

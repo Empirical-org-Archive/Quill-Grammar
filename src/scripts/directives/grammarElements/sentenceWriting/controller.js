@@ -5,7 +5,7 @@ module.exports =
 function index ($scope, _) {
   var i = 0;
   var questions = _.map($scope.sentenceWriting, function(sw) {
-    console.log(sw);
+    return sw;
   });
   $scope.showNextQuestion = false;
   $scope.showPreviousQuestion = false;

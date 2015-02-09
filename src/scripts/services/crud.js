@@ -39,7 +39,11 @@ angular.module('quill-grammar.services.crud', [
     }
 
     function isValid(item) {
-      return !(_.has(item, '$value')) || (!_.isUndefined(item.$value) && !_.isNull(item.$value));
+      if (_.has(item, '$value')) {
+        return !_.isUndefined(item.$value) && item.$value !== null;
+      } else {
+        return true;
+      }
     }
 
     function save(item) {

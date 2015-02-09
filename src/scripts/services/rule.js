@@ -86,21 +86,23 @@ angular.module('quill-grammar.services.rule', [
 
   this.getRules = function(ruleIds) {
     var d = $q.defer();
-    var promises = [];
-    angular.forEach(ruleIds, function(value, id) {
-      promises.push(crud.get(id));
+    var promises = _.map(ruleIds, function(id, key) {
+      if (!_.isArray(ruleIds)) {
+        id = key;
+      }
+      return crud.get(id);
     });
 
     function getRuleQuestionsForRules(rules) {
       var rqp = $q.defer();
       var ruleQuestionPromises = [];
-      angular.forEach(rules, function(rule) {
+      _.each(rules, function(rule) {
         ruleQuestionPromises.push(
           RuleQuestionService.getRuleQuestions(rule.ruleQuestions)
         );
       });
       $q.all(ruleQuestionPromises).then(function(ruleQuestions) {
-        angular.forEach(rules, function(rule, index) {
+        _.each(rules, function(rule, index) {
           rule.resolvedRuleQuestions = ruleQuestions[index];
         });
         rqp.resolve(rules);
@@ -113,11 +115,11 @@ angular.module('quill-grammar.services.rule', [
     function getClassificationForRules(rules) {
       var cfr = $q.defer();
       var cls = [];
-      angular.forEach(rules, function(rule) {
+      _.each(rules, function(rule) {
         cls.push(ClassificationService.getClassification(rule.classification));
       });
       $q.all(cls).then(function(classifications) {
-        angular.forEach(rules, function(rule, index) {
+        _.each(rules, function(rule, index) {
           if (rule && classifications[index]) {
             rule.resolvedClassification = classifications[index];
           }
