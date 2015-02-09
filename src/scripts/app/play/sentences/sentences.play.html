@@ -1,8 +1,8 @@
-Ready to play {{id}}
-
 <div class="sentence-writing" ng-show="swSet.length">
-  <button ng-show="showNextQuestion" ng-click="nextQuestion()">Next Question</button>
+  <h2>{{currentRule.title}}</h2>
+  <p>{{currentRule.instructions}}</p>
   <grammar-rule-question rule-question="currentRuleQuestion">
   </grammar-rule-question>
   <button ng-show="showPreviousQuestion" ng-click="previousQuestion()">Previous Question</button>
+  <button ng-show="showNextQuestion" ng-click="nextQuestion()">Next Question</button>
 </div>

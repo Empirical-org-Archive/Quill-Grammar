@@ -7,14 +7,26 @@ function SentencePlayCtrl(
 ) {
   $scope.id = $state.params.id;
 
+  $scope.$watch('currentRuleQuestion', function(crq) {
+    if (_.isObject(crq)) {
+      $scope.currentRule = $scope.swSet[crq.ruleIndex];
+    }
+  });
+
   SentenceWritingService.getSentenceWriting($scope.id).then(function(sw) {
+    $scope.sentenceWriting = sw;
     var ruleIds = _.pluck(sw.rules, 'ruleId');
     var quantities = _.pluck(sw.rules, 'quantity');
     RuleService.getRules(ruleIds).then(function(resolvedRules) {
-
       $scope.swSet = _.chain(resolvedRules)
         .map(function(rr, i) {
-          rr.selectedRuleQuestions = _.sample(rr.resolvedRuleQuestions, quantities[i]);
+          rr.selectedRuleQuestions = _.chain(rr.resolvedRuleQuestions)
+            .sample(quantities[i])
+            .map(function(rrq) {
+              rrq.ruleIndex = i;
+              return rrq;
+            })
+            .value();
           return rr;
         })
         .value();
@@ -25,6 +37,8 @@ function SentencePlayCtrl(
         .value();
 
       $scope.currentRuleQuestion = $scope.questions[0];
+      $scope.showNextQuestion = false;
+      $scope.showPreviousQuestion = false;
     }, function() {
       //errorStateChange();
     });
