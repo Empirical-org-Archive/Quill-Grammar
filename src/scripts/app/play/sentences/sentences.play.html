@@ -1,4 +1,8 @@
 Ready to play {{id}}
 
-<grammar-sentence-writing sentence-writing="swSet">
-</grammar-sentence-writing>
+<div class="sentence-writing" ng-show="swSet.length">
+  <button ng-show="showNextQuestion" ng-click="nextQuestion()">Next Question</button>
+  <grammar-rule-question rule-question="currentRuleQuestion">
+  </grammar-rule-question>
+  <button ng-show="showPreviousQuestion" ng-click="previousQuestion()">Previous Question</button>
+</div>
