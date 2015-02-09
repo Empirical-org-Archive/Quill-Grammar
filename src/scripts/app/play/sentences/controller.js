@@ -13,6 +13,10 @@ function SentencePlayCtrl(
     }
   });
 
+  $scope.$on('correctRuleQuestion', function(crq) {
+    console.log(crq);
+  });
+
   SentenceWritingService.getSentenceWriting($scope.id).then(function(sw) {
     $scope.sentenceWriting = sw;
     var ruleIds = _.pluck(sw.rules, 'ruleId');
