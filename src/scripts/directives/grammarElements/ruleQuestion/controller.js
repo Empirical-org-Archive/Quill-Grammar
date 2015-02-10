@@ -43,19 +43,24 @@ module.exports = function($scope, _) {
     };
   }
 
+  function setCorrect() {
+    $scope.ruleQuestion.correct = true;
+    $scope.$emit('correctRuleQuestion', $scope.ruleQuestion);
+  }
+
   $scope.checkAnswer = function() {
     var rq = $scope.ruleQuestion;
     var answer = rq.response;
     var exactMatch = _.any(rq.body, compareEntireAnswerToBody(answer));
     if (exactMatch) {
       setMessage('Correct!');
-      $scope.ruleQuestion.correct = true;
+      setCorrect();
       return;
     }
     var grammarMatch = _.any(rq.body, compareGrammarElementToBody(answer));
     if (grammarMatch && !strictTypingMode) {
       setMessage('You are correct, but you have some typing errors. You may correct them or continue');
-      $scope.ruleQuestion.correct = true;
+      setCorrect();
       return;
     } else if (grammarMatch) {
       setMessage('You are correct, but have some typing errors. Please fix them.');
