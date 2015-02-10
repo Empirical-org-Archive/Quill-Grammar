@@ -13,9 +13,17 @@ function SentencePlayCtrl(
     }
   });
 
-  $scope.$on('correctRuleQuestion', function(crq) {
-    console.log(crq);
+
+  $scope.$on('correctRuleQuestion', function() {
+    $scope.showNextQuestion = true;
   });
+
+  $scope.nextQuestion = function() {
+    $scope.showNextQuestion = false;
+    var crq = $scope.currentRuleQuestion;
+    var ncrq = $scope.questions[_.indexOf($scope.questions, crq) + 1];
+    $scope.currentRuleQuestion = ncrq;
+  };
 
   SentenceWritingService.getSentenceWriting($scope.id).then(function(sw) {
     $scope.sentenceWriting = sw;
