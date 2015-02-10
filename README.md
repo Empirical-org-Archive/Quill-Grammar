@@ -15,6 +15,10 @@ Assuming, you are developing
 * `gulp --env=prod`
 * firebase deploy
 
+Any issues with gulp tasks should be addressed in the [Empirical Angular Gulp Tasks Repo](https://github.com/empirical-org/empirical-angular-gulp-tasks).
+This is an opinionated gulp project setup. If you run into any build chain issues,
+address them in the task repository.
+
 Routes
 ======
 
