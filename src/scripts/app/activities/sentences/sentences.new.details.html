@@ -4,7 +4,7 @@
     ng-model="newSentence.title" required/>
   <input type="text" name="sentence.description" placeholder="Description"
   ng-model="newSentence.description" required/>
-  <select ng-options="flag.title for flag in flags" ng-model="newSentence.flag"
+  <select ng-options="flag.$value for flag in flags" ng-model="newSentence.flag"
     placeholder="Flag" required></select>
   <select ng-options="cat.title for cat in availableCategories"
     ng-model="newSentence.category" required></select>

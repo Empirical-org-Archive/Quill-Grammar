@@ -4,8 +4,9 @@ module.exports =
 
 /*@ngInject*/
 function EditSentence(
-  $scope, SentenceWritingService, $state, _
+  $scope, SentenceWritingService, $state, _, FlagService
 ) {
+  var flagPromise = FlagService.getFlags();
   SentenceWritingService.getSentenceWriting($state.params.id)
     .then(function(s) {
       s.oldCategoryId = _.clone(s.categoryId);
@@ -28,9 +29,13 @@ function EditSentence(
           return r;
         })
         .value();
-      s.flag = _.findWhere($scope.flags, function(f) {
-        return f.$id == s.flagId;
+      flagPromise.then(function(flags) {
+        $scope.flags = flags;
+        s.flag = _.first(_.filter($scope.flags, function(f) {
+          return f.$id == s.flagId;
+        }));
       });
+
       $scope.editSentence = s;
     });
 };

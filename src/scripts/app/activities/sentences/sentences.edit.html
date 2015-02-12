@@ -3,7 +3,7 @@
   ng-model="editSentence.title" required/>
 <input type="text" name="sentence.description" placeholder="Description"
 ng-model="editSentence.description" required/>
-<select ng-options="flag.title for flag in flags" ng-model="editSentence.flag"
+<select ng-options="flag.$value for flag in flags" ng-model="editSentence.flag"
   placeholder="Flag" required></select>
 <select ng-options="cat.title for cat in availableCategories"
   ng-model="editSentence.category" required></select>

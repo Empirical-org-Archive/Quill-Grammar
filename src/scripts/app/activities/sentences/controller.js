@@ -5,10 +5,13 @@ module.exports =
 /*@ngInject*/
 function sentences(
   $scope, CategoryService, $state, RuleService,
-  SentenceWritingService, _, $timeout
+  SentenceWritingService, FlagService, _, $timeout
 ) {
   $scope.newSentence = {};
-  $scope.flags = [{$id:1, title: 'Production'}, {$id:2, title:'Beta'}];
+
+  FlagService.getFlags().then(function(flags) {
+    $scope.flags = flags;
+  });
 
   SentenceWritingService.getAllSentenceWritings().then(function(ss) {
     $scope.sentences = ss;
