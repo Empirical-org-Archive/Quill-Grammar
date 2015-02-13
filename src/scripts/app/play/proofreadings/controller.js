@@ -14,6 +14,11 @@ function ProofreadingPlayCtrl(
   }
 
   ProofreadingService.getProofreading($scope.id).then(function(pf) {
+    pf = prepareProofReading(pf);
     $scope.pf = pf;
   }, error);
+
+  function prepareProofReading(pf) {
+    return pf;
+  }
 };

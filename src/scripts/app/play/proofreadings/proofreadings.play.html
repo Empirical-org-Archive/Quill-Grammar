@@ -4,7 +4,7 @@
     <p>{{pf.description}}</p>
   </div>
   <div class="instructions">
-    <p>{{pf.instructions}}</p>
+    <p ng-bind-html="pf.instructions | trustedHtml"></p>
   </div>
-  {{pf.passage | passageProofreadingFormatter}}
+  <p ng-bind-html="pf.passage |  passageProofreadingFormatter | trustedHtml"></p>
 </div>
