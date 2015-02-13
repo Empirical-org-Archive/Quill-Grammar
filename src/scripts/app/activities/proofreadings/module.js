@@ -2,7 +2,7 @@
 
 module.exports =
 
-angular.module('quill-grammar.activities.sentences', [
+angular.module('quill-grammar.activities.proofreadings', [
 
 ])
 .config(require('./config.js'))
