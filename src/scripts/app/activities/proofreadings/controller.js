@@ -2,6 +2,8 @@
 
 module.exports =
 /*@ngInject*/
-function proofreadings($scope) {
-
+function proofreadings($scope, ProofreadingService) {
+  ProofreadingService.getAllProofreadings().then(function(prfs) {
+    $scope.proofreadings = prfs;
+  });
 };
