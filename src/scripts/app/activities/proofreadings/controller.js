@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports =
-
-function proofreadings() {
+/*@ngInject*/
+function proofreadings($scope) {
 
 };
