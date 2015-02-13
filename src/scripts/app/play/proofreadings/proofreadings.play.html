@@ -1,1 +1,10 @@
-play {{id}}
+<div class="passage-proofreading" ng-show="pf">
+  <h1>{{pf.title}}</h2>
+  <div class="description">
+    <p>{{pf.description}}</p>
+  </div>
+  <div class="instructions">
+    <p>{{pf.instructions}}</p>
+  </div>
+  {{pf.passage | passageProofreadingFormatter}}
+</div>
