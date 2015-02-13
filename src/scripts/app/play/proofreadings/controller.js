@@ -13,12 +13,15 @@ function ProofreadingPlayCtrl(
     $state.go('index');
   }
 
-  ProofreadingService.getProofreading($scope.id).then(function(pf) {
-    pf = prepareProofReading(pf);
-    $scope.pf = pf;
-  }, error);
-
   function prepareProofReading(pf) {
+    pf.replace(/{+(.+)-(.+)\|(.+)}/g, function(a,b,c,d) {
+      console.log(a,b,c,d);
+    });
     return pf;
   }
+
+  ProofreadingService.getProofreading($scope.id).then(function(pf) {
+    pf.passage = prepareProofReading(pf.passage);
+    $scope.pf = pf;
+  }, error);
 };
