@@ -15,16 +15,15 @@ function ProofreadingPlayCtrl(
 
   function prepareProofreading(pf) {
     $scope.passageQuestions = {};
-    pf.replace(/{\+(\S+)-(\S+)\|(\S+)}/g, function(key, plus, minus, ruleNumber) {
+    pf.replace(/{\+([^-]+)-([^|]+)\|([^}]+)}/g, function(key, plus, minus, ruleNumber) {
       $scope.passageQuestions[key] = {
         plus: plus,
         minus: minus,
         ruleNumber: ruleNumber
       };
+      pf = pf.replace(key,'<span id="' + $scope.obscure(key) + '">' + minus + '</span>');
     });
-    _.each($scope.passageQuestions, function(pq, key) {
-      pf = pf.replace(key, '<span id="' + $scope.obscure(key) + '">' + pq.minus + '</span>');
-    });
+    console.log($scope.passageQuestions);
     return pf;
   }
 
