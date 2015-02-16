@@ -14,8 +14,7 @@ function ProofreadingPlayCtrl(
   }
 
   function prepareProofReading(pf) {
-    pf.replace(/{+(.+)-(.+)\|(.+)}/g, function(a,b,c,d) {
-      console.log(a,b,c,d);
+    pf.replace(/{\+(\w+)-(\w+)\|(\w+)}/g, function(key, plus, minus, ruleNumber) {
     });
     return pf;
   }
