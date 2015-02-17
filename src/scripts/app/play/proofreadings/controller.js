@@ -23,6 +23,18 @@ function ProofreadingPlayCtrl(
       };
     });
     return _.chain(pf.split(/\s/))
+      .filter(function removeNullWords(n) {
+        return n !== '';
+      })
+      .map(function parseHangingPfQuestionsWithNoSpace(w) {
+        _.each($scope.passageQuestions, function(v, key) {
+          if (w !== key && w.indexOf(key) !== -1) {
+            w = w.split(key).join(' ' + key).split(/\s/);
+          }
+        });
+        return w;
+      })
+      .flatten()
       .map(function(w) {
         if ($scope.passageQuestions[w]) {
           var c = _.clone($scope.passageQuestions[w]);
