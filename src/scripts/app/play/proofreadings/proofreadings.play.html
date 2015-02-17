@@ -6,5 +6,9 @@
   <div class="instructions">
     <p ng-bind-html="pf.instructions | trustedHtml"></p>
   </div>
-  <p ng-bind-html="pf.passage |  passageProofreadingFormatter | trustedHtml"></p>
+  <div class="passage">
+    <div class="word" ng-repeat="word in pf.passage">
+      {{word.text}}
+    </div>
+  </div>
 </div>

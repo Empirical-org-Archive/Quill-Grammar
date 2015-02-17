@@ -21,10 +21,21 @@ function ProofreadingPlayCtrl(
         minus: minus,
         ruleNumber: ruleNumber
       };
-      pf = pf.replace(key,'<span id="' + $scope.obscure(key) + '">' + minus + '</span>');
     });
-    console.log($scope.passageQuestions);
-    return pf;
+    return _.chain(pf.split(/\s/))
+      .map(function(w) {
+        if ($scope.passageQuestions[w]) {
+          var c = _.clone($scope.passageQuestions[w]);
+          c.text = c.minus;
+          return c;
+        } else {
+          return {
+            text: w
+          };
+        }
+      })
+      .value();
+
   }
 
   $scope.obscure = function(key) {
@@ -37,6 +48,7 @@ function ProofreadingPlayCtrl(
 
   ProofreadingService.getProofreading($scope.id).then(function(pf) {
     pf.passage = prepareProofreading(pf.passage);
+    console.log(pf.passage);
     $scope.pf = pf;
   }, error);
 };
