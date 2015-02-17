@@ -48,6 +48,11 @@ function ProofreadingPlayCtrl(
           };
         }
       })
+      .map(function trim(w) {
+        w.text = w.text.trim();
+        w.responseText = w.responseText.trim();
+        return w;
+      })
       .value();
 
   }
