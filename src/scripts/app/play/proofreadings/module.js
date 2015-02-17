@@ -5,4 +5,5 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
 ])
 .config(require('./config.js'))
 .filter('passageProofreadingFormatter', require('./passageFormatter.js'))
+.directive('ngSize', require('./ngSize.js'))
 .controller('ProofreadingPlayCtrl', require('./controller.js'));
