@@ -39,10 +39,12 @@ function ProofreadingPlayCtrl(
         if ($scope.passageQuestions[w]) {
           var c = _.clone($scope.passageQuestions[w]);
           c.text = c.minus;
+          c.responseText = c.text;
           return c;
         } else {
           return {
-            text: w
+            text: w,
+            responseText: w
           };
         }
       })
