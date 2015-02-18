@@ -21,6 +21,7 @@ function ProofreadingPlayCtrl(
         minus: minus,
         ruleNumber: ruleNumber
       };
+      pf = pf.replace(key, minus);
     });
     return _.chain(pf.split(/\s/))
       .filter(function removeNullWords(n) {
