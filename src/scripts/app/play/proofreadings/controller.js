@@ -21,7 +21,7 @@ function ProofreadingPlayCtrl(
         minus: minus,
         ruleNumber: ruleNumber
       };
-      pf = pf.replace(key, minus);
+      pf = pf.replace(key, minus.split(/\s/).join('|'));
     });
     var prepared = _.chain(pf.split(/\s/))
       .filter(function removeNullWords(n) {
@@ -37,6 +37,7 @@ function ProofreadingPlayCtrl(
       })
       .flatten()
       .map(function(w) {
+        w = w.replace(/\|/g, ' ');
         var passageQuestion = _.findWhere($scope.passageQuestions, {minus: w});
         if (passageQuestion) {
           var c = _.clone(passageQuestion);
