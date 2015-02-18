@@ -56,6 +56,15 @@ function ProofreadingPlayCtrl(
       })
       .value();
 
+    prepared = _.chain(prepared)
+      .zip(_.map(_.range(prepared.length), function() {
+        return {
+          text: ' ',
+          responseText: ' '
+        };
+      }))
+      .flatten()
+      .value();
     return prepared;
 
   }
