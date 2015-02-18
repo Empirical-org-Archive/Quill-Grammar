@@ -109,6 +109,10 @@ function ProofreadingPlayCtrl(
     }
   };
 
+  $scope.isBr = function(text) {
+    return text.toLowerCase().indexOf('<br/>') !== -1;
+  };
+
   function showErrors(errors) {
     $scope.errors = errors;
   }

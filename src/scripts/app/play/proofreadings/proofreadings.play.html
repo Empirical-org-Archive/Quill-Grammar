@@ -8,7 +8,9 @@
   </div>
   <div class="passage">
     <div class="word" ng-repeat="word in pf.passage">
+      <p ng-bind-html="word.responseText | trustedHtml" ng-show="isBr(word.responseText)"></p>
       <input
+        ng-show="!isBr(word.responseText)"
         type="text"
         ng-size="{{word.responseText.length}}"
         ng-model="word.responseText">
