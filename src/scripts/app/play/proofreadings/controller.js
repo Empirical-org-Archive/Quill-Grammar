@@ -23,7 +23,7 @@ function ProofreadingPlayCtrl(
       };
       pf = pf.replace(key, minus);
     });
-    return _.chain(pf.split(/\s/))
+    var prepared = _.chain(pf.split(/\s/))
       .filter(function removeNullWords(n) {
         return n !== '';
       })
@@ -55,6 +55,8 @@ function ProofreadingPlayCtrl(
         return w;
       })
       .value();
+
+    return prepared;
 
   }
 
