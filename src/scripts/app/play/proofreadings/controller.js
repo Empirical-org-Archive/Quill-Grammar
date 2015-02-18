@@ -37,10 +37,12 @@ function ProofreadingPlayCtrl(
       })
       .flatten()
       .map(function(w) {
-        if ($scope.passageQuestions[w]) {
-          var c = _.clone($scope.passageQuestions[w]);
+        var passageQuestion = _.findWhere($scope.passageQuestions, {minus: w});
+        if (passageQuestion) {
+          var c = _.clone(passageQuestion);
           c.text = c.minus;
           c.responseText = c.text;
+          console.log(c);
           return c;
         } else {
           return {
@@ -82,4 +84,35 @@ function ProofreadingPlayCtrl(
     console.log(pf.passage);
     $scope.pf = pf;
   }, error);
+
+  $scope.submitPassage = function(passage) {
+    function isValid(passageEntry) {
+      if (_.has(passageEntry, 'minus')) {
+        //A grammar entry
+        return passageEntry.responseText === passageEntry.plus;
+      } else {
+        //A regular word
+        return passageEntry.text === passageEntry.responseText;
+      }
+    }
+    var errors = [];
+    _.each(passage, function(p) {
+      if (!isValid(p)) {
+        errors.push(p);
+      }
+    });
+    if (errors.length > 1) {
+      showErrors(errors);
+    } else {
+      showNext();
+    }
+  };
+
+  function showErrors(errors) {
+    $scope.errors = errors;
+  }
+
+  function showNext() {
+
+  }
 };
