@@ -12,7 +12,8 @@
       <input
         ng-show="!isBr(word.responseText)"
         type="text"
-        ng-class="{focused: word.isFocused}"
+        ng-class="{focused: word.isFocused, unsolvedError: hasUnsolvedError(word), introducedError: hasIntroducedError(word)}"
+        ng-readonly="submitted"
         ng-focus="word.isFocused = true"
         ng-blur="word.isFocused = false"
         ng-size="{{word.responseText.length}}"
@@ -21,4 +22,20 @@
     </div>
   </div>
   <button ng-click="submitPassage(pf.passage)">Submit Passage</button>
+  <div class="results">
+    <div class="group" ng-repeat="(key, value) in errors | groupBy: 'errorType'">
+      <h3>{{value.length}} {{groupNameBy(key)}}</h3>
+      <ul>
+        <li ng-repeat="error in value | map: 'passageEntry'">
+          <div ng-show="error.minus">
+            <p class="unsolvedError">{{error.plus}}</p>
+            <p>{{getRuleInfoBy(error.ruleNumber)}}</p>
+          </div>
+          <div ng-show="!error.minus">
+            <p class="introducedError">{{error.responseText}}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

@@ -9,9 +9,18 @@ div.proofreading {
       margin: 0;
       padding: 0;
       font-family: 'courier new';
-    }
-    input[type="text"]:focus {
-      font-weight: bold;
+
+      &:focus {
+        font-weight: bold;
+      }
+
+      &.unsolvedError {
+        background-color: red;
+      }
+
+      &.introducedError {
+        background-color: turquoise;
+      }
     }
   }
 }

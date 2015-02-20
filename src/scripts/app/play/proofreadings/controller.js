@@ -40,7 +40,7 @@ function ProofreadingPlayCtrl(
         if (matches) {
           _.each(matches, function(match) {
             if (w !== match) {
-              w = w.replace(match, ' ' + match + ' ');
+              w = w.replace(new RegExp(match, 'g'), ' ' + match + ' ');
             }
           });
           w = w.trim();
@@ -78,17 +78,11 @@ function ProofreadingPlayCtrl(
         w.responseText = w.responseText.trim();
         return w;
       })
+      .filter(function removeSpaces(w) {
+        return w.text !== '';
+      })
       .value();
 
-    prepared = _.chain(prepared)
-      .zip(_.map(_.range(prepared.length), function() {
-        return {
-          text: ' ',
-          responseText: ' '
-        };
-      }))
-      .flatten()
-      .value();
     return prepared;
 
   }
@@ -104,9 +98,52 @@ function ProofreadingPlayCtrl(
   ProofreadingService.getProofreading($scope.id).then(function(pf) {
     pf.passage = prepareProofreading(pf.passage);
     $scope.pf = pf;
+    fetchListedRules();
   }, error);
 
+  /*
+   * Functions for interacting with the referenced rules in the
+   * passage questions.
+   */
+
+  function fetchListedRules() {
+    var ruleIds = _.pluck($scope.passageQuestions, 'ruleNumber');
+    RuleService.getRules(ruleIds).then(function(rules) {
+      $scope.referencedRules = rules;
+    });
+  }
+
+  $scope.getRuleInfoBy = function(ruleNumber) {
+    return _.findWhere($scope.referencedRules, {ruleNumber: Number(ruleNumber)}).title;
+  };
+
+  /*
+   * These functions below handle submission errors
+   * and state/$scope updates after the student has submitted
+   * their passage.
+   */
+
+  $scope.UNSOLVED_ERROR = 'UNSOLVED_ERROR';
+  $scope.INTRODUCED_ERROR = 'INTRODUCED_ERROR';
+
+  $scope.hasIntroducedError = function(word) {
+    return word.errorType === $scope.INTRODUCED_ERROR;
+  };
+
+  $scope.hasUnsolvedError = function(word) {
+    return word.errorType === $scope.UNSOLVED_ERROR;
+  };
+
+  $scope.groupNameBy = function(key) {
+    if (key === $scope.UNSOLVED_ERROR) {
+      return  'Unsolved Problem(s)';
+    } else if (key === $scope.INTRODUCED_ERROR) {
+      return 'Introduced Problem(s)';
+    }
+  };
+
   $scope.submitPassage = function(passage) {
+    $scope.submitted = true;
     function isValid(passageEntry) {
       if (_.has(passageEntry, 'minus')) {
         //A grammar entry
@@ -116,10 +153,13 @@ function ProofreadingPlayCtrl(
         return passageEntry.text === passageEntry.responseText;
       }
     }
+    function getErrorType(passageEntry) {
+      return _.has(passageEntry, 'minus') ? $scope.UNSOLVED_ERROR : $scope.INTRODUCED_ERROR;
+    }
     var errors = [];
-    _.each(passage, function(p) {
+    _.each(passage, function(p, i) {
       if (!isValid(p)) {
-        errors.push(p);
+        errors.push({index: i, passageEntry: p, errorType: getErrorType(p)});
       }
     });
     if (errors.length > 1) {
@@ -133,8 +173,11 @@ function ProofreadingPlayCtrl(
     return htmlMatches(text) !== null;
   };
 
-  function showErrors(errors) {
-    $scope.errors = errors;
+  function showErrors(passageErrors) {
+    _.each(passageErrors, function(pe) {
+      $scope.pf.passage[pe.index].errorType = pe.errorType;
+    });
+    $scope.errors = passageErrors;
   }
 
   function showNext() {
