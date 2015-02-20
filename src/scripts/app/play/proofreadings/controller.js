@@ -112,6 +112,7 @@ function ProofreadingPlayCtrl(
   };
 
   $scope.submitPassage = function(passage) {
+    $scope.submitted = true;
     function isValid(passageEntry) {
       if (_.has(passageEntry, 'minus')) {
         //A grammar entry
