@@ -100,6 +100,17 @@ function ProofreadingPlayCtrl(
     $scope.pf = pf;
   }, error);
 
+  $scope.UNSOLVED_ERROR = 'UNSOLVED_ERROR';
+  $scope.INTRODUCED_ERROR = 'INTRODUCED_ERROR';
+
+  $scope.hasIntroducedError = function(word) {
+    return word.errorType === $scope.INTRODUCED_ERROR;
+  };
+
+  $scope.hasUnsolvedError = function(word) {
+    return word.errorType === $scope.UNSOLVED_ERROR;
+  };
+
   $scope.submitPassage = function(passage) {
     function isValid(passageEntry) {
       if (_.has(passageEntry, 'minus')) {
@@ -110,10 +121,13 @@ function ProofreadingPlayCtrl(
         return passageEntry.text === passageEntry.responseText;
       }
     }
+    function getErrorType(passageEntry) {
+      return _.has(passageEntry, 'minus') ? $scope.UNSOLVED_ERROR : $scope.INTRODUCED_ERROR;
+    }
     var errors = [];
     _.each(passage, function(p, i) {
       if (!isValid(p)) {
-        errors.push({index: i, passageEntry: p});
+        errors.push({index: i, passageEntry: p, errorType: getErrorType(p)});
       }
     });
     if (errors.length > 1) {
@@ -129,7 +143,7 @@ function ProofreadingPlayCtrl(
 
   function showErrors(passageErrors) {
     _.each(passageErrors, function(pe) {
-      $scope.pf.passage[pe.index].hasError = true;
+      $scope.pf.passage[pe.index].errorType = pe.errorType;
     });
   }
 

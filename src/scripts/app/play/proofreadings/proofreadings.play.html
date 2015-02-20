@@ -12,7 +12,7 @@
       <input
         ng-show="!isBr(word.responseText)"
         type="text"
-        ng-class="{focused: word.isFocused}"
+        ng-class="{focused: word.isFocused, unsolvedError: hasUnsolvedError(word), introducedError: hasIntroducedError(word)}"
         ng-focus="word.isFocused = true"
         ng-blur="word.isFocused = false"
         ng-size="{{word.responseText.length}}"
