@@ -78,6 +78,9 @@ function ProofreadingPlayCtrl(
         w.responseText = w.responseText.trim();
         return w;
       })
+      .filter(function removeSpaces(w) {
+        return w.text !== '';
+      })
       .value();
 
     return prepared;
