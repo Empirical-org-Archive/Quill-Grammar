@@ -40,7 +40,7 @@ function ProofreadingPlayCtrl(
         if (matches) {
           _.each(matches, function(match) {
             if (w !== match) {
-              w = w.replace(match, ' ' + match + ' ');
+              w = w.replace(new RegExp(match, 'g'), ' ' + match + ' ');
             }
           });
           w = w.trim();
