@@ -9,8 +9,16 @@ function ProofreadingPlayCtrl(
   $scope.id = $state.params.id;
 
   function error(e) {
-    console.error(e);
     $state.go('index');
+  }
+
+  /* Returns null or an array of matches */
+  //TODO Only looking for line break tags right now
+  function htmlMatches(text) {
+    if (!text) {
+      return null;
+    }
+    return text.match(/<\s*br\s*?\/>/g);
   }
 
   function prepareProofreading(pf) {
@@ -27,6 +35,20 @@ function ProofreadingPlayCtrl(
       .filter(function removeNullWords(n) {
         return n !== '';
       })
+      .map(function parseHtmlTokens(w) {
+        var matches = htmlMatches(w);
+        if (matches) {
+          _.each(matches, function(match) {
+            if (w !== match) {
+              w = w.replace(match, ' ' + match + ' ');
+            }
+          });
+          w = w.trim();
+          return w.split(/\s/);
+        }
+        return w;
+      })
+      .flatten()
       .map(function parseHangingPfQuestionsWithNoSpace(w) {
         _.each($scope.passageQuestions, function(v, key) {
           if (w !== key && w.indexOf(key) !== -1) {
@@ -43,7 +65,6 @@ function ProofreadingPlayCtrl(
           var c = _.clone(passageQuestion);
           c.text = c.minus;
           c.responseText = c.text;
-          console.log(c);
           return c;
         } else {
           return {
@@ -82,7 +103,6 @@ function ProofreadingPlayCtrl(
 
   ProofreadingService.getProofreading($scope.id).then(function(pf) {
     pf.passage = prepareProofreading(pf.passage);
-    console.log(pf.passage);
     $scope.pf = pf;
   }, error);
 
@@ -110,7 +130,7 @@ function ProofreadingPlayCtrl(
   };
 
   $scope.isBr = function(text) {
-    return text.toLowerCase().indexOf('<br/>') !== -1;
+    return htmlMatches(text) !== null;
   };
 
   function showErrors(errors) {
