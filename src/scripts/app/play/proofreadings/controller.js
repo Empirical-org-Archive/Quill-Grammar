@@ -111,9 +111,9 @@ function ProofreadingPlayCtrl(
       }
     }
     var errors = [];
-    _.each(passage, function(p) {
+    _.each(passage, function(p, i) {
       if (!isValid(p)) {
-        errors.push(p);
+        errors.push({index: i, passageEntry: p});
       }
     });
     if (errors.length > 1) {
@@ -127,8 +127,10 @@ function ProofreadingPlayCtrl(
     return htmlMatches(text) !== null;
   };
 
-  function showErrors(errors) {
-    $scope.errors = errors;
+  function showErrors(passageErrors) {
+    _.each(passageErrors, function(pe) {
+      $scope.pf.passage[pe.index].hasError = true;
+    });
   }
 
   function showNext() {
