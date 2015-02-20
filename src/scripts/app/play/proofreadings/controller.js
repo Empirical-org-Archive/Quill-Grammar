@@ -111,6 +111,14 @@ function ProofreadingPlayCtrl(
     return word.errorType === $scope.UNSOLVED_ERROR;
   };
 
+  $scope.groupNameBy = function(key) {
+    if (key === $scope.UNSOLVED_ERROR) {
+      return  'Unsolved Problem(s)';
+    } else if (key === $scope.INTRODUCED_ERROR) {
+      return 'Introduced Problem(s)';
+    }
+  };
+
   $scope.submitPassage = function(passage) {
     $scope.submitted = true;
     function isValid(passageEntry) {
