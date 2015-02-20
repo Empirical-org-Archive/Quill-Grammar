@@ -29,7 +29,7 @@
         <li ng-repeat="error in value | map: 'passageEntry'">
           <div ng-show="error.minus">
             <p class="unsolvedError">{{error.plus}}</p>
-            <p>{{error.ruleNumber}}</p>
+            <p>{{getRuleInfoBy(error.ruleNumber)}}</p>
           </div>
           <div ng-show="!error.minus">
             <p class="introducedError">{{error.responseText}}</p>

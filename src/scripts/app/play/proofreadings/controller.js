@@ -98,7 +98,30 @@ function ProofreadingPlayCtrl(
   ProofreadingService.getProofreading($scope.id).then(function(pf) {
     pf.passage = prepareProofreading(pf.passage);
     $scope.pf = pf;
+    fetchListedRules();
   }, error);
+
+  /*
+   * Functions for interacting with the referenced rules in the
+   * passage questions.
+   */
+
+  function fetchListedRules() {
+    var ruleIds = _.pluck($scope.passageQuestions, 'ruleNumber');
+    RuleService.getRules(ruleIds).then(function(rules) {
+      $scope.referencedRules = rules;
+    });
+  }
+
+  $scope.getRuleInfoBy = function(ruleNumber) {
+    return _.findWhere($scope.referencedRules, {ruleNumber: Number(ruleNumber)}).title;
+  };
+
+  /*
+   * These functions below handle submission errors
+   * and state/$scope updates after the student has submitted
+   * their passage.
+   */
 
   $scope.UNSOLVED_ERROR = 'UNSOLVED_ERROR';
   $scope.INTRODUCED_ERROR = 'INTRODUCED_ERROR';
