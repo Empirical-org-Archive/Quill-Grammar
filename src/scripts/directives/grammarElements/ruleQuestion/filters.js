@@ -6,9 +6,3 @@ module.exports.formatPrompt = function() {
   };
 };
 
-/*@ngInject*/
-module.exports.trustedHtml = function($sce) {
-  return function(input) {
-    return $sce.trustAsHtml(input);
-  };
-};

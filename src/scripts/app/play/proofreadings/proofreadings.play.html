@@ -1,0 +1,24 @@
+<div class="proofreading" ng-show="pf">
+  <h1>{{pf.title}}</h2>
+  <div class="description">
+    <p>{{pf.description}}</p>
+  </div>
+  <div class="instructions">
+    <p ng-bind-html="pf.instructions | trustedHtml"></p>
+  </div>
+  <div class="passage">
+    <div class="word" ng-repeat="word in pf.passage">
+      <p ng-bind-html="word.responseText | trustedHtml" ng-show="isBr(word.responseText)"></p>
+      <input
+        ng-show="!isBr(word.responseText)"
+        type="text"
+        ng-class="{focused: word.isFocused}"
+        ng-focus="word.isFocused = true"
+        ng-blur="word.isFocused = false"
+        ng-size="{{word.responseText.length}}"
+        ng-model="word.responseText">
+      </input>
+    </div>
+  </div>
+  <button ng-click="submitPassage(pf.passage)">Submit Passage</button>
+</div>
