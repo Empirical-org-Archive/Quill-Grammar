@@ -10,5 +10,8 @@ div.proofreading {
       padding: 0;
       font-family: 'courier new';
     }
+    input[type="text"]:focus {
+      font-weight: bold;
+    }
   }
 }
