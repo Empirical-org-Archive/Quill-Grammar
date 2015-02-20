@@ -22,4 +22,12 @@
     </div>
   </div>
   <button ng-click="submitPassage(pf.passage)">Submit Passage</button>
+  <div class="results">
+    <div class="group" ng-repeat="(key, value) in errors | groupBy: 'errorType'">
+      <h3>{{key}}</h3>
+      <ul>
+        <li ng-repeat="error in value">{{error}}</li>
+      </ul>
+    </div>
+  </div>
 </div>

@@ -146,6 +146,7 @@ function ProofreadingPlayCtrl(
     _.each(passageErrors, function(pe) {
       $scope.pf.passage[pe.index].errorType = pe.errorType;
     });
+    $scope.errors = passageErrors;
   }
 
   function showNext() {
