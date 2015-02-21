@@ -1,3 +1,5 @@
+$unsolvedErrorColor: red;
+$introducedErrorColor: turquoise;
 div.proofreading {
   div.passage {
     input[type="text"] {
@@ -15,11 +17,22 @@ div.proofreading {
       }
 
       &.unsolvedError {
-        background-color: red;
+        background-color: $unsolvedErrorColor;
       }
 
       &.introducedError {
-        background-color: turquoise;
+        background-color: $introducedErrorColor;
+      }
+    }
+  }
+  div.group {
+    li {
+      display: inline;
+      .unsolvedError {
+        background-color: $unsolvedErrorColor;
+      }
+      .introducedError {
+        background-color: $introducedErrorColor;
       }
     }
   }

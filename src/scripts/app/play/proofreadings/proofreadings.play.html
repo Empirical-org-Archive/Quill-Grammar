@@ -27,13 +27,13 @@
       <h3>{{value.length}} {{groupNameBy(key)}}</h3>
       <ul>
         <li ng-repeat="error in value | map: 'passageEntry'">
-          <div ng-show="error.minus">
-            <p class="unsolvedError">{{error.plus}}</p>
-            <p>{{getRuleInfoBy(error.ruleNumber)}}</p>
-          </div>
-          <div ng-show="!error.minus">
-            <p class="introducedError">{{error.responseText}}</p>
-          </div>
+          <ul ng-show="error.minus">
+            <li class="unsolvedError">{{error.plus}}</li>
+            <li>{{getRuleInfoBy(error.ruleNumber)}}</li>
+          </ul>
+          <ul ng-show="!error.minus">
+            <li class="introducedError">{{error.responseText}}</li>
+          </ul>
         </li>
       </ul>
     </div>
