@@ -178,7 +178,31 @@ function ProofreadingPlayCtrl(
       $scope.pf.passage[pe.index].errorType = pe.errorType;
     });
     $scope.errors = passageErrors;
+    var ruleNumbers = _.chain(passageErrors)
+      .pluck('passageEntry')
+      .pluck('ruleNumber')
+      .value();
+    generateLesson(ruleNumbers);
   }
+
+  /*
+   * Below when handle building the lesson and showing
+   * the appropriate ui.
+   */
+
+  function generateLesson(ruleNumbers) {
+    $scope.goToLesson = function() {
+      $state.go('play-sw-gen', {
+        ids: ruleNumbers
+      });
+    };
+    $scope.hasLesson = true;
+  }
+
+  /*
+   * Below handles setting the state, if the lesson
+   * was completed without error.
+   */
 
   function showNext() {
 

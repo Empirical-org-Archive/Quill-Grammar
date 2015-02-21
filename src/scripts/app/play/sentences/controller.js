@@ -5,7 +5,6 @@ module.exports =
 function SentencePlayCtrl(
   $scope, $state, SentenceWritingService, RuleService, _
 ) {
-  $scope.id = $state.params.id;
 
   $scope.$watch('currentRuleQuestion', function(crq) {
     if (_.isObject(crq)) {
@@ -25,10 +24,22 @@ function SentencePlayCtrl(
     $scope.currentRuleQuestion = ncrq;
   };
 
-  SentenceWritingService.getSentenceWriting($scope.id).then(function(sw) {
-    $scope.sentenceWriting = sw;
-    var ruleIds = _.pluck(sw.rules, 'ruleId');
-    var quantities = _.pluck(sw.rules, 'quantity');
+  if ($state.params.id) {
+    SentenceWritingService.getSentenceWriting($state.params.id).then(function(sw) {
+      $scope.sentenceWriting = sw;
+      var ruleIds = _.pluck(sw.rules, 'ruleId');
+      var quantities = _.pluck(sw.rules, 'quantity');
+      return retrieveNecessaryRules(ruleIds, quantities);
+    }, errorStateChange);
+  } else if ($state.params.ids) {
+    var ids = $state.params.ids.split(',');
+    var quantities = _.chain(ids)
+      .map(function() { return 3; })
+      .value();
+    retrieveNecessaryRules(ids, quantities);
+  }
+
+  function retrieveNecessaryRules(ruleIds, quantities) {
     RuleService.getRules(ruleIds).then(function(resolvedRules) {
       $scope.swSet = _.chain(resolvedRules)
         .map(function(rr, i) {
@@ -54,9 +65,7 @@ function SentencePlayCtrl(
     }, function() {
       //errorStateChange();
     });
-  }, function() {
-    //errorStateChange();
-  });
+  }
 
   function errorStateChange() {
     $state.go('index');
