@@ -10,7 +10,7 @@ div.proofreading {
       padding: 0;
       font-family: 'courier new';
 
-      &:focus {
+      &.focused, &.changed {
         font-weight: bold;
       }
 
