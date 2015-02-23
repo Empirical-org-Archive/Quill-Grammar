@@ -181,6 +181,7 @@ function ProofreadingPlayCtrl(
     var ruleNumbers = _.chain(passageErrors)
       .pluck('passageEntry')
       .pluck('ruleNumber')
+      .reject(_.isUndefined)
       .value();
     generateLesson(ruleNumbers);
   }
