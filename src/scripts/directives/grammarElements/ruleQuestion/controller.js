@@ -49,6 +49,14 @@ module.exports = function($scope, _) {
     $scope.$emit('correctRuleQuestion', $scope.ruleQuestion);
   }
 
+  function ensureLengthIsProper(answer) {
+    var threshold = 0.8;
+    return function(body) {
+      var b = body.replace(delim.open, '').replace(delim.close, '');
+      return (answer.length / b.length) >= threshold;
+    };
+  }
+
   $scope.checkAnswer = function() {
     var rq = $scope.ruleQuestion;
     var answer = rq.response;
@@ -59,6 +67,11 @@ module.exports = function($scope, _) {
       return;
     }
     var grammarMatch = _.any(rq.body, compareGrammarElementToBody(answer));
+    var answerIsAdequateLength = _.every(rq.body, ensureLengthIsProper(answer));
+    if (!answerIsAdequateLength) {
+      setMessage('Your answer is not long enough. Try again!');
+      return;
+    }
     if (grammarMatch && !strictTypingMode) {
       setMessage('You are correct, but you have some typing errors. You may correct them or continue');
       setCorrect();
