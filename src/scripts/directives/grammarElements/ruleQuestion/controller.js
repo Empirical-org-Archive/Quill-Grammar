@@ -38,7 +38,7 @@ module.exports = function($scope, _) {
       var grammarElements = _.rest(results);
 
       return _.every(grammarElements, function(element) {
-        var r = new RegExp('\\W{1,1}' + element + '\\W{1,1}', 'g');
+        var r = new RegExp('(^|\\W{1,1})' + element + '(\\W{1,1}|$)', 'g');
         return answer.search(r) !== -1;
       });
     };
