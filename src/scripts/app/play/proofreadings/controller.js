@@ -190,6 +190,9 @@ function ProofreadingPlayCtrl(
     $scope.results = passageResults;
     var ruleNumbers = _.chain(passageResults)
       .pluck('passageEntry')
+      .reject(function(r) {
+        return r.type !== $scope.UNSOLVED_ERROR;
+      })
       .pluck('ruleNumber')
       .reject(_.isUndefined)
       .uniq()
