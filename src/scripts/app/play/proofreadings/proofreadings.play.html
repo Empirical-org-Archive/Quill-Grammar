@@ -12,7 +12,7 @@
       <input
         ng-show="!isBr(word.responseText)"
         type="text"
-        ng-class="{focused: word.isFocused, unsolvedError: hasUnsolvedError(word), introducedError: hasIntroducedError(word), changed: word.text !== word.responseText}"
+        ng-class="{focused: word.isFocused, unsolvedError: hasUnsolvedError(word), introducedError: hasIntroducedError(word), changed: word.text !== word.responseText, solvedProblem: hasSolvedProblem(word)}"
         ng-readonly="submitted"
         ng-focus="word.isFocused = true"
         ng-blur="word.isFocused = false"
@@ -23,15 +23,15 @@
   </div>
   <button ng-click="submitPassage(pf.passage)">Submit Passage</button>
   <div class="results">
-    <div class="group" ng-repeat="(key, value) in errors | groupBy: 'errorType'">
+    <div class="group" ng-repeat="(key, value) in results | groupBy: 'type'">
       <h3>{{value.length}} {{groupNameBy(key)}}</h3>
       <ul>
-        <li ng-repeat="error in value | map: 'passageEntry'">
-          <ul ng-show="error.minus">
-            <li class="unsolvedError">{{error.plus}}</li>
-            <li>{{getRuleInfoBy(error.ruleNumber)}}</li>
+        <li ng-repeat="r in value | map: 'passageEntry'">
+          <ul ng-show="hasUnsolvedError(r)">
+            <li class="unsolvedError">{{r.plus}}</li>
+            <li>{{getRuleInfoBy(r.ruleNumber)}}</li>
           </ul>
-          <ul ng-show="!error.minus">
+          <ul ng-show="hasIntroducedError(r)">
             <li class="introducedError">{{error.responseText}}</li>
           </ul>
         </li>

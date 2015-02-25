@@ -125,13 +125,18 @@ function ProofreadingPlayCtrl(
 
   $scope.UNSOLVED_ERROR = 'UNSOLVED_ERROR';
   $scope.INTRODUCED_ERROR = 'INTRODUCED_ERROR';
+  $scope.SOLVED_PROBLEM = 'SOLVED_PROBLEM';
 
   $scope.hasIntroducedError = function(word) {
-    return word.errorType === $scope.INTRODUCED_ERROR;
+    return word.type === $scope.INTRODUCED_ERROR;
   };
 
   $scope.hasUnsolvedError = function(word) {
-    return word.errorType === $scope.UNSOLVED_ERROR;
+    return word.type === $scope.UNSOLVED_ERROR;
+  };
+
+  $scope.hasSolvedProblem = function(word) {
+    return word.type === $scope.SOLVED_PROBLEM;
   };
 
   $scope.groupNameBy = function(key) {
@@ -139,6 +144,8 @@ function ProofreadingPlayCtrl(
       return  'Unsolved Problem(s)';
     } else if (key === $scope.INTRODUCED_ERROR) {
       return 'Introduced Problem(s)';
+    } else if (key === $scope.SOLVED_PROBLEM) {
+      return 'Solved Problems(s)';
     }
   };
 
@@ -156,14 +163,17 @@ function ProofreadingPlayCtrl(
     function getErrorType(passageEntry) {
       return _.has(passageEntry, 'minus') ? $scope.UNSOLVED_ERROR : $scope.INTRODUCED_ERROR;
     }
-    var errors = [];
+    var results = [];
     _.each(passage, function(p, i) {
       if (!isValid(p)) {
-        errors.push({index: i, passageEntry: p, errorType: getErrorType(p)});
+        results.push({index: i, passageEntry: p, type: getErrorType(p)});
+      }
+      if (isValid(p) && _.has(p, 'minus')) {
+        results.push({index: i, passageEntry: p, type: $scope.SOLVED_PROBLEM});
       }
     });
-    if (errors.length > 1) {
-      showErrors(errors);
+    if (results.length > 1) {
+      showResults(results);
     } else {
       showNext();
     }
@@ -173,12 +183,12 @@ function ProofreadingPlayCtrl(
     return htmlMatches(text) !== null;
   };
 
-  function showErrors(passageErrors) {
-    _.each(passageErrors, function(pe) {
-      $scope.pf.passage[pe.index].errorType = pe.errorType;
+  function showResults(passageResults) {
+    _.each(passageResults, function(pr) {
+      $scope.pf.passage[pr.index].type = pr.type;
     });
-    $scope.errors = passageErrors;
-    var ruleNumbers = _.chain(passageErrors)
+    $scope.results = passageResults;
+    var ruleNumbers = _.chain(passageResults)
       .pluck('passageEntry')
       .pluck('ruleNumber')
       .reject(_.isUndefined)
