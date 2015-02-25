@@ -1,6 +1,7 @@
 $unsolvedErrorColor: red;
 $introducedErrorColor: turquoise;
 $solvedProblemColor: lightgreen;
+$underlinedColor: black;
 div.proofreading {
   div.passage {
     input[type="text"] {
@@ -27,6 +28,10 @@ div.proofreading {
 
       &.solvedProblem {
         background-color: $solvedProblemColor;
+      }
+
+      &.underlined {
+        border-bottom: 1px solid $underlinedColor !important;
       }
     }
   }

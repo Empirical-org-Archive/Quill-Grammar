@@ -180,6 +180,16 @@ function ProofreadingPlayCtrl(
     }
   };
 
+  /*
+   * Convience html methods
+   */
+
+  $scope.needsUnderlining = function(p) {
+    if (_.has(p, 'minus')) {
+      return true;
+    }
+  };
+
   $scope.isBr = function(text) {
     return htmlMatches(text) !== null;
   };
