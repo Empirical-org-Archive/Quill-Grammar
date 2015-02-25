@@ -10,6 +10,7 @@
     "firebase": "~2.1.0",
     "underscore": "~1.7.0",
     "angular-underscore-module": "~1.0.1",
-    "angular-filter": "~0.5.4"
+    "angular-filter": "~0.5.4",
+    "angular-uuid4": "~0.3.0"
   }
 }
