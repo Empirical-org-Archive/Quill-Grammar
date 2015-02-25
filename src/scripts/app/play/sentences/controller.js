@@ -32,7 +32,7 @@ function SentencePlayCtrl(
       return retrieveNecessaryRules(ruleIds, quantities);
     }, errorStateChange);
   } else if ($state.params.ids) {
-    var ids = $state.params.ids.split(',');
+    var ids = _.uniq($state.params.ids.split(','));
     var quantities = _.chain(ids)
       .map(function() { return 3; })
       .value();

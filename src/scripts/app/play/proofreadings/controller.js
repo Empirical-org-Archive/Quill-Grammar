@@ -182,6 +182,7 @@ function ProofreadingPlayCtrl(
       .pluck('passageEntry')
       .pluck('ruleNumber')
       .reject(_.isUndefined)
+      .uniq()
       .value();
     generateLesson(ruleNumbers);
   }
