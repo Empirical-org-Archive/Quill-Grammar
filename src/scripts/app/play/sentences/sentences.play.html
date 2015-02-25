@@ -1,5 +1,8 @@
 <div class="sentence-writing" ng-show="swSet.length">
   <h2>{{currentRule.title}}</h2>
+  <div class="progress">
+    {{number}}/{{questions.length}}
+  </div>
   <p>{{currentRule.instructions}}</p>
   <grammar-rule-question rule-question="currentRuleQuestion">
   </grammar-rule-question>

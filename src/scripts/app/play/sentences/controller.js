@@ -12,6 +12,7 @@ function SentencePlayCtrl(
     }
   });
 
+  $scope.number = 1;
 
   $scope.$on('correctRuleQuestion', function() {
     $scope.showNextQuestion = true;
@@ -21,6 +22,7 @@ function SentencePlayCtrl(
     $scope.showNextQuestion = false;
     var crq = $scope.currentRuleQuestion;
     var ncrq = $scope.questions[_.indexOf($scope.questions, crq) + 1];
+    $scope.number = $scope.number + 1;
     $scope.currentRuleQuestion = ncrq;
   };
 
