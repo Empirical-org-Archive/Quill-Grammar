@@ -185,7 +185,7 @@ function ProofreadingPlayCtrl(
    */
 
   $scope.needsUnderlining = function(p) {
-    if (_.has(p, 'minus')) {
+    if ($scope.pf && $scope.pf.underlineErrorsInProofreader && _.has(p, 'minus')) {
       return true;
     }
   };
