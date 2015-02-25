@@ -1,5 +1,6 @@
 $unsolvedErrorColor: red;
 $introducedErrorColor: turquoise;
+$solvedProblemColor: lightgreen;
 div.proofreading {
   div.passage {
     input[type="text"] {
@@ -23,6 +24,10 @@ div.proofreading {
       &.introducedError {
         background-color: $introducedErrorColor;
       }
+
+      &.solvedProblem {
+        background-color: $solvedProblemColor;
+      }
     }
   }
   div.group {
@@ -33,6 +38,9 @@ div.proofreading {
       }
       .introducedError {
         background-color: $introducedErrorColor;
+      }
+      .solvedProblem {
+        background-color: $solvedProblemColor;
       }
     }
   }

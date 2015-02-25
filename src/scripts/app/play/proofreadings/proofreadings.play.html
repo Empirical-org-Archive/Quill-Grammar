@@ -34,6 +34,10 @@
           <ul ng-show="hasIntroducedError(r)">
             <li class="introducedError">{{error.responseText}}</li>
           </ul>
+          <ul ng-show="hasSolvedProblem(r)">
+            <li class="solvedProblem">{{r.plus}}</li>
+            <li>{{getRuleInfoBy(r.ruleNumber)}}</li>
+          </ul>
         </li>
       </ul>
     </div>
