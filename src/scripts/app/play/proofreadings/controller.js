@@ -4,7 +4,8 @@ module.exports =
 
 /*@ngInject*/
 function ProofreadingPlayCtrl(
-  $scope, $state, ProofreadingService, RuleService, _
+  $scope, $state, ProofreadingService, RuleService, _,
+  uuid4
 ) {
   $scope.id = $state.params.id;
 
@@ -24,12 +25,13 @@ function ProofreadingPlayCtrl(
   function prepareProofreading(pf) {
     $scope.passageQuestions = {};
     pf.replace(/{\+([^-]+)-([^|]+)\|([^}]+)}/g, function(key, plus, minus, ruleNumber) {
-      $scope.passageQuestions[key] = {
+      var genKey = uuid4.generate();
+      $scope.passageQuestions[genKey] = {
         plus: plus,
         minus: minus,
         ruleNumber: ruleNumber
       };
-      pf = pf.replace(key, minus.split(/\s/).join('|'));
+      pf = pf.replace(key, genKey);
     });
     var prepared = _.chain(pf.split(/\s/))
       .filter(function removeNullWords(n) {
@@ -59,8 +61,7 @@ function ProofreadingPlayCtrl(
       })
       .flatten()
       .map(function(w) {
-        w = w.replace(/\|/g, ' ');
-        var passageQuestion = _.findWhere($scope.passageQuestions, {minus: w});
+        var passageQuestion = $scope.passageQuestions[w];
         if (passageQuestion) {
           var c = _.clone(passageQuestion);
           c.text = c.minus;
