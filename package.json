@@ -13,5 +13,8 @@
     "angular": "./bower_components/angular/angular.min.js",
     "angular-ui-router": "./bower_components/ui-router/release/angular-ui-router.min.js"
   },
-  "browserify-shim": {}
+  "browserify-shim": {},
+  "dependencies": {
+    "empirical-angular": "^0.1.0"
+  }
 }
