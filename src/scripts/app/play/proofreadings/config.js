@@ -8,6 +8,6 @@ function configure ($stateProvider) {
     parent: 'app',
     templateUrl: 'proofreadings.play.html',
     controller: 'ProofreadingPlayCtrl',
-    url: '/play/pf/:id'
+    url: '/play/pf?uid'
   });
 };

@@ -7,7 +7,7 @@ function ProofreadingPlayCtrl(
   $scope, $state, ProofreadingService, RuleService, _,
   uuid4
 ) {
-  $scope.id = $state.params.id;
+  $scope.id = $state.params.uid;
 
   function error(e) {
     $state.go('index');
