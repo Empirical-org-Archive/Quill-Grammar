@@ -72,7 +72,12 @@ function sentences(
       if (edit) {
         p = SentenceWritingService.updateSentenceWriting(s);
       } else {
-        p = SentenceWritingService.saveSentenceWritingWithId(s);
+        if ($state.params.uid) {
+          s.$id = $state.params.uid;
+          p = SentenceWritingService.saveSentenceWritingWithId(s);
+        } else {
+          p = SentenceWritingService.saveSentenceWriting(s);
+        }
       }
 
       return p.then(handleResult, handlerError);
