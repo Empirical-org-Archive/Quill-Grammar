@@ -26,7 +26,7 @@ function sentences(
   });
 
   $scope.nextStep = function() {
-    $state.go('^.questions');
+    $state.go('^.questions', {uid: $state.params.uid});
   };
 
   $scope.addRule = function(s, r) {
@@ -72,7 +72,7 @@ function sentences(
       if (edit) {
         p = SentenceWritingService.updateSentenceWriting(s);
       } else {
-        p = SentenceWritingService.saveSentenceWriting(s);
+        p = SentenceWritingService.saveSentenceWritingWithId(s);
       }
 
       return p.then(handleResult, handlerError);

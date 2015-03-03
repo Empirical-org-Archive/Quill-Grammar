@@ -26,12 +26,12 @@ function configure ($stateProvider) {
   })
   .state('sentences.new.details', {
     parent: 'sentences.new',
-    url: '/details',
+    url: '/details?uid',
     templateUrl: 'sentences.new.details.html'
   })
   .state('sentences.new.questions', {
     parent: 'sentences.new',
-    url: '/questions',
+    url: '/questions?uid',
     templateUrl: 'sentences.new.questions.html'
   });
 };
