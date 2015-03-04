@@ -48,7 +48,10 @@ function SentencePlayCtrl(
       //Do LMS logging if we have a sessionId
       ConceptTagResult.findAsJsonByActivitySessionId(sid)
       .then(function(list) {
-        return ActivitySession.finish(sid, list);
+        return ActivitySession.finish(sid, {
+          concept_tag_results: list,
+          percentage: 1,
+        });
       });
     }
   };
