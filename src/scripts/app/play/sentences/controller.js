@@ -40,10 +40,21 @@ function SentencePlayCtrl(
     $scope.sessionId = $state.params.student;
   }
 
+  //This is what we need to do after a student has completed the set
+  $scope.finish = function() {
+    if ($state.sessionId) {
+      //Do LMS logging if we have a sessionId
+    }
+  };
+
   $scope.nextQuestion = function() {
     $scope.showNextQuestion = false;
     var crq = $scope.currentRuleQuestion;
     var ncrq = $scope.questions[_.indexOf($scope.questions, crq) + 1];
+    if (!ncrq) {
+      $scope.finish();
+      return;
+    }
     $scope.number = $scope.number + 1;
     $scope.currentRuleQuestion = ncrq;
   };
