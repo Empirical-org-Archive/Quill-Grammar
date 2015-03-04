@@ -24,13 +24,13 @@ function SentencePlayCtrl(
     if (!answer || !crq) {
       throw new Error('We need a rule question and answer');
     }
-    console.log(crq, answer);
     if ($scope.sessionId) {
       //we only need to communicate with the LMS if there is a valid session
       ConceptTagResult.save($scope.sessionId, {
         Concept_Tag: crq.conceptTag,
         Concept_Class: crq.conceptClass,
         Concept_Category: crq.conceptCategory,
+        answer: answer,
       });
     }
   });
