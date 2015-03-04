@@ -5,7 +5,7 @@ module.exports =
 /*@ngInject*/
 function SentencePlayCtrl(
   $scope, $state, SentenceWritingService, RuleService, _,
-  ConceptTagResult
+  ConceptTagResult, ActivitySession
 ) {
 
   $scope.$watch('currentRuleQuestion', function(crq) {
@@ -20,17 +20,18 @@ function SentencePlayCtrl(
     $scope.showNextQuestion = true;
   });
 
-  $scope.$on('answerRuleQuestion', function(e, crq, answer) {
+  $scope.$on('answerRuleQuestion', function(e, crq, answer, correct) {
     if (!answer || !crq) {
       throw new Error('We need a rule question and answer');
     }
     if ($scope.sessionId) {
       //we only need to communicate with the LMS if there is a valid session
       ConceptTagResult.save($scope.sessionId, {
-        Concept_Tag: crq.conceptTag,
-        Concept_Class: crq.conceptClass,
-        Concept_Category: crq.conceptCategory,
+        concept_tag: crq.conceptTag,
+        concept_class: crq.conceptClass,
+        concept_category: crq.conceptCategory,
         answer: answer,
+        correct: correct ? 1 : 0
       });
     }
   });
@@ -44,6 +45,10 @@ function SentencePlayCtrl(
   $scope.finish = function() {
     if ($state.sessionId) {
       //Do LMS logging if we have a sessionId
+      ConceptTagResult.findAsJsonByActivitySessionId($state.sessionId)
+      .then(function(list) {
+        return ActivitySession.finish($state.sessionId, list);
+      })
     }
   };
 
