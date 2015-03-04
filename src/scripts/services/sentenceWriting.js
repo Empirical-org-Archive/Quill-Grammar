@@ -46,9 +46,9 @@ angular.module('quill-grammar.services.sentenceWriting', [
 
   this.saveSentenceWritingWithId = function(sentenceWritingActivity) {
     var swa = checkAndFormatSentenceWritingActivity(sentenceWritingActivity);
-
-    return crud.update(swa).then(function(ref) {
-      return catIndex.addElementToEntry(swa.categoryId, ref);
+    var id = String(swa.$id);
+    return crud.saveWithCustomId(swa).then(function() {
+      return catIndex.addElementToEntry(swa.categoryId, id);
     });
   };
 
