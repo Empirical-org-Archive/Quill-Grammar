@@ -60,6 +60,7 @@ module.exports = function($scope, _) {
   $scope.checkAnswer = function() {
     var rq = $scope.ruleQuestion;
     var answer = rq.response;
+    $scope.$emit('answerRuleQuestion', rq, answer);
     var exactMatch = _.any(rq.body, compareEntireAnswerToBody(answer));
     if (exactMatch) {
       setMessage('Correct!');

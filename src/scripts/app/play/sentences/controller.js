@@ -1,9 +1,11 @@
 'use strict';
+
 module.exports =
 
 /*@ngInject*/
 function SentencePlayCtrl(
-  $scope, $state, SentenceWritingService, RuleService, _
+  $scope, $state, SentenceWritingService, RuleService, _,
+  ConceptTagResult
 ) {
 
   $scope.$watch('currentRuleQuestion', function(crq) {
@@ -17,6 +19,26 @@ function SentencePlayCtrl(
   $scope.$on('correctRuleQuestion', function() {
     $scope.showNextQuestion = true;
   });
+
+  $scope.$on('answerRuleQuestion', function(e, crq, answer) {
+    if (!answer || !crq) {
+      throw new Error('We need a rule question and answer');
+    }
+    console.log(crq, answer);
+    if ($scope.sessionId) {
+      //we only need to communicate with the LMS if there is a valid session
+      ConceptTagResult.save($scope.sessionId, {
+        Concept_Tag: crq.conceptTag,
+        Concept_Class: crq.conceptClass,
+        Concept_Category: crq.conceptCategory,
+      });
+    }
+  });
+
+  //If we have a student param, then we have a valid session
+  if ($state.params.student) {
+    $scope.sessionId = $state.params.student;
+  }
 
   $scope.nextQuestion = function() {
     $scope.showNextQuestion = false;
