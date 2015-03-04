@@ -43,12 +43,13 @@ function SentencePlayCtrl(
 
   //This is what we need to do after a student has completed the set
   $scope.finish = function() {
-    if ($state.sessionId) {
+    var sid = $scope.sessionId;
+    if (sid) {
       //Do LMS logging if we have a sessionId
-      ConceptTagResult.findAsJsonByActivitySessionId($state.sessionId)
+      ConceptTagResult.findAsJsonByActivitySessionId(sid)
       .then(function(list) {
-        return ActivitySession.finish($state.sessionId, list);
-      })
+        return ActivitySession.finish(sid, list);
+      });
     }
   };
 
