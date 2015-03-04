@@ -116,8 +116,20 @@ angular.module('quill-grammar.services.crud', [
       return d.promise;
     }
 
+    function saveWithCustomId(item) {
+      if (!item.$id) {
+        throw new Error('No id provided');
+      }
+      var id = String(item.$id);
+      delete(item.$id);
+      item = sanitize(item);
+      var fb = $firebase(new Firebase(baseRoute + '/' + id));
+      return fb.$set(item);
+    }
+
     return {
       save: save,
+      saveWithCustomId: saveWithCustomId,
       del: del,
       all: all,
       get: get,

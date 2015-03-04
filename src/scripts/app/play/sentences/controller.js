@@ -26,8 +26,8 @@ function SentencePlayCtrl(
     $scope.currentRuleQuestion = ncrq;
   };
 
-  if ($state.params.id) {
-    SentenceWritingService.getSentenceWriting($state.params.id).then(function(sw) {
+  if ($state.params.uid) {
+    SentenceWritingService.getSentenceWriting($state.params.uid).then(function(sw) {
       $scope.sentenceWriting = sw;
       var ruleIds = _.pluck(sw.rules, 'ruleId');
       var quantities = _.pluck(sw.rules, 'quantity');

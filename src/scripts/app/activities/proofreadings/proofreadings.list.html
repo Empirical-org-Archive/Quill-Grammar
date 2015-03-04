@@ -1,7 +1,7 @@
 <h2>Passage Proofreadings</h2>
 <ul ng-repeat="set in proofreadings">
   <ul>
-    <li><a ui-sref="play-pf({id: set.$id})"><h3>{{set.title}}</h3></a></li>
+    <li><a ui-sref="play-pf({uid: set.$id})"><h3>{{set.title}}</h3></a></li>
     <li><a ui-sref="proofreadings.edit({id: set.$id})">edit</a>
   </ul>
 </ul>
