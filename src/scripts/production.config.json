@@ -1,5 +1,5 @@
 {
   "environment": "production",
   "firebaseUrl": "https://quillgrammar.firebaseio.com/",
-  "empiricalBaseURL": "http://quill.org/api/v1/"
+  "empiricalBaseURL": "https://quill.org/api/v1/"
 }
