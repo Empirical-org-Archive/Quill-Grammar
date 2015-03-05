@@ -6,7 +6,7 @@
     "node": ">=0.10.0"
   },
   "devDependencies": {
-    "empirical-angular-gulp-tasks": "0.0.2",
+    "empirical-angular-gulp-tasks": "0.0.3",
     "gulp": "^3.8.10"
   },
   "browser": {
