@@ -1,9 +1,11 @@
 'use strict';
+
 module.exports =
 
 /*@ngInject*/
 function SentencePlayCtrl(
-  $scope, $state, SentenceWritingService, RuleService, _
+  $scope, $state, SentenceWritingService, RuleService, _,
+  ConceptTagResult, ActivitySession
 ) {
 
   $scope.$watch('currentRuleQuestion', function(crq) {
@@ -18,10 +20,50 @@ function SentencePlayCtrl(
     $scope.showNextQuestion = true;
   });
 
+  $scope.$on('answerRuleQuestion', function(e, crq, answer, correct) {
+    if (!answer || !crq) {
+      throw new Error('We need a rule question and answer');
+    }
+    if ($scope.sessionId) {
+      //we only need to communicate with the LMS if there is a valid session
+      ConceptTagResult.save($scope.sessionId, {
+        concept_tag: crq.conceptTag,
+        concept_class: crq.conceptClass,
+        concept_category: crq.conceptCategory,
+        answer: answer,
+        correct: correct ? 1 : 0
+      });
+    }
+  });
+
+  //If we have a student param, then we have a valid session
+  if ($state.params.student) {
+    $scope.sessionId = $state.params.student;
+  }
+
+  //This is what we need to do after a student has completed the set
+  $scope.finish = function() {
+    var sid = $scope.sessionId;
+    if (sid) {
+      //Do LMS logging if we have a sessionId
+      ConceptTagResult.findAsJsonByActivitySessionId(sid)
+      .then(function(list) {
+        return ActivitySession.finish(sid, {
+          concept_tag_results: list,
+          percentage: 1,
+        });
+      });
+    }
+  };
+
   $scope.nextQuestion = function() {
     $scope.showNextQuestion = false;
     var crq = $scope.currentRuleQuestion;
     var ncrq = $scope.questions[_.indexOf($scope.questions, crq) + 1];
+    if (!ncrq) {
+      $scope.finish();
+      return;
+    }
     $scope.number = $scope.number + 1;
     $scope.currentRuleQuestion = ncrq;
   };

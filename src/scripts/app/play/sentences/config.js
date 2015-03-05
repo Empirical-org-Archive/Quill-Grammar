@@ -8,12 +8,12 @@ function configure ($stateProvider) {
     parent: 'app',
     templateUrl: 'sentences.play.html',
     controller: 'SentencePlayCtrl',
-    url: '/play/sw?uid'
+    url: '/play/sw?uid&student'
   })
   .state('play-sw-gen', {
     parent: 'app',
     templateUrl: 'sentences.play.html',
     controller: 'SentencePlayCtrl',
-    url: '/play/sw/g/:ids'
+    url: '/play/sw/g/:ids&student'
   });
 };
