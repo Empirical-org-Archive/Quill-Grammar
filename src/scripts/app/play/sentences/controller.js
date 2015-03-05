@@ -57,7 +57,7 @@ function SentencePlayCtrl(
     }
     if (p) {
       p.then(function() {
-        $state.go('results');
+        $state.go('results', {student: sid});
       });
     } else {
       $state.go('results');
