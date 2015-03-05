@@ -10,7 +10,7 @@ function configure ($stateProvider) {
     controller: 'SentencePlayCtrl',
     url: '/play/sw?uid&student'
   })
-  .state('play-sw-results', {
+  .state('play-sw.results', {
     parent: 'app',
     templateUrl: 'sentences.results.html',
     controller: 'ResultsController',
