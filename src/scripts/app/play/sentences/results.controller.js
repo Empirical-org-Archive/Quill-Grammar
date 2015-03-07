@@ -2,8 +2,8 @@
 'use strict';
 
 /*@ngInject*/
-module.exports = function($state) {
-  var windowProxy = new Porthole.WindowProxy();
+module.exports = function($scope, $state) {
+  var windowProxy = new Porthole.WindowProxy('http://staging.quill.org/porthole_proxy');
   var postObj = {
     action: 'activity_complete',
   };
