@@ -60,28 +60,29 @@ module.exports = function($scope, _) {
   $scope.checkAnswer = function() {
     var rq = $scope.ruleQuestion;
     var answer = rq.response;
-    $scope.$emit('answerRuleQuestion', rq, answer);
+    var correct = false;
     var exactMatch = _.any(rq.body, compareEntireAnswerToBody(answer));
     if (exactMatch) {
       setMessage('Correct!');
       setCorrect();
-      return;
+      correct = true;
+    } else {
+      var grammarMatch = _.any(rq.body, compareGrammarElementToBody(answer));
+      var answerIsAdequateLength = _.every(rq.body, ensureLengthIsProper(answer));
+      if (!answerIsAdequateLength) {
+        setMessage('Your answer is not long enough. Try again!');
+      }
+      if (grammarMatch && !strictTypingMode) {
+        setMessage('You are correct, but you have some typing errors. You may correct them or continue');
+        setCorrect();
+        correct = true;
+      } else if (grammarMatch) {
+        setMessage('You are correct, but have some typing errors. Please fix them.');
+      } else {
+        setMessage('Try again!');
+      }
     }
-    var grammarMatch = _.any(rq.body, compareGrammarElementToBody(answer));
-    var answerIsAdequateLength = _.every(rq.body, ensureLengthIsProper(answer));
-    if (!answerIsAdequateLength) {
-      setMessage('Your answer is not long enough. Try again!');
-      return;
-    }
-    if (grammarMatch && !strictTypingMode) {
-      setMessage('You are correct, but you have some typing errors. You may correct them or continue');
-      setCorrect();
-      return;
-    } else if (grammarMatch) {
-      setMessage('You are correct, but have some typing errors. Please fix them.');
-    }
-
-    setMessage('Try again!');
+    $scope.$emit('answerRuleQuestion', rq, answer, correct);
   };
 
   function setMessage(msg) {
