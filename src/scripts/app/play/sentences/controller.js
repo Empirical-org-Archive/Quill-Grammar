@@ -53,6 +53,9 @@ function SentencePlayCtrl(
           concept_tag_results: list,
           percentage: 1,
         });
+      })
+      .then(function() {
+        return ConceptTagResult.removeBySessionId(sid);
       });
     }
     if (p) {
