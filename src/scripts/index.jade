@@ -4,6 +4,8 @@ html(ng-app='quill-grammar' ng-strict-di)
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     title
+    script
+      |window.onload = function() { Porthole.WindowProxyDispatcher.start(); };
     base(href='/')
     //- inject:css
     //- endinject

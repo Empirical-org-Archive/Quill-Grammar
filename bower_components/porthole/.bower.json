@@ -1,0 +1,23 @@
+{
+  "name": "porthole",
+  "version": "1.0.0",
+  "homepage": "http://ternarylabs.github.com/porthole",
+  "authors": [
+    "Ternary Labs"
+  ],
+  "description": "A proxy to safely communicate to cross-domain iframes in javascript",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "_release": "1.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.0",
+    "commit": "9fb66df04c1c41a3bbc8e856f2c7f996d7d0b05a"
+  },
+  "_source": "git://github.com/lememora/porthole.git",
+  "_target": "~1.0.0",
+  "_originalSource": "porthole",
+  "_direct": true
+}
