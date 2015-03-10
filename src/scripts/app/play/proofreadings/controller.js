@@ -4,15 +4,14 @@ module.exports =
 
 /*@ngInject*/
 function ProofreadingPlayCtrl(
-  $scope, $state, ProofreadingService, RuleService, _,
-  uuid4
+  $scope, $state, ProofreadingService, RuleService, _
 ) {
   $scope.id = $state.params.uid;
 
   //If brainpop is truthy, we setup some scope state
   //that the template will react to. The template
   //adds the brainpop script and assigns an id to the div
-  if ($state.params.bp) {
+  if ($state.params.brainpop) {
     $scope.brainpop = 'BrainPOPsnapArea';
   }
 

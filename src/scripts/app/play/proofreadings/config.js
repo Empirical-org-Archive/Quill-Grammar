@@ -8,7 +8,7 @@ function configure ($stateProvider) {
     parent: 'app',
     templateUrl: 'proofreadings.play.html',
     controller: 'ProofreadingPlayCtrl',
-    url: '/play/pf?uid&bp'
+    url: '/play/pf?uid&brainpop'
   })
   .state('play-partner-pf-integration-start', {
     parent: 'app',
