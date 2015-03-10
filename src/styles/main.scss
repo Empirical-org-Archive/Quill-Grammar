@@ -14,3 +14,5 @@
 body {
   @include outer-container;
 }
+
+@import "partner/base.scss";
