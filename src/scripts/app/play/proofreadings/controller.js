@@ -20,81 +20,6 @@ function ProofreadingPlayCtrl(
     $state.go('index');
   }
 
-  /* Returns null or an array of matches */
-  //TODO Only looking for line break tags right now
-  function htmlMatches(text) {
-    if (!text) {
-      return null;
-    }
-    return text.match(/<\s*br\s*?\/>/g);
-  }
-
-  function prepareProofreading(pf) {
-    $scope.passageQuestions = {};
-    pf.replace(/{\+([^-]+)-([^|]+)\|([^}]+)}/g, function(key, plus, minus, ruleNumber) {
-      var genKey = uuid4.generate();
-      $scope.passageQuestions[genKey] = {
-        plus: plus,
-        minus: minus,
-        ruleNumber: ruleNumber
-      };
-      pf = pf.replace(key, genKey);
-    });
-    var prepared = _.chain(pf.split(/\s/))
-      .filter(function removeNullWords(n) {
-        return n !== '';
-      })
-      .map(function parseHtmlTokens(w) {
-        var matches = htmlMatches(w);
-        if (matches) {
-          _.each(matches, function(match) {
-            if (w !== match) {
-              w = w.replace(new RegExp(match, 'g'), ' ' + match + ' ');
-            }
-          });
-          w = w.trim();
-          return w.split(/\s/);
-        }
-        return w;
-      })
-      .flatten()
-      .map(function parseHangingPfQuestionsWithNoSpace(w) {
-        _.each($scope.passageQuestions, function(v, key) {
-          if (w !== key && w.indexOf(key) !== -1) {
-            w = w.split(key).join(' ' + key).split(/\s/);
-          }
-        });
-        return w;
-      })
-      .flatten()
-      .map(function(w) {
-        var passageQuestion = $scope.passageQuestions[w];
-        if (passageQuestion) {
-          var c = _.clone(passageQuestion);
-          c.text = c.minus;
-          c.responseText = c.text;
-          return c;
-        } else {
-          return {
-            text: w,
-            responseText: w
-          };
-        }
-      })
-      .map(function trim(w) {
-        w.text = w.text.trim();
-        w.responseText = w.responseText.trim();
-        return w;
-      })
-      .filter(function removeSpaces(w) {
-        return w.text !== '';
-      })
-      .value();
-
-    return prepared;
-
-  }
-
   $scope.obscure = function(key) {
     return btoa(key);
   };
@@ -104,7 +29,7 @@ function ProofreadingPlayCtrl(
   };
 
   ProofreadingService.getProofreading($scope.id).then(function(pf) {
-    pf.passage = prepareProofreading(pf.passage);
+    pf.passage = ProofreadingService.prepareProofreading(pf.passage, $scope);
     $scope.pf = pf;
     fetchListedRules();
   }, error);
@@ -198,7 +123,7 @@ function ProofreadingPlayCtrl(
   };
 
   $scope.isBr = function(text) {
-    return htmlMatches(text) !== null;
+    return ProofreadingService.htmlMatches(text) !== null;
   };
 
   function showResults(passageResults) {
