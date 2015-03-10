@@ -1,0 +1,17 @@
+$yellow: yellow;
+$gray: grey;
+div.partner-iframe {
+  background-color: $gray;
+  height: 600px;
+  width: 800px;
+  margin:auto;
+  .heading, .footer {
+    text-align: center;
+  }
+
+  .footer {
+    background-color: $yellow;
+    margin: 0;
+    padding: 0;
+  }
+}

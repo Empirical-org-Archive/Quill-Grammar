@@ -8,6 +8,12 @@ function configure ($stateProvider) {
     parent: 'app',
     templateUrl: 'proofreadings.play.html',
     controller: 'ProofreadingPlayCtrl',
-    url: '/play/pf?uid'
+    url: '/play/pf?uid&bp'
+  })
+  .state('play-partner-pf-integration-start', {
+    parent: 'app',
+    templateUrl: 'proofreadings.partner.html',
+    controller: 'ProofreadingPartnerCtrl',
+    url: '/play/partner-pf'
   });
 };
