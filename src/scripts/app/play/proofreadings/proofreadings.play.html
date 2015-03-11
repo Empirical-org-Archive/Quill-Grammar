@@ -6,21 +6,7 @@
   <div class="instructions">
     <p ng-bind-html="pf.instructions | trustedHtml"></p>
   </div>
-  <div class="passage">
-    <div class="word" ng-repeat="word in pf.passage">
-      <p ng-bind-html="word.responseText | trustedHtml" ng-show="isBr(word.responseText)"></p>
-      <input
-        ng-show="!isBr(word.responseText)"
-        type="text"
-        ng-class="{focused: word.isFocused, unsolvedError: hasUnsolvedError(word), introducedError: hasIntroducedError(word), changed: word.text !== word.responseText, solvedProblem: hasSolvedProblem(word), underlined: needsUnderlining(word)}"
-        ng-readonly="submitted"
-        ng-focus="word.isFocused = true"
-        ng-blur="word.isFocused = false"
-        ng-size="{{word.responseText.length}}"
-        ng-model="word.responseText">
-      </input>
-    </div>
-  </div>
+  <quill-grammar-passage passage="pf.passage"></quill-grammar-passage>
   <button ng-click="submitPassage(pf.passage)">Submit Passage</button>
   <div class="results">
     <div class="group" ng-repeat="(key, value) in results | groupBy: 'type'">
