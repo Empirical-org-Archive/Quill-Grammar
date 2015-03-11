@@ -1,6 +1,6 @@
 <div class="passage-submit-panel">
   <div class="passage-message">
-    hey
+    {{pf.message}}
   </div>
-  <button ng-click="submitPassage()">Check Work</button>
+  <button ng-class="{'no-message': !pf.message}" ng-click="submitPassage()">Check Work</button>
 </div>
