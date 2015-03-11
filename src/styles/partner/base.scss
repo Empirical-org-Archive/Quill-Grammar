@@ -2,10 +2,10 @@ $yellow: yellow;
 $gray: grey;
 div.partner-iframe {
   background-color: $gray;
-  height: 600px;
-  width: 800px;
+  min-height: 660px;
+  width: 880px;
   margin:auto;
-  .heading, .footer {
+  .heading, .footer, & {
     text-align: center;
   }
 
