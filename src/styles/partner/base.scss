@@ -5,15 +5,13 @@ div.partner-iframe {
   min-height: 660px;
   width: 880px;
   margin:auto;
-  .landing {
-    .heading, .footer,  {
-      text-align: center;
-    }
-    .footer {
-      background-color: $yellow;
-      margin: 0;
-      padding: 0;
-    }
+}
+div.partner-iframe-landing {
+  @extend .partner-iframe;
+  text-align: center;
+  .footer {
+    background-color: $yellow;
+    margin: 0;
+    padding: 0;
   }
-
 }
