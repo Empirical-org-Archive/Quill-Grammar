@@ -1,4 +1,4 @@
-<div id="{{brainpop}}" class="proofreading" ng-show="pf">
+<div id="{{brainpop}}" ng-class="{proofreading:true, 'partner-iframe': brainpop}" ng-show="pf">
   <quill-grammar-pf-heading pf="pf"></quill-grammar-pf-heading>
   <quill-grammar-passage passage="pf.passage"></quill-grammar-passage>
   <quill-grammar-passage-submit-panel></quill-grammar-passage-submit-panel>
