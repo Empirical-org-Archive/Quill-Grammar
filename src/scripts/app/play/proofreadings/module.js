@@ -17,5 +17,15 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
     templateUrl: 'passage.html'
   };
 })
+.directive('quillGrammarPfHeading', function() {
+  return {
+    restrict: 'E',
+    controller: 'ProofreadingPlayCtrl',
+    scope: {
+      pf: '='
+    },
+    templateUrl: 'pf-heading.html'
+  };
+})
 .directive('ngSize', require('./ngSize.js'))
 .controller('ProofreadingPlayCtrl', require('./controller.js'));

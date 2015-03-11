@@ -1,11 +1,5 @@
 <div id="{{brainpop}}" class="proofreading" ng-show="pf">
-  <h1>{{pf.title}}</h2>
-  <div class="description">
-    <p>{{pf.description}}</p>
-  </div>
-  <div class="instructions">
-    <p ng-bind-html="pf.instructions | trustedHtml"></p>
-  </div>
+  <quill-grammar-pf-heading pf="pf"></quill-grammar-pf-heading>
   <quill-grammar-passage passage="pf.passage"></quill-grammar-passage>
   <button ng-click="submitPassage(pf.passage)">Submit Passage</button>
   <div class="results">
