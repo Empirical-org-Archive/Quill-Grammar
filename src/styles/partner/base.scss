@@ -1,18 +1,14 @@
 $yellow: yellow;
 $gray: grey;
-
-iframe.partner-iframe {
-  overflow-y: scroll;
-  overflow: auto;
-  width: 860px;
-  height: 660px;
-  padding: 0;
-}
-
 div.partner-iframe {
   background-color: $gray;
-  text-align: center;
+  height: 600px;
+  width: 800px;
   margin:auto;
+  .heading, .footer {
+    text-align: center;
+  }
+
   .footer {
     background-color: $yellow;
     margin: 0;
