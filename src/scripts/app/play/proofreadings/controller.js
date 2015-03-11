@@ -81,7 +81,8 @@ function ProofreadingPlayCtrl(
     }
   };
 
-  $scope.submitPassage = function(passage) {
+  $scope.submitPassage = function() {
+    var passage = $scope.pf.passage;
     $scope.submitted = true;
     function isValid(passageEntry) {
       if (_.has(passageEntry, 'minus')) {

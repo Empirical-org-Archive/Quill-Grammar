@@ -27,5 +27,12 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
     templateUrl: 'pf-heading.html'
   };
 })
+.directive('quillGrammarPassageSubmitPanel', function() {
+  return {
+    restrict: 'E',
+    controller: 'ProofreadingPlayCtrl',
+    templateUrl: 'pf-submit-panel.html'
+  };
+})
 .directive('ngSize', require('./ngSize.js'))
 .controller('ProofreadingPlayCtrl', require('./controller.js'));

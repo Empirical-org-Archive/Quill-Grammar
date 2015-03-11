@@ -1,26 +1,5 @@
 <div id="{{brainpop}}" class="proofreading" ng-show="pf">
   <quill-grammar-pf-heading pf="pf"></quill-grammar-pf-heading>
   <quill-grammar-passage passage="pf.passage"></quill-grammar-passage>
-  <button ng-click="submitPassage(pf.passage)">Submit Passage</button>
-  <div class="results">
-    <div class="group" ng-repeat="(key, value) in results | groupBy: 'type'">
-      <h3>{{value.length}} {{groupNameBy(key)}}</h3>
-      <ul>
-        <li ng-repeat="r in value | map: 'passageEntry'">
-          <ul ng-show="hasUnsolvedError(r)">
-            <li class="unsolvedError">{{r.plus}}</li>
-            <li>{{getRuleInfoBy(r.ruleNumber)}}</li>
-          </ul>
-          <ul ng-show="hasIntroducedError(r)">
-            <li class="introducedError">{{error.responseText}}</li>
-          </ul>
-          <ul ng-show="hasSolvedProblem(r)">
-            <li class="solvedProblem">{{r.plus}}</li>
-            <li>{{getRuleInfoBy(r.ruleNumber)}}</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <button ng-click="goToLesson()" ng-show="hasLesson">Go to my Lesson</button>
-  </div>
+  <quill-grammar-passage-submit-panel></quill-grammar-passage-submit-panel>
 </div>
