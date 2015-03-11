@@ -1,8 +1,5 @@
-$unsolvedErrorColor: red;
-$introducedErrorColor: turquoise;
-$solvedProblemColor: lightgreen;
-$underlinedColor: black;
 div.passage {
+  background-color: $white;
   @include span-columns(12);
   @include omega();
   input[type="text"] {

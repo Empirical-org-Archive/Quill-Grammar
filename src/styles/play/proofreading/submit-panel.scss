@@ -1,6 +1,7 @@
 $message-width: 9;
 $button-width: 3;
 div.passage-submit-panel {
+  background-color: $gray;
   margin-top: 60px;
   @include span-columns(12);
   .passage-message {

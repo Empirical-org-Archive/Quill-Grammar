@@ -1,6 +1,20 @@
-.proofreading {
+$black: #333333;
+
+$unsolvedErrorColor: #ffdede;
+$introducedErrorColor: #f4d4ff;
+$solvedProblemColor: #d2ffe8;
+$underlinedColor: $black;
+
+$gray: #ededed;
+$yellow: #ea9a1a;
+$white: #ffffff;
+
+proofreading {
   @include outer-container;
   @include pad();
 }
+
+@import "../partner/base";
+@import "proofreading/heading";
 @import "proofreading/passage";
 @import "proofreading/submit-panel";
