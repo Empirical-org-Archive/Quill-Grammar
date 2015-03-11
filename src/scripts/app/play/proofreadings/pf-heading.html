@@ -1,0 +1,9 @@
+<div class="quill-grammar-pf-heading">
+  <h1>{{pf.title}}</h2>
+  <div class="description">
+    <p>{{pf.description}}</p>
+  </div>
+  <div class="instructions">
+    <p ng-bind-html="pf.instructions | trustedHtml"></p>
+  </div>
+</div>

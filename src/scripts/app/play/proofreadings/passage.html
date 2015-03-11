@@ -1,0 +1,15 @@
+<div class="passage">
+  <div class="word" ng-repeat="word in passage">
+    <p ng-bind-html="word.responseText | trustedHtml" ng-show="isBr(word.responseText)"></p>
+    <input
+      ng-show="!isBr(word.responseText)"
+      type="text"
+      ng-class="{focused: word.isFocused, unsolvedError: hasUnsolvedError(word), introducedError: hasIntroducedError(word), changed: word.text !== word.responseText, solvedProblem: hasSolvedProblem(word), underlined: needsUnderlining(word)}"
+      ng-readonly="submitted"
+      ng-focus="word.isFocused = true"
+      ng-blur="word.isFocused = false"
+      ng-size="{{word.responseText.length}}"
+      ng-model="word.responseText">
+    </input>
+  </div>
+</div>

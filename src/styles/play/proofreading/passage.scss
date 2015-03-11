@@ -1,0 +1,35 @@
+div.passage {
+  background-color: $white;
+  @include span-columns(12);
+  @include omega();
+  input[type="text"] {
+    outline: none;
+    border: none;
+    width: auto;
+    float: left;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+    font-family: 'courier new';
+
+    &.focused, &.changed {
+      font-weight: bold;
+    }
+
+    &.unsolvedError {
+      background-color: $unsolvedErrorColor;
+    }
+
+    &.introducedError {
+      background-color: $introducedErrorColor;
+    }
+
+    &.solvedProblem {
+      background-color: $solvedProblemColor;
+    }
+
+    &.underlined {
+      border-bottom: 1px solid $underlinedColor !important;
+    }
+  }
+}

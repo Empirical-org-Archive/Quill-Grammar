@@ -1,46 +1,5 @@
-<div id="{{brainpop}}" class="proofreading" ng-show="pf">
-  <h1>{{pf.title}}</h2>
-  <div class="description">
-    <p>{{pf.description}}</p>
-  </div>
-  <div class="instructions">
-    <p ng-bind-html="pf.instructions | trustedHtml"></p>
-  </div>
-  <div class="passage">
-    <div class="word" ng-repeat="word in pf.passage">
-      <p ng-bind-html="word.responseText | trustedHtml" ng-show="isBr(word.responseText)"></p>
-      <input
-        ng-show="!isBr(word.responseText)"
-        type="text"
-        ng-class="{focused: word.isFocused, unsolvedError: hasUnsolvedError(word), introducedError: hasIntroducedError(word), changed: word.text !== word.responseText, solvedProblem: hasSolvedProblem(word), underlined: needsUnderlining(word)}"
-        ng-readonly="submitted"
-        ng-focus="word.isFocused = true"
-        ng-blur="word.isFocused = false"
-        ng-size="{{word.responseText.length}}"
-        ng-model="word.responseText">
-      </input>
-    </div>
-  </div>
-  <button ng-click="submitPassage(pf.passage)">Submit Passage</button>
-  <div class="results">
-    <div class="group" ng-repeat="(key, value) in results | groupBy: 'type'">
-      <h3>{{value.length}} {{groupNameBy(key)}}</h3>
-      <ul>
-        <li ng-repeat="r in value | map: 'passageEntry'">
-          <ul ng-show="hasUnsolvedError(r)">
-            <li class="unsolvedError">{{r.plus}}</li>
-            <li>{{getRuleInfoBy(r.ruleNumber)}}</li>
-          </ul>
-          <ul ng-show="hasIntroducedError(r)">
-            <li class="introducedError">{{error.responseText}}</li>
-          </ul>
-          <ul ng-show="hasSolvedProblem(r)">
-            <li class="solvedProblem">{{r.plus}}</li>
-            <li>{{getRuleInfoBy(r.ruleNumber)}}</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <button ng-click="goToLesson()" ng-show="hasLesson">Go to my Lesson</button>
-  </div>
+<div id="{{brainpop}}" ng-class="{proofreading:true, 'partner-iframe': brainpop}" ng-show="pf">
+  <quill-grammar-pf-heading pf="pf"></quill-grammar-pf-heading>
+  <quill-grammar-passage passage="pf.passage"></quill-grammar-passage>
+  <quill-grammar-passage-submit-panel></quill-grammar-passage-submit-panel>
 </div>

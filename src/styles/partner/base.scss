@@ -1,14 +1,11 @@
-$yellow: yellow;
-$gray: grey;
 div.partner-iframe {
   background-color: $gray;
-  height: 600px;
-  width: 800px;
+  width: 880px;
   margin:auto;
-  .heading, .footer {
-    text-align: center;
-  }
-
+}
+div.partner-iframe-landing {
+  @extend .partner-iframe;
+  text-align: center;
   .footer {
     background-color: $yellow;
     margin: 0;
