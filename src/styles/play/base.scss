@@ -1,1 +1,6 @@
+.proofreading {
+  @include outer-container;
+  @include pad();
+}
 @import "proofreading/passage";
+@import "proofreading/submit-panel";
