@@ -107,11 +107,10 @@ function ProofreadingPlayCtrl(
     });
     var numErrorsToSolve = _.keys($scope.passageQuestions).length;
     var numErrorsFound = _.where(results, {type: $scope.SOLVED_PROBLEM}).length;
-    console.log(numErrorsFound, numErrorsToSolve);
     if (numErrorsFound < numErrorsToSolve / 2) {
       showModalNotEnoughFound();
     } else if (results.length > 1) {
-      showResults(results);
+      showResultsModal(results, numErrorsFound, numErrorsToSolve);
     } else {
       showNext();
     }
@@ -127,6 +126,21 @@ function ProofreadingPlayCtrl(
       buttonMessage: 'Find Errors',
       buttonClick: function() {
         $scope.pf.modal.show = false;
+      },
+      show: true
+    };
+  }
+
+  function showResultsModal(results, numErrorsFound, numErrorsToSolve) {
+    var title = numErrorsFound === numErrorsToSolve ? 'Congratulations!' : 'Good Work!';
+    var nf = numErrorsFound === numErrorsToSolve ? 'all ' + String(numErrorsFound) : String(numErrorsFound) + ' of ' + String(numErrorsToSolve);
+    $scope.pf.modal = {
+      title: title,
+      message: 'You found ' + nf + ' errors',
+      buttonMessage: 'Review Your Work',
+      buttonClick: function() {
+        $scope.pf.modal.show = false;
+        showResults(results);
       },
       show: true
     };
