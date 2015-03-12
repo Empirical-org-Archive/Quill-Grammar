@@ -83,9 +83,9 @@ function ProofreadingPlayCtrl(
 
   $scope.submitPassage = function() {
     var passage = $scope.pf.passage;
-    $scope.submitted = true;
     function isValid(passageEntry) {
       if (_.has(passageEntry, 'minus')) {
+        console.log(passageEntry);
         //A grammar entry
         return passageEntry.responseText === passageEntry.plus;
       } else {
@@ -105,14 +105,13 @@ function ProofreadingPlayCtrl(
         results.push({index: i, passageEntry: p, type: $scope.SOLVED_PROBLEM});
       }
     });
-    var numErrorsToSolve = _.keys($scope.passageQuestions).length;
+    var numErrorsToSolve = _.keys($scope.passageQuestions).length / 2;
     var numErrorsFound = _.where(results, {type: $scope.SOLVED_PROBLEM}).length;
-    if (numErrorsFound < numErrorsToSolve / 2) {
+    console.log(numErrorsToSolve, numErrorsFound);
+    if (numErrorsFound < numErrorsToSolve) {
       showModalNotEnoughFound();
-    } else if (results.length > 1) {
-      showResultsModal(results, numErrorsFound, numErrorsToSolve);
     } else {
-      showNext();
+      showResultsModal(results, numErrorsFound, numErrorsToSolve);
     }
   };
 

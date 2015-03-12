@@ -1,5 +1,5 @@
 <div class="passage">
-  <div class="word" ng-repeat="word in passage">
+  <div ng-class="{'word':true, 'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="word in pf.passage">
     <p ng-bind-html="word.responseText | trustedHtml" ng-show="isBr(word.responseText)"></p>
     <input
       ng-show="!isBr(word.responseText)"
@@ -11,5 +11,10 @@
       ng-size="{{word.responseText.length}}"
       ng-model="word.responseText">
     </input>
+    <div class="error-tooltip" ng-show="!isBr(word.responseText) && hasErrorToShow(word)">
+      <div ng-class="{unsolvedError: hasUnsolvedError(word), introducedError: hasIntroducedError(word), solvedProblem: hasSolvedProblem(word)}">
+        <h3>{{groupByName(word.type)}}</h3>
+      </div>
+    </div>
   </div>
 </div>

@@ -32,4 +32,13 @@ div.passage {
       border-bottom: 1px solid $underlinedColor !important;
     }
   }
+  .error-tooltip-item {
+    @extend .tooltip-item;
+    border: none;
+    display: inline-block;
+    padding: none;
+  }
+  .error-tooltip {
+    @extend .tooltip;
+  }
 }
