@@ -40,5 +40,7 @@ div.passage {
   }
   .error-tooltip {
     @extend .tooltip;
+    height: 259px;
+    width: 341px;
   }
 }
