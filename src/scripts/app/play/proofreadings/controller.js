@@ -105,7 +105,7 @@ function ProofreadingPlayCtrl(
         results.push({index: i, passageEntry: p, type: $scope.SOLVED_PROBLEM});
       }
     });
-    var numErrorsToSolve = _.keys($scope.passageQuestions).length / 2;
+    var numErrorsToSolve = 1;//_.keys($scope.passageQuestions).length / 2;
     var numErrorsFound = _.where(results, {type: $scope.SOLVED_PROBLEM}).length;
     console.log(numErrorsToSolve, numErrorsFound);
     if (numErrorsFound < numErrorsToSolve) {
