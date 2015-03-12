@@ -1,7 +1,7 @@
 'use strict';
 
 /*@ngInject*/
-module.exports = function() {
+module.exports.directive = function() {
   return {
     restrict: 'E',
     scope: {
@@ -9,9 +9,23 @@ module.exports = function() {
       max: '=',
       current: '=',
     },
-    controller: function($scope) {
-
-    },
+    controller: 'ProgressBarCtrl',
     templateUrl: 'progress-bar.html'
   };
+};
+
+/*@ngInject*/
+module.exports.controller = function($scope) {
+
+  function calculate() {
+    $scope.progressString = String($scope.current) + ' of ' + String($scope.max);
+    $scope.progressBarPercentage = {
+      width: String(($scope.current / $scope.max) * 100) + '%'
+    };
+  }
+
+  $scope.$watch('max', calculate);
+  $scope.$watch('current', calculate);
+
+  calculate();
 };
