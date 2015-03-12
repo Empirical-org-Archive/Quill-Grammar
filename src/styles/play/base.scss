@@ -1,8 +1,8 @@
 $black: #333333;
 
-$unsolvedErrorColor: #ffdede;
-$introducedErrorColor: #f4d4ff;
-$solvedProblemColor: #d2ffe8;
+$incorrectErrorColor: #ffdede;
+$notNecessaryErrorColor: #f4d4ff;
+$correctColor: #d2ffe8;
 $underlinedColor: $black;
 
 $gray: #ededed;
@@ -15,6 +15,7 @@ proofreading {
 }
 
 @import "../my-refills/modal";
+@import "../my-refills/tooltip";
 @import "../partner/base";
 @import "proofreading/heading";
 @import "proofreading/passage";

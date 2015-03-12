@@ -16,20 +16,31 @@ div.passage {
       font-weight: bold;
     }
 
-    &.unsolvedError {
-      background-color: $unsolvedErrorColor;
+    &.incorrectError {
+      background-color: $incorrectErrorColor;
     }
 
-    &.introducedError {
-      background-color: $introducedErrorColor;
+    &.notNecessaryError {
+      background-color: $notNecessaryErrorColor;
     }
 
-    &.solvedProblem {
-      background-color: $solvedProblemColor;
+    &.correct {
+      background-color: $correctColor;
     }
 
     &.underlined {
       border-bottom: 1px solid $underlinedColor !important;
     }
+  }
+  .error-tooltip-item {
+    @extend .tooltip-item;
+    border: none;
+    display: inline-block;
+    padding: none;
+  }
+  .error-tooltip {
+    @extend .tooltip;
+    height: 259px;
+    width: 341px;
   }
 }

@@ -55,35 +55,24 @@ function ProofreadingPlayCtrl(
    * their passage.
    */
 
-  $scope.UNSOLVED_ERROR = 'UNSOLVED_ERROR';
-  $scope.INTRODUCED_ERROR = 'INTRODUCED_ERROR';
-  $scope.SOLVED_PROBLEM = 'SOLVED_PROBLEM';
+  $scope.INCORRECT_ERROR = 'Incorrect';
+  $scope.NOT_NECESSARY_ERROR = 'Not Necessary';
+  $scope.CORRECT = 'Correct';
 
-  $scope.hasIntroducedError = function(word) {
-    return word.type === $scope.INTRODUCED_ERROR;
+  $scope.hasNotNecessaryError = function(word) {
+    return word.type === $scope.NOT_NECESSARY_ERROR;
   };
 
-  $scope.hasUnsolvedError = function(word) {
-    return word.type === $scope.UNSOLVED_ERROR;
+  $scope.hasIncorrectError = function(word) {
+    return word.type === $scope.INCORRECT_ERROR;
   };
 
-  $scope.hasSolvedProblem = function(word) {
-    return word.type === $scope.SOLVED_PROBLEM;
-  };
-
-  $scope.groupNameBy = function(key) {
-    if (key === $scope.UNSOLVED_ERROR) {
-      return  'Unsolved Problem(s)';
-    } else if (key === $scope.INTRODUCED_ERROR) {
-      return 'Introduced Problem(s)';
-    } else if (key === $scope.SOLVED_PROBLEM) {
-      return 'Solved Problems(s)';
-    }
+  $scope.hasCorrect = function(word) {
+    return word.type === $scope.CORRECT;
   };
 
   $scope.submitPassage = function() {
     var passage = $scope.pf.passage;
-    $scope.submitted = true;
     function isValid(passageEntry) {
       if (_.has(passageEntry, 'minus')) {
         //A grammar entry
@@ -94,28 +83,37 @@ function ProofreadingPlayCtrl(
       }
     }
     function getErrorType(passageEntry) {
-      return _.has(passageEntry, 'minus') ? $scope.UNSOLVED_ERROR : $scope.INTRODUCED_ERROR;
+      return _.has(passageEntry, 'minus') ? $scope.INCORRECT_ERROR : $scope.NOT_NECESSARY_ERROR;
     }
-    var results = [];
+    $scope.results = [];
     _.each(passage, function(p, i) {
       if (!isValid(p)) {
-        results.push({index: i, passageEntry: p, type: getErrorType(p)});
+        $scope.results.push({index: i, passageEntry: p, type: getErrorType(p)});
       }
       if (isValid(p) && _.has(p, 'minus')) {
-        results.push({index: i, passageEntry: p, type: $scope.SOLVED_PROBLEM});
+        $scope.results.push({index: i, passageEntry: p, type: $scope.CORRECT});
       }
     });
-    var numErrorsToSolve = _.keys($scope.passageQuestions).length;
-    var numErrorsFound = _.where(results, {type: $scope.SOLVED_PROBLEM}).length;
-    if (numErrorsFound < numErrorsToSolve / 2) {
+    var numErrorsToSolve = 1;//_.keys($scope.passageQuestions).length / 2;
+    var numErrorsFound = getNumCorrect($scope.results);
+    if (numErrorsFound < numErrorsToSolve) {
       showModalNotEnoughFound();
-    } else if (results.length > 1) {
-      showResultsModal(results, numErrorsFound, numErrorsToSolve);
     } else {
-      showNext();
+      showResultsModal($scope.results, numErrorsFound, numErrorsToSolve);
     }
   };
 
+  function getNumCorrect(results) {
+    return _.where(results, {type: $scope.CORRECT}).length;
+  }
+
+  function getNumErrors() {
+    return _.keys($scope.passageQuestions).length;
+  }
+
+  function getNumResults() {
+    return _.keys($scope.results).length;
+  }
   /*
    * Modal settings
    */
@@ -147,8 +145,70 @@ function ProofreadingPlayCtrl(
   }
 
   /*
-   * Convience html methods
+   * Convenience html methods
    */
+
+  $scope.nextAction = function(word) {
+    if (!$scope.results) {
+      return {};
+    }
+    var allCorrect = getNumCorrect($scope.results) === getNumResults();
+    var na = {
+      fn: null,
+      title: ''
+    };
+    if (word.resultIndex + 1 >= getNumResults()) {
+      if (allCorrect) {
+        na.fn = function() {
+          console.log('view results');
+        };
+        na.title = 'View Results';
+      } else {
+        na.fn = function() {
+          $scope.goToLesson();
+        };
+        na.title = 'Start My Activity';
+      }
+    } else {
+      na.fn = function() {
+        $scope.focusResult(word.resultIndex + 1);
+      };
+      na.title = 'Next';
+    }
+
+    return na;
+  };
+
+  $scope.focusResult = function(resultIndex) {
+    var p = $scope.results[resultIndex - 1];
+    var r = $scope.results[resultIndex];
+    if (p) {
+      $scope.pf.passage[p.index].tooltip = {};
+    }
+
+    if (r) {
+      $scope.pf.passage[r.index].tooltip = {
+        style: {
+          visibility: 'visible',
+          opacity: 1
+        }
+      };
+    }
+  };
+
+
+  $scope.errorCounter = function(word) {
+    return String(word.resultIndex + 1) + ' of ' + getNumErrors();
+  };
+
+  $scope.answerImageName = function(t) {
+    if (!t) {
+      return;
+    }
+    return _.map(t.split(' '), function(s) {
+      return s.toLowerCase();
+    }).join('_');
+  };
 
   $scope.needsUnderlining = function(p) {
     if ($scope.pf && $scope.pf.underlineErrorsInProofreader && _.has(p, 'minus')) {
@@ -160,21 +220,29 @@ function ProofreadingPlayCtrl(
     return ProofreadingService.htmlMatches(text) !== null;
   };
 
-  function showResults(passageResults) {
-    _.each(passageResults, function(pr) {
-      $scope.pf.passage[pr.index].type = pr.type;
+  $scope.hasErrorToShow = function(word) {
+    return _.any([$scope.hasNotNecessaryError, $scope.hasCorrect, $scope.hasIncorrectError], function(fn) {
+      return fn(word);
     });
-    $scope.results = passageResults;
+  };
+
+  function showResults(passageResults) {
+    _.each(passageResults, function(pr, i) {
+      $scope.pf.passage[pr.index].type = pr.type;
+      $scope.pf.passage[pr.index].resultIndex = i;
+      $scope.pf.passage[pr.index].nextAction = $scope.nextAction($scope.pf.passage[pr.index]);
+    });
     var ruleNumbers = _.chain(passageResults)
       .pluck('passageEntry')
       .reject(function(r) {
-        return r.type !== $scope.UNSOLVED_ERROR;
+        return r.type !== $scope.INCORRECT_ERROR;
       })
       .pluck('ruleNumber')
       .reject(_.isUndefined)
       .uniq()
       .value();
     generateLesson(ruleNumbers);
+    $scope.focusResult(0);
     captureReady();
   }
 
@@ -192,12 +260,4 @@ function ProofreadingPlayCtrl(
     $scope.hasLesson = true;
   }
 
-  /*
-   * Below handles setting the state, if the lesson
-   * was completed without error.
-   */
-
-  function showNext() {
-
-  }
 };

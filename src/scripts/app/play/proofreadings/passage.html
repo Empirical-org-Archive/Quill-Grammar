@@ -1,15 +1,26 @@
 <div class="passage">
-  <div class="word" ng-repeat="word in passage">
+  <div ng-class="{'word':true, 'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="word in passage">
     <p ng-bind-html="word.responseText | trustedHtml" ng-show="isBr(word.responseText)"></p>
     <input
       ng-show="!isBr(word.responseText)"
       type="text"
-      ng-class="{focused: word.isFocused, unsolvedError: hasUnsolvedError(word), introducedError: hasIntroducedError(word), changed: word.text !== word.responseText, solvedProblem: hasSolvedProblem(word), underlined: needsUnderlining(word)}"
+      ng-class="{focused: word.isFocused, incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), changed: word.text !== word.responseText, correct: hasCorrect(word), underlined: needsUnderlining(word)}"
       ng-readonly="submitted"
       ng-focus="word.isFocused = true"
       ng-blur="word.isFocused = false"
       ng-size="{{word.responseText.length}}"
       ng-model="word.responseText">
     </input>
+    <div class="error-tooltip" ng-show="!isBr(word.responseText) && hasErrorToShow(word)"
+      ng-style="word.tooltip.style">
+      <div ng-class="{incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), correct: hasCorrect(word)}">
+        <div class="top-panel">
+          <img ng-src="/assets/images/{{answerImageName(word.type)}}_icon.png" alt="{{word.type}}"></img>
+          <p>{{word.type}}</p>
+          <p class="counter">{{errorCounter(word)}}</p>
+          <button ng-click="word.nextAction.fn()">{{word.nextAction.title}}</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
