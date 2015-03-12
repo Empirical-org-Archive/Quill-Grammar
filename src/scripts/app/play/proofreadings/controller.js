@@ -107,7 +107,6 @@ function ProofreadingPlayCtrl(
     });
     var numErrorsToSolve = 1;//_.keys($scope.passageQuestions).length / 2;
     var numErrorsFound = _.where(results, {type: $scope.SOLVED_PROBLEM}).length;
-    console.log(numErrorsToSolve, numErrorsFound);
     if (numErrorsFound < numErrorsToSolve) {
       showModalNotEnoughFound();
     } else {
@@ -146,7 +145,7 @@ function ProofreadingPlayCtrl(
   }
 
   /*
-   * Convience html methods
+   * Convenience html methods
    */
 
   $scope.needsUnderlining = function(p) {
@@ -157,6 +156,12 @@ function ProofreadingPlayCtrl(
 
   $scope.isBr = function(text) {
     return ProofreadingService.htmlMatches(text) !== null;
+  };
+
+  $scope.hasErrorToShow = function(word) {
+    return _.any([$scope.hasIntroducedError, $scope.hasSolvedProblem, $scope.hasUnsolvedError], function(fn) {
+      return fn(word);
+    });
   };
 
   function showResults(passageResults) {
@@ -191,12 +196,4 @@ function ProofreadingPlayCtrl(
     $scope.hasLesson = true;
   }
 
-  /*
-   * Below handles setting the state, if the lesson
-   * was completed without error.
-   */
-
-  function showNext() {
-
-  }
 };
