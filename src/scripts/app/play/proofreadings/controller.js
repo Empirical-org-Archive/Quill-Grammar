@@ -179,6 +179,23 @@ function ProofreadingPlayCtrl(
     return na;
   };
 
+  $scope.focusResult = function(resultIndex) {
+    var p = $scope.results[resultIndex - 1];
+    var r = $scope.results[resultIndex];
+    if (p) {
+      $scope.pf.passage[p.index].tooltip = {};
+    }
+
+    if (r) {
+      $scope.pf.passage[r.index].tooltip = {
+        style: {
+          visibility: 'visible',
+          opacity: 1
+        }
+      };
+    }
+  };
+
 
   $scope.errorCounter = function(word) {
     return String(word.resultIndex + 1) + ' of ' + getNumErrors();
@@ -225,6 +242,7 @@ function ProofreadingPlayCtrl(
       .uniq()
       .value();
     generateLesson(ruleNumbers);
+    $scope.focusResult(0);
     captureReady();
   }
 

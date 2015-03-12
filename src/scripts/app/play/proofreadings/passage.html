@@ -11,7 +11,8 @@
       ng-size="{{word.responseText.length}}"
       ng-model="word.responseText">
     </input>
-    <div class="error-tooltip" ng-show="!isBr(word.responseText) && hasErrorToShow(word)">
+    <div class="error-tooltip" ng-show="!isBr(word.responseText) && hasErrorToShow(word)"
+      ng-style="word.tooltip.style">
       <div ng-class="{incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), correct: hasCorrect(word)}">
         <div class="top-panel">
           <img ng-src="/assets/images/{{answerImageName(word.type)}}_icon.png" alt="{{word.type}}"></img>
