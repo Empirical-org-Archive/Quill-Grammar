@@ -104,6 +104,9 @@ function ProofreadingPlayCtrl(
     }
   };
 
+  function getNumErrors() {
+    return _.keys($scope.passageQuestions).length;
+  }
   /*
    * Modal settings
    */
@@ -138,7 +141,14 @@ function ProofreadingPlayCtrl(
    * Convenience html methods
    */
 
+  $scope.errorCounter = function(word) {
+    return String(word.resultIndex + 1) + ' of ' + getNumErrors();
+  };
+
   $scope.answerImageName = function(t) {
+    if (!t) {
+      return;
+    }
     return _.map(t.split(' '), function(s) {
       return s.toLowerCase();
     }).join('_');
@@ -161,8 +171,9 @@ function ProofreadingPlayCtrl(
   };
 
   function showResults(passageResults) {
-    _.each(passageResults, function(pr) {
+    _.each(passageResults, function(pr, i) {
       $scope.pf.passage[pr.index].type = pr.type;
+      $scope.pf.passage[pr.index].resultIndex = i;
     });
     $scope.results = passageResults;
     var ruleNumbers = _.chain(passageResults)
