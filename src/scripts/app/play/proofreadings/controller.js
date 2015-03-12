@@ -75,7 +75,6 @@ function ProofreadingPlayCtrl(
     var passage = $scope.pf.passage;
     function isValid(passageEntry) {
       if (_.has(passageEntry, 'minus')) {
-        console.log(passageEntry);
         //A grammar entry
         return passageEntry.responseText === passageEntry.plus;
       } else {
@@ -86,26 +85,34 @@ function ProofreadingPlayCtrl(
     function getErrorType(passageEntry) {
       return _.has(passageEntry, 'minus') ? $scope.INCORRECT_ERROR : $scope.NOT_NECESSARY_ERROR;
     }
-    var results = [];
+    $scope.results = [];
     _.each(passage, function(p, i) {
       if (!isValid(p)) {
-        results.push({index: i, passageEntry: p, type: getErrorType(p)});
+        $scope.results.push({index: i, passageEntry: p, type: getErrorType(p)});
       }
       if (isValid(p) && _.has(p, 'minus')) {
-        results.push({index: i, passageEntry: p, type: $scope.CORRECT});
+        $scope.results.push({index: i, passageEntry: p, type: $scope.CORRECT});
       }
     });
     var numErrorsToSolve = 1;//_.keys($scope.passageQuestions).length / 2;
-    var numErrorsFound = _.where(results, {type: $scope.CORRECT}).length;
+    var numErrorsFound = getNumCorrect($scope.results);
     if (numErrorsFound < numErrorsToSolve) {
       showModalNotEnoughFound();
     } else {
-      showResultsModal(results, numErrorsFound, numErrorsToSolve);
+      showResultsModal($scope.results, numErrorsFound, numErrorsToSolve);
     }
   };
 
+  function getNumCorrect(results) {
+    return _.where(results, {type: $scope.CORRECT}).length;
+  }
+
   function getNumErrors() {
     return _.keys($scope.passageQuestions).length;
+  }
+
+  function getNumResults() {
+    return _.keys($scope.results).length;
   }
   /*
    * Modal settings
@@ -141,6 +148,38 @@ function ProofreadingPlayCtrl(
    * Convenience html methods
    */
 
+  $scope.nextAction = function(word) {
+    if (!$scope.results) {
+      return {};
+    }
+    var allCorrect = getNumCorrect($scope.results) === getNumResults();
+    var na = {
+      fn: null,
+      title: ''
+    };
+    if (word.resultIndex + 1 >= getNumResults()) {
+      if (allCorrect) {
+        na.fn = function() {
+          console.log('view results');
+        };
+        na.title = 'View Results';
+      } else {
+        na.fn = function() {
+          $scope.goToLesson();
+        };
+        na.title = 'Start My Activity';
+      }
+    } else {
+      na.fn = function() {
+        $scope.focusResult(word.resultIndex + 1);
+      };
+      na.title = 'Next';
+    }
+
+    return na;
+  };
+
+
   $scope.errorCounter = function(word) {
     return String(word.resultIndex + 1) + ' of ' + getNumErrors();
   };
@@ -174,8 +213,8 @@ function ProofreadingPlayCtrl(
     _.each(passageResults, function(pr, i) {
       $scope.pf.passage[pr.index].type = pr.type;
       $scope.pf.passage[pr.index].resultIndex = i;
+      $scope.pf.passage[pr.index].nextAction = $scope.nextAction($scope.pf.passage[pr.index]);
     });
-    $scope.results = passageResults;
     var ruleNumbers = _.chain(passageResults)
       .pluck('passageEntry')
       .reject(function(r) {

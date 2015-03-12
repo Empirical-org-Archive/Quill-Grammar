@@ -17,6 +17,7 @@
           <img ng-src="/assets/images/{{answerImageName(word.type)}}_icon.png" alt="{{word.type}}"></img>
           <p>{{word.type}}</p>
           <p class="counter">{{errorCounter(word)}}</p>
+          <button ng-click="word.nextAction.fn()">{{word.nextAction.title}}</button>
         </div>
       </div>
     </div>
