@@ -3,11 +3,13 @@
   <quill-grammar-passage passage="pf.passage"></quill-grammar-passage>
   <quill-grammar-passage-submit-panel></quill-grammar-passage-submit-panel>
 
-  <div class="modal" ng-show="true">
-    <input class="modal-state" type="checkbox" ng-checked="show"/>
+  <div class="proofreading-modal" ng-show="pf.modal.show">
+    <input class="modal-state" type="checkbox" ng-checked="pf.modal.show"/>
     <div class="modal-window">
       <div class="modal-inner">
-        HI
+        <h2>{{pf.modal.title}}</h2>
+        <p>{{pf.modal.message}}</p>
+        <button ng-click="pf.modal.buttonClick()">{{pf.modal.buttonMessage}}</button>
       </div>
     </div>
   </div>

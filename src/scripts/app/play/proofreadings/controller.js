@@ -105,12 +105,32 @@ function ProofreadingPlayCtrl(
         results.push({index: i, passageEntry: p, type: $scope.SOLVED_PROBLEM});
       }
     });
-    if (results.length > 1) {
+    var numErrorsToSolve = _.keys($scope.passageQuestions).length;
+    var numErrorsFound = _.where(results, {type: $scope.SOLVED_PROBLEM}).length;
+    console.log(numErrorsFound, numErrorsToSolve);
+    if (numErrorsFound < numErrorsToSolve / 2) {
+      showModalNotEnoughFound();
+    } else if (results.length > 1) {
       showResults(results);
     } else {
       showNext();
     }
   };
+
+  /*
+   * Modal settings
+   */
+  function showModalNotEnoughFound() {
+    $scope.pf.modal = {
+      title: 'Keep Trying!',
+      message: 'You need to find at least 50% of the errors.',
+      buttonMessage: 'Find Errors',
+      buttonClick: function() {
+        $scope.pf.modal.show = false;
+      },
+      show: true
+    };
+  }
 
   /*
    * Convience html methods
