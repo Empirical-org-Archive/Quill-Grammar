@@ -107,7 +107,7 @@ function ProofreadingPlayCtrl(
     return _.where(results, {type: $scope.CORRECT}).length;
   }
 
-  function getNumErrors() {
+  $scope.getNumErrors = function() {
     return _.keys($scope.passageQuestions).length;
   }
 
@@ -198,7 +198,7 @@ function ProofreadingPlayCtrl(
 
 
   $scope.errorCounter = function(word) {
-    return String(word.resultIndex + 1) + ' of ' + getNumErrors();
+    return String(word.resultIndex + 1) + ' of ' + $scope.getNumErrors();
   };
 
   $scope.answerImageName = function(t) {
