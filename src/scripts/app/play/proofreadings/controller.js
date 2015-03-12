@@ -57,7 +57,7 @@ function ProofreadingPlayCtrl(
 
   $scope.INCORRECT_ERROR = 'INCORRECT_ERROR';
   $scope.NOT_NECESSARY_ERROR = 'NOT_NECESSARY_ERROR';
-  $scope.SOLVED_PROBLEM = 'SOLVED_PROBLEM';
+  $scope.CORRECT = 'CORRECT';
 
   $scope.hasNotNecessaryError = function(word) {
     return word.type === $scope.NOT_NECESSARY_ERROR;
@@ -67,8 +67,8 @@ function ProofreadingPlayCtrl(
     return word.type === $scope.INCORRECT_ERROR;
   };
 
-  $scope.hasSolvedProblem = function(word) {
-    return word.type === $scope.SOLVED_PROBLEM;
+  $scope.hasCorrect = function(word) {
+    return word.type === $scope.CORRECT;
   };
 
   $scope.groupNameBy = function(key) {
@@ -76,7 +76,7 @@ function ProofreadingPlayCtrl(
       return  'Unsolved Problem(s)';
     } else if (key === $scope.NOT_NECESSARY_ERROR) {
       return 'Introduced Problem(s)';
-    } else if (key === $scope.SOLVED_PROBLEM) {
+    } else if (key === $scope.CORRECT) {
       return 'Solved Problems(s)';
     }
   };
@@ -102,11 +102,11 @@ function ProofreadingPlayCtrl(
         results.push({index: i, passageEntry: p, type: getErrorType(p)});
       }
       if (isValid(p) && _.has(p, 'minus')) {
-        results.push({index: i, passageEntry: p, type: $scope.SOLVED_PROBLEM});
+        results.push({index: i, passageEntry: p, type: $scope.CORRECT});
       }
     });
     var numErrorsToSolve = 1;//_.keys($scope.passageQuestions).length / 2;
-    var numErrorsFound = _.where(results, {type: $scope.SOLVED_PROBLEM}).length;
+    var numErrorsFound = _.where(results, {type: $scope.CORRECT}).length;
     if (numErrorsFound < numErrorsToSolve) {
       showModalNotEnoughFound();
     } else {
@@ -159,7 +159,7 @@ function ProofreadingPlayCtrl(
   };
 
   $scope.hasErrorToShow = function(word) {
-    return _.any([$scope.hasNotNecessaryError, $scope.hasSolvedProblem, $scope.hasIncorrectError], function(fn) {
+    return _.any([$scope.hasNotNecessaryError, $scope.hasCorrect, $scope.hasIncorrectError], function(fn) {
       return fn(word);
     });
   };

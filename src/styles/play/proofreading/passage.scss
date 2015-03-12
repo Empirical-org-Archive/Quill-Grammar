@@ -24,8 +24,8 @@ div.passage {
       background-color: $notNecessaryErrorColor;
     }
 
-    &.solvedProblem {
-      background-color: $solvedProblemColor;
+    &.correct {
+      background-color: $correctColor;
     }
 
     &.underlined {
