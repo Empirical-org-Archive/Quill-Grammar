@@ -56,11 +56,11 @@ function ProofreadingPlayCtrl(
    */
 
   $scope.INCORRECT_ERROR = 'INCORRECT_ERROR';
-  $scope.INTRODUCED_ERROR = 'INTRODUCED_ERROR';
+  $scope.NOT_NECESSARY_ERROR = 'NOT_NECESSARY_ERROR';
   $scope.SOLVED_PROBLEM = 'SOLVED_PROBLEM';
 
-  $scope.hasIntroducedError = function(word) {
-    return word.type === $scope.INTRODUCED_ERROR;
+  $scope.hasNotNecessaryError = function(word) {
+    return word.type === $scope.NOT_NECESSARY_ERROR;
   };
 
   $scope.hasIncorrectError = function(word) {
@@ -74,7 +74,7 @@ function ProofreadingPlayCtrl(
   $scope.groupNameBy = function(key) {
     if (key === $scope.INCORRECT_ERROR) {
       return  'Unsolved Problem(s)';
-    } else if (key === $scope.INTRODUCED_ERROR) {
+    } else if (key === $scope.NOT_NECESSARY_ERROR) {
       return 'Introduced Problem(s)';
     } else if (key === $scope.SOLVED_PROBLEM) {
       return 'Solved Problems(s)';
@@ -94,7 +94,7 @@ function ProofreadingPlayCtrl(
       }
     }
     function getErrorType(passageEntry) {
-      return _.has(passageEntry, 'minus') ? $scope.INCORRECT_ERROR : $scope.INTRODUCED_ERROR;
+      return _.has(passageEntry, 'minus') ? $scope.INCORRECT_ERROR : $scope.NOT_NECESSARY_ERROR;
     }
     var results = [];
     _.each(passage, function(p, i) {
@@ -159,7 +159,7 @@ function ProofreadingPlayCtrl(
   };
 
   $scope.hasErrorToShow = function(word) {
-    return _.any([$scope.hasIntroducedError, $scope.hasSolvedProblem, $scope.hasIncorrectError], function(fn) {
+    return _.any([$scope.hasNotNecessaryError, $scope.hasSolvedProblem, $scope.hasIncorrectError], function(fn) {
       return fn(word);
     });
   };

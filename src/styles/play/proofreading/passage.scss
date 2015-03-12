@@ -20,8 +20,8 @@ div.passage {
       background-color: $incorrectErrorColor;
     }
 
-    &.introducedError {
-      background-color: $introducedErrorColor;
+    &.notNecessaryError {
+      background-color: $notNecessaryErrorColor;
     }
 
     &.solvedProblem {

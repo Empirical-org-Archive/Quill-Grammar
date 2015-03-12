@@ -4,7 +4,7 @@
     <input
       ng-show="!isBr(word.responseText)"
       type="text"
-      ng-class="{focused: word.isFocused, incorrectError: hasIncorrectError(word), introducedError: hasIntroducedError(word), changed: word.text !== word.responseText, solvedProblem: hasSolvedProblem(word), underlined: needsUnderlining(word)}"
+      ng-class="{focused: word.isFocused, incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), changed: word.text !== word.responseText, solvedProblem: hasSolvedProblem(word), underlined: needsUnderlining(word)}"
       ng-readonly="submitted"
       ng-focus="word.isFocused = true"
       ng-blur="word.isFocused = false"
@@ -12,7 +12,7 @@
       ng-model="word.responseText">
     </input>
     <div class="error-tooltip" ng-show="!isBr(word.responseText) && hasErrorToShow(word)">
-      <div ng-class="{incorrectError: hasIncorrectError(word), introducedError: hasIntroducedError(word), solvedProblem: hasSolvedProblem(word)}">
+      <div ng-class="{incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), solvedProblem: hasSolvedProblem(word)}">
         <h3>{{groupByName(word.type)}}</h3>
       </div>
     </div>
