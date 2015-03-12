@@ -14,7 +14,7 @@
     <div class="error-tooltip" ng-show="!isBr(word.responseText) && hasErrorToShow(word)">
       <div ng-class="{incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), correct: hasCorrect(word)}">
         <div class="top-panel">
-          <img ng-src="/assets/images/{{answerImageName(word.type)}}.png" alt="{{word.type}}"></img>
+          <img ng-src="/assets/images/{{answerImageName(word.type)}}_icon.png" alt="{{word.type}}"></img>
           <p>{{word.type}}</p>
           <p class="counter">{{errorCounter(word)}}</p>
         </div>

@@ -138,6 +138,12 @@ function ProofreadingPlayCtrl(
    * Convenience html methods
    */
 
+  $scope.answerImageName = function(t) {
+    return _.map(t.split(' '), function(s) {
+      return s.toLowerCase();
+    }).join('_');
+  };
+
   $scope.needsUnderlining = function(p) {
     if ($scope.pf && $scope.pf.underlineErrorsInProofreader && _.has(p, 'minus')) {
       return true;
