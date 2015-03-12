@@ -14,6 +14,7 @@ proofreading {
   @include pad();
 }
 
+@import "../my-refills/modal";
 @import "../partner/base";
 @import "proofreading/heading";
 @import "proofreading/passage";
