@@ -55,9 +55,9 @@ function ProofreadingPlayCtrl(
    * their passage.
    */
 
-  $scope.INCORRECT_ERROR = 'INCORRECT_ERROR';
-  $scope.NOT_NECESSARY_ERROR = 'NOT_NECESSARY_ERROR';
-  $scope.CORRECT = 'CORRECT';
+  $scope.INCORRECT_ERROR = 'Incorrect';
+  $scope.NOT_NECESSARY_ERROR = 'Not Necessary';
+  $scope.CORRECT = 'Correct';
 
   $scope.hasNotNecessaryError = function(word) {
     return word.type === $scope.NOT_NECESSARY_ERROR;
@@ -69,16 +69,6 @@ function ProofreadingPlayCtrl(
 
   $scope.hasCorrect = function(word) {
     return word.type === $scope.CORRECT;
-  };
-
-  $scope.groupNameBy = function(key) {
-    if (key === $scope.INCORRECT_ERROR) {
-      return  'Unsolved Problem(s)';
-    } else if (key === $scope.NOT_NECESSARY_ERROR) {
-      return 'Introduced Problem(s)';
-    } else if (key === $scope.CORRECT) {
-      return 'Solved Problems(s)';
-    }
   };
 
   $scope.submitPassage = function() {
