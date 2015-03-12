@@ -105,12 +105,46 @@ function ProofreadingPlayCtrl(
         results.push({index: i, passageEntry: p, type: $scope.SOLVED_PROBLEM});
       }
     });
-    if (results.length > 1) {
-      showResults(results);
+    var numErrorsToSolve = _.keys($scope.passageQuestions).length;
+    var numErrorsFound = _.where(results, {type: $scope.SOLVED_PROBLEM}).length;
+    if (numErrorsFound < numErrorsToSolve / 2) {
+      showModalNotEnoughFound();
+    } else if (results.length > 1) {
+      showResultsModal(results, numErrorsFound, numErrorsToSolve);
     } else {
       showNext();
     }
   };
+
+  /*
+   * Modal settings
+   */
+  function showModalNotEnoughFound() {
+    $scope.pf.modal = {
+      title: 'Keep Trying!',
+      message: 'You need to find at least 50% of the errors.',
+      buttonMessage: 'Find Errors',
+      buttonClick: function() {
+        $scope.pf.modal.show = false;
+      },
+      show: true
+    };
+  }
+
+  function showResultsModal(results, numErrorsFound, numErrorsToSolve) {
+    var title = numErrorsFound === numErrorsToSolve ? 'Congratulations!' : 'Good Work!';
+    var nf = numErrorsFound === numErrorsToSolve ? 'all ' + String(numErrorsFound) : String(numErrorsFound) + ' of ' + String(numErrorsToSolve);
+    $scope.pf.modal = {
+      title: title,
+      message: 'You found ' + nf + ' errors',
+      buttonMessage: 'Review Your Work',
+      buttonClick: function() {
+        $scope.pf.modal.show = false;
+        showResults(results);
+      },
+      show: true
+    };
+  }
 
   /*
    * Convience html methods
