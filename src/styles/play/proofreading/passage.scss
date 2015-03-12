@@ -16,8 +16,8 @@ div.passage {
       font-weight: bold;
     }
 
-    &.unsolvedError {
-      background-color: $unsolvedErrorColor;
+    &.incorrectError {
+      background-color: $incorrectErrorColor;
     }
 
     &.introducedError {
