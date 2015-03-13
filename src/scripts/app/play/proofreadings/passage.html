@@ -7,6 +7,7 @@
       ng-class="{focused: word.isFocused, incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), changed: word.text !== word.responseText, correct: hasCorrect(word), underlined: needsUnderlining(word)}"
       ng-readonly="submitted"
       ng-focus="word.isFocused = true"
+      ng-change="onInputChange(word)"
       ng-blur="word.isFocused = false"
       ng-size="{{word.responseText.length}}"
       ng-model="word.responseText">

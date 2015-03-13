@@ -34,6 +34,28 @@ function ProofreadingPlayCtrl(
   }, error);
 
   /*
+   * set number of changes to passage. Functions for incrementing and decrementing
+   * this number.
+   */
+  $scope.numChanges = 0;
+
+  $scope.onInputChange = function(word) {
+    if (!word.responseText || !word.text) {
+      throw new Error('Should have responseText and text');
+    }
+    var nc = $scope.numChanges;
+    if (word.responseText !== word.text && !word.countedChange) {
+      word.countedChange = true;
+      nc++;
+    }
+    if (word.responseText === word.text && word.countedChange) {
+      nc = Math.max(nc - 1, 0);
+      word.countedChange = false;
+    }
+    $scope.numChanges = nc;
+  };
+
+  /*
    * Functions for interacting with the referenced rules in the
    * passage questions.
    */
@@ -109,7 +131,7 @@ function ProofreadingPlayCtrl(
 
   $scope.getNumErrors = function() {
     return _.keys($scope.passageQuestions).length;
-  }
+  };
 
   function getNumResults() {
     return _.keys($scope.results).length;
