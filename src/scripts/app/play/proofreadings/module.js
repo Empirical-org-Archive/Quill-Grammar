@@ -32,7 +32,6 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
 .directive('quillGrammarPassageSubmitPanel', function() {
   return {
     restrict: 'E',
-    scope: true,
     controller: 'ProofreadingPlayCtrl',
     templateUrl: 'pf-submit-panel.html'
   };
