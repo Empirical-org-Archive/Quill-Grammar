@@ -34,6 +34,28 @@ function ProofreadingPlayCtrl(
   }, error);
 
   /*
+   * set number of changes to passage. Functions for incrementing and decrementing
+   * this number.
+   */
+  $scope.numChanges = 0;
+
+  $scope.onInputChange = function(word) {
+    if (!word.responseText || !word.text) {
+      throw new Error('Should have responseText and text');
+    }
+    var nc = $scope.numChanges;
+    if (word.responseText !== word.text && !word.countedChange) {
+      word.countedChange = true;
+      nc++;
+    }
+    if (word.responseText === word.text && word.countedChange) {
+      nc = Math.max(nc - 1, 0);
+      word.countedChange = false;
+    }
+    $scope.numChanges = nc;
+  };
+
+  /*
    * Functions for interacting with the referenced rules in the
    * passage questions.
    */
@@ -107,9 +129,9 @@ function ProofreadingPlayCtrl(
     return _.where(results, {type: $scope.CORRECT}).length;
   }
 
-  function getNumErrors() {
+  $scope.getNumErrors = function() {
     return _.keys($scope.passageQuestions).length;
-  }
+  };
 
   function getNumResults() {
     return _.keys($scope.results).length;
@@ -198,7 +220,7 @@ function ProofreadingPlayCtrl(
 
 
   $scope.errorCounter = function(word) {
-    return String(word.resultIndex + 1) + ' of ' + getNumErrors();
+    return String(word.resultIndex + 1) + ' of ' + $scope.getNumErrors();
   };
 
   $scope.answerImageName = function(t) {

@@ -6,4 +6,5 @@
   <div class="instructions">
     <p ng-bind-html="pf.instructions | trustedHtml"></p>
   </div>
+  <activity-progress-bar max="getNumErrors()" current="numChanges" title="'Errors Found:'"></activity-progress-bar>
 </div>
