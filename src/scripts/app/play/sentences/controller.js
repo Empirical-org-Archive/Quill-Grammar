@@ -14,7 +14,7 @@ function SentencePlayCtrl(
     }
   });
 
-  $scope.number = 1;
+  $scope.number = 0;
 
   $scope.$on('correctRuleQuestion', function() {
     $scope.showNextQuestion = true;
@@ -72,6 +72,7 @@ function SentencePlayCtrl(
     var crq = $scope.currentRuleQuestion;
     var ncrq = $scope.questions[_.indexOf($scope.questions, crq) + 1];
     if (!ncrq) {
+      $scope.number = $scope.number + 1;
       $scope.finish();
       return;
     }
