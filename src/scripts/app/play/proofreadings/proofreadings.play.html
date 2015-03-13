@@ -1,6 +1,6 @@
 <div id="{{brainpop}}" ng-class="{proofreading:true, 'partner-iframe': brainpop}" ng-show="pf">
-  <quill-grammar-pf-heading pf="pf"></quill-grammar-pf-heading>
-  <quill-grammar-passage passage="pf.passage"></quill-grammar-passage>
+  <quill-grammar-pf-heading pf="pf" num-changes="numChanges"></quill-grammar-pf-heading>
+  <quill-grammar-passage passage="pf.passage" num-changes="numChanges"></quill-grammar-passage>
   <quill-grammar-passage-submit-panel></quill-grammar-passage-submit-panel>
 
   <div class="proofreading-modal" ng-show="pf.modal.show">

@@ -12,7 +12,8 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
     restrict: 'E',
     controller: 'ProofreadingPlayCtrl',
     scope: {
-      passage: '='
+      passage: '=',
+      numChanges: '=',
     },
     templateUrl: 'passage.html'
   };
@@ -22,7 +23,8 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
     restrict: 'E',
     controller: 'ProofreadingPlayCtrl',
     scope: {
-      pf: '='
+      pf: '=',
+      numChanges: '=',
     },
     templateUrl: 'pf-heading.html'
   };
@@ -30,6 +32,7 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
 .directive('quillGrammarPassageSubmitPanel', function() {
   return {
     restrict: 'E',
+    scope: true,
     controller: 'ProofreadingPlayCtrl',
     templateUrl: 'pf-submit-panel.html'
   };
