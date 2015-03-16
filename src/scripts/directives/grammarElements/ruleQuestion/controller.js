@@ -44,11 +44,6 @@ module.exports = function($scope, _) {
     };
   }
 
-  function setCorrect() {
-    $scope.ruleQuestion.correct = true;
-    $scope.$emit('correctRuleQuestion', $scope.ruleQuestion);
-  }
-
   function ensureLengthIsProper(answer) {
     var threshold = 0.8;
     return function(body) {
@@ -57,6 +52,17 @@ module.exports = function($scope, _) {
     };
   }
 
+  $scope.answerText = {
+    default: 'Check Work',
+    notLongEnough: 'Your answer is not long enough. Try again!',
+    tryAgain: 'Try Again!',
+    tryAgainButton: 'Recheck Work',
+    typingErrorNonStrict: 'You are correct, but you have some typing errors. You may correct them or continue.',
+    typingErrorStrict: 'You are correct, but have some typing errors. Please fix them.'
+  };
+
+  $scope.checkAnswerText = $scope.answerText.default;
+
   $scope.checkAnswer = function() {
     var rq = $scope.ruleQuestion;
     var answer = rq.response;
@@ -64,25 +70,32 @@ module.exports = function($scope, _) {
     var exactMatch = _.any(rq.body, compareEntireAnswerToBody(answer));
     if (exactMatch) {
       setMessage('Correct!');
-      setCorrect();
       correct = true;
     } else {
       var grammarMatch = _.any(rq.body, compareGrammarElementToBody(answer));
       var answerIsAdequateLength = _.every(rq.body, ensureLengthIsProper(answer));
       if (!answerIsAdequateLength) {
-        setMessage('Your answer is not long enough. Try again!');
+        setMessage($scope.answerText.notLongEnough);
       }
       if (grammarMatch && !strictTypingMode) {
-        setMessage('You are correct, but you have some typing errors. You may correct them or continue');
-        setCorrect();
+        setMessage($scope.answerText.typingErrorNonStrict);
         correct = true;
       } else if (grammarMatch) {
-        setMessage('You are correct, but have some typing errors. Please fix them.');
+        setMessage($scope.answerText.typingErrorStrict);
       } else {
-        setMessage('Try again!');
+        setMessage($scope.answerText.tryAgain);
       }
     }
-    $scope.$emit('answerRuleQuestion', rq, answer, correct);
+    if (rq.attempts) {
+      rq.attempts++;
+    } else {
+      rq.attempts = 1;
+    }
+    if (correct || rq.attempts >= 2) {
+      $scope.$emit('answerRuleQuestion', rq, answer, correct);
+    } else if (!correct) {
+      $scope.$emit('answerRuleQuestionIncorrect', rq);
+    }
   };
 
   function setMessage(msg) {

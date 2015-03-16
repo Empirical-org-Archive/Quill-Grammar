@@ -16,10 +16,6 @@ function SentencePlayCtrl(
 
   $scope.number = 0;
 
-  $scope.$on('correctRuleQuestion', function() {
-    $scope.showNextQuestion = true;
-  });
-
   $scope.$on('answerRuleQuestion', function(e, crq, answer, correct) {
     if (!answer || !crq) {
       throw new Error('We need a rule question and answer');
@@ -33,6 +29,10 @@ function SentencePlayCtrl(
         answer: answer,
         correct: correct ? 1 : 0
       });
+    }
+
+    if (correct) {
+      $scope.showNextQuestion = true;
     }
   });
 
