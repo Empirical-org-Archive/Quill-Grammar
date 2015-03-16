@@ -74,7 +74,7 @@
 
   .tooltip-reverse {
     @extend .tooltip-no-arrow;
-    @include position(relative, 3em 0 null 0);
+    @include position(absolute, $tooltip-distance-from-item 0 null 0);
     &:before {
       @extend  .tooltip-arrow;
       @include position(absolute, null 0 null 0);
