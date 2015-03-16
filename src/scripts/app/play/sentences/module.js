@@ -21,5 +21,11 @@ angular.module('quill-grammar.play.sentences', [
     }
   };
 })
+.directive('sentenceWritingSubmitPanel', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'sentences.submit-panel.html',
+  };
+})
 .controller('ResultsController', require('./results.controller.js'))
 .controller('SentencePlayCtrl', require('./controller.js'));
