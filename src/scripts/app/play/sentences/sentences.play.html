@@ -2,9 +2,8 @@
   <h2>{{currentRule.title}}</h2>
   <sentence-writing-concept-overview></sentence-writing-concept-overview>
   <activity-progress-bar title="'Sentence Completed:'" max="questions.length" current="number"></activity-progress-bar>
-  <p>{{currentRule.instructions}}</p>
-  <grammar-rule-question rule-question="currentRuleQuestion">
-  </grammar-rule-question>
+  <sentence-writing-instructions current-rule="currentRule"></sentence-writing-instructions>
+  <grammar-rule-question rule-question="currentRuleQuestion"></grammar-rule-question>
   <button ng-show="showPreviousQuestion" ng-click="previousQuestion()">Previous Question</button>
   <button ng-show="showNextQuestion" ng-click="nextQuestion()">Next Question</button>
 </div>

@@ -12,5 +12,14 @@ angular.module('quill-grammar.play.sentences', [
     templateUrl: 'sentences.concept-overview.html'
   };
 })
+.directive('sentenceWritingInstructions', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'sentences.instructions.html',
+    scope: {
+      currentRule: '='
+    }
+  };
+})
 .controller('ResultsController', require('./results.controller.js'))
 .controller('SentencePlayCtrl', require('./controller.js'));
