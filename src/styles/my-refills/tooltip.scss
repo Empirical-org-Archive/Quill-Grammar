@@ -29,7 +29,7 @@
   position: relative;
   text-align: center;
 
-  .tooltip {
+  .tooltip-no-arrow {
     @include position(absolute, null 0 $tooltip-distance-from-item 0);
     @include transition (all 0.2s ease-in-out);
     background-color: $tooltip-background;
@@ -50,17 +50,36 @@
     p {
       margin-bottom: 0;
     }
+  }
+
+  .tooltip-arrow {
+    border: $tooltip-arrow-width solid transparent;
+    color: $tooltip-background;
+    font-size: 1.4em;
+    margin-left: -$tooltip-arrow-width;
+    text-align: center;
+    text-shadow: $tooltip-shadow;
+}
+
+  .tooltip {
+    @extend .tooltip-no-arrow;
 
     &:after {
+      @extend .tooltip-arrow;
       @include position(absolute, null 0 null 0);
-      border: $tooltip-arrow-width solid transparent;
       bottom: $tooltip-arrow-distance-from-box;
-      color: $tooltip-background;
       content: '▼';
-      font-size: 1.4em;
-      margin-left: -$tooltip-arrow-width;
-      text-align: center;
-      text-shadow: $tooltip-shadow;
+    }
+  }
+
+  .tooltip-reverse {
+    @extend .tooltip-no-arrow;
+    @include position(absolute, $tooltip-distance-from-item 0 null 0);
+    &:before {
+      @extend  .tooltip-arrow;
+      @include position(absolute, null 0 null 0);
+      top: $tooltip-arrow-distance-from-box;
+      content: '▲';
     }
   }
 }

@@ -1,0 +1,17 @@
+.sentence-tooltip-item {
+  @extend .tooltip-item;
+  border: none;
+  display: inline-block;
+  padding: none;
+  &:focus,
+  &:hover .sentence-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+.sentence-tooltip {
+  @extend .tooltip-reverse;
+  height: 259px;
+  width: 341px;
+}
+
