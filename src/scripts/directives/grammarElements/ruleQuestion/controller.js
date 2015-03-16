@@ -64,9 +64,10 @@ module.exports = function($scope, _) {
     }
   };
 
-  $scope.checkAnswerText = $scope.answerText.default;
-
-  $scope.showCheckAnswerButton = true;
+  $scope.$watch('ruleQuestion.$id', function() {
+    $scope.checkAnswerText = $scope.answerText.default;
+    $scope.showCheckAnswerButton = true;
+  });
 
   $scope.checkAnswer = function() {
     var rq = $scope.ruleQuestion;
