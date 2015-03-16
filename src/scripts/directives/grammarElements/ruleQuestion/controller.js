@@ -63,10 +63,15 @@ module.exports = function($scope, _) {
 
   $scope.checkAnswerText = $scope.answerText.default;
 
+  $scope.showCheckAnswerButton = true;
+
   $scope.checkAnswer = function() {
     var rq = $scope.ruleQuestion;
     var answer = rq.response;
     var correct = false;
+    if (!answer) {
+      return;
+    }
     var exactMatch = _.any(rq.body, compareEntireAnswerToBody(answer));
     if (exactMatch) {
       setMessage('Correct!');
@@ -93,8 +98,10 @@ module.exports = function($scope, _) {
     }
     if (correct || rq.attempts >= 2) {
       $scope.$emit('answerRuleQuestion', rq, answer, correct);
+      $scope.showCheckAnswerButton = false;
     } else if (!correct) {
       $scope.$emit('answerRuleQuestionIncorrect', rq);
+      $scope.checkAnswerText = $scope.answerText.tryAgainButton;
     }
   };
 

@@ -4,8 +4,10 @@
   <p ng-bind-html="ruleQuestion.prompt | formatPrompt | trustedHtml"></p>
   <input type="text" ng-model="ruleQuestion.response"/>
   <div class="rule-question-sentence-bar">
-    <button ng-click="checkAnswer()">{{checkAnswerText}}</button>
-    <p ng-show="ruleQuestion.message">{{ruleQuestion.message}}</p>
+    <div class="message-panel">
+      <p ng-show="ruleQuestion.message">{{ruleQuestion.message}}</p>
+    </div>
+    <button ng-show="showCheckAnswerButton" ng-click="checkAnswer()">{{checkAnswerText}}</button>
     <ng-transclude></ng-transclude>
   </div>
 </div>
