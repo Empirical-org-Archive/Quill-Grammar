@@ -10,8 +10,7 @@
   }
 }
 .sentence-tooltip {
-  @extend .tooltip;
-  @include position(relative, 3em 0 null 0);
+  @extend .tooltip-reverse;
   height: 259px;
   width: 341px;
 }
