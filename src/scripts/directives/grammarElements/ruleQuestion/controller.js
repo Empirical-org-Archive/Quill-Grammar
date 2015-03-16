@@ -58,7 +58,10 @@ module.exports = function($scope, _) {
     tryAgain: 'Try Again!',
     tryAgainButton: 'Recheck Work',
     typingErrorNonStrict: 'You are correct, but you have some typing errors. You may correct them or continue.',
-    typingErrorStrict: 'You are correct, but have some typing errors. Please fix them.'
+    typingErrorStrict: 'You are correct, but have some typing errors. Please fix them.',
+    incorrectWithAnswer: function(answer) {
+      return 'Incorrect. Correct Answer: ' + answer;
+    }
   };
 
   $scope.checkAnswerText = $scope.answerText.default;
@@ -99,6 +102,9 @@ module.exports = function($scope, _) {
     if (correct || rq.attempts >= 2) {
       $scope.$emit('answerRuleQuestion', rq, answer, correct);
       $scope.showCheckAnswerButton = false;
+      if (!correct) {
+        setMessage($scope.answerText.incorrectWithAnswer('correct answer here'));
+      }
     } else if (!correct) {
       $scope.$emit('answerRuleQuestionIncorrect', rq);
       $scope.checkAnswerText = $scope.answerText.tryAgainButton;
