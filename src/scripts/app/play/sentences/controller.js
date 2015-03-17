@@ -15,10 +15,7 @@ function SentencePlayCtrl(
   });
 
   $scope.number = 0;
-
-  $scope.$on('correctRuleQuestion', function() {
-    $scope.showNextQuestion = true;
-  });
+  $scope.numAttempts = 2;
 
   $scope.$on('answerRuleQuestion', function(e, crq, answer, correct) {
     if (!answer || !crq) {
@@ -33,6 +30,10 @@ function SentencePlayCtrl(
         answer: answer,
         correct: correct ? 1 : 0
       });
+    }
+
+    if (correct || crq.attempts >= $scope.numAttempts) {
+      $scope.showNextQuestion = true;
     }
   });
 
