@@ -7,7 +7,9 @@
     <div class="message-panel">
       <p ng-show="ruleQuestion.message">{{ruleQuestion.message}}</p>
     </div>
-    <button ng-show="showCheckAnswerButton" ng-click="checkAnswer()">{{checkAnswerText}}</button>
-    <ng-transclude></ng-transclude>
+    <div ng-class="{'no-message': !ruleQuestion.message, message: ruleQuestion.message}">
+      <button ng-show="showCheckAnswerButton" ng-click="checkAnswer()">{{checkAnswerText}}</button>
+      <ng-transclude></ng-transclude>
+    </div>
   </div>
 </div>

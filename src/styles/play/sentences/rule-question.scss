@@ -1,4 +1,6 @@
 div.rule-question-sentence-bar {
+  @include outer-container;
+
   &.correct {
     background-color: $correctColor;
   }
@@ -10,5 +12,21 @@ div.rule-question-sentence-bar {
   }
   &.incorrect {
     background-color: $incorrectErrorColor;
+  }
+  .message-panel {
+    @include span-columns(9);
+  }
+
+  button {
+    @include shift(3);
+    @include span-columns(6);
+    @include omega();
+  }
+
+  div.no-message {
+    @include shift(9);
+  }
+  div.message {
+    @include span-columns(3);
   }
 }
