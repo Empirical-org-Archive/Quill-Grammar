@@ -5,6 +5,9 @@ $notNecessaryErrorColor: #f4d4ff;
 $correctColor: #d2ffe8;
 $underlinedColor: $black;
 
+//Sentence Bar colors
+$tryAgainColor: #ffecd2;
+
 $gray: #ededed;
 $yellow: #ea9a1a;
 $white: #ffffff;
@@ -23,3 +26,4 @@ proofreading {
 @import "proofreading/modal";
 
 @import "sentences/concept-overview";
+@import "sentences/rule-question";

@@ -66,6 +66,7 @@ module.exports = function($scope, _) {
 
   $scope.$watch('ruleQuestion.$id', function() {
     $scope.checkAnswerText = $scope.answerText.default;
+    $scope.ruleQuestionClass = 'default';
     $scope.showCheckAnswerButton = true;
   });
 
@@ -79,19 +80,24 @@ module.exports = function($scope, _) {
     var exactMatch = _.any(rq.body, compareEntireAnswerToBody(answer));
     if (exactMatch) {
       setMessage('Correct!');
+      $scope.ruleQuestionClass = 'correct';
       correct = true;
     } else {
       var grammarMatch = _.any(rq.body, compareGrammarElementToBody(answer));
       var answerIsAdequateLength = _.every(rq.body, ensureLengthIsProper(answer));
       if (!answerIsAdequateLength) {
         setMessage($scope.answerText.notLongEnough);
+        $scope.ruleQuestionClass = 'tryAgain';
       }
       if (grammarMatch && !strictTypingMode) {
         setMessage($scope.answerText.typingErrorNonStrict);
+        $scope.ruleQuestionClass = 'correct';
         correct = true;
       } else if (grammarMatch) {
+        $scope.ruleQuestionClass = 'tryAgain';
         setMessage($scope.answerText.typingErrorStrict);
       } else {
+        $scope.ruleQuestionClass = 'tryAgain';
         setMessage($scope.answerText.tryAgain);
       }
     }
@@ -105,6 +111,7 @@ module.exports = function($scope, _) {
       $scope.showCheckAnswerButton = false;
       if (!correct) {
         setMessage($scope.answerText.incorrectWithAnswer('correct answer here'));
+        $scope.ruleQuestionClass = 'incorrect';
       }
     } else if (!correct) {
       $scope.$emit('answerRuleQuestionIncorrect', rq);

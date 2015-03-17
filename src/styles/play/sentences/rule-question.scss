@@ -1,0 +1,14 @@
+div.rule-question-sentence-bar {
+  &.correct {
+    background-color: $correctColor;
+  }
+  &.default {
+    background-color: $gray;
+  }
+  &.tryAgain {
+    background-color: $tryAgainColor;
+  }
+  &.incorrect {
+    background-color: $incorrectErrorColor;
+  }
+}
