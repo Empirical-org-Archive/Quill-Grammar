@@ -8,8 +8,12 @@ div.partner-iframe-landing {
   text-align: center;
   .footer {
     background-color: $yellow;
-    margin: 0;
-    padding: 0;
+    padding-top: 43px;
+    padding-bottom: 43px;
+    color: $white;
+    h4 {
+      padding-bottom: 30px;
+    }
   }
 
   div.header-image {
