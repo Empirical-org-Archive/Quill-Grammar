@@ -1,12 +1,16 @@
 activity-progress-bar {
   @include outer-container;
+  margin-top: 14px;
   p {
     text-align: right;
+    font-size: 10pt;
   }
   div.progress-bar-indication {
     height: 10px;
     span.meter {
       background-color: $teal-green;
+      border: none;
+      border-radius: 0px;
     }
   }
 }
