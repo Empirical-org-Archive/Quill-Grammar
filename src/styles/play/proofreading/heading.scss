@@ -11,4 +11,24 @@
     font-size: 18px;
     text-shadow: 0px 0px 6px #000;
   }
+  @include outer-container;
+
+  div.instructions {
+    margin-top: 22px;
+    padding-left: 30px;
+    @include span-columns(8);
+    img {
+      @include span-columns(.75);
+    }
+    p {
+      margin-top: -10px;
+      @include span-columns(10);
+    }
+  }
+
+  activity-progress-bar {
+    padding-right: 30px;
+    @include shift(1);
+    @include span-columns(3);
+  }
 }

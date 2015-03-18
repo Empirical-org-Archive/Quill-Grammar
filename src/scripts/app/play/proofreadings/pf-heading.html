@@ -5,6 +5,7 @@
     <p>{{pf.title}}</p>
   </div>
   <div class="instructions">
+    <img src="/assets/images/information_icon.png" alt="information"></img>
     <p ng-bind-html="pf.instructions | trustedHtml"></p>
   </div>
   <activity-progress-bar max="getNumErrors()" current="numChanges" title="'Errors Found:'"></activity-progress-bar>
