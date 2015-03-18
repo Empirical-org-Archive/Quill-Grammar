@@ -28,4 +28,16 @@ div.partner-iframe-landing {
     padding-top: 34px;
     padding-bottom: 34px;
   }
+
+  div.story {
+    div.image-overlay {
+      position: relative;
+      top: -20px - 70px;
+      font-weight: bold;
+      color: white;
+      line-height: 1;
+      font-size: 18px;
+      text-shadow: 0px 0px 6px #000;
+    }
+  }
 }
