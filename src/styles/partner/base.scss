@@ -29,15 +29,37 @@ div.partner-iframe-landing {
     padding-bottom: 34px;
   }
 
+  div.story-carousel {
+    @include outer-container;
+    padding-left: 30px;
+    margin-bottom: 34px;
+  }
+
   div.story {
+    @include span-columns(4);
+    width: 250px;
+    background-color: $white;
     div.image-overlay {
       position: relative;
       top: -20px - 70px;
+      margin-bottom: -50px;
       font-weight: bold;
       color: white;
       line-height: 1;
       font-size: 18px;
       text-shadow: 0px 0px 6px #000;
+    }
+    p {
+      padding-left: 15px;
+      padding-right: 15px;
+      text-align: center;
+    }
+    p.italic {
+      font-style: italic;
+    }
+    button {
+      margin-bottom: 28px;
+      margin-top: 22px;
     }
   }
 }
