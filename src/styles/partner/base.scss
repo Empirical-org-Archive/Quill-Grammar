@@ -11,4 +11,16 @@ div.partner-iframe-landing {
     margin: 0;
     padding: 0;
   }
+
+  div.header-image {
+    margin-left: auto;
+    margin-right: auto;
+    height: 73px;
+    width: 800px;
+    background-color: $teal-green;
+    img {
+      vertical-align: middle;
+      padding-top: (73px - 27px) / 2;
+    }
+  }
 }
