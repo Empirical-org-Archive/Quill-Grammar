@@ -12,6 +12,10 @@
 
 body {
   @include outer-container;
+  font-family: "adelle-sans";
+  p {
+    font-size: 15px;
+  }
 }
 
 @import "play/base.scss";
