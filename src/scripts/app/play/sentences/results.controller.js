@@ -12,7 +12,10 @@ module.exports = function($scope, $state, portholeProxy) {
     postObj.id = $state.params.student;
   }
 
-  windowProxy.post(postObj);
+  if ($state.params.internal) {
 
+  } else {
+    windowProxy.post(postObj);
+  }
 
 };
