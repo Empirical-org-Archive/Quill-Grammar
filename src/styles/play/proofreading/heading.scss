@@ -14,11 +14,11 @@
   @include outer-container;
 
   div.instructions {
-    margin-top: 22px;
     padding-left: 30px;
-    @include span-columns(8);
+    @include span-columns(9);
     img {
-      @include span-columns(.75);
+      @include span-columns(.82);
+      margin-top: 22px;
     }
     p {
       margin-top: -10px;
@@ -28,7 +28,6 @@
 
   activity-progress-bar {
     padding-right: 30px;
-    @include shift(1);
     @include span-columns(3);
   }
 }
