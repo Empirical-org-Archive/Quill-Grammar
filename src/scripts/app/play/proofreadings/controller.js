@@ -15,6 +15,13 @@ function ProofreadingPlayCtrl(
     $scope.brainpop = 'BrainPOPsnapArea';
   }
 
+  //Add in some custom images for the 3 stories we are showcasing
+  $scope.pfImages = {
+    '70B-T6vLMTM9zjQ9LCwoCg': 'the_princes_and_the_turtle_story_header.png',
+    'MJCtkml_69W2Dav79v4r9Q': 'ernest_shackleton_story_header.png',
+    'Yh49ICvX_YME8ui7cDoFXQ': 'the_apollo_8_photograph_story_header.png'
+  };
+
   function error(e) {
     $state.go('index');
   }
@@ -30,6 +37,9 @@ function ProofreadingPlayCtrl(
   ProofreadingService.getProofreading($scope.id).then(function(pf) {
     pf.passage = ProofreadingService.prepareProofreading(pf.passage, $scope);
     $scope.pf = pf;
+    if ($scope.pfImages[$scope.id]) {
+      $scope.pf.image = $scope.pfImages[$scope.id];
+    }
     fetchListedRules();
   }, error);
 
