@@ -8,7 +8,62 @@ div.partner-iframe-landing {
   text-align: center;
   .footer {
     background-color: $yellow;
-    margin: 0;
-    padding: 0;
+    padding-top: 43px;
+    padding-bottom: 43px;
+    color: $white;
+    h4 {
+      padding-bottom: 30px;
+    }
+  }
+
+  div.header-image {
+    margin-left: auto;
+    margin-right: auto;
+    height: 73px;
+    width: 880px;
+    background-color: $teal-green;
+    img {
+      vertical-align: middle;
+      padding-top: (73px - 27px) / 2;
+    }
+  }
+
+  div.heading {
+    padding-top: 34px;
+    padding-bottom: 34px;
+  }
+
+  div.story-carousel {
+    @include outer-container;
+    padding-left: 30px;
+    margin-bottom: 34px;
+  }
+
+  div.story {
+    @include span-columns(4);
+    width: 250px;
+    background-color: $white;
+    div.image-overlay {
+      position: relative;
+      top: -20px - 70px;
+      margin-bottom: -50px;
+      font-weight: bold;
+      color: white;
+      line-height: 1;
+      font-size: 18px;
+      text-shadow: 0px 0px 6px #000;
+    }
+    p {
+      padding-left: 15px;
+      padding-right: 15px;
+      text-align: center;
+    }
+    p.italic {
+      font-style: italic;
+    }
+    button {
+      margin-bottom: 28px;
+      margin-top: 22px;
+    }
   }
 }
