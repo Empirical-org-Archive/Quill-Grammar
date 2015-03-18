@@ -1,0 +1,12 @@
+activity-progress-bar {
+  @include outer-container;
+  p {
+    text-align: right;
+  }
+  div.progress-bar-indication {
+    height: 10px;
+    span.meter {
+      background-color: $teal-green;
+    }
+  }
+}

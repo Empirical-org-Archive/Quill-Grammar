@@ -18,7 +18,7 @@ button {
   background-color: $teal-green;
 }
 button:hover {
-  background-color: darken($teal-green, 10%);
+  background-color: tint($teal-green, 10%);
 }
 
 proofreading {
@@ -36,3 +36,4 @@ proofreading {
 
 @import "sentences/concept-overview";
 @import "sentences/rule-question";
+@import "activity-progress-bar";
