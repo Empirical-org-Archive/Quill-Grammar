@@ -64,7 +64,7 @@ function SentencePlayCtrl(
         $state.go('.results', {student: sid});
       });
     } else {
-      $state.go('.results');
+      $state.go('.results', {internal: true});
     }
   };
 
