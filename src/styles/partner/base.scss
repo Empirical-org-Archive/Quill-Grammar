@@ -40,6 +40,22 @@ div.partner-iframe-landing {
     background-color: $white;
     border-radius: 6px;
     margin-right: 30px;
+    div.number {
+      position: relative;
+      top: -20px;
+      margin-bottom: -40px;
+      left: 250px/2 - 20px;
+      div.container {
+        width: 40px;
+        height: 40px;
+        border-radius: 6px;
+        background-color: $teal-green;
+        text-align: center;
+        color: $white;
+        font-weight: bold;
+        font-size: 28px;
+      }
+    }
     div.image-overlay {
       position: relative;
       top: -20px - 70px;
