@@ -228,6 +228,20 @@ function ProofreadingPlayCtrl(
     }
   };
 
+  $scope.getErrorTooltipClass = function(index) {
+    var results = $scope.$parent.results;
+    if (results) {
+      var ri = _.indexOf(_.pluck(results, 'index'), index);
+      var sp = 3;
+      return {
+        'error-tooltip': ri > sp,
+        'error-tooltip-reverse': ri <= sp
+      };
+    } else {
+      return {'error-tooltip': true};
+    }
+  };
+
 
   $scope.errorCounter = function(word) {
     return String(word.resultIndex + 1) + ' of ' + $scope.getNumErrors();

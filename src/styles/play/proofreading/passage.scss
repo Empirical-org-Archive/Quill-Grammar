@@ -45,4 +45,9 @@ div.passage {
     height: 259px;
     width: 341px;
   }
+  .error-tooltip-reverse {
+    @extend .tooltip-reverse;
+    height: 259px;
+    width: 341px;
+  }
 }
