@@ -205,7 +205,7 @@ function ProofreadingPlayCtrl(
       na.fn = function() {
         $scope.focusResult(word.resultIndex + 1);
       };
-      na.title = 'Next';
+      na.title = 'Next Edit';
     }
 
     return na;
