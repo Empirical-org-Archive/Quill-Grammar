@@ -166,7 +166,7 @@ function ProofreadingPlayCtrl(
     var nf = numErrorsFound === numErrorsToSolve ? 'all ' + String(numErrorsFound) : String(numErrorsFound) + ' of ' + String(numErrorsToSolve);
     $scope.pf.modal = {
       title: title,
-      message: 'You found ' + nf + ' errors',
+      message: 'You found ' + nf + ' errors.',
       buttonMessage: 'Review Your Work',
       buttonClick: function() {
         $scope.pf.modal.show = false;
