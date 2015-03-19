@@ -230,18 +230,23 @@ function ProofreadingPlayCtrl(
 
   $scope.getErrorTooltipClass = function(index) {
     var results = $scope.$parent.results;
+    var d = {'error-tooltip': true};
     if (results) {
       var ri = _.indexOf(_.pluck(results, 'index'), index);
       var sp = 3;
-      return {
+      d = {
         'error-tooltip': ri > sp,
         'error-tooltip-reverse': ri <= sp
       };
-    } else {
-      return {'error-tooltip': true};
     }
+    return d;
   };
 
+  $scope.getErrorTooltipTopClass = function(type) {
+    var obj = {'tooltip': true};
+    obj[type] = true;
+    return obj;
+  };
 
   $scope.errorCounter = function(word) {
     return String(word.resultIndex + 1) + ' of ' + $scope.getNumErrors();
