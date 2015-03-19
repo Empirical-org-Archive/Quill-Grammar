@@ -12,6 +12,9 @@
 
 body {
   @include outer-container;
+  p {
+    font-size: 15px;
+  }
 }
 
 @import "play/base.scss";
