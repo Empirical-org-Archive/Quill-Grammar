@@ -69,6 +69,11 @@
     }
   }
 
+  .tooltip-reverse-no-arrow {
+    @extend .tooltip-no-arrow;
+    @include position(absolute, $tooltip-distance-from-item 0 null 0);
+  }
+
   .tooltip-reverse {
     @extend .tooltip-no-arrow;
     @include position(absolute, $tooltip-distance-from-item 0 null 0);

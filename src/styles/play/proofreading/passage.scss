@@ -46,17 +46,35 @@ div.passage {
     width: 341px;
   }
   .error-tooltip-reverse {
-    @extend .tooltip-reverse;
+    @extend .tooltip-reverse-no-arrow;
     height: 259px;
     width: 341px;
+    span.arrow:before {
+      @include position(absolute, null 0 null 0);
+      top: -15px;
+      font-size: 50px;
+      content:'▲'
+    }
   }
 
   .top-panel {
     &.correct {
+      span.arrow {
+        color: $correctColor;
+      }
       background-color: $correctColor;
     }
     &.incorrect {
+      span.arrow {
+        color: $incorrectErrorColor;
+      }
       background-color: $incorrectErrorColor;
+    }
+    &.not_necessary {
+      span.arrow {
+        color: $notNecessaryErrorColor;
+      }
+      background-color: $notNecessaryErrorColor;
     }
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
