@@ -16,8 +16,10 @@
       ng-style="word.tooltip.style">
       <div ng-class="{incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), correct: hasCorrect(word)}">
         <div ng-class="getErrorTooltipTopClass(answerImageName(word.type))">
-          <img ng-src="/assets/images/{{answerImageName(word.type)}}_icon.png" alt="{{word.type}}"></img>
-          <p>{{word.type}}</p>
+          <div class="img-div">
+            <img ng-src="/assets/images/{{answerImageName(word.type)}}_icon.png" alt="{{word.type}}"></img>
+          </div>
+          <h4>{{word.type}}</h4>
           <p class="counter">{{errorCounter(word)}}</p>
         </div>
         <h4>Correct Word:</h4>

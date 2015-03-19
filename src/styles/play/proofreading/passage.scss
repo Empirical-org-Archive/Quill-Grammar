@@ -60,6 +60,22 @@ div.passage {
     }
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+    @include outer-container;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    div.img-div {
+      @include span-columns(2);
+    }
+    h4 {
+      padding-top: 5px;
+      text-align: left;
+      @include span-columns(7);
+      font-size: 18px;
+    }
+    p {
+      padding-top: 5px;
+      font-size: 15px;
+    }
   }
 
 }
