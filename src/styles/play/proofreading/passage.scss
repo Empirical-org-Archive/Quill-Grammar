@@ -50,4 +50,16 @@ div.passage {
     height: 259px;
     width: 341px;
   }
+
+  .top-panel {
+    &.correct {
+      background-color: $correctColor;
+    }
+    &.incorrect {
+      background-color: $incorrectErrorColor;
+    }
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+
 }

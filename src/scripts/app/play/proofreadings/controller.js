@@ -243,7 +243,7 @@ function ProofreadingPlayCtrl(
   };
 
   $scope.getErrorTooltipTopClass = function(type) {
-    var obj = {'tooltip': true};
+    var obj = {'top-panel': true};
     obj[type] = true;
     return obj;
   };
