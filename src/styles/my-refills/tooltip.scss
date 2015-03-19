@@ -15,7 +15,6 @@
 
   $tooltip-background: white;
   $tooltip-color: $base-font-color;
-  $tooltip-max-width: 16em;
   $tooltip-arrow-width: 8px;
   $tooltip-shadow: 0 2px 2px silver;
   $tooltip-distance-from-item: 3em;
@@ -40,7 +39,6 @@
     font-size: 0.9em; // Make sure you use -webkit-backface-visibility: hidden; on the body element to prevent 1px nudging bugs.
     line-height: 1.5em;
     margin: 0 auto;
-    max-width: $tooltip-max-width;
     opacity: 0;
     padding: 1em;
     text-align: center;
