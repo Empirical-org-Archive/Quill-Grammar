@@ -230,8 +230,8 @@ function ProofreadingPlayCtrl(
 
   $scope.getErrorTooltipClass = function(index) {
     var results = $scope.$parent.results;
-    var d = {'error-tooltip': true};
-    if (results) {
+    var d = {'error-tooltip-reverse': true};
+    if (false) {
       var ri = _.indexOf(_.pluck(results, 'index'), index);
       var sp = 3;
       d = {
