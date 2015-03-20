@@ -1,5 +1,27 @@
+div.ruleQuestion {
+  div.information {
+    background-color: $gray;
+    padding-left: 30px;
+    padding-bottom: 10px;
+    @include outer-container;
+    img {
+      @include span-columns(0.6);
+    }
+    p {
+      @include span-columns(10);
+    }
+  }
+  p.prompt, .student-input {
+    padding-top:10px;
+    font-size: 22px;
+    font-family: 'courier new';
+  }
+}
+
 div.rule-question-sentence-bar {
   @include outer-container;
+
+  margin-top: 58px;
 
   &.correct {
     background-color: $correctColor;
@@ -13,18 +35,28 @@ div.rule-question-sentence-bar {
   &.incorrect {
     background-color: $incorrectErrorColor;
   }
-  .message-panel {
+
+  div.message-panel {
     @include span-columns(9);
+    height: 116px;
+    padding-top: 37px;
+    padding-left: 25px;
   }
-
-  button {
-    @include omega();
+  .button-panel {
+    button {
+      @include omega();
+      margin-top: 37px;
+      padding-left: 30px;
+      height: 42px;
+      padding-right: 30px;
+    }
   }
-
   div.no-message {
     @include shift(9);
+    @extend .button-panel;
   }
   div.message {
     @include span-columns(3);
+    @extend .button-panel;
   }
 }

@@ -1,8 +1,18 @@
-<div class="sentence-writing" ng-show="swSet.length">
-  <h2>{{currentRule.title}}</h2>
-  <sentence-writing-concept-overview></sentence-writing-concept-overview>
-  <activity-progress-bar title="'Sentence Completed:'" max="questions.length" current="number"></activity-progress-bar>
-  <sentence-writing-instructions current-rule="currentRule"></sentence-writing-instructions>
+<div ng-class="{'sentence-writing': true, 'partner-iframe': partnerIframe}" ng-show="swSet.length">
+  <div class="passage-heading" ng-show="passageTitle && passageImageUrl">
+    <img ng-src="/assets/images/{{passageImageUrl}}" alt="passageTitle"></img>
+    <p>{{passageTitle}}</p>
+  </div>
+  <div class="sentence-writing-heading">
+    <div class="left">
+      <h2>{{currentRule.title}}</h2>
+      <sentence-writing-concept-overview></sentence-writing-concept-overview>
+      <sentence-writing-instructions current-rule="currentRule"></sentence-writing-instructions>
+    </div>
+    <div class="right">
+      <activity-progress-bar title="'Sentence Completed:'" max="questions.length" current="number"></activity-progress-bar>
+    </div>
+  </div>
   <grammar-rule-question rule-question="currentRuleQuestion">
     <sentence-writing-submit-panel></sentence-writing-submit-panel>
   </grammar-rule-question>

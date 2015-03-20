@@ -12,15 +12,6 @@ angular.module('quill-grammar.play.sentences', [
     templateUrl: 'sentences.concept-overview.html'
   };
 })
-.directive('sentenceWritingInstructions', function() {
-  return {
-    restrict: 'E',
-    templateUrl: 'sentences.instructions.html',
-    scope: {
-      currentRule: '='
-    }
-  };
-})
 .directive('sentenceWritingSubmitPanel', function() {
   return {
     restrict: 'E',

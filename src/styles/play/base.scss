@@ -26,6 +26,11 @@ proofreading {
   @include pad();
 }
 
+div.sentence-writing {
+  @include outer-container;
+  @include pad();
+}
+
 @import "../my-refills/modal";
 @import "../my-refills/tooltip";
 @import "../partner/base";
@@ -36,4 +41,6 @@ proofreading {
 
 @import "sentences/concept-overview";
 @import "sentences/rule-question";
+@import "sentences/sentence-writing-heading";
+@import "sentences/sentence-writing";
 @import "activity-progress-bar";
