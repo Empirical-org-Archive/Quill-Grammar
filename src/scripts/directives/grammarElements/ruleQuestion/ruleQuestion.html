@@ -7,7 +7,7 @@
   <input class="student-input" type="text" ng-model="ruleQuestion.response"/>
   <div class="rule-question-sentence-bar" ng-class="ruleQuestionClass">
     <div class="message-panel">
-      <p ng-show="ruleQuestion.message">{{ruleQuestion.message}}</p>
+      <p ng-show="ruleQuestion.message" ng-bind-html="ruleQuestion.message | trustedHtml"></p>
     </div>
     <div ng-class="{'no-message': !ruleQuestion.message, message: ruleQuestion.message}">
       <button ng-show="showCheckAnswerButton" ng-click="checkAnswer()">{{checkAnswerText}}</button>

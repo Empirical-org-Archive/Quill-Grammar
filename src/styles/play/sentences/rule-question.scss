@@ -42,11 +42,7 @@ div.rule-question-sentence-bar {
     padding-top: 37px;
     padding-left: 25px;
   }
-  div.no-message {
-    @include shift(9);
-  }
-  div.message {
-    @include span-columns(3);
+  .button-panel {
     button {
       @include omega();
       margin-top: 37px;
@@ -54,5 +50,13 @@ div.rule-question-sentence-bar {
       height: 42px;
       padding-right: 30px;
     }
+  }
+  div.no-message {
+    @include shift(9);
+    @extend .button-panel;
+  }
+  div.message {
+    @include span-columns(3);
+    @extend .button-panel;
   }
 }

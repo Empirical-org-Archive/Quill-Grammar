@@ -54,14 +54,15 @@ module.exports = function($scope, _) {
 
   $scope.answerText = {
     default: 'Check Work',
-    notLongEnough: 'Your answer is not long enough. Try again!',
-    tryAgain: 'Try Again!',
+    notLongEnough: '<b>Try again!</b>Your answer is not long enough.',
+    tryAgain: '<b>Try Again!</b> Unfortunately, that answer is incorrect.',
     tryAgainButton: 'Recheck Work',
     typingErrorNonStrict: 'You are correct, but you have some typing errors. You may correct them or continue.',
     typingErrorStrict: 'You are correct, but have some typing errors. Please fix them.',
     incorrectWithAnswer: function(answer) {
-      return 'Incorrect. Correct Answer: ' + answer;
-    }
+      return '<b>Incorrect.</b> Correct Answer: ' + answer;
+    },
+    correct: '<b>Well done!</b> That\'s the correct answer.'
   };
 
   $scope.$watch('ruleQuestion.$id', function() {
@@ -79,7 +80,7 @@ module.exports = function($scope, _) {
     }
     var exactMatch = _.any(rq.body, compareEntireAnswerToBody(answer));
     if (exactMatch) {
-      setMessage('Correct!');
+      setMessage($scope.answerText.correct);
       $scope.ruleQuestionClass = 'correct';
       correct = true;
     } else {
