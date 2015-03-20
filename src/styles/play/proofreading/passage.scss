@@ -50,8 +50,7 @@ div.passage {
     height: 259px;
     width: 341px;
     span.arrow:before {
-      @include position(absolute, null 0 null 0);
-      top: -15px;
+      @include position(absolute, -15px 0 null 0);
       font-size: 50px;
       content:'▲'
     }
