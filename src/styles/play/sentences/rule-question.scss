@@ -11,6 +11,9 @@ div.ruleQuestion {
       @include span-columns(10);
     }
   }
+  p.prompt, .student-input {
+    font-family: 'courier new';
+  }
 }
 
 div.rule-question-sentence-bar {
