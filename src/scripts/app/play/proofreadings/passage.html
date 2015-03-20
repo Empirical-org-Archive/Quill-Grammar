@@ -1,5 +1,5 @@
 <div class="passage">
-  <div ng-class="{'word':true, 'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="(index, word) in passage">
+  <div ng-class="{'word':true, 'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="(index, word) in passage" id="error-tooltip-scroll-{{index}}">
     <p ng-bind-html="word.responseText | trustedHtml" ng-show="isBr(word.responseText)"></p>
     <input
       ng-show="!isBr(word.responseText)"

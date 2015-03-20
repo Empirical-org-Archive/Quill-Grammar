@@ -4,7 +4,8 @@ module.exports =
 
 /*@ngInject*/
 function ProofreadingPlayCtrl(
-  $scope, $state, ProofreadingService, RuleService, _
+  $scope, $state, ProofreadingService, RuleService, _,
+  $location, $anchorScroll
 ) {
   $scope.id = $state.params.uid;
 
@@ -180,7 +181,7 @@ function ProofreadingPlayCtrl(
    * Convenience html methods
    */
 
-  $scope.nextAction = function(word) {
+  $scope.nextAction = function(word, index) {
     if (!$scope.results) {
       return {};
     }
@@ -203,7 +204,7 @@ function ProofreadingPlayCtrl(
       }
     } else {
       na.fn = function() {
-        $scope.focusResult(word.resultIndex + 1);
+        $scope.focusResult(word.resultIndex + 1, index);
       };
       na.title = 'Next Edit';
     }
@@ -211,7 +212,7 @@ function ProofreadingPlayCtrl(
     return na;
   };
 
-  $scope.focusResult = function(resultIndex) {
+  $scope.focusResult = function(resultIndex, scrollIndex) {
     var p = $scope.results[resultIndex - 1];
     var r = $scope.results[resultIndex];
     if (p) {
@@ -225,6 +226,11 @@ function ProofreadingPlayCtrl(
           opacity: 1
         }
       };
+    }
+    if (scrollIndex) {
+      var scrollId = 'error-tooltip-scroll-' + String(scrollIndex);
+      $location.hash(scrollId);
+      $anchorScroll();
     }
   };
 
@@ -281,7 +287,7 @@ function ProofreadingPlayCtrl(
     _.each(passageResults, function(pr, i) {
       $scope.pf.passage[pr.index].type = pr.type;
       $scope.pf.passage[pr.index].resultIndex = i;
-      $scope.pf.passage[pr.index].nextAction = $scope.nextAction($scope.pf.passage[pr.index]);
+      $scope.pf.passage[pr.index].nextAction = $scope.nextAction($scope.pf.passage[pr.index], pr.index);
     });
     var ruleNumbers = _.chain(passageResults)
       .pluck('passageEntry')
@@ -293,7 +299,7 @@ function ProofreadingPlayCtrl(
       .uniq()
       .value();
     generateLesson(ruleNumbers);
-    $scope.focusResult(0);
+    $scope.focusResult(0, passageResults[0].index);
     captureReady();
   }
 
