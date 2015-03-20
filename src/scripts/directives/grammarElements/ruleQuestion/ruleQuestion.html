@@ -1,8 +1,6 @@
 <div class="ruleQuestion">
   <div class="information">
-    <div class="image">
-      <img src="/assets/images/information_icon.png" alt="information_icon"/>
-    </div>
+    <img src="/assets/images/information_icon.png" alt="information_icon"/>
     <p ng-bind-html="ruleQuestion.resolvedInstructions | trustedHtml"></p>
   </div>
   <p ng-bind-html="ruleQuestion.prompt | formatPrompt | trustedHtml"></p>

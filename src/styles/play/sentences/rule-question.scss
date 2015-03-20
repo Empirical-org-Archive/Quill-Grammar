@@ -1,3 +1,18 @@
+div.ruleQuestion {
+  div.information {
+    background-color: $gray;
+    padding-left: 30px;
+    padding-bottom: 10px;
+    @include outer-container;
+    img {
+      @include span-columns(0.6);
+    }
+    p {
+      @include span-columns(10);
+    }
+  }
+}
+
 div.rule-question-sentence-bar {
   @include outer-container;
 

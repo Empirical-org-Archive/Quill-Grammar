@@ -1,9 +1,16 @@
 div.sentence-writing-heading {
   @include outer-container;
-
+  padding-top: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 10px;
   background-color: $gray;
   div.left {
     @include span-columns(9);
+    p.concept-overview {
+      color: $teal-green;
+      background-color: $gray;
+    }
   }
 
   div.right {
