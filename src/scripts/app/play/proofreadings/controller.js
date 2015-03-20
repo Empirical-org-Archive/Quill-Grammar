@@ -166,7 +166,7 @@ function ProofreadingPlayCtrl(
     var nf = numErrorsFound === numErrorsToSolve ? 'all ' + String(numErrorsFound) : String(numErrorsFound) + ' of ' + String(numErrorsToSolve);
     $scope.pf.modal = {
       title: title,
-      message: 'You found ' + nf + ' errors',
+      message: 'You found ' + nf + ' errors.',
       buttonMessage: 'Review Your Work',
       buttonClick: function() {
         $scope.pf.modal.show = false;
@@ -205,7 +205,7 @@ function ProofreadingPlayCtrl(
       na.fn = function() {
         $scope.focusResult(word.resultIndex + 1);
       };
-      na.title = 'Next';
+      na.title = 'Next Edit';
     }
 
     return na;
@@ -228,6 +228,25 @@ function ProofreadingPlayCtrl(
     }
   };
 
+  $scope.getErrorTooltipClass = function(index) {
+    var results = $scope.$parent.results;
+    var d = {'error-tooltip-reverse': true};
+    if (false) {
+      var ri = _.indexOf(_.pluck(results, 'index'), index);
+      var sp = 3;
+      d = {
+        'error-tooltip': ri > sp,
+        'error-tooltip-reverse': ri <= sp
+      };
+    }
+    return d;
+  };
+
+  $scope.getErrorTooltipTopClass = function(type) {
+    var obj = {'top-panel': true};
+    obj[type] = true;
+    return obj;
+  };
 
   $scope.errorCounter = function(word) {
     return String(word.resultIndex + 1) + ' of ' + $scope.getNumErrors();

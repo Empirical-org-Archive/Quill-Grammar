@@ -10,7 +10,7 @@ div.passage {
     width: auto;
     float: left;
     box-shadow: none;
-    margin: 1.5px;
+    margin: 0.25px;
     padding: 0;
     font-family: 'courier new';
 
@@ -45,4 +45,74 @@ div.passage {
     height: 259px;
     width: 341px;
   }
+  .error-tooltip-reverse {
+    @extend .tooltip-reverse-no-arrow;
+    height: 259px;
+    width: 341px;
+    left: -30px;
+    span.arrow:before {
+      @include position(absolute, -23px 0 null -180px);
+      font-size: 50px;
+      content:'▲'
+    }
+  }
+
+  .top-panel {
+    &.correct {
+      span.arrow {
+        color: $correctColor;
+      }
+      background-color: $correctColor;
+    }
+    &.incorrect {
+      span.arrow {
+        color: $incorrectErrorColor;
+      }
+      background-color: $incorrectErrorColor;
+    }
+    &.not_necessary {
+      span.arrow {
+        color: $notNecessaryErrorColor;
+      }
+      background-color: $notNecessaryErrorColor;
+    }
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    @include outer-container;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    div.img-div {
+      @include span-columns(2);
+    }
+    h4 {
+      padding-top: 5px;
+      text-align: left;
+      @include span-columns(7);
+      font-size: 18px;
+    }
+    p {
+      padding-top: 5px;
+      font-size: 15px;
+    }
+  }
+
+  .bottom-panel {
+    text-align: left;
+    padding: 0 20px 25px 20px;
+    h4 {
+      padding-top: 20px;
+      padding-bottom: 5px;
+      font-size: 15px;
+    }
+    p {
+      font-size: 15px;
+    }
+    button {
+      margin-top: 25px;
+      float: right;
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+  }
+
 }
