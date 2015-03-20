@@ -1,3 +1,16 @@
 div.sentence-writing {
   background-color: $white;
+  div.passage-heading {
+    p {
+      position: relative;
+      top: -55px;
+      left: 30px;
+      margin-bottom: -25px;
+      font-weight: bold;
+      color: white;
+      line-height: 1;
+      font-size: 18px;
+      text-shadow: 0px 0px 6px #000;
+    }
+  }
 }
