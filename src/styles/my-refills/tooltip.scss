@@ -29,7 +29,7 @@
   text-align: center;
 
   .tooltip-no-arrow {
-    @include position(absolute, null 0 $tooltip-distance-from-item 0);
+    @include position(absolute, null null $tooltip-distance-from-item null);
     @include transition (all 0.2s ease-in-out);
     background-color: $tooltip-background;
     background: #fff;
@@ -56,7 +56,7 @@
     margin-left: -$tooltip-arrow-width;
     text-align: center;
     text-shadow: $tooltip-shadow;
-}
+  }
 
   .tooltip {
     @extend .tooltip-no-arrow;
@@ -71,12 +71,12 @@
 
   .tooltip-reverse-no-arrow {
     @extend .tooltip-no-arrow;
-    @include position(absolute, $tooltip-distance-from-item 0 null 0);
+    @include position(absolute, $tooltip-distance-from-item null null null);
   }
 
   .tooltip-reverse {
     @extend .tooltip-no-arrow;
-    @include position(absolute, $tooltip-distance-from-item 0 null 0);
+    @include position(absolute, $tooltip-distance-from-item null null null);
     &:before {
       @extend  .tooltip-arrow;
       @include position(absolute, null 0 null 0);
