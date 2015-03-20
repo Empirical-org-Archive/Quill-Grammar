@@ -1,9 +1,0 @@
-div.sentence-writing-instructions {
-  @include outer-container;
-  div.image {
-    @include span-columns(1);
-  }
-  p {
-    @include span-columns(8);
-  }
-}
