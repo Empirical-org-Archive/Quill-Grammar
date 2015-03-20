@@ -1,6 +1,8 @@
 div.rule-question-sentence-bar {
   @include outer-container;
 
+  margin-top: 58px;
+
   &.correct {
     background-color: $correctColor;
   }
@@ -15,10 +17,15 @@ div.rule-question-sentence-bar {
   }
   .message-panel {
     @include span-columns(9);
+    height: 116px;
   }
 
   button {
     @include omega();
+    margin-top: 37px;
+    padding-left: 30px;
+    height: 42px;
+    padding-right: 30px;
   }
 
   div.no-message {
