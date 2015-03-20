@@ -7,9 +7,13 @@ div.sentence-writing-heading {
   background-color: $gray;
   div.left {
     @include span-columns(9);
+    h2 {
+      font-size: 22px;
+    }
     p.concept-overview {
       color: $teal-green;
       background-color: $gray;
+      font-size: 15px;
     }
   }
 
