@@ -305,7 +305,9 @@ function ProofreadingPlayCtrl(
   function generateLesson(ruleNumbers) {
     $scope.goToLesson = function() {
       $state.go('play-sw-gen', {
-        ids: ruleNumbers
+        ids: ruleNumbers,
+        partnerIframe: true,
+        passageId: $scope.id,
       });
     };
     $scope.hasLesson = true;

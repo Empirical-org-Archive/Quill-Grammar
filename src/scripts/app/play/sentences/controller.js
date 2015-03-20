@@ -14,6 +14,8 @@ function SentencePlayCtrl(
     }
   });
 
+  $scope.partnerIframe = $state.params.partnerIframe;
+
   $scope.number = 0;
   $scope.numAttempts = 2;
 
