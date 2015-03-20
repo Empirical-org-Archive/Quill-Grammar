@@ -35,23 +35,24 @@ div.rule-question-sentence-bar {
   &.incorrect {
     background-color: $incorrectErrorColor;
   }
-  .message-panel {
+
+  div.message-panel {
     @include span-columns(9);
     height: 116px;
+    padding-top: 37px;
+    padding-left: 25px;
   }
-
-  button {
-    @include omega();
-    margin-top: 37px;
-    padding-left: 30px;
-    height: 42px;
-    padding-right: 30px;
-  }
-
   div.no-message {
     @include shift(9);
   }
   div.message {
     @include span-columns(3);
+    button {
+      @include omega();
+      margin-top: 37px;
+      padding-left: 30px;
+      height: 42px;
+      padding-right: 30px;
+    }
   }
 }
