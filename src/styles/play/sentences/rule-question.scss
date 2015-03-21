@@ -29,7 +29,7 @@ div.rule-question-sentence-bar {
   &.default {
     background-color: $gray;
   }
-  &.tryAgain {
+  &.try_again {
     background-color: $tryAgainColor;
   }
   &.incorrect {
@@ -41,6 +41,14 @@ div.rule-question-sentence-bar {
     height: 116px;
     padding-top: 37px;
     padding-left: 25px;
+    img {
+      @include span-columns(1);
+    }
+    p {
+      padding-top: 5px;
+      font-size: 18px;
+      @include span-columns(9);
+    }
   }
   .button-panel {
     button {
