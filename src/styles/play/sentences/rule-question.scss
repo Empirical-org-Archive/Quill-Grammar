@@ -12,9 +12,22 @@ div.ruleQuestion {
     }
   }
   p.prompt, .student-input {
-    padding-top:10px;
+    padding-left: 30px;
+    padding-top:20px;
     font-size: 22px;
     font-family: 'courier new';
+  }
+
+  p.prompt {
+    margin-bottom: 30px;
+  }
+
+  input[type="text"] {
+    margin-left: 30px;
+    padding-top: 10px;
+    width: 95%;
+    border-radius: 0px;
+    height: 80px;
   }
 }
 
@@ -29,7 +42,7 @@ div.rule-question-sentence-bar {
   &.default {
     background-color: $gray;
   }
-  &.tryAgain {
+  &.try_again {
     background-color: $tryAgainColor;
   }
   &.incorrect {
@@ -41,6 +54,14 @@ div.rule-question-sentence-bar {
     height: 116px;
     padding-top: 37px;
     padding-left: 25px;
+    img {
+      @include span-columns(1);
+    }
+    p {
+      padding-top: 5px;
+      font-size: 18px;
+      @include span-columns(9);
+    }
   }
   .button-panel {
     button {

@@ -88,17 +88,17 @@ module.exports = function($scope, _) {
       var answerIsAdequateLength = _.every(rq.body, ensureLengthIsProper(answer));
       if (!answerIsAdequateLength) {
         setMessage($scope.answerText.notLongEnough);
-        $scope.ruleQuestionClass = 'tryAgain';
+        $scope.ruleQuestionClass = 'try_again';
       }
       if (grammarMatch && !strictTypingMode) {
         setMessage($scope.answerText.typingErrorNonStrict);
         $scope.ruleQuestionClass = 'correct';
         correct = true;
       } else if (grammarMatch) {
-        $scope.ruleQuestionClass = 'tryAgain';
+        $scope.ruleQuestionClass = 'try_again';
         setMessage($scope.answerText.typingErrorStrict);
       } else {
-        $scope.ruleQuestionClass = 'tryAgain';
+        $scope.ruleQuestionClass = 'try_again';
         setMessage($scope.answerText.tryAgain);
       }
     }
