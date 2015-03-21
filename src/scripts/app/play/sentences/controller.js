@@ -163,7 +163,7 @@ function SentencePlayCtrl(
     var phrases = [];
     var sentences = [];
     _.each(entries, function(e) {
-      e = '<li>' + e + '</li>';
+      e = '<li>' + e + '.</li>';
       if (e.indexOf(':') !== -1) {
         phrases.push(e);
       } else {
