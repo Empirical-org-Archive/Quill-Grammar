@@ -1,6 +1,7 @@
 <div class="sentence-tooltip-item">
   <p class="concept-overview">Concept Overview</p>
   <div class="sentence-tooltip">
-    <p>Concept Information goes here</p>
+    <h2>Concept Overview</h2>
+    <p ng-bind-html="formatDescription(currentRule.description) | trustedHtml"></p>
   </div>
 </div>

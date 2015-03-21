@@ -11,7 +11,21 @@
 }
 .sentence-tooltip {
   @extend .tooltip-reverse;
-  height: 259px;
+  height: 400px;
   width: 341px;
+  h2, p {
+    text-align: left;
+    padding: 25px;
+    padding-top: 10px;
+    hr {
+      padding: 0px;
+    }
+  }
+  h2 {
+    font-size: 19px;
+  }
+  p {
+    font-size: 13px;
+  }
 }
 
