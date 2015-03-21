@@ -151,4 +151,26 @@ function SentencePlayCtrl(
   function errorStateChange() {
     $state.go('index');
   }
+
+  /*
+   * Format Description
+   */
+  $scope.formatDescription = function(des) {
+    if (!des) {
+      return;
+    }
+    var entries = des.split('.');
+    var phrases = [];
+    var sentences = [];
+    _.each(entries, function(e) {
+      e = '<li>' + e + '</li>';
+      if (e.indexOf(':') !== -1) {
+        phrases.push(e);
+      } else {
+        sentences.push(e);
+      }
+    });
+    var html = '<ul>' + phrases.join('') + '</ul><hr/><ul>' + sentences.join('') + '</ul>';
+    return html;
+  };
 };
