@@ -12,9 +12,22 @@ div.ruleQuestion {
     }
   }
   p.prompt, .student-input {
-    padding-top:10px;
+    padding-left: 30px;
+    padding-top:20px;
     font-size: 22px;
     font-family: 'courier new';
+  }
+
+  p.prompt {
+    margin-bottom: 30px;
+  }
+
+  input[type="text"] {
+    margin-left: 30px;
+    padding-top: 10px;
+    width: 95%;
+    border-radius: 0px;
+    height: 80px;
   }
 }
 
