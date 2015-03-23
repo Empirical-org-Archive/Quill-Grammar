@@ -9,6 +9,6 @@ function ($stateProvider) {
     parent: 'app',
     templateUrl: 'internal.results.html',
     controller: 'InternalResultsCtrl',
-    url: '/play/results'
+    url: '/play/results?passageId&partnerIframe'
   });
 };

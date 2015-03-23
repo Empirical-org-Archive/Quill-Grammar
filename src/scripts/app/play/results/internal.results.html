@@ -1,18 +1,20 @@
-<div class="passage-heading" ng-show="passageTitle && passageImageUrl">
-  <img ng-src="/assets/images/{{passageImageUrl}}" alt="passageTitle"></img>
-  <p>{{passageTitle}}</p>
-</div>
+<div ng-class="{results: true, 'partner-iframe': partnerIframe}">
+  <div class="passage-heading" ng-show="passageTitle && passageImageUrl">
+    <img ng-src="/assets/images/{{passageImageUrl}}" alt="passageTitle"></img>
+    <p>{{passageTitle}}</p>
+  </div>
 
-<div class="results-bar">
-  <div class="left">
-    <img src="/assets/images/big_result_flag.png" alt="results flag"></img>
-  </div>
-  <div class="middle">
-    <h2>Well done! You completed the activity.</h2>
-    <p>24/32 Errors Found</p>
-    <p class="hover">How do we grade?</p>
-  </div>
-  <div class="right">
-    <a ui-sref="play-partner-pf-integration-start"><button>Back to Menu</button></a>
+  <div class="results-bar">
+    <div class="left">
+      <img src="/assets/images/big_result_flag.png" alt="results flag"></img>
+    </div>
+    <div class="middle">
+      <h2>Well done! You completed the activity.</h2>
+      <p>24/32 Errors Found</p>
+      <p class="hover">How do we grade?</p>
+    </div>
+    <div class="right">
+      <a ui-sref="play-partner-pf-integration-start"><button>Back to Menu</button></a>
+    </div>
   </div>
 </div>
