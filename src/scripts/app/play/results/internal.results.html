@@ -17,4 +17,12 @@
       <a ui-sref="play-partner-pf-integration-start"><button>Back to Menu</button></a>
     </div>
   </div>
+
+  <div class="passage-results" ng-show="pfResults">
+    <internal-results-table title="'Passage Proofreading'" results="pfResults"></internal-results-table>
+  </div>
+
+  <div class="sentence-writing-results" ng-show="swResults">
+    <internal-results-table title="'Sentence Writing'" results="swResults"></internal-results-table>
+  </div>
 </div>
