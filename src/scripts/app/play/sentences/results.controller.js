@@ -13,7 +13,7 @@ module.exports = function($scope, $state, portholeProxy) {
   }
 
   if ($state.params.internal) {
-
+    $state.go('play-internal-results');
   } else {
     windowProxy.post(postObj);
   }
