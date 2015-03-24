@@ -12,8 +12,11 @@ module.exports = function($scope, $state, portholeProxy) {
     postObj.id = $state.params.student;
   }
 
-  if ($state.params.internal) {
-
+  if ($state.params.partnerIframe) {
+    $state.go('play-internal-results', {
+      passageId: $state.params.passageId,
+      partnerIframe: $state.params.partnerIframe
+    });
   } else {
     windowProxy.post(postObj);
   }

@@ -5,7 +5,7 @@ module.exports =
 /*@ngInject*/
 function SentencePlayCtrl(
   $scope, $state, SentenceWritingService, RuleService, _,
-  ConceptTagResult, ActivitySession
+  ConceptTagResult, ActivitySession, localStorageService
 ) {
 
   $scope.$watch('currentRuleQuestion', function(crq) {
@@ -58,6 +58,19 @@ function SentencePlayCtrl(
 
     if (correct || crq.attempts >= $scope.numAttempts) {
       $scope.showNextQuestion = true;
+      var passageId = $state.params.passageId;
+      if (passageId) {
+        var key = 'sw-temp-' + passageId;
+        var rs = localStorageService.get(key);
+        if (!rs) {
+          rs = [];
+        }
+        rs.push({
+          conceptClass: crq.conceptClass,
+          correct: correct
+        });
+        localStorageService.set(key, rs);
+      }
     }
   });
 
@@ -66,10 +79,34 @@ function SentencePlayCtrl(
     $scope.sessionId = $state.params.student;
   }
 
+  /*
+   * Function to map temporary local results into
+   */
+  function saveLocalResults() {
+    var passageId = $state.params.passageId;
+    if (passageId) {
+      var tempKey = 'sw-temp-' + passageId;
+      var trs = localStorageService.get(tempKey);
+      var rs = _.chain(trs)
+        .groupBy('conceptClass')
+        .map(function(entries, cc) {
+          return {
+            conceptClass: cc,
+            total: entries.length,
+            correct: _.filter(entries, function(v) { return v.correct; }).length
+          };
+        })
+        .value();
+      localStorageService.set('sw-' + passageId, rs);
+      localStorageService.remove(tempKey);
+    }
+  }
+
   //This is what we need to do after a student has completed the set
   $scope.finish = function() {
     var sid = $scope.sessionId;
     var p = null;
+    saveLocalResults();
     if (sid) {
       //Do LMS logging if we have a sessionId
       p = ConceptTagResult.findAsJsonByActivitySessionId(sid)
@@ -88,7 +125,10 @@ function SentencePlayCtrl(
         $state.go('.results', {student: sid});
       });
     } else {
-      $state.go('.results', {internal: true});
+      $state.go('.results', {
+        partnerIframe: true,
+        passageId: $state.params.passageId
+      });
     }
   };
 
