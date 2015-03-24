@@ -65,4 +65,20 @@ function InternalResultsController(
       .value();
     return list;
   };
+
+  /*
+   * reduces the results into a ratio
+   */
+  $scope.getErrorsFoundString = function(results) {
+    var correct = _.reduce(results, function(correct, r) {
+      return correct + r.correct;
+    }, 0);
+
+    var total = _.reduce(results, function(total, r) {
+      return total + r.total;
+    }, 0);
+
+    return '' + correct + '/' + total;
+
+  };
 };
