@@ -5,7 +5,7 @@ module.exports =
 /*@ngInject*/
 function ProofreadingPlayCtrl(
   $scope, $state, ProofreadingService, RuleService, _,
-  $location, $anchorScroll
+  $location, $anchorScroll, localStorageService
 ) {
   $scope.id = $state.params.uid;
 
