@@ -125,7 +125,10 @@ function SentencePlayCtrl(
         $state.go('.results', {student: sid});
       });
     } else {
-      $state.go('.results', {internal: true});
+      $state.go('.results', {
+        partnerIframe: true,
+        passageId: $state.params.passageId
+      });
     }
   };
 

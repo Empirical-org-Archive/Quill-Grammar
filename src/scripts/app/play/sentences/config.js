@@ -20,7 +20,7 @@ function configure ($stateProvider) {
     parent: 'app',
     templateUrl: 'sentences.results.html',
     controller: 'ResultsController',
-    url: '/play/sw/results?internal'
+    url: '/play/sw/gen-results?passageId&partnerIframe'
   })
   .state('play-sw-gen', {
     parent: 'app',

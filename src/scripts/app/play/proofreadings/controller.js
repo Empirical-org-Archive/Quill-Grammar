@@ -193,7 +193,10 @@ function ProofreadingPlayCtrl(
     if (word.resultIndex + 1 >= getNumResults()) {
       if (allCorrect) {
         na.fn = function() {
-          console.log('view results');
+          $scope.go('play-internal-results', {
+            passageId: $scope.id,
+            partnerIframe: true
+          });
         };
         na.title = 'View Results';
       } else {
