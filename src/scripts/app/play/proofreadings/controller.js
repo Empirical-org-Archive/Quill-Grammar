@@ -14,7 +14,6 @@ function ProofreadingPlayCtrl(
   //adds the brainpop script and assigns an id to the div
   if ($state.params.brainpop) {
     $scope.brainpop = 'BrainPOPsnapArea';
-    $scope.pfResults = [];
   }
 
   //Add in some custom images for the 3 stories we are showcasing
