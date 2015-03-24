@@ -14,6 +14,7 @@ function ProofreadingPlayCtrl(
   //adds the brainpop script and assigns an id to the div
   if ($state.params.brainpop) {
     $scope.brainpop = 'BrainPOPsnapArea';
+    $scope.pfResults = [];
   }
 
   //Add in some custom images for the 3 stories we are showcasing
@@ -300,8 +301,44 @@ function ProofreadingPlayCtrl(
       .value();
     generateLesson(ruleNumbers);
     $scope.focusResult(0, passageResults[0].index);
+    saveResults(getLocalResults(passageResults));
     captureReady();
   }
+
+  function saveResults(r) {
+    localStorageService.set('pf-' + $scope.id, r);
+  }
+
+
+  /*
+   * generate passage results for local results
+   */
+
+  function getLocalResults(passageResults) {
+    var rules = $scope.referencedRules;
+    return _.chain(passageResults)
+      .pluck('passageEntry')
+      .reject(function(pe) {
+        return _.isUndefined(pe.ruleNumber);
+      })
+      .map(function(pe) {
+        var rule = _.findWhere(rules, {ruleNumber: Number(pe.ruleNumber)});
+        return {
+          title: rule.title,
+          correct: pe.type === $scope.CORRECT
+        };
+      })
+      .groupBy('title')
+      .map(function(entries, title) {
+        return {
+          conceptClass: title,
+          total: entries.length,
+          correct: _.filter(entries, function(v) { return v.correct; }).length
+        };
+      })
+      .value();
+  }
+
 
   /*
    * Below when handle building the lesson and showing
