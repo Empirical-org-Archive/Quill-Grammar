@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = angular.module('quill-grammar.play.proofreadings', [
+  require('./../directives/').name,
   require('./../../../services/proofreading.js').name,
   'angular.filter',
   'uuid4',
