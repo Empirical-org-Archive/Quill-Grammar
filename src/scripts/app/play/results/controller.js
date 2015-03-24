@@ -4,7 +4,7 @@ module.exports =
 
 /*@ngInject*/
 function InternalResultsController(
-  $scope, $state
+  $scope, $state, _
 ) {
   $scope.partnerIframe = $state.params.partnerIframe;
 
@@ -31,5 +31,38 @@ function InternalResultsController(
   }
 
 
+  /*
+   * TODO replace this with the dynamic version
+   * from local storage.
+   */
+  $scope.swResults = [
+    {conceptClass: 'Irregular Verbs in the Past Tense', correct: 2, total: 3},
+    {conceptClass: 'It\'s', correct:3, total:4},
+    {conceptClass: 'Its', correct:2, total: 2},
+    {conceptClass: 'Despite', correct: 1, total: 2},
+    {conceptClass: 'Commonly Confused Words', correct: 2, total: 3}
+  ];
 
+  $scope.pfResults = [
+    {conceptClass: 'Irregular Verbs in the Past Tense', correct: 2, total: 3},
+    {conceptClass: 'It\'s', correct:3, total:4},
+    {conceptClass: 'Its', correct:2, total: 2},
+    {conceptClass: 'Despite', correct: 1, total: 2},
+    {conceptClass: 'Commonly Confused Words', correct: 2, total: 3}
+  ];
+
+  /*
+   * Maps a result entry to an array of true and false values.
+   * This represents the correct and incorrect images shown
+   * for each result.
+   */
+  $scope.imageList = function(r) {
+    var list = _.chain(_.range(0, r.total))
+      .map(function(num, i) {
+        return [i, r.correct > num];
+      })
+      .object()
+      .value();
+    return list;
+  };
 };
