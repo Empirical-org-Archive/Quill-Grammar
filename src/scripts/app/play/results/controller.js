@@ -4,7 +4,7 @@ module.exports =
 
 /*@ngInject*/
 function InternalResultsController(
-  $scope, $state, _
+  $scope, $state, _, localStorageService
 ) {
   $scope.partnerIframe = $state.params.partnerIframe;
 
@@ -35,21 +35,9 @@ function InternalResultsController(
    * TODO replace this with the dynamic version
    * from local storage.
    */
-  $scope.swResults = [
-    {conceptClass: 'Irregular Verbs in the Past Tense', correct: 2, total: 3},
-    {conceptClass: 'It\'s', correct:3, total:4},
-    {conceptClass: 'Its', correct:2, total: 2},
-    {conceptClass: 'Despite', correct: 1, total: 2},
-    {conceptClass: 'Commonly Confused Words', correct: 2, total: 3}
-  ];
+  $scope.swResults = localStorageService.get('sw-' + $state.params.passageId);
 
-  $scope.pfResults = [
-    {conceptClass: 'Irregular Verbs in the Past Tense', correct: 2, total: 3},
-    {conceptClass: 'It\'s', correct:3, total:4},
-    {conceptClass: 'Its', correct:2, total: 2},
-    {conceptClass: 'Despite', correct: 1, total: 2},
-    {conceptClass: 'Commonly Confused Words', correct: 2, total: 3}
-  ];
+  $scope.pfResults = localStorageService.get('pf-' + $state.params.passageId);
 
   /*
    * Maps a result entry to an array of true and false values.
@@ -80,5 +68,13 @@ function InternalResultsController(
 
     return '' + correct + '/' + total;
 
+  };
+
+  $scope.getTotalErrorsFoundString = function() {
+    var pf = $scope.getErrorsFoundString($scope.pfResults).split('/');
+    var sw = $scope.getErrorsFoundString($scope.swResults).split('/');
+    var found = Number(pf[0]) + Number(sw[0]);
+    var total = Number(pf[1]) + Number(sw[1]);
+    return '' + found + '/' + total;
   };
 };
