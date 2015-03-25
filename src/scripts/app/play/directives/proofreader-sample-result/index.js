@@ -23,6 +23,16 @@ angular.module('quill-grammar.play.directives.proofreader', [])
     var correct = 0;
     var total = 0;
 
+    if (_.isArray(set)) {
+      _.each(set, function(s) {
+        if (!_.isNumber(s.correct) || !_.isNumber(s.total)) {
+          throw new Error('incorrect object sent to getTotals iterator');
+        }
+        correct = correct + s.correct;
+        total = total + s.total;
+      });
+    }
+
     return {
       correct: correct,
       total: total
@@ -62,19 +72,30 @@ angular.module('quill-grammar.play.directives.proofreader', [])
     }
 
     if (totals.total !== 0) {
-      var score = Math.ceil(totals.correct / totals.total) * 100;
-      console.log(score);
+      var score = (totals.correct / totals.total) * 100;
+      return _.chain($scope.rankings)
+        //We'll guarantee
+        .sortBy(function(r) {
+          return r.threshold;
+        })
+        .reject(function(r) {
+          return score < r.threshold;
+        })
+        .last()
+        .value();
     } else {
       return $scope.rankings.not_proficient;
     }
   }
 
-  var rankObj = totalRanking(totals);
 
-  $scope.ranking = rankObj.title;
-  $scope.score = String(totals.correct) + '/' + String(totals.total);
+  if (totals.total > 0) {
+    var rankObj = totalRanking(totals);
+    $scope.ranking = rankObj.title;
+    $scope.score = String(totals.correct) + '/' + String(totals.total);
 
-  $scope.rankingClass = {};
-  $scope.rankingClass[rankObj.class] = true;
+    $scope.rankingClass = {};
+    $scope.rankingClass[rankObj.class] = true;
+  }
 
 });
