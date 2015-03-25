@@ -14,9 +14,67 @@ angular.module('quill-grammar.play.directives.proofreader', [])
   };
 })
 .controller('ProofreadingDirCtrl', function(
-  $scope, localStorageService
+  $scope, localStorageService, _
 ) {
   var pfResults = localStorageService.get('pf-' + $scope.uid);
   var swResults = localStorageService.get('sw-' + $scope.uid);
-  console.log(pfResults, swResults);
+
+  function getTotals(set) {
+    var correct = 0;
+    var total = 0;
+
+    return {
+      correct: correct,
+      total: total
+    };
+  }
+
+  var pfTotals = getTotals(pfResults);
+  var swTotals = getTotals(swResults);
+
+  var totals = {
+    correct: pfTotals.correct + swTotals.correct,
+    total: pfTotals.total + swTotals.total
+  };
+
+  $scope.rankings = {
+    at_proficiency: {
+      title: 'At Proficiency',
+      threshold: 75,
+      class: 'at-proficiency',
+    },
+    near_proficiency: {
+      title: 'Near Proficiency',
+      threshold: 50,
+      class: 'near-proficiency',
+    },
+    not_proficient: {
+      title: 'Not Proficient',
+      threshold: 0,
+      class: 'not-proficient',
+    }
+  };
+
+
+  function totalRanking(totals) {
+    if (!_.isNumber(totals.correct) || !_.isNumber(totals.total)) {
+      throw new Error('incorrect object sent to totalRanking');
+    }
+
+    if (totals.total !== 0) {
+      var score = Math.ceil(totals.correct / totals.total) * 100;
+      console.log(score);
+    } else {
+      return $scope.rankings.not_proficient;
+    }
+  }
+
+  var rankObj = totalRanking(totals);
+
+  $scope.ranking = rankObj.title;
+  $scope.score = String(totals.correct) + '/' + String(totals.total);
+
+  $scope.rankingClass = {};
+  $scope.rankingClass[rankObj.class] = true;
+
 });
