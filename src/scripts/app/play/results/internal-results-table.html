@@ -11,7 +11,7 @@
       <tr ng-repeat="r in results">
         <td>{{r.conceptClass}}</td>
         <td>
-          <span ng-repeat="(key, correct) in imageList(r)">
+          <span class="correctness-img" ng-repeat="(key, correct) in imageList(r)">
             <img src="/assets/images/correct_icon.png" alt="correct" ng-show="correct"></img>
             <img src="/assets/images/incorrect_icon.png" alt="incorrect" ng-show="!correct"></img>
           </span>

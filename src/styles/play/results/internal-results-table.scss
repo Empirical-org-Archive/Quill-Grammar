@@ -1,0 +1,20 @@
+div.internal-results-table {
+  background-color: $white;
+  padding-top: 20px;
+  @include outer-container;
+  table.table-minimal {
+    border: 2px solid $gray;
+    border-radius: 6px;
+    background-color: $white;
+    thead {
+      background-color: $gray;
+    }
+    tbody, thead {
+      tr {
+        td, th {
+          padding:20px;
+        }
+      }
+    }
+  }
+}
