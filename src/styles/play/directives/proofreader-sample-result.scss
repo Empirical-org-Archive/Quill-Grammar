@@ -1,0 +1,27 @@
+div.proofreading-sample-results {
+  .not-proficient {
+    background-color: $not-proficient;
+  }
+  .near-proficiency {
+    background-color: $near-proficiency;
+  }
+  .at-proficiency {
+    background-color: $at-proficiency;
+  }
+
+  img {
+    padding: 9px;
+    border-radius: 6px;
+  }
+
+  p {
+    padding: 0px;
+    margin: 0px;
+  }
+
+  p.full-results {
+    padding-top: 20px;
+    padding-bottom: 28px;
+    color: $sub-link-text;
+  }
+}

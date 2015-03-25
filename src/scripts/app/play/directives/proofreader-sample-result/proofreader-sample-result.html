@@ -1,0 +1,8 @@
+<div class="proofreading-sample-results" ng-show="ranking">
+  <img ng-class="rankingClass" src="/assets/images/small_result_flag.png" alt="results flag"></img>
+  <p>{{ranking}}</p>
+  <p>{{score}}</p>
+  <a ui-sref="play-internal-results({partnerIframe:true, passageId: '{{uid}}'})">
+    <p class="full-results">View Full Results</p>
+  </a>
+</div>
