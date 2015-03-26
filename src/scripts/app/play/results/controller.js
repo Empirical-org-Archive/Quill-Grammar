@@ -46,10 +46,9 @@ function InternalResultsController(
    */
   $scope.imageList = function(r) {
     var list = _.chain(_.range(0, r.total))
-      .map(function(num, i) {
-        return [i, r.correct > num];
+      .map(function(num) {
+        return r.correct > num;
       })
-      .object()
       .value();
     return list;
   };

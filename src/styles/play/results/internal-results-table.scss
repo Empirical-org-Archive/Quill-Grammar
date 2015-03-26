@@ -13,6 +13,10 @@ div.internal-results-table {
       tr {
         td, th {
           padding:20px;
+          span.correctness-img {
+            @include span-columns(2);
+            @include omega(5n);
+          }
         }
       }
     }
