@@ -28,6 +28,7 @@ function InternalResultsController(
   if ($state.params.passageId) {
     $scope.passageImageUrl = $scope.pfImages[$state.params.passageId];
     $scope.passageTitle = $scope.pfTitles[$state.params.passageId];
+    $scope.uid = $state.params.passageId;
   }
 
 
@@ -46,10 +47,9 @@ function InternalResultsController(
    */
   $scope.imageList = function(r) {
     var list = _.chain(_.range(0, r.total))
-      .map(function(num, i) {
-        return [i, r.correct > num];
+      .map(function(num) {
+        return r.correct > num;
       })
-      .object()
       .value();
     return list;
   };

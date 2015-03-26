@@ -1,4 +1,4 @@
-<div ng-class="{results: true, 'partner-iframe': partnerIframe}">
+<div ng-class="{'results-internal': true, 'partner-iframe': partnerIframe}">
   <div class="passage-heading" ng-show="passageTitle && passageImageUrl">
     <img ng-src="/assets/images/{{passageImageUrl}}" alt="passageTitle"></img>
     <p>{{passageTitle}}</p>
@@ -6,7 +6,7 @@
 
   <div class="results-bar">
     <div class="left">
-      <img src="/assets/images/big_result_flag.png" alt="results flag"></img>
+      <proofreading-result-large-flag uid="uid"></proofreading-result-large-flag>
     </div>
     <div class="middle">
       <h2>Well done! You completed the activity.</h2>
@@ -18,23 +18,25 @@
     </div>
   </div>
 
-  <div class="results-header">
-    <h2>Results</h2>
-    <div class="key-entry">
-      <img src="/assets/images/correct_icon.png" alt="correct"></img>
-      <p>Correct</p>
+  <div class="results-content">
+    <div class="results-header">
+      <h2>Results</h2>
+      <div class="key-entry">
+        <img src="/assets/images/correct_icon.png" alt="correct"></img>
+        <p>Correct</p>
+      </div>
+      <div class="key-entry">
+        <img src="/assets/images/incorrect_icon.png" alt="incorrect"></img>
+        <p>Incorrect</p>
+      </div>
     </div>
-    <div class="key-entry">
-      <img src="/assets/images/incorrect_icon.png" alt="incorrect"></img>
-      <p>Incorrect</p>
+
+    <div class="passage-results" ng-show="pfResults">
+      <internal-results-table title="'Passage Proofreading'" results="pfResults"></internal-results-table>
     </div>
-  </div>
 
-  <div class="passage-results" ng-show="pfResults">
-    <internal-results-table title="'Passage Proofreading'" results="pfResults"></internal-results-table>
-  </div>
-
-  <div class="sentence-writing-results" ng-show="swResults">
-    <internal-results-table title="'Sentence Writing'" results="swResults"></internal-results-table>
+    <div class="sentence-writing-results" ng-show="swResults">
+      <internal-results-table title="'Sentence Writing'" results="swResults"></internal-results-table>
+    </div>
   </div>
 </div>

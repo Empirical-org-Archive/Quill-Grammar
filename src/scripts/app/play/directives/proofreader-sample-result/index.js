@@ -13,6 +13,16 @@ angular.module('quill-grammar.play.directives.proofreader', [])
     controller: 'ProofreadingDirCtrl'
   };
 })
+.directive('proofreadingResultLargeFlag', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'proofreader-result-large-flag.html',
+    scope: {
+      uid: '='
+    },
+    controller: 'ProofreadingDirCtrl'
+  };
+})
 .controller('ProofreadingDirCtrl', function(
   $scope, localStorageService, _
 ) {

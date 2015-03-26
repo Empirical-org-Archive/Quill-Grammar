@@ -1,0 +1,71 @@
+div.results-internal {
+  background-color: $white;
+  div.passage-heading {
+    p {
+      position: relative;
+      top: -55px;
+      left: 30px;
+      margin-bottom: -24px;
+      font-weight: bold;
+      color: white;
+      line-height: 1;
+      font-size: 18px;
+      text-shadow: 0px 0px 6px #000;
+    }
+    margin-bottom: 0;
+  }
+  div.results-content {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  div.results-bar {
+    padding: 22px 30px 22px 30px;
+    background-color: $gray;
+    @include outer-container;
+    div.left {
+      @include span-columns(2);
+    }
+    div.middle {
+      @include span-columns(6);
+      margin-left: -50px;
+      h2 {
+        font-size: 22px;
+        padding-bottom: 5px;
+      }
+      p {
+        font-size: 15px;
+        margin: 0;
+      }
+      p.hover {
+        color: $sub-link-text;
+        padding-bottom: 5px;
+      }
+    }
+    div.right {
+      float: right;
+      button {
+        height: 42px;
+        padding-left: 30px;
+        padding-right: 30px;
+      }
+    }
+  }
+
+  div.results-header {
+    padding-top: 22px;
+    @include outer-container;
+    h2 {
+      font-weight: normal;
+      font-size: 21px;
+      @include span-columns(4);
+    }
+    div.key-entry {
+      @include span-columns(2);
+      p {
+        padding-top: 5px;
+        padding-right: 25px;
+        float: right;
+      }
+    }
+  }
+}

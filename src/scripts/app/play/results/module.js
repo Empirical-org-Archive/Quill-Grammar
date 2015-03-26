@@ -2,7 +2,9 @@
 
 module.exports =
 
-angular.module('quill-grammar.play.results', [])
+angular.module('quill-grammar.play.results', [
+  require('./../directives/').name,
+])
 .config(require('./config.js'))
 .directive('internalResultsTable', function() {
   return {
