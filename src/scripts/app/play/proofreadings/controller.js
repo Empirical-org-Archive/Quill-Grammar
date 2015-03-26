@@ -305,6 +305,7 @@ function ProofreadingPlayCtrl(
     generateLesson(ruleNumbers);
     $scope.focusResult(0, passageResults[0].index);
     saveResults(getLocalResults(passageResults));
+    $scope.pf.submitted = true;
     captureReady();
   }
 
