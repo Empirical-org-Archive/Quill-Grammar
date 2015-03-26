@@ -1,7 +1,23 @@
 div.results-internal {
   background-color: $white;
   div.results-bar {
+    padding: 22px 30px 22px 30px;
     background-color: $gray;
+    @include outer-container;
+    div.left {
+      @include span-columns(2);
+    }
+    div.middle {
+      @include span-columns(6);
+    }
+    div.right {
+      float: right;
+      button {
+        height: 42px;
+        padding-left: 30px;
+        padding-right: 30px;
+      }
+    }
   }
 
   div.results-header {

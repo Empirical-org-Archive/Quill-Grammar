@@ -12,6 +12,10 @@ div.proofreading-sample-results {
   img {
     padding: 9px;
     border-radius: 6px;
+    &.large {
+      padding: 15px;
+      border-radius: 6px;
+    }
   }
 
   p {

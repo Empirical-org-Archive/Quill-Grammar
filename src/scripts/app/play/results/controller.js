@@ -28,6 +28,7 @@ function InternalResultsController(
   if ($state.params.passageId) {
     $scope.passageImageUrl = $scope.pfImages[$state.params.passageId];
     $scope.passageTitle = $scope.pfTitles[$state.params.passageId];
+    $scope.uid = $state.params.passageId;
   }
 
 
