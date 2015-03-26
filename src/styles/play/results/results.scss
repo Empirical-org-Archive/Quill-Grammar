@@ -3,4 +3,20 @@ div.results-internal {
   div.results-bar {
     background-color: $gray;
   }
+
+  div.results-header {
+    padding-top: 22px;
+    @include outer-container;
+    h2 {
+      @include span-columns(4);
+    }
+    div.key-entry {
+      @include span-columns(2);
+      p {
+        padding-top: 5px;
+        padding-right: 25px;
+        float: right;
+      }
+    }
+  }
 }
