@@ -127,12 +127,13 @@ function ProofreadingPlayCtrl(
         $scope.results.push({index: i, passageEntry: p, type: $scope.CORRECT});
       }
     });
-    var numErrorsToSolve = 1;//_.keys($scope.passageQuestions).length / 2;
+    var numErrors = _.keys($scope.passageQuestions).length;
+    var numErrorsToSolve = numErrors / 2;
     var numErrorsFound = getNumCorrect($scope.results);
     if (numErrorsFound < numErrorsToSolve) {
       showModalNotEnoughFound();
     } else {
-      showResultsModal($scope.results, numErrorsFound, numErrorsToSolve);
+      showResultsModal($scope.results, numErrorsFound, numErrors);
     }
   };
 
