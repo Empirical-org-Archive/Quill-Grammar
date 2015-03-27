@@ -9,7 +9,7 @@
       ng-focus="word.isFocused = true"
       ng-change="onInputChange(word)"
       ng-blur="word.isFocused = false"
-      ng-size="{{word.responseText.length + 1}}"
+      ng-size="{{word.responseText.length}}"
       ng-model="word.responseText">
     </input>
     <div ng-class="getErrorTooltipClass(index)" ng-show="!isBr(word.responseText) && hasErrorToShow(word)"

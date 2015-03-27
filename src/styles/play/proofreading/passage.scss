@@ -12,6 +12,7 @@ div.passage {
     box-shadow: none;
     margin: 0.25px;
     padding: 0;
+    text-align: center;
     font-family: 'courier new';
 
     &.focused, &.changed {
