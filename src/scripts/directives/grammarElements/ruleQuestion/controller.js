@@ -1,7 +1,7 @@
 'use strict';
 
 /*@ngInject*/
-module.exports = function($scope, _) {
+module.exports = function($scope, _, $timeout) {
 
   var strictTypingMode = false;
 
@@ -62,7 +62,8 @@ module.exports = function($scope, _) {
     incorrectWithAnswer: function(answer) {
       return '<b>Incorrect.</b> Correct Answer: ' + answer;
     },
-    correct: '<b>Well done!</b> That\'s the correct answer.'
+    correct: '<b>Well done!</b> That\'s the correct answer.',
+    noAnswer: 'You must enter a sentence for us to check.'
   };
 
   $scope.$watch('ruleQuestion.$id', function() {
@@ -75,7 +76,14 @@ module.exports = function($scope, _) {
     var rq = $scope.ruleQuestion;
     var answer = rq.response;
     var correct = false;
+    $timeout.cancel($scope.shortAnswerPromise);
     if (!answer) {
+      setMessage($scope.answerText.noAnswer);
+      $scope.ruleQuestionClass = 'try_again';
+      $scope.shortAnswerPromise = $timeout(function() {
+        setMessage('');
+        $scope.ruleQuestionClass = 'default';
+      }, 3000);
       return;
     }
     var exactMatch = _.any(rq.body, compareEntireAnswerToBody(answer));
