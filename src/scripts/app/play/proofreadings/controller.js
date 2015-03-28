@@ -51,15 +51,18 @@ function ProofreadingPlayCtrl(
   $scope.numChanges = 0;
 
   $scope.onInputChange = function(word) {
-    if (!word.responseText || !word.text) {
-      throw new Error('Should have responseText and text');
-    }
     var nc = $scope.numChanges;
-    if (word.responseText !== word.text && !word.countedChange) {
+    if (word.responseText === '') {
+      if (word.countedChange) {
+        nc = Math.max(nc - 1, 0);
+      }
+      word.countedChange = false;
+    } else if (word.responseText !== word.text) {
+      if (!word.countedChange) {
+        nc++;
+      }
       word.countedChange = true;
-      nc++;
-    }
-    if (word.responseText === word.text && word.countedChange) {
+    } else if (word.responseText === word.text && word.countedChange) {
       nc = Math.max(nc - 1, 0);
       word.countedChange = false;
     }
