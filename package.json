@@ -15,6 +15,7 @@
   },
   "browserify-shim": {},
   "dependencies": {
-    "empirical-angular": "^0.1.0"
+    "empirical-angular": "^0.1.0",
+    "ng-autofocus": "0.0.10"
   }
 }

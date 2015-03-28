@@ -5,7 +5,8 @@ module.exports = function(){
 		restrict: 'A',
 		link: function(scope,element,attrs){
 			attrs.$observe('ngSize', function setSize() {
-        attrs.$set('size', attrs.ngSize);
+        var size = Number(attrs.ngSize) === 0 ? 1 : Number(attrs.ngSize);
+        attrs.$set('size', size);
 			});
 		}
 	};

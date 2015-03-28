@@ -51,15 +51,18 @@ function ProofreadingPlayCtrl(
   $scope.numChanges = 0;
 
   $scope.onInputChange = function(word) {
-    if (!word.responseText || !word.text) {
-      throw new Error('Should have responseText and text');
-    }
     var nc = $scope.numChanges;
-    if (word.responseText !== word.text && !word.countedChange) {
+    if (word.responseText === '') {
+      if (word.countedChange) {
+        nc = Math.max(nc - 1, 0);
+      }
+      word.countedChange = false;
+    } else if (word.responseText !== word.text) {
+      if (!word.countedChange) {
+        nc++;
+      }
       word.countedChange = true;
-      nc++;
-    }
-    if (word.responseText === word.text && word.countedChange) {
+    } else if (word.responseText === word.text && word.countedChange) {
       nc = Math.max(nc - 1, 0);
       word.countedChange = false;
     }
@@ -128,10 +131,10 @@ function ProofreadingPlayCtrl(
       }
     });
     var numErrors = _.keys($scope.passageQuestions).length;
-    var numErrorsToSolve = numErrors / 2;
+    var numErrorsToSolve = Math.floor(numErrors / 2);
     var numErrorsFound = getNumCorrect($scope.results);
     if (numErrorsFound < numErrorsToSolve) {
-      showModalNotEnoughFound();
+      showModalNotEnoughFound(numErrorsToSolve);
     } else {
       showResultsModal($scope.results, numErrorsFound, numErrors);
     }
@@ -151,11 +154,11 @@ function ProofreadingPlayCtrl(
   /*
    * Modal settings
    */
-  function showModalNotEnoughFound() {
+  function showModalNotEnoughFound(needed) {
     $scope.pf.modal = {
       title: 'Keep Trying!',
-      message: 'You need to find at least 50% of the errors.',
-      buttonMessage: 'Find Errors',
+      message: 'You must make at least ' + needed + ' edits.',
+      buttonMessage: 'Find Edits',
       buttonClick: function() {
         $scope.pf.modal.show = false;
       },
@@ -194,7 +197,7 @@ function ProofreadingPlayCtrl(
     if (word.resultIndex + 1 >= getNumResults()) {
       if (allCorrect) {
         na.fn = function() {
-          $scope.go('play-internal-results', {
+          $state.go('play-internal-results', {
             passageId: $scope.id,
             partnerIframe: true
           });
@@ -306,7 +309,6 @@ function ProofreadingPlayCtrl(
     $scope.focusResult(0, passageResults[0].index);
     saveResults(getLocalResults(passageResults));
     $scope.pf.submitted = true;
-    captureReady();
   }
 
   function saveResults(r) {

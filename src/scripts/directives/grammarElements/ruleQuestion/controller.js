@@ -1,7 +1,7 @@
 'use strict';
 
 /*@ngInject*/
-module.exports = function($scope, _) {
+module.exports = function($scope, _, $timeout) {
 
   var strictTypingMode = false;
 
@@ -62,20 +62,29 @@ module.exports = function($scope, _) {
     incorrectWithAnswer: function(answer) {
       return '<b>Incorrect.</b> Correct Answer: ' + answer;
     },
-    correct: '<b>Well done!</b> That\'s the correct answer.'
+    correct: '<b>Well done!</b> That\'s the correct answer.',
+    noAnswer: 'You must enter a sentence for us to check.'
   };
 
   $scope.$watch('ruleQuestion.$id', function() {
     $scope.checkAnswerText = $scope.answerText.default;
     $scope.ruleQuestionClass = 'default';
     $scope.showCheckAnswerButton = true;
+    $timeout.cancel($scope.shortAnswerPromise);
   });
 
   $scope.checkAnswer = function() {
     var rq = $scope.ruleQuestion;
     var answer = rq.response;
     var correct = false;
+    $timeout.cancel($scope.shortAnswerPromise);
     if (!answer) {
+      setMessage($scope.answerText.noAnswer);
+      $scope.ruleQuestionClass = 'try_again';
+      $scope.shortAnswerPromise = $timeout(function() {
+        setMessage('');
+        $scope.ruleQuestionClass = 'default';
+      }, 3000);
       return;
     }
     var exactMatch = _.any(rq.body, compareEntireAnswerToBody(answer));
@@ -123,4 +132,12 @@ module.exports = function($scope, _) {
   function setMessage(msg) {
     $scope.ruleQuestion.message = msg;
   }
+
+  /*
+   * Event handler for input paste. This is to
+   * prevent students from pasting into this field
+   */
+  $scope.capturePasteEvent = function(event) {
+    event.preventDefault();
+  };
 };

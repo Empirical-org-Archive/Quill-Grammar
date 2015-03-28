@@ -4,7 +4,7 @@
     <p ng-bind-html="ruleQuestion.resolvedInstructions | trustedHtml"></p>
   </div>
   <p class="prompt" ng-bind-html="ruleQuestion.prompt | formatPrompt | trustedHtml"></p>
-  <input class="student-input" type="text" ng-model="ruleQuestion.response"/>
+  <input class="student-input" type="text" ng-model="ruleQuestion.response" ng-paste="capturePasteEvent($event)"/>
   <div class="rule-question-sentence-bar" ng-class="ruleQuestionClass">
     <div class="message-panel">
       <img ng-src="/assets/images/{{ruleQuestionClass}}_icon.png" alt="ruleQuestion.message" ng-show="ruleQuestionClass && ruleQuestionClass != 'default'"></img>
