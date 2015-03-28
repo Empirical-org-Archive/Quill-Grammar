@@ -128,10 +128,10 @@ function ProofreadingPlayCtrl(
       }
     });
     var numErrors = _.keys($scope.passageQuestions).length;
-    var numErrorsToSolve = numErrors / 2;
+    var numErrorsToSolve = Math.floor(numErrors / 2);
     var numErrorsFound = getNumCorrect($scope.results);
     if (numErrorsFound < numErrorsToSolve) {
-      showModalNotEnoughFound();
+      showModalNotEnoughFound(numErrorsToSolve);
     } else {
       showResultsModal($scope.results, numErrorsFound, numErrors);
     }
@@ -151,11 +151,11 @@ function ProofreadingPlayCtrl(
   /*
    * Modal settings
    */
-  function showModalNotEnoughFound() {
+  function showModalNotEnoughFound(needed) {
     $scope.pf.modal = {
       title: 'Keep Trying!',
-      message: 'You need to find at least 50% of the errors.',
-      buttonMessage: 'Find Errors',
+      message: 'You must make at least ' + needed + ' edits.',
+      buttonMessage: 'Find Edits',
       buttonClick: function() {
         $scope.pf.modal.show = false;
       },
