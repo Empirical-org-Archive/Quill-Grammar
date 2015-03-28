@@ -194,7 +194,7 @@ function ProofreadingPlayCtrl(
     if (word.resultIndex + 1 >= getNumResults()) {
       if (allCorrect) {
         na.fn = function() {
-          $scope.go('play-internal-results', {
+          $state.go('play-internal-results', {
             passageId: $scope.id,
             partnerIframe: true
           });
