@@ -66,7 +66,7 @@ function SentencePlayCtrl(
           rs = [];
         }
         rs.push({
-          conceptClass: crq.conceptClass,
+          conceptClass: crq.conceptCategory,
           correct: correct
         });
         localStorageService.set(key, rs);
