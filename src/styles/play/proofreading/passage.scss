@@ -32,6 +32,7 @@ div.passage {
     }
 
     &.underlined {
+      border-radius: 0px;
       border-bottom: 1px solid $underlinedColor !important;
     }
   }
