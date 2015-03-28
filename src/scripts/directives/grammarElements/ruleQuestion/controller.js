@@ -123,4 +123,12 @@ module.exports = function($scope, _) {
   function setMessage(msg) {
     $scope.ruleQuestion.message = msg;
   }
+
+  /*
+   * Event handler for input paste. This is to
+   * prevent students from pasting into this field
+   */
+  $scope.capturePasteEvent = function(event) {
+    event.preventDefault();
+  };
 };
