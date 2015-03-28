@@ -70,6 +70,7 @@ module.exports = function($scope, _, $timeout) {
     $scope.checkAnswerText = $scope.answerText.default;
     $scope.ruleQuestionClass = 'default';
     $scope.showCheckAnswerButton = true;
+    $timeout.cancel($scope.shortAnswerPromise);
   });
 
   $scope.checkAnswer = function() {
