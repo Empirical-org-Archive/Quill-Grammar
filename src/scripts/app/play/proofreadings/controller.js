@@ -290,10 +290,25 @@ function ProofreadingPlayCtrl(
     });
   };
 
+  /*
+   * Function to return the grammatical concept for a word
+   * With v1, we are just using the rule title. In the future
+   * we will make a data model change.
+   */
+  $scope.getGrammaticalConceptForWord = function(word) {
+    if (word.ruleNumber) {
+      var rule = _.findWhere($scope.referencedRules, {ruleNumber: Number(word.ruleNumber)});
+      if (rule && rule.title) {
+        return rule.title;
+      }
+    }
+  };
+
   function showResults(passageResults) {
     _.each(passageResults, function(pr, i) {
       $scope.pf.passage[pr.index].type = pr.type;
       $scope.pf.passage[pr.index].resultIndex = i;
+      $scope.pf.passage[pr.index].ruleNumber = pr.passageEntry.ruleNumber;
       $scope.pf.passage[pr.index].nextAction = $scope.nextAction($scope.pf.passage[pr.index], pr.index);
     });
     var ruleNumbers = _.chain(passageResults)

@@ -28,7 +28,7 @@
           <h4>Correct Edit:</h4>
           <p>{{word.plus}}</p>
           <h4>Grammatical Concept:</h4>
-          <p>Grammar Concept TODO</p>
+          <p>{{getGrammaticalConceptForWord(word)}}</p>
           <button ng-click="word.nextAction.fn()">{{word.nextAction.title}} ➞</button>
         </div>
       </div>
