@@ -24,6 +24,13 @@ module.exports = function($scope, _, $timeout) {
     };
   }
 
+  function getCorrectString(b) {
+    var answers = _.chain(b)
+      .map(removeDelimeters)
+      .value();
+    return '<ul><li>' + answers.join('</li><li>') + '</ul>';
+  }
+
   function compareGrammarElementToBody(answer) {
     return function(b) {
       if (!answer) {
@@ -120,7 +127,7 @@ module.exports = function($scope, _, $timeout) {
       $scope.$emit('answerRuleQuestion', rq, answer, correct);
       $scope.showCheckAnswerButton = false;
       if (!correct) {
-        setMessage($scope.answerText.incorrectWithAnswer('correct answer here'));
+        setMessage($scope.answerText.incorrectWithAnswer(getCorrectString(rq.body)));
         $scope.ruleQuestionClass = 'incorrect';
       }
     } else if (!correct) {
