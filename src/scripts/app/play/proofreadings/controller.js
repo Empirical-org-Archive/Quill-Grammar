@@ -53,10 +53,10 @@ function ProofreadingPlayCtrl(
   $scope.onInputChange = function(word) {
     var nc = $scope.numChanges;
     if (word.responseText === '') {
-      if (word.countedChange) {
-        nc = Math.max(nc - 1, 0);
+      if (!word.countedChange) {
+        nc++;
+        word.countedChange = true;
       }
-      word.countedChange = false;
     } else if (word.responseText !== word.text) {
       if (!word.countedChange) {
         nc++;
