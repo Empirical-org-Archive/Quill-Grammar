@@ -25,9 +25,11 @@
   border: 1px solid $base-border-color;
   display: inline-block;
   padding: 0.5em 1em;
+  position: relative;
   text-align: center;
 
   .tooltip-no-arrow {
+    @include position(absolute, null null $tooltip-distance-from-item null);
     @include transition (all 0.2s ease-in-out);
     background-color: $tooltip-background;
     background: #fff;
@@ -69,10 +71,12 @@
 
   .tooltip-reverse-no-arrow {
     @extend .tooltip-no-arrow;
+    @include position(absolute, $tooltip-distance-from-item null null null);
   }
 
   .tooltip-reverse {
     @extend .tooltip-no-arrow;
+    @include position(absolute, $tooltip-distance-from-item null null null);
     &:before {
       @extend  .tooltip-arrow;
       @include position(absolute, null 0 null 0);
