@@ -238,6 +238,10 @@ function ProofreadingPlayCtrl(
       var scrollId = 'error-tooltip-scroll-' + String(scrollIndex);
       $location.hash(scrollId);
       $anchorScroll();
+      var el = document.querySelector('#' + scrollId);
+      if (el) {
+        console.log(el.getBoundingClientRect());
+      }
     }
   };
 
