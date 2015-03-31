@@ -51,7 +51,8 @@ div.passage {
     @extend .tooltip-reverse-no-arrow;
     height: 259px;
     width: 341px;
-    left: -30px;
+    position: absolute;
+    left: 40%;
     span.arrow:before {
       @include position(absolute, -23px 0 null -180px);
       font-size: 50px;
