@@ -328,6 +328,8 @@ function ProofreadingPlayCtrl(
 
   function saveResults(r) {
     localStorageService.set('pf-' + $scope.id, r);
+    localStorageService.remove('sw-' + $scope.id);
+    localStorageService.remove('sw-temp-' + $scope.id);
   }
 
 
