@@ -133,10 +133,11 @@ function ProofreadingPlayCtrl(
     var numErrors = _.keys($scope.passageQuestions).length;
     var numErrorsToSolve = Math.floor(numErrors / 2);
     var numErrorsFound = getNumCorrect($scope.results);
-    if (numErrorsFound < numErrorsToSolve) {
-      showModalNotEnoughFound(numErrorsToSolve);
-    } else {
+    var numEdits = $scope.numChanges;
+    if (numErrorsFound >= numErrorsToSolve ||  numEdits >= numErrorsToSolve) {
       showResultsModal($scope.results, numErrorsFound, numErrors);
+    } else {
+      showModalNotEnoughFound(numErrorsToSolve);
     }
   };
 
