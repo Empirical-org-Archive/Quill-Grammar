@@ -219,10 +219,36 @@ function ProofreadingPlayCtrl(
 
     return na;
   };
+  var getAbsPosition = function(el){
+      var el2 = el;
+      var curtop = 0;
+      var curleft = 0;
+      if (document.getElementById || document.all) {
+          do  {
+              curleft += el.offsetLeft-el.scrollLeft;
+              curtop += el.offsetTop-el.scrollTop;
+              el = el.offsetParent;
+              el2 = el2.parentNode;
+              while (el2 != el) {
+                  curleft -= el2.scrollLeft;
+                  curtop -= el2.scrollTop;
+                  el2 = el2.parentNode;
+              }
+          } while (el.offsetParent);
+
+      } else if (document.layers) {
+          curtop += el.y;
+          curleft += el.x;
+      }
+      return [curtop, curleft];
+  };
 
   $scope.focusResult = function(resultIndex, scrollIndex) {
     var p = $scope.results[resultIndex - 1];
     var r = $scope.results[resultIndex];
+    var scrollId = 'error-tooltip-scroll-' + String(scrollIndex);
+    var elem = document.getElementById(scrollId);
+    var buffer = 30;
     if (p) {
       $scope.pf.passage[p.index].tooltip = {};
     }
@@ -231,12 +257,12 @@ function ProofreadingPlayCtrl(
       $scope.pf.passage[r.index].tooltip = {
         style: {
           visibility: 'visible',
-          opacity: 1
+          opacity: 1,
+          top: String(getAbsPosition(elem)[0] + buffer) + 'px'
         }
       };
     }
     if (scrollIndex) {
-      var scrollId = 'error-tooltip-scroll-' + String(scrollIndex);
       $location.hash(scrollId);
       $anchorScroll();
     }
