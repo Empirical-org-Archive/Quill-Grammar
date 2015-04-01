@@ -263,7 +263,7 @@ function ProofreadingPlayCtrl(
   };
 
   $scope.errorCounter = function(word) {
-    return String(word.resultIndex + 1) + ' of ' + $scope.getNumErrors();
+    return String(word.resultIndex + 1) + ' of ' + word.totalResults;
   };
 
   $scope.answerImageName = function(t) {
@@ -310,6 +310,7 @@ function ProofreadingPlayCtrl(
       $scope.pf.passage[pr.index].type = pr.type;
       $scope.pf.passage[pr.index].resultIndex = i;
       $scope.pf.passage[pr.index].ruleNumber = pr.passageEntry.ruleNumber;
+      $scope.pf.passage[pr.index].totalResults = passageResults.length;
       $scope.pf.passage[pr.index].nextAction = $scope.nextAction($scope.pf.passage[pr.index], pr.index);
     });
     var ruleNumbers = _.chain(passageResults)
