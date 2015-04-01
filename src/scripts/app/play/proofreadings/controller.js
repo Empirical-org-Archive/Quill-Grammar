@@ -248,7 +248,7 @@ function ProofreadingPlayCtrl(
     var r = $scope.results[resultIndex];
     var scrollId = 'error-tooltip-scroll-' + String(scrollIndex);
     var elem = document.getElementById(scrollId);
-    var buffer = 30;
+    var buffer = 190;
     if (p) {
       $scope.pf.passage[p.index].tooltip = {};
     }
