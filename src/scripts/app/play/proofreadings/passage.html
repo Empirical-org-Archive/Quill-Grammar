@@ -1,18 +1,20 @@
 <div class="passage">
-  <div ng-class="{'word':true, 'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="(index, word) in passage" id="error-tooltip-scroll-{{index}}">
-    <p ng-bind-html="word.responseText | trustedHtml" ng-show="isBr(word.responseText)"></p>
-    <input
-      autofocus="$first"
-      ng-show="!isBr(word.responseText)"
-      type="text"
-      ng-class="{focused: word.isFocused, incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), changed: word.text !== word.responseText, correct: hasCorrect(word), underlined: needsUnderlining(word)}"
-      ng-readonly="submitted"
-      ng-focus="word.isFocused = true"
-      ng-change="onInputChange(word)"
-      ng-blur="word.isFocused = false"
-      ng-size="{{word.responseText.length}}"
-      ng-model="word.responseText">
-    </input>
+  <div ng-class="{'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="(index, word) in passage" id="error-tooltip-scroll-{{index}}">
+    <div class="word">
+      <p ng-bind-html="word.responseText | trustedHtml" ng-show="isBr(word.responseText)"></p>
+      <input
+        autofocus="$first"
+        ng-show="!isBr(word.responseText)"
+        type="text"
+        ng-class="{focused: word.isFocused, incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), changed: word.text !== word.responseText, correct: hasCorrect(word), underlined: needsUnderlining(word)}"
+        ng-readonly="submitted"
+        ng-focus="word.isFocused = true"
+        ng-change="onInputChange(word)"
+        ng-blur="word.isFocused = false"
+        ng-size="{{word.responseText.length}}"
+        ng-model="word.responseText">
+      </input>
+    </div>
     <div ng-class="getErrorTooltipClass(index)" ng-show="!isBr(word.responseText) && hasErrorToShow(word)"
       ng-style="word.tooltip.style">
       <div ng-class="{incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), correct: hasCorrect(word)}">

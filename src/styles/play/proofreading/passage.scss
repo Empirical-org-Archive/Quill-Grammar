@@ -50,10 +50,10 @@ div.passage {
   .error-tooltip-reverse {
     @extend .tooltip-reverse-no-arrow;
     height: 259px;
-    width: 341px;
+    width: 250px;
     left: -30px;
     span.arrow:before {
-      @include position(absolute, -23px 0 null -180px);
+      @include position(absolute, -23px 0 null -150px);
       font-size: 50px;
       content:'▲'
     }

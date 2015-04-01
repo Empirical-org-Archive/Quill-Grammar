@@ -222,6 +222,13 @@ function ProofreadingPlayCtrl(
   $scope.focusResult = function(resultIndex, scrollIndex) {
     var p = $scope.results[resultIndex - 1];
     var r = $scope.results[resultIndex];
+    var scrollId = 'error-tooltip-scroll-' + String(scrollIndex);
+    var el = document.querySelector('#' + scrollId);
+    var left = 0;
+    if (el) {
+      var rect = el.getBoundingClientRect();
+      console.log(rect);
+    }
     if (p) {
       $scope.pf.passage[p.index].tooltip = {};
     }
@@ -230,18 +237,14 @@ function ProofreadingPlayCtrl(
       $scope.pf.passage[r.index].tooltip = {
         style: {
           visibility: 'visible',
-          opacity: 1
+          opacity: 1,
+          left: left
         }
       };
     }
     if (scrollIndex) {
-      var scrollId = 'error-tooltip-scroll-' + String(scrollIndex);
       $location.hash(scrollId);
       $anchorScroll();
-      var el = document.querySelector('#' + scrollId);
-      if (el) {
-        console.log(el.getBoundingClientRect());
-      }
     }
   };
 
