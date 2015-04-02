@@ -286,8 +286,12 @@ function ProofreadingPlayCtrl(
         }
       };
     }
-    if (scrollIndex) {
-      var scrollId = 'error-tooltip-scroll-' + String(scrollIndex);
+    var scrollTo = r.index;
+    if (!scrollTo) {
+      scrollTo = scrollIndex;
+    }
+    if (String(scrollTo)) {
+      var scrollId = 'error-tooltip-scroll-' + String(scrollTo);
       $location.hash(scrollId);
       $anchorScroll();
     }
