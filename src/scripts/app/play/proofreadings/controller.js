@@ -259,16 +259,14 @@ function ProofreadingPlayCtrl(
       })
       .value();
     var indexWithOutGoingOver = _.find(breakIndexes, function(i) {
-      return i > sIndex;
+      return i >= sIndex;
     });
-    var scrollId = 'last-chance-tooltip-breakpoint';
+    var scrollId = 'last-chance-tooltip-breakpoint-at-panel';
     if (indexWithOutGoingOver) {
       scrollId = 'break-binding-point-' + String(indexWithOutGoingOver);
     }
-    console.log(scrollId);
     var elem = document.getElementById(scrollId);
     var top = getAbsPosition(elem)[0];
-    console.log(sIndex, top);
     return String(top) + 'px';
   }
 
