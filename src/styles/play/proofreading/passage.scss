@@ -19,20 +19,33 @@ div.passage {
     text-align: center;
     font-family: 'courier new';
 
-    &.focused, &.changed {
+    &.focused, &.changed, &.tooltipped {
       font-weight: bold;
+    }
+
+    &.tooltipped {
+      font-size: 18px;
     }
 
     &.incorrectError {
       background-color: $incorrectErrorColor;
+      &.tooltipped {
+        background-color: darken($incorrectErrorColor, 10%);
+      }
     }
 
     &.notNecessaryError {
       background-color: $notNecessaryErrorColor;
+      &.tooltipped {
+        background-color: darken($notNecessaryErrorColor, 10%);
+      }
     }
 
     &.correct {
       background-color: $correctColor;
+      &.tooltipped {
+        background-color: darken($correctColor, 10%);
+      }
     }
 
     &.underlined {
