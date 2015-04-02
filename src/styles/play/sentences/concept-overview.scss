@@ -10,7 +10,7 @@
   }
 }
 .sentence-tooltip {
-  @extend .tooltip-reverse;
+  @extend .tooltip-reverse-no-arrow;
   height: 400px;
   width: 341px;
   h2, p {

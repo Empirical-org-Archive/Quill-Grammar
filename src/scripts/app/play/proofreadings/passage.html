@@ -5,7 +5,7 @@
       autofocus="$first"
       ng-show="!isBr(word.responseText)"
       type="text"
-      ng-class="{focused: word.isFocused, incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), changed: word.text !== word.responseText, correct: hasCorrect(word), underlined: needsUnderlining(word)}"
+      ng-class="{focused: word.isFocused, incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), changed: word.text !== word.responseText, correct: hasCorrect(word), underlined: needsUnderlining(word), tooltipped: word.tooltip.style}"
       ng-readonly="submitted"
       ng-focus="word.isFocused = true"
       ng-change="onInputChange(word)"
@@ -17,7 +17,6 @@
       ng-style="word.tooltip.style">
       <div ng-class="{incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), correct: hasCorrect(word)}">
         <div ng-class="getErrorTooltipTopClass(answerImageName(word.type))">
-          <span class="arrow"></span>
           <div class="img-div">
             <img ng-src="/assets/images/{{answerImageName(word.type)}}_icon.png" alt="{{word.type}}"></img>
           </div>
@@ -26,9 +25,10 @@
         </div>
         <div class="bottom-panel">
           <h4>Correct Edit:</h4>
-          <p>{{word.plus}}</p>
-          <h4>Grammatical Concept:</h4>
-          <p>{{getGrammaticalConceptForWord(word)}}</p>
+          <p ng-show="word.plus">{{word.plus}}</p>
+          <p ng-show="!word.plus">{{word.text}}</p>
+          <h4 ng-show="!hasNotNecessaryError(word)">Grammatical Concept:</h4>
+          <p ng-show="!hasNotNecessaryError(word)">{{getGrammaticalConceptForWord(word)}}</p>
           <button ng-click="word.nextAction.fn()">{{word.nextAction.title}} ➞</button>
         </div>
       </div>
