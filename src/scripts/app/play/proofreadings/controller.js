@@ -5,7 +5,7 @@ module.exports =
 /*@ngInject*/
 function ProofreadingPlayCtrl(
   $scope, $state, ProofreadingService, RuleService, _,
-  $location, $anchorScroll, localStorageService, $timeout
+  $location, localStorageService, $document
 ) {
   $scope.id = $state.params.uid;
 
@@ -292,8 +292,8 @@ function ProofreadingPlayCtrl(
     }
     if (String(scrollTo)) {
       var scrollId = 'error-tooltip-scroll-' + String(scrollTo);
-      $location.hash(scrollId);
-      $anchorScroll();
+      var elem = angular.element(document.getElementById(scrollId));
+      $document.scrollToElement(elem);
     }
   };
 
