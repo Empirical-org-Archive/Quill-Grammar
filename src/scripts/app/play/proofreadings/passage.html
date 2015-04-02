@@ -11,6 +11,7 @@
       ng-change="onInputChange(word)"
       ng-blur="word.isFocused = false"
       ng-size="{{word.responseText.length}}"
+      ng-trim="false"
       ng-model="word.responseText">
     </input>
     <div ng-class="getErrorTooltipClass(index)" ng-show="!isBr(word.responseText) && hasErrorToShow(word)"
