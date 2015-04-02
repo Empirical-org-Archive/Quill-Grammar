@@ -11,6 +11,7 @@
 }
 .sentence-tooltip {
   @extend .tooltip-reverse-no-arrow;
+  @include transition (all 0.2s ease-in-out);
   height: 400px;
   width: 341px;
   h2, p {
