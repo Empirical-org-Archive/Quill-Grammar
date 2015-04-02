@@ -17,7 +17,6 @@
       ng-style="word.tooltip.style">
       <div ng-class="{incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), correct: hasCorrect(word)}">
         <div ng-class="getErrorTooltipTopClass(answerImageName(word.type))">
-          <span class="arrow"></span>
           <div class="img-div">
             <img ng-src="/assets/images/{{answerImageName(word.type)}}_icon.png" alt="{{word.type}}"></img>
           </div>
