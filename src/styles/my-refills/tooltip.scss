@@ -29,7 +29,6 @@
 
   .tooltip-no-arrow {
     @include position(absolute, null 0 null 0);
-    @include transition (all 0.2s ease-in-out);
     background-color: $tooltip-background;
     background: #fff;
     border-radius: $base-border-radius;
