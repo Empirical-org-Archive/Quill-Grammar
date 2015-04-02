@@ -27,8 +27,8 @@
           <h4>Correct Edit:</h4>
           <p ng-show="word.plus">{{word.plus}}</p>
           <p ng-show="!word.plus">{{word.text}}</p>
-          <h4>Grammatical Concept:</h4>
-          <p>{{getGrammaticalConceptForWord(word)}}</p>
+          <h4 ng-show="!hasNotNecessaryError(word)">Grammatical Concept:</h4>
+          <p ng-show="!hasNotNecessaryError(word)">{{getGrammaticalConceptForWord(word)}}</p>
           <button ng-click="word.nextAction.fn()">{{word.nextAction.title}} ➞</button>
         </div>
       </div>
