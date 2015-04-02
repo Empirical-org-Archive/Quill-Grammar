@@ -5,7 +5,7 @@ module.exports =
 /*@ngInject*/
 function ProofreadingPlayCtrl(
   $scope, $state, ProofreadingService, RuleService, _,
-  $location, $anchorScroll, localStorageService
+  $location, $anchorScroll, localStorageService, $timeout
 ) {
   $scope.id = $state.params.uid;
 
@@ -243,12 +243,38 @@ function ProofreadingPlayCtrl(
       return [curtop, curleft];
   };
 
+  function calculateTop(sIndex) {
+    var breakIndexes = _.chain($scope.pf.passage)
+      .map(function(word, index) {
+        return [index, $scope.isBr(word.responseText)];
+      })
+      .filter(function(v) {
+        return v[1];
+      })
+      .map(function(v) {
+        return v[0];
+      })
+      .sortBy(function(num) {
+        return num;
+      })
+      .value();
+    var indexWithOutGoingOver = _.find(breakIndexes, function(i) {
+      return i > sIndex;
+    });
+    var scrollId = 'last-chance-tooltip-breakpoint';
+    if (indexWithOutGoingOver) {
+      scrollId = 'break-binding-point-' + String(indexWithOutGoingOver);
+    }
+    console.log(scrollId);
+    var elem = document.getElementById(scrollId);
+    var top = getAbsPosition(elem)[0];
+    console.log(sIndex, top);
+    return String(top) + 'px';
+  }
+
   $scope.focusResult = function(resultIndex, scrollIndex) {
     var p = $scope.results[resultIndex - 1];
     var r = $scope.results[resultIndex];
-    var scrollId = 'error-tooltip-scroll-' + String(scrollIndex);
-    var elem = document.getElementById(scrollId);
-    var buffer = 190;
     if (p) {
       $scope.pf.passage[p.index].tooltip = {};
     }
@@ -258,11 +284,12 @@ function ProofreadingPlayCtrl(
         style: {
           visibility: 'visible',
           opacity: 1,
-          top: String(getAbsPosition(elem)[0] + buffer) + 'px'
+          top: calculateTop(r.index)
         }
       };
     }
     if (scrollIndex) {
+      var scrollId = 'error-tooltip-scroll-' + String(scrollIndex);
       $location.hash(scrollId);
       $anchorScroll();
     }
