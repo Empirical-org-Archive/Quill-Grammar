@@ -11,6 +11,7 @@ angular
     'ui.router',
     'LocalStorageModule',
     'autofocus',
+    'duScroll',
     require('../../../../.tmp/config').name,
     require('../../../../.tmp/templates').name,
     require('../../directives/index.js').name,
