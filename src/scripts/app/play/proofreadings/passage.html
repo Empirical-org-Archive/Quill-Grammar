@@ -1,6 +1,6 @@
 <div class="passage">
   <div ng-class="{'word':true, 'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="(index, word) in passage" id="error-tooltip-scroll-{{index}}">
-    <p ng-bind-html="word.responseText | trustedHtml" ng-show="isBr(word.responseText)"></p>
+    <p ng-bind-html="space" ng-show="isBr(word.responseText)" id="break-binding-point-{{index}}"></p>
     <input
       autofocus="$first"
       ng-show="!isBr(word.responseText)"

@@ -5,7 +5,7 @@ module.exports =
 /*@ngInject*/
 function ProofreadingPlayCtrl(
   $scope, $state, ProofreadingService, RuleService, _,
-  $location, $anchorScroll, localStorageService
+  $location, $anchorScroll, localStorageService, $timeout
 ) {
   $scope.id = $state.params.uid;
 
@@ -219,6 +219,56 @@ function ProofreadingPlayCtrl(
 
     return na;
   };
+  var getAbsPosition = function(el){
+      var el2 = el;
+      var curtop = 0;
+      var curleft = 0;
+      if (document.getElementById || document.all) {
+          do  {
+              curleft += el.offsetLeft-el.scrollLeft;
+              curtop += el.offsetTop-el.scrollTop;
+              el = el.offsetParent;
+              el2 = el2.parentNode;
+              while (el2 != el) {
+                  curleft -= el2.scrollLeft;
+                  curtop -= el2.scrollTop;
+                  el2 = el2.parentNode;
+              }
+          } while (el.offsetParent);
+
+      } else if (document.layers) {
+          curtop += el.y;
+          curleft += el.x;
+      }
+      return [curtop, curleft];
+  };
+
+  function calculateTop(sIndex) {
+    var breakIndexes = _.chain($scope.pf.passage)
+      .map(function(word, index) {
+        return [index, $scope.isBr(word.responseText)];
+      })
+      .filter(function(v) {
+        return v[1];
+      })
+      .map(function(v) {
+        return v[0];
+      })
+      .sortBy(function(num) {
+        return num;
+      })
+      .value();
+    var indexWithOutGoingOver = _.find(breakIndexes, function(i) {
+      return i >= sIndex;
+    });
+    var scrollId = 'last-chance-tooltip-breakpoint-at-panel';
+    if (indexWithOutGoingOver) {
+      scrollId = 'break-binding-point-' + String(indexWithOutGoingOver);
+    }
+    var elem = document.getElementById(scrollId);
+    var top = getAbsPosition(elem)[0];
+    return String(top) + 'px';
+  }
 
   $scope.focusResult = function(resultIndex, scrollIndex) {
     var p = $scope.results[resultIndex - 1];
@@ -231,12 +281,17 @@ function ProofreadingPlayCtrl(
       $scope.pf.passage[r.index].tooltip = {
         style: {
           visibility: 'visible',
-          opacity: 1
+          opacity: 1,
+          top: calculateTop(r.index)
         }
       };
     }
-    if (scrollIndex) {
-      var scrollId = 'error-tooltip-scroll-' + String(scrollIndex);
+    var scrollTo = r.index;
+    if (!scrollTo) {
+      scrollTo = scrollIndex;
+    }
+    if (String(scrollTo)) {
+      var scrollId = 'error-tooltip-scroll-' + String(scrollTo);
       $location.hash(scrollId);
       $anchorScroll();
     }
