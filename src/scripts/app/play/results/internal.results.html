@@ -11,7 +11,19 @@
     <div class="middle">
       <h2>Well done! You completed the activity.</h2>
       <p>{{getTotalErrorsFoundString()}} Errors Found</p>
-      <p class="hover">How do we grade?</p>
+      <div class="how-we-grade-tooltip-item">
+        <p class="hover">How do we grade?</p>
+        <div class="how-we-grade-tooltip">
+          <p>Your score is based on your performance in the passage proofreading and sentence writing portions of the activity. Students earn one point for every error they catch in the passage and one point for each sentence they write correctly. Students earn a half point for each sentence they write correctly on the second attempt.</p>
+          <p>Quill employs a mastery based grading system. Students earn:
+          <ul>
+            <li> a green ("proficient") for scoring between 76%-100%</li>
+            <li>a yellow ("near proficiency") for scoring between 51%-75%</li>
+            <li>a red ("not proficient") for scoring between 0%-50%</li>
+          </ul>
+          </p>
+        </div>
+      </div>
     </div>
     <div class="right">
       <a ui-sref="play-partner-pf-integration-start"><button>Back to Menu</button></a>
