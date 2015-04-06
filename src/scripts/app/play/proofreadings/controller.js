@@ -355,7 +355,7 @@ function ProofreadingPlayCtrl(
   };
 
   $scope.errorCounter = function(word) {
-    return String(word.resultIndex + 1) + ' of ' + word.totalResults;
+    return 'Edit ' + String(word.resultIndex + 1) + ' of ' + word.totalResults;
   };
 
   $scope.answerImageName = function(t) {
