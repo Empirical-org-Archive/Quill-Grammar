@@ -19,6 +19,11 @@ div.passage {
     text-align: center;
     font-family: 'courier new';
 
+    &::-ms-clear {
+      visibility: hidden;
+      margin-right: -20px;
+    }
+
     &.focused, &.changed, &.tooltipped {
       font-weight: bold;
     }
