@@ -196,8 +196,17 @@ function ProofreadingPlayCtrl(
   }
 
   function showResultsModal(results, numErrorsFound, numErrorsToSolve) {
-    var title = numErrorsFound === numErrorsToSolve ? 'Congratulations!' : 'Good Work!';
+    function createTitle() {
+      if (numErrorsFound === numErrorsToSolve) {
+        return 'Congratulations!';
+      } else if (numErrorsFound >= numErrorsToSolve / 2) {
+        return 'Good Work!';
+      }
+      return '';
+    }
     var nf = numErrorsFound === numErrorsToSolve ? 'all ' + String(numErrorsFound) : String(numErrorsFound) + ' of ' + String(numErrorsToSolve);
+    var title = createTitle();
+
     $scope.pf.modal = {
       title: title,
       message: 'You found ' + nf + ' errors.',
