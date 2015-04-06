@@ -35,6 +35,15 @@ function ProofreadingPlayCtrl(
     return atob(o);
   };
 
+  $scope.$on('$locationChangeStart', function(event, next) {
+    if (next.indexOf('play/results') !== -1 || next.indexOf('play/sw') !== -1) {
+      console.log('allow transition');
+    } else {
+      console.log('not allowing');
+      event.preventDefault();
+    }
+  });
+
   ProofreadingService.getProofreading($scope.id).then(function(pf) {
     pf.passage = ProofreadingService.prepareProofreading(pf.passage, $scope);
     $scope.pf = pf;
