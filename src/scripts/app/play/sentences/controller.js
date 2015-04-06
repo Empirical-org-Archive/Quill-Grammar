@@ -8,6 +8,15 @@ function SentencePlayCtrl(
   ConceptTagResult, ActivitySession, localStorageService
 ) {
 
+  $scope.$on('$locationChangeStart', function(event, next) {
+    if (next.indexOf('gen-results') !== -1) {
+      console.log('allow transition');
+    } else {
+      console.log('not allowing');
+      event.preventDefault();
+    }
+  });
+
   $scope.$watch('currentRuleQuestion', function(crq) {
     if (_.isObject(crq)) {
       $scope.currentRule = $scope.swSet[crq.ruleIndex];
