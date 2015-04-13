@@ -13,6 +13,7 @@ function configure ($stateProvider) {
   .state('play-partner-pf-integration-start', {
     parent: 'app',
     templateUrl: 'proofreadings.partner.html',
-    url: '/play/partner-pf'
+    url: '/play/partner-pf',
+    controller: 'PartnerPlayCtrl'
   });
 };

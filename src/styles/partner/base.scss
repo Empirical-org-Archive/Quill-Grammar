@@ -36,10 +36,16 @@ div.partner-iframe-landing {
     @extend .modal;
     border-radius: 6px;
     div.modal-inner {
+      @include outer-container;
       text-align: center;
       p {
         font-size: 15px;
-        padding-bottom: 10px;
+      }
+      div.button-panel {
+        button {
+          position: relative;
+          margin-left: 20px;
+        }
       }
     }
   }
