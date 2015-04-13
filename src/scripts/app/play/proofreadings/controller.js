@@ -5,7 +5,8 @@ module.exports =
 /*@ngInject*/
 function ProofreadingPlayCtrl(
   $scope, $state, ProofreadingService, RuleService, _,
-  $location, localStorageService, $document, $timeout
+  $location, localStorageService, $document, $timeout,
+  $analytics
 ) {
   $scope.id = $state.params.uid;
 
@@ -65,6 +66,7 @@ function ProofreadingPlayCtrl(
    * this number.
    */
   $scope.numChanges = 0;
+  $scope.madeChange = false;
 
   $scope.onInputChange = function(word) {
     var nc = $scope.numChanges;
@@ -83,6 +85,10 @@ function ProofreadingPlayCtrl(
       word.countedChange = false;
     }
     $scope.numChanges = nc;
+    if (!$scope.madeChange && nc > 0) {
+      $scope.madeChange = true;
+      $analytics.eventTrack('Edit One Passage Word', word);
+    }
   };
 
   /*
