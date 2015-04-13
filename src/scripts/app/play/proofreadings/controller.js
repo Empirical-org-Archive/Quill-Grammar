@@ -5,7 +5,7 @@ module.exports =
 /*@ngInject*/
 function ProofreadingPlayCtrl(
   $scope, $state, ProofreadingService, RuleService, _,
-  $location, localStorageService, $document
+  $location, localStorageService, $document, $timeout
 ) {
   $scope.id = $state.params.uid;
 
@@ -38,11 +38,18 @@ function ProofreadingPlayCtrl(
   $scope.$on('$locationChangeStart', function(event, next) {
     if (next.indexOf('play/results') !== -1 || next.indexOf('play/sw') !== -1) {
       console.log('allow transition');
+    } else if (next.indexOf('play/pf') !== -1 && $scope.allowTransition) {
+      console.log('allow transition');
     } else {
       console.log('not allowing');
       event.preventDefault();
     }
   });
+
+  $scope.allowTransition = true;
+  $timeout(function() {
+    $scope.allowTransition = false;
+  }, 100);
 
   ProofreadingService.getProofreading($scope.id).then(function(pf) {
     pf.passage = ProofreadingService.prepareProofreading(pf.passage, $scope);
