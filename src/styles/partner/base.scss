@@ -32,6 +32,18 @@ div.partner-iframe-landing {
     }
   }
 
+  .reset-score-modal {
+    @extend .modal;
+    border-radius: 6px;
+    div.modal-inner {
+      text-align: center;
+      p {
+        font-size: 15px;
+        padding-bottom: 10px;
+      }
+    }
+  }
+
   div.story-carousel {
     @include outer-container;
     padding-left: 35px;
