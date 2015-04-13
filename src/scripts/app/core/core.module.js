@@ -12,6 +12,8 @@ angular
     'LocalStorageModule',
     'autofocus',
     'duScroll',
+    'angulartics',
+    'angulartics.mixpanel',
     require('../../../../.tmp/config').name,
     require('../../../../.tmp/templates').name,
     require('../../directives/index.js').name,
