@@ -1,6 +1,6 @@
-<div class="passage-submit-panel" id="last-chance-tooltip-breakpoint-at-panel">
+<div ng-class="{'passage-submit-panel': true, 'passage-submitted': pf.passage.submitted}" id="last-chance-tooltip-breakpoint-at-panel">
   <div class="passage-message">
     {{pf.message}}
   </div>
-  <button ng-show="!pf.submitted" ng-class="{'no-message': !pf.message}" ng-click="submitPassage()">Check Work</button>
+  <button ng-show="!pf.passage.submitted" ng-class="{'no-message': !pf.message}" ng-click="submitPassage()">Check Work</button>
 </div>

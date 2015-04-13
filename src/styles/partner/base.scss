@@ -26,6 +26,28 @@ div.partner-iframe-landing {
     p {
       font-size: 17px;
     }
+    button {
+      position: absolute;
+      margin-left: 330px;
+    }
+  }
+
+  .reset-score-modal {
+    @extend .modal;
+    border-radius: 6px;
+    div.modal-inner {
+      @include outer-container;
+      text-align: center;
+      p {
+        font-size: 15px;
+      }
+      div.button-panel {
+        button {
+          position: relative;
+          margin-left: 20px;
+        }
+      }
+    }
   }
 
   div.story-carousel {

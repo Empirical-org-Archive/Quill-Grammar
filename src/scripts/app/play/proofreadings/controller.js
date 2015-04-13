@@ -23,6 +23,13 @@ function ProofreadingPlayCtrl(
     'Yh49ICvX_YME8ui7cDoFXQ': 'the_apollo_8_photograph_story_header.png'
   };
 
+  $scope.onScoreReset = function() {
+    var keys = _.keys($scope.pfImages);
+    _.each(keys, function(key) {
+      _.each(['pf-' + key, 'sw-' + key, 'sw-temp-' + key], localStorageService.remove);
+    });
+  };
+
   function error(e) {
     $state.go('index');
   }

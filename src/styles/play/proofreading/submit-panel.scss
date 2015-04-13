@@ -5,6 +5,9 @@ div.passage-submit-panel {
   margin-top: 30px;
   padding-right: 30px;
   height: 116px;
+  &.passage-submitted {
+    height: 348px;
+  }
   @include span-columns(12);
   .passage-message {
     @include span-columns($message-width);
