@@ -5,7 +5,7 @@ module.exports =
 /*@ngInject*/
 function SentencePlayCtrl(
   $scope, $state, SentenceWritingService, RuleService, _,
-  ConceptTagResult, ActivitySession, localStorageService
+  ConceptTagResult, ActivitySession, localStorageService, $analytics
 ) {
 
   $scope.$on('$locationChangeStart', function(event, next) {
@@ -76,7 +76,8 @@ function SentencePlayCtrl(
         }
         rs.push({
           conceptClass: crq.conceptCategory,
-          correct: correct
+          correct: correct,
+          answer: answer
         });
         localStorageService.set(key, rs);
       }
@@ -89,6 +90,24 @@ function SentencePlayCtrl(
   }
 
   /*
+   * Function to map and send analytic information
+   */
+  function sendSentenceWritingAnalytics(results, passageId) {
+    var event = 'Sentence Writing Submitted';
+    var c = _.pluck(results, 'correct');
+    var attrs = {
+      uid: passageId,
+      answers: _.pluck(results, 'answer'),
+      correct: c,
+      conceptCategory: _.pluck(results, 'conceptClass'),
+      total: results.length,
+      numCorrect: c.length
+    };
+
+    $analytics.eventTrack(event, attrs);
+  }
+
+  /*
    * Function to map temporary local results into
    */
   function saveLocalResults() {
@@ -96,6 +115,7 @@ function SentencePlayCtrl(
     if (passageId) {
       var tempKey = 'sw-temp-' + passageId;
       var trs = localStorageService.get(tempKey);
+      sendSentenceWritingAnalytics(trs, passageId);
       var rs = _.chain(trs)
         .groupBy('conceptClass')
         .map(function(entries, cc) {
