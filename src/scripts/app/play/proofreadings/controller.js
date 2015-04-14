@@ -5,7 +5,8 @@ module.exports =
 /*@ngInject*/
 function ProofreadingPlayCtrl(
   $scope, $state, ProofreadingService, RuleService, _,
-  $location, localStorageService, $document
+  $location, localStorageService, $document, $timeout,
+  $analytics
 ) {
   $scope.id = $state.params.uid;
 
@@ -23,13 +24,6 @@ function ProofreadingPlayCtrl(
     'Yh49ICvX_YME8ui7cDoFXQ': 'the_apollo_8_photograph_story_header.png'
   };
 
-  $scope.onScoreReset = function() {
-    var keys = _.keys($scope.pfImages);
-    _.each(keys, function(key) {
-      _.each(['pf-' + key, 'sw-' + key, 'sw-temp-' + key], localStorageService.remove);
-    });
-  };
-
   function error(e) {
     $state.go('index');
   }
@@ -45,11 +39,18 @@ function ProofreadingPlayCtrl(
   $scope.$on('$locationChangeStart', function(event, next) {
     if (next.indexOf('play/results') !== -1 || next.indexOf('play/sw') !== -1) {
       console.log('allow transition');
+    } else if (next.indexOf('play/pf') !== -1 && $scope.allowTransition) {
+      console.log('allow transition');
     } else {
       console.log('not allowing');
       event.preventDefault();
     }
   });
+
+  $scope.allowTransition = true;
+  $timeout(function() {
+    $scope.allowTransition = false;
+  }, 100);
 
   ProofreadingService.getProofreading($scope.id).then(function(pf) {
     pf.passage = ProofreadingService.prepareProofreading(pf.passage, $scope);
@@ -65,6 +66,7 @@ function ProofreadingPlayCtrl(
    * this number.
    */
   $scope.numChanges = 0;
+  $scope.madeChange = false;
 
   $scope.onInputChange = function(word) {
     var nc = $scope.numChanges;
@@ -83,6 +85,10 @@ function ProofreadingPlayCtrl(
       word.countedChange = false;
     }
     $scope.numChanges = nc;
+    if (!$scope.madeChange && nc > 0) {
+      $scope.madeChange = true;
+      $analytics.eventTrack('Edit One Passage Word', word);
+    }
   };
 
   /*
@@ -404,6 +410,7 @@ function ProofreadingPlayCtrl(
       .value();
     generateLesson(ruleNumbers);
     $scope.focusResult(0, passageResults[0].index);
+    sendResultsAnalytics(passageResults);
     saveResults(getLocalResults(passageResults));
     $scope.pf.passage.submitted = true;
   }
@@ -412,6 +419,52 @@ function ProofreadingPlayCtrl(
     localStorageService.set('pf-' + $scope.id, r);
     localStorageService.remove('sw-' + $scope.id);
     localStorageService.remove('sw-temp-' + $scope.id);
+  }
+
+  /*
+   * Mapping results for analytics
+   */
+  function sendResultsAnalytics(results) {
+    var event = 'Press Check Answer';
+    var passageResults = _.chain(results)
+      .pluck('passageEntry')
+      .map(function pick(p) {
+        return _.pick(p, ['minus', 'ruleNumber', 'responseText', 'plus', 'type']);
+      })
+      .value();
+    var correct = _.filter(passageResults, function(pr) {
+      return pr.type === $scope.CORRECT;
+    });
+    var incorrect = _.filter(passageResults, function(pr) {
+      return pr.type !== $scope.CORRECT;
+    });
+
+    var correctWords = _.map(correct, function(c) {
+      return c.responseText;
+    });
+
+    var incorrectWords = _.map(incorrect, function(i) {
+      return i.responseText;
+    });
+
+    var correctRuleNumbers = _.map(correct, function(c) {
+      return c.ruleNumber;
+    });
+
+    var incorrectRuleNumbers = _.map(incorrect, function(i) {
+      return i.ruleNumber;
+    });
+
+    var attrs = {
+      correct: correct,
+      incorrect: incorrect,
+      correctWords: correctWords,
+      correctRuleNumbers: correctRuleNumbers,
+      incorrectRuleNumbers: incorrectRuleNumbers,
+      incorrectWords: incorrectWords,
+      score: Number(correct.length / results.length) * 100
+    };
+    $analytics.eventTrack(event, attrs);
   }
 
 

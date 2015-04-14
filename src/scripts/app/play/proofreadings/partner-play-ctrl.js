@@ -3,7 +3,10 @@
 module.exports =
 
 /*@ngInject*/
-function PartnerPlayCtrl($scope, localStorageService, _, $state) {
+function PartnerPlayCtrl(
+  $scope, localStorageService, _, $state,
+  $analytics
+) {
   //Add in some custom images for the 3 stories we are showcasing
   $scope.pfImages = {
     '70B-T6vLMTM9zjQ9LCwoCg': 'the_princes_and_the_turtle_story_header.png',
@@ -22,4 +25,8 @@ function PartnerPlayCtrl($scope, localStorageService, _, $state) {
     $scope.showResetScoreModal = false;
     $state.go($state.current, {}, {reload: true});
   };
+
+  $scope.$on('$stateChangeStart', function(event, toState, toParams){
+    $analytics.eventTrack('Start Activity', toParams);
+  });
 };

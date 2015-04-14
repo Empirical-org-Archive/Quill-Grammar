@@ -14,7 +14,8 @@
     "angular-uuid4": "~0.3.0",
     "porthole": "~1.0.0",
     "angular-local-storage": "~0.1.5",
-    "angular-scroll": "~0.6.5"
+    "angular-scroll": "~0.6.5",
+    "angulartics": "~0.17.2"
   },
   "overrides": {
     "porthole": {
