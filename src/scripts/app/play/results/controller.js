@@ -70,12 +70,25 @@ function InternalResultsController(
 
   };
 
-  $scope.getTotalErrorsFoundString = function() {
+  function getValues() {
     var pf = $scope.getErrorsFoundString($scope.pfResults).split('/');
     var sw = $scope.getErrorsFoundString($scope.swResults).split('/');
-    var found = Number(pf[0]) + Number(sw[0]);
-    var total = Number(pf[1]) + Number(sw[1]);
-    $analytics.eventTrack('Results Viewed', {found: found, total: total, uid: $scope.uid});
-    return '' + found + '/' + total;
+    var f = Number(pf[0]) + Number(sw[0]);
+    var t = Number(pf[1]) + Number(sw[1]);
+    return {
+      found: f,
+      total: t
+    };
+  }
+
+  $scope.getTotalErrorsFoundString = function() {
+    var v = getValues();
+    return '' + v.found + '/' + v.total;
   };
+
+  $scope.$on('$viewContentLoaded', function() {
+    var v = getValues();
+    v.uid = $scope.uid;
+    $analytics.eventTrack('Activity Results Viewed', v);
+  });
 };
