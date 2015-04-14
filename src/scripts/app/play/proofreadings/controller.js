@@ -444,7 +444,7 @@ function ProofreadingPlayCtrl(
       incorrect: incorrect,
       score: Number(correct.length / results.length) * 100
     };
-    console.log(event, attrs);
+    $analytics.eventTrack(event, attrs);
   }
 
 
