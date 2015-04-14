@@ -426,23 +426,23 @@ function ProofreadingPlayCtrl(
    */
   function sendResultsAnalytics(results) {
     var event = 'Press Check Answer';
-    var passageResults = _.pluck(results, 'passageEntry');
-    var correct = _.chain(passageResults)
-      .filter(function(pr) {
-        console.log(pr);
-        return pr.type === $scope.CORRECT;
+    var passageResults = _.chain(results)
+      .pluck('passageEntry')
+      .map(function pick(p) {
+        return _.pick(p, ['minus', 'ruleNumber', 'responseText', 'plus', 'type']);
       })
       .value();
+    var correct = _.filter(passageResults, function(pr) {
+      return pr.type === $scope.CORRECT;
+    });
+    var incorrect = _.filter(passageResults, function(pr) {
+      return pr.type !== $scope.CORRECT;
+    });
 
-    var incorrect = _.chain(passageResults)
-      .filter(function(pr) {
-        return pr.type !== $scope.CORRECT;
-      })
-      .value();
     var attrs = {
       correct: correct,
       incorrect: incorrect,
-      score: Number(correct.length / incorrect.length) * 100
+      score: Number(correct.length / results.length) * 100
     };
     console.log(event, attrs);
   }
