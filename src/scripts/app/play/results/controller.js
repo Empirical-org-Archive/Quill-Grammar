@@ -4,7 +4,7 @@ module.exports =
 
 /*@ngInject*/
 function InternalResultsController(
-  $scope, $state, _, localStorageService
+  $scope, $state, _, localStorageService, $analytics
 ) {
   $scope.partnerIframe = $state.params.partnerIframe;
 
@@ -75,6 +75,7 @@ function InternalResultsController(
     var sw = $scope.getErrorsFoundString($scope.swResults).split('/');
     var found = Number(pf[0]) + Number(sw[0]);
     var total = Number(pf[1]) + Number(sw[1]);
+    $analytics.eventTrack('Results Viewed', {found: found, total: total, uid: $scope.uid});
     return '' + found + '/' + total;
   };
 };
