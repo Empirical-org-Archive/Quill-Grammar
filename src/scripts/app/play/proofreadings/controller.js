@@ -221,7 +221,7 @@ function ProofreadingPlayCtrl(
     if (!$scope.results) {
       return {};
     }
-    var allCorrect = getNumCorrect($scope.results) === getNumResults();
+    var allCorrect = getNumCorrect($scope.results) === $scope.getNumErrors();
     var na = {
       fn: null,
       title: ''
