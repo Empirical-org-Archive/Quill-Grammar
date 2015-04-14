@@ -410,6 +410,7 @@ function ProofreadingPlayCtrl(
       .value();
     generateLesson(ruleNumbers);
     $scope.focusResult(0, passageResults[0].index);
+    sendResultsAnalytics(passageResults);
     saveResults(getLocalResults(passageResults));
     $scope.pf.passage.submitted = true;
   }
@@ -418,6 +419,32 @@ function ProofreadingPlayCtrl(
     localStorageService.set('pf-' + $scope.id, r);
     localStorageService.remove('sw-' + $scope.id);
     localStorageService.remove('sw-temp-' + $scope.id);
+  }
+
+  /*
+   * Mapping results for analytics
+   */
+  function sendResultsAnalytics(results) {
+    var event = 'Press Check Answer';
+    var passageResults = _.pluck(results, 'passageEntry');
+    var correct = _.chain(passageResults)
+      .filter(function(pr) {
+        console.log(pr);
+        return pr.type === $scope.CORRECT;
+      })
+      .value();
+
+    var incorrect = _.chain(passageResults)
+      .filter(function(pr) {
+        return pr.type !== $scope.CORRECT;
+      })
+      .value();
+    var attrs = {
+      correct: correct,
+      incorrect: incorrect,
+      score: Number(correct.length / incorrect.length) * 100
+    };
+    console.log(event, attrs);
   }
 
 
