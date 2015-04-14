@@ -439,9 +439,29 @@ function ProofreadingPlayCtrl(
       return pr.type !== $scope.CORRECT;
     });
 
+    var correctWords = _.map(correct, function(c) {
+      return c.responseText;
+    });
+
+    var incorrectWords = _.map(incorrect, function(i) {
+      return i.responseText;
+    });
+
+    var correctRuleNumbers = _.map(correct, function(c) {
+      return c.ruleNumber;
+    });
+
+    var incorrectRuleNumbers = _.map(incorrect, function(i) {
+      return i.ruleNumber;
+    });
+
     var attrs = {
       correct: correct,
       incorrect: incorrect,
+      correctWords: correctWords,
+      correctRuleNumbers: correctRuleNumbers,
+      incorrectRuleNumbers: incorrectRuleNumbers,
+      incorrectWords: incorrectWords,
       score: Number(correct.length / results.length) * 100
     };
     $analytics.eventTrack(event, attrs);
