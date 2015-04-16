@@ -26,9 +26,13 @@ div.partner-iframe-landing {
     p {
       font-size: 17px;
     }
+    $button-width: 100px;
+    $button-right-padding: 35px;
     button {
-      position: absolute;
-      margin-left: 330px;
+      width: $button-width;
+      margin-left: 0 - $button-width - $button-right-padding;
+      margin-right: $button-right-padding;
+      float: right;
     }
   }
 
