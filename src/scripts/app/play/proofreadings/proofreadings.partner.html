@@ -4,21 +4,21 @@
   </div>
   <div class="heading">
     <button ng-click="showResetScoreModal = true">Reset</button>
-    <div class="reset-score-modal" ng-show="showResetScoreModal">
-      <input class="modal-state" type="checkbox" ng-checked="showResetScoreModal"/>
-      <div class="modal-window">
-        <div class="modal-inner">
-          <p>Pressing the reset button will delete all of your results.</p>
-          <p>You can create an account at <b>Quill.org</b> to permanently save your results.</p>
-          <div class="button-panel">
-            <button ng-click="onScoreReset()">Reset</button>
-            <button ng-click="showResetScoreModal = false">Cancel</button>
-          </div>
+    <p>These three stories are filled with grammatical errors.</p>
+    <p>Proofread the stories and find them all.</p>
+  </div>
+  <div class="reset-score-modal" ng-show="showResetScoreModal">
+    <input class="modal-state" type="checkbox" ng-checked="showResetScoreModal"/>
+    <div class="modal-window">
+      <div class="modal-inner">
+        <p>Pressing the reset button will delete all of your results.</p>
+        <p>You can create an account at <b>Quill.org</b> to permanently save your results.</p>
+        <div class="button-panel">
+          <button ng-click="onScoreReset()">Reset</button>
+          <button ng-click="showResetScoreModal = false">Cancel</button>
         </div>
       </div>
     </div>
-    <p>These three stories are filled with grammatical errors.</p>
-    <p>Proofread the stories and find them all.</p>
   </div>
   <div class="story-carousel">
     <div class="story">
