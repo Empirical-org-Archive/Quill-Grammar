@@ -27,6 +27,7 @@ Routes
 * `/play/sw/:id` - Play the given id of the sentence writing activity.
 * `/play/pf/:id` - Play the given id of the proofreading activity.
 * `/play/sw/g/:ids` - Play the comma delimited list of rule ids
+* `/play/partner-pf` - Play the 3 selected Partner Stories.
 * `/` - Will let you iterate over all rule questions.
 
 Firebase Data
