@@ -16,7 +16,7 @@ function controller($scope, rs, rqs) {
   };
 
   $scope.editRule = function(rule) {
-    console.log("editing rule " + rule);
+    console.log('editing rule ' + rule);
   };
 
   $scope.showRuleQuestionModal = function() {

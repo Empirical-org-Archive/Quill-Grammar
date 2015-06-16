@@ -24,4 +24,4 @@ module.exports = {
   tmp_config_output: 'config',
   tmp_templates_module: 'quill-grammar.templates',
   tmp_templates_output: 'templates.js',
-}
+};

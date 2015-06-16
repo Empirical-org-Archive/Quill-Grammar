@@ -174,19 +174,8 @@ function SentencePlayCtrl(
     $scope.currentRuleQuestion = ncrq;
   };
 
-  if ($state.params.uid) {
-    SentenceWritingService.getSentenceWriting($state.params.uid).then(function(sw) {
-      $scope.sentenceWriting = sw;
-      var ruleIds = _.pluck(sw.rules, 'ruleId');
-      var quantities = _.pluck(sw.rules, 'quantity');
-      return retrieveNecessaryRules(ruleIds, quantities);
-    }, errorStateChange);
-  } else if ($state.params.ids) {
-    var ids = _.uniq($state.params.ids.split(','));
-    var quantities = _.chain(ids)
-      .map(function() { return 3; })
-      .value();
-    retrieveNecessaryRules(ids, quantities);
+  function errorStateChange() {
+    $state.go('index');
   }
 
   function retrieveNecessaryRules(ruleIds, quantities) {
@@ -217,8 +206,19 @@ function SentencePlayCtrl(
     });
   }
 
-  function errorStateChange() {
-    $state.go('index');
+  if ($state.params.uid) {
+    SentenceWritingService.getSentenceWriting($state.params.uid).then(function(sw) {
+      $scope.sentenceWriting = sw;
+      var ruleIds = _.pluck(sw.rules, 'ruleId');
+      var quantities = _.pluck(sw.rules, 'quantity');
+      return retrieveNecessaryRules(ruleIds, quantities);
+    }, errorStateChange);
+  } else if ($state.params.ids) {
+    var ids = _.uniq($state.params.ids.split(','));
+    var quantities = _.chain(ids)
+      .map(function() { return 3; })
+      .value();
+    retrieveNecessaryRules(ids, quantities);
   }
 
   /*
