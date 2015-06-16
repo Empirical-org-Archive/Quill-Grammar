@@ -25,7 +25,6 @@
   "requireParenthesesAroundIIFE": true,
   "requireSpacesInConditionalExpression": true,
   "requireSpacesInFunctionExpression": {
-      "beforeOpeningRoundBrace": true,
       "beforeOpeningCurlyBrace": true
   },
   "requireSpacesInAnonymousFunctionExpression": {
@@ -66,7 +65,7 @@
   "disallowNewlineBeforeBlockStatements": true,
   "validateLineBreaks": "LF",
   "validateQuoteMarks": "'",
-  "validateIndentation": "\t",
+  "validateIndentation": 2,
   "validateParameterSeparator": ", ",
   "requireSpaceBetweenArguments": true
 }
