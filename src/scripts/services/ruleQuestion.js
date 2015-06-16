@@ -6,7 +6,7 @@ angular.module('quill-grammar.services.ruleQuestion', [
   require('./instruction.js').name,
 ])
 
-.factory('RuleQuestionService', function(
+.factory('RuleQuestionService', function (
   CrudService, InstructionService, $q, _
 ) {
   var crud = new CrudService('ruleQuestions', [
@@ -14,7 +14,7 @@ angular.module('quill-grammar.services.ruleQuestion', [
     'conceptTag', 'conceptClass', 'conceptCategory'
   ], 'cms');
 
-  this.saveRuleQuestion = function(ruleQuestion) {
+  this.saveRuleQuestion = function (ruleQuestion) {
     return crud.save(ruleQuestion);
   };
   this.deleteRuleQuestion = function (ruleQuestion) {
@@ -24,27 +24,27 @@ angular.module('quill-grammar.services.ruleQuestion', [
   function getInstructionForRuleQuestion(ruleQuestions) {
     var insp = $q.defer();
     var ins = [];
-    _.each(ruleQuestions, function(rq) {
+    _.each(ruleQuestions, function (rq) {
       ins.push(InstructionService.getInstruction(rq.instructions));
     });
-    $q.all(ins).then(function(instructions) {
-      _.each(ruleQuestions, function(rq, index) {
+    $q.all(ins).then(function (instructions) {
+      _.each(ruleQuestions, function (rq, index) {
         rq.resolvedInstructions = instructions[index].$value;
       });
       insp.resolve(ruleQuestions);
-    }, function(errors) {
+    }, function (errors) {
       insp.reject(errors);
     });
     return insp.promise;
   }
 
-  this._getAllRuleQuestionsWithInstructions = function() {
+  this._getAllRuleQuestionsWithInstructions = function () {
     return crud.all().then(getInstructionForRuleQuestion);
   };
 
-  this.getRuleQuestions = function(ruleQuestionIds) {
+  this.getRuleQuestions = function (ruleQuestionIds) {
     var d = $q.defer();
-    var promises = _.map(ruleQuestionIds, function(id, key) {
+    var promises = _.map(ruleQuestionIds, function (id, key) {
       if (!_.isArray(ruleQuestionIds)) {
         id = key;
       }
@@ -53,9 +53,9 @@ angular.module('quill-grammar.services.ruleQuestion', [
 
     $q.all(promises)
     .then(getInstructionForRuleQuestion)
-    .then(function(ruleQuestions) {
+    .then(function (ruleQuestions) {
       d.resolve(ruleQuestions);
-    }, function(error) {
+    }, function (error) {
       d.reject(error);
     });
     return d.promise;

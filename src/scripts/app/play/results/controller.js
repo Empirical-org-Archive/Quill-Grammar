@@ -3,7 +3,7 @@
 module.exports =
 
 /*@ngInject*/
-function InternalResultsController(
+function InternalResultsController (
   $scope, $state, _, localStorageService, $analytics
 ) {
   $scope.partnerIframe = $state.params.partnerIframe;
@@ -31,7 +31,6 @@ function InternalResultsController(
     $scope.uid = $state.params.passageId;
   }
 
-
   /*
    * TODO replace this with the dynamic version
    * from local storage.
@@ -45,9 +44,9 @@ function InternalResultsController(
    * This represents the correct and incorrect images shown
    * for each result.
    */
-  $scope.imageList = function(r) {
+  $scope.imageList = function (r) {
     var list = _.chain(_.range(0, r.total))
-      .map(function(num) {
+      .map(function (num) {
         return r.correct > num;
       })
       .value();
@@ -57,17 +56,16 @@ function InternalResultsController(
   /*
    * reduces the results into a ratio
    */
-  $scope.getErrorsFoundString = function(results) {
-    var correct = _.reduce(results, function(correct, r) {
+  $scope.getErrorsFoundString = function (results) {
+    var correct = _.reduce(results, function (correct, r) {
       return correct + r.correct;
     }, 0);
 
-    var total = _.reduce(results, function(total, r) {
+    var total = _.reduce(results, function (total, r) {
       return total + r.total;
     }, 0);
 
     return '' + correct + '/' + total;
-
   };
 
   function getValues() {
@@ -81,12 +79,12 @@ function InternalResultsController(
     };
   }
 
-  $scope.getTotalErrorsFoundString = function() {
+  $scope.getTotalErrorsFoundString = function () {
     var v = getValues();
     return '' + v.found + '/' + v.total;
   };
 
-  $scope.$on('$viewContentLoaded', function() {
+  $scope.$on('$viewContentLoaded', function () {
     var v = getValues();
     v.uid = $scope.uid;
     $analytics.eventTrack('Activity Results Viewed', v);

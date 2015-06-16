@@ -1,30 +1,30 @@
 'use strict';
 
 function controller($scope, rs, rqs) {
-  $scope.deleteRule = function() {
+  $scope.deleteRule = function () {
     var category = $scope.category;
     var rule = $scope.rule;
-    return rs.deleteRule(category, rule).then(function(){
+    return rs.deleteRule(category, rule).then(function () {
       $scope.rule = null;
-    }, function(error) {
+    }, function (error) {
       $scope.rule.error = error;
     });
   };
 
-  $scope.showDeleteRule = function() {
+  $scope.showDeleteRule = function () {
     $scope.showDeleteRuleModal = true;
   };
 
-  $scope.editRule = function(rule) {
+  $scope.editRule = function (rule) {
     console.log('editing rule ' + rule);
   };
 
-  $scope.showRuleQuestionModal = function() {
+  $scope.showRuleQuestionModal = function () {
     $scope.showNewRuleQuestionModal = true;
   };
 
-  $scope.saveRuleQuestion = function(rule, question) {
-    return rqs.saveRuleQuestion(question).then(function(questionId) {
+  $scope.saveRuleQuestion = function (rule, question) {
+    return rqs.saveRuleQuestion(question).then(function (questionId) {
       if (!rule.ruleQuestions) {
         rule.ruleQuestions = {};
       }
@@ -33,7 +33,7 @@ function controller($scope, rs, rqs) {
       return rs.updateRule(rule);
     });
   };
-  $scope.addAnswerToBody = function(question) {
+  $scope.addAnswerToBody = function (question) {
     if (question && question.body && question.body.push && question.tempB) {
       question.body.push(question.tempB);
       question.tempB = null;
@@ -49,7 +49,6 @@ function controller($scope, rs, rqs) {
 }
 
 module.exports.controller = ['$scope', 'RuleService', 'RuleQuestionService', controller];
-
 
 function panel() {
   return {

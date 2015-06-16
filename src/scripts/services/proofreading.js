@@ -5,27 +5,27 @@ angular.module('quill-grammar.services.proofreading', [
   require('./crud.js').name,
 ])
 
-.factory('ProofreadingService', function(CrudService, _, uuid4) {
+.factory('ProofreadingService', function (CrudService, _, uuid4) {
   var crud = new CrudService('passageProofreadings', [
     'flagId', 'categoryId', 'instructions', 'passage', 'title', 'description'
   ], 'activities');
 
   var ps = this;
 
-  this.saveProofreading = function(proofreading) {
+  this.saveProofreading = function (proofreading) {
     return crud.save(proofreading);
   };
   this.deleteProofreading = function (proofreading) {
     return crud.del(proofreading);
   };
-  this.getProofreading = function(proofreadingId) {
+  this.getProofreading = function (proofreadingId) {
     return crud.get(proofreadingId);
   };
-  this.getAllProofreadings = function() {
+  this.getAllProofreadings = function () {
     return crud.all();
   };
 
-  this.htmlMatches = function(text) {
+  this.htmlMatches = function (text) {
     /* Returns null or an array of matches */
     //TODO Only looking for line break tags right now
     if (!text) {
@@ -34,10 +34,9 @@ angular.module('quill-grammar.services.proofreading', [
     return text.match(/<\s*br\s*?\/>/g);
   };
 
-  this.prepareProofreading = function(pf, $scope) {
-
+  this.prepareProofreading = function (pf, $scope) {
     $scope.passageQuestions = {};
-    pf.replace(/{\+([^-]+)-([^|]+)\|([^}]+)}/g, function(key, plus, minus, ruleNumber) {
+    pf.replace(/{\+([^-]+)-([^|]+)\|([^}]+)}/g, function (key, plus, minus, ruleNumber) {
       var genKey = uuid4.generate();
       $scope.passageQuestions[genKey] = {
         plus: plus,
@@ -47,13 +46,13 @@ angular.module('quill-grammar.services.proofreading', [
       pf = pf.replace(key, genKey);
     });
     var prepared = _.chain(pf.split(/\s/))
-      .filter(function removeNullWords(n) {
+      .filter(function removeNullWords (n) {
         return n !== '';
       })
-      .map(function parseHtmlTokens(w) {
+      .map(function parseHtmlTokens (w) {
         var matches = ps.htmlMatches(w);
         if (matches) {
-          _.each(matches, function(match) {
+          _.each(matches, function (match) {
             if (w !== match) {
               w = w.replace(new RegExp(match, 'g'), ' ' + match + ' ');
             }
@@ -64,8 +63,8 @@ angular.module('quill-grammar.services.proofreading', [
         return w;
       })
       .flatten()
-      .map(function parseHangingPfQuestionsWithNoSpace(w) {
-        _.each($scope.passageQuestions, function(v, key) {
+      .map(function parseHangingPfQuestionsWithNoSpace (w) {
+        _.each($scope.passageQuestions, function (v, key) {
           if (w !== key && w.indexOf(key) !== -1) {
             w = w.split(key).join(' ' + key).split(/\s/);
           }
@@ -73,7 +72,7 @@ angular.module('quill-grammar.services.proofreading', [
         return w;
       })
       .flatten()
-      .map(function(w) {
+      .map(function (w) {
         var passageQuestion = $scope.passageQuestions[w];
         if (passageQuestion) {
           var c = _.clone(passageQuestion);
@@ -87,12 +86,12 @@ angular.module('quill-grammar.services.proofreading', [
           };
         }
       })
-      .map(function trim(w) {
+      .map(function trim (w) {
         w.text = w.text.trim();
         w.responseText = w.responseText.trim();
         return w;
       })
-      .filter(function removeSpaces(w) {
+      .filter(function removeSpaces (w) {
         return w.text !== '';
       })
       .value();

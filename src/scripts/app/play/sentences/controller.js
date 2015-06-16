@@ -3,12 +3,11 @@
 module.exports =
 
 /*@ngInject*/
-function SentencePlayCtrl(
+function SentencePlayCtrl (
   $scope, $state, SentenceWritingService, RuleService, _,
   ConceptTagResult, ActivitySession, localStorageService, $analytics
 ) {
-
-  $scope.$on('$locationChangeStart', function(event, next) {
+  $scope.$on('$locationChangeStart', function (event, next) {
     if (next.indexOf('gen-results') !== -1) {
       console.log('allow transition');
     } else {
@@ -17,7 +16,7 @@ function SentencePlayCtrl(
     }
   });
 
-  $scope.$watch('currentRuleQuestion', function(crq) {
+  $scope.$watch('currentRuleQuestion', function (crq) {
     if (_.isObject(crq)) {
       $scope.currentRule = $scope.swSet[crq.ruleIndex];
     }
@@ -50,7 +49,7 @@ function SentencePlayCtrl(
   $scope.number = 0;
   $scope.numAttempts = 2;
 
-  $scope.$on('answerRuleQuestion', function(e, crq, answer, correct) {
+  $scope.$on('answerRuleQuestion', function (e, crq, answer, correct) {
     if (!answer || !crq) {
       throw new Error('We need a rule question and answer');
     }
@@ -118,11 +117,11 @@ function SentencePlayCtrl(
       sendSentenceWritingAnalytics(trs, passageId);
       var rs = _.chain(trs)
         .groupBy('conceptClass')
-        .map(function(entries, cc) {
+        .map(function (entries, cc) {
           return {
             conceptClass: cc,
             total: entries.length,
-            correct: _.filter(entries, function(v) { return v.correct; }).length
+            correct: _.filter(entries, function (v) { return v.correct; }).length
           };
         })
         .value();
@@ -132,25 +131,25 @@ function SentencePlayCtrl(
   }
 
   //This is what we need to do after a student has completed the set
-  $scope.finish = function() {
+  $scope.finish = function () {
     var sid = $scope.sessionId;
     var p = null;
     saveLocalResults();
     if (sid) {
       //Do LMS logging if we have a sessionId
       p = ConceptTagResult.findAsJsonByActivitySessionId(sid)
-      .then(function(list) {
+      .then(function (list) {
         return ActivitySession.finish(sid, {
           concept_tag_results: list,
           percentage: 1,
         });
       })
-      .then(function() {
+      .then(function () {
         return ConceptTagResult.removeBySessionId(sid);
       });
     }
     if (p) {
-      p.then(function() {
+      p.then(function () {
         $state.go('.results', {student: sid});
       });
     } else {
@@ -161,7 +160,7 @@ function SentencePlayCtrl(
     }
   };
 
-  $scope.nextQuestion = function() {
+  $scope.nextQuestion = function () {
     $scope.showNextQuestion = false;
     var crq = $scope.currentRuleQuestion;
     var ncrq = $scope.questions[_.indexOf($scope.questions, crq) + 1];
@@ -179,12 +178,12 @@ function SentencePlayCtrl(
   }
 
   function retrieveNecessaryRules(ruleIds, quantities) {
-    RuleService.getRules(ruleIds).then(function(resolvedRules) {
+    RuleService.getRules(ruleIds).then(function (resolvedRules) {
       $scope.swSet = _.chain(resolvedRules)
-        .map(function(rr, i) {
+        .map(function (rr, i) {
           rr.selectedRuleQuestions = _.chain(rr.resolvedRuleQuestions)
             .sample(quantities[i])
-            .map(function(rrq) {
+            .map(function (rrq) {
               rrq.ruleIndex = i;
               return rrq;
             })
@@ -201,13 +200,13 @@ function SentencePlayCtrl(
       $scope.currentRuleQuestion = $scope.questions[0];
       $scope.showNextQuestion = false;
       $scope.showPreviousQuestion = false;
-    }, function() {
+    }, function () {
       //errorStateChange();
     });
   }
 
   if ($state.params.uid) {
-    SentenceWritingService.getSentenceWriting($state.params.uid).then(function(sw) {
+    SentenceWritingService.getSentenceWriting($state.params.uid).then(function (sw) {
       $scope.sentenceWriting = sw;
       var ruleIds = _.pluck(sw.rules, 'ruleId');
       var quantities = _.pluck(sw.rules, 'quantity');
@@ -216,7 +215,7 @@ function SentencePlayCtrl(
   } else if ($state.params.ids) {
     var ids = _.uniq($state.params.ids.split(','));
     var quantities = _.chain(ids)
-      .map(function() { return 3; })
+      .map(function () { return 3; })
       .value();
     retrieveNecessaryRules(ids, quantities);
   }
@@ -224,14 +223,14 @@ function SentencePlayCtrl(
   /*
    * Format Description
    */
-  $scope.formatDescription = function(des) {
+  $scope.formatDescription = function (des) {
     if (!des) {
       return;
     }
     var entries = des.split('.');
     var phrases = [];
     var sentences = [];
-    _.each(entries, function(e) {
+    _.each(entries, function (e) {
       e = '<li>' + e + '.</li>';
       if (e.indexOf(':') !== -1) {
         phrases.push(e);

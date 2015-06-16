@@ -10,12 +10,12 @@ function modal() {
     transclude: true,
     templateUrl: 'modal.html',
     controller: 'ModalDialogCtrl',
-    link: function(scope) {
-      scope.hideModal = function() {
+    link: function (scope) {
+      scope.hideModal = function () {
         scope.show = false;
       };
-      scope.doAction = function() {
-        scope.action.apply(this, arguments).then(function() {
+      scope.doAction = function () {
+        scope.action.apply(this, arguments).then(function () {
           scope.hideModal();
         });
       };
@@ -36,14 +36,14 @@ function deleteModal() {
     replace: true,
     transclude: true,
     templateUrl: 'deleteModal.html',
-    link: function(scope) {
-      scope.hideModal = function() {
+    link: function (scope) {
+      scope.hideModal = function () {
         scope.show = false;
       };
-      scope._onDelete = function() {
-        scope.onDelete(scope.item).then(function() {
+      scope._onDelete = function () {
+        scope.onDelete(scope.item).then(function () {
           scope.hideModal();
-        }, function(error) {
+        }, function (error) {
           scope.error = error;
         });
       };
@@ -53,9 +53,7 @@ function deleteModal() {
 
 module.exports.deleteModal = deleteModal;
 
-
 function controller() {
-
 }
 
 module.exports.controller = [controller];

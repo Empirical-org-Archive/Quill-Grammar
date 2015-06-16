@@ -3,19 +3,19 @@ module.exports =
 
 /*@ngInject*/
 function index ($scope, RuleQuestionService) {
-  RuleQuestionService._getAllRuleQuestionsWithInstructions().then(function(questions) {
+  RuleQuestionService._getAllRuleQuestionsWithInstructions().then(function (questions) {
     var i = 0;
     $scope.showNextQuestion = false;
     $scope.showPreviousQuestion = false;
     $scope.currentRuleQuestion = questions[i];
-    $scope.nextQuestion = function() {
+    $scope.nextQuestion = function () {
       $scope.currentRuleQuestion = questions[++i];
     };
-    $scope.previousQuestion = function() {
+    $scope.previousQuestion = function () {
       $scope.currentRuleQuestion = questions[--i];
     };
 
-    $scope.$watch('currentRuleQuestion', function() {
+    $scope.$watch('currentRuleQuestion', function () {
       if (!$scope.currentRuleQuestion) {
         $scope.finish();
       }
@@ -26,7 +26,7 @@ function index ($scope, RuleQuestionService) {
       $scope.showPreviousQuestion = i > 0;
     }, true);
 
-    $scope.finish = function() {
+    $scope.finish = function () {
       console.log(i);
       console.log('Thanks for playing');
       $scope.showNextQuestion = false;

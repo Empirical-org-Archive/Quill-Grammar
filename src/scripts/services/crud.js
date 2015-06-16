@@ -6,7 +6,7 @@ angular.module('quill-grammar.services.crud', [
   'underscore',
 ])
 
-.factory('CrudService', function(firebaseUrl, $firebase, $q, _) {
+.factory('CrudService', function (firebaseUrl, $firebase, $q, _) {
   function crud(entity, properties, prefix) {
     if (!entity || entity === '') {
       throw new Error('Firebase Entity MUST be defined');
@@ -31,7 +31,7 @@ angular.module('quill-grammar.services.crud', [
 
     function sanitize(item) {
       if (properties && _.isObject(item)) {
-        return _.pick(item, function(value, key) {
+        return _.pick(item, function (value, key) {
           return key[0] === '$' || _.contains(properties, key);
         });
       }
@@ -49,9 +49,9 @@ angular.module('quill-grammar.services.crud', [
     function save(item) {
       var d = $q.defer();
       var entityItem = sanitize(item);
-      baseRef.$push(entityItem).then(function(ref) {
+      baseRef.$push(entityItem).then(function (ref) {
         d.resolve(ref.key());
-      }, function(error){
+      }, function (error) {
         d.reject(error);
       });
       return d.promise;
@@ -62,9 +62,9 @@ angular.module('quill-grammar.services.crud', [
       if (!item || !item.$id) {
         throw new Error('Item doesn\'t have an $id property');
       }
-      baseRef.$remove(item.$id).then(function(ref) {
+      baseRef.$remove(item.$id).then(function (ref) {
         d.resolve(ref.key());
-      }, function(error) {
+      }, function (error) {
         d.reject(error);
       });
 
@@ -74,9 +74,9 @@ angular.module('quill-grammar.services.crud', [
     function all() {
       var d = $q.defer();
       var a = baseRef.$asArray();
-      a.$loaded().then(function() {
+      a.$loaded().then(function () {
         d.resolve(a);
-      }, function(error) {
+      }, function (error) {
         d.reject(error);
       });
       return d.promise;
@@ -86,7 +86,7 @@ angular.module('quill-grammar.services.crud', [
       var d = $q.defer();
       var entityRef = new Firebase(baseRoute + '/' + entityId);
       var entity = $firebase(entityRef).$asObject();
-      entity.$loaded().then(function(entityData) {
+      entity.$loaded().then(function (entityData) {
         if (isValid(entityData)) {
           d.resolve(entityData);
         } else {
@@ -94,7 +94,7 @@ angular.module('quill-grammar.services.crud', [
           console.error(entityData);
           d.reject(new Error('Entity did not meet the properties requirement'));
         }
-      }, function(error) {
+      }, function (error) {
         d.reject(error);
       });
       return d.promise;
@@ -102,13 +102,13 @@ angular.module('quill-grammar.services.crud', [
 
     function update(item) {
       var d = $q.defer();
-      baseCollection.$loaded().then(function() {
+      baseCollection.$loaded().then(function () {
         var index = item.$id;
         baseCollection[index] = sanitize(item);
-        baseCollection.$save(index).then(function(ref) {
+        baseCollection.$save(index).then(function (ref) {
           console.log(ref.key());
           d.resolve(ref.key());
-        }, function(error){
+        }, function (error) {
           console.log(error);
           d.reject(error);
         });

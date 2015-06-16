@@ -3,7 +3,7 @@
 module.exports =
 
 /*@ngInject*/
-function PartnerPlayCtrl(
+function PartnerPlayCtrl (
   $scope, localStorageService, _, $state,
   $analytics
 ) {
@@ -14,19 +14,19 @@ function PartnerPlayCtrl(
     'Yh49ICvX_YME8ui7cDoFXQ': 'the_apollo_8_photograph_story_header.png'
   };
 
-  $scope.onScoreReset = function() {
+  $scope.onScoreReset = function () {
     var keys = _.keys($scope.pfImages);
     function remove(key) {
       localStorageService.remove(key);
     }
-    _.each(keys, function(key) {
+    _.each(keys, function (key) {
       _.each(['pf-' + key, 'sw-' + key, 'sw-temp-' + key], remove);
     });
     $scope.showResetScoreModal = false;
     $state.go($state.current, {}, {reload: true});
   };
 
-  $scope.$on('$stateChangeStart', function(event, toState, toParams){
+  $scope.$on('$stateChangeStart', function (event, toState, toParams) {
     $analytics.eventTrack('Start Activity', toParams);
   });
 };

@@ -1,8 +1,7 @@
 'use strict';
 
 /*@ngInject*/
-module.exports = function($scope, _, $timeout) {
-
+module.exports = function ($scope, _, $timeout) {
   var strictTypingMode = false;
 
   var delim = {
@@ -11,14 +10,14 @@ module.exports = function($scope, _, $timeout) {
   };
 
   function removeDelimeters(b) {
-    if (typeof(b) !== 'string') {
+    if (typeof (b) !== 'string') {
       throw new Error('Input must be type string removeDelimeters');
     }
     return b.replace(delim.open, '').replace(delim.close, '');
   }
 
   function compareEntireAnswerToBody(answer) {
-    return function(b) {
+    return function (b) {
       var cleaned = removeDelimeters(b);
       return answer === cleaned;
     };
@@ -32,7 +31,7 @@ module.exports = function($scope, _, $timeout) {
   }
 
   function compareGrammarElementToBody(answer) {
-    return function(b) {
+    return function (b) {
       if (!answer) {
         return false;
       }
@@ -44,7 +43,7 @@ module.exports = function($scope, _, $timeout) {
       var results = reg.exec(b);
       var grammarElements = _.rest(results);
 
-      return _.every(grammarElements, function(element) {
+      return _.every(grammarElements, function (element) {
         var r = new RegExp('(^|\\W{1,1})' + element + '(\\W{1,1}|$)', 'g');
         return answer.search(r) !== -1;
       });
@@ -53,7 +52,7 @@ module.exports = function($scope, _, $timeout) {
 
   function ensureLengthIsProper(answer) {
     var threshold = 0.8;
-    return function(body) {
+    return function (body) {
       var b = body.replace(delim.open, '').replace(delim.close, '');
       return (answer.length / b.length) >= threshold;
     };
@@ -66,21 +65,21 @@ module.exports = function($scope, _, $timeout) {
     tryAgainButton: 'Recheck Work',
     typingErrorNonStrict: 'You are correct, but you have some typing errors. You may correct them or continue.',
     typingErrorStrict: 'You are correct, but have some typing errors. Please fix them.',
-    incorrectWithAnswer: function(answer) {
+    incorrectWithAnswer: function (answer) {
       return '<b>Incorrect.</b> Correct Answer: ' + answer;
     },
     correct: '<b>Well done!</b> That\'s the correct answer.',
     noAnswer: 'You must enter a sentence for us to check.'
   };
 
-  $scope.$watch('ruleQuestion.$id', function() {
+  $scope.$watch('ruleQuestion.$id', function () {
     $scope.checkAnswerText = $scope.answerText.default;
     $scope.ruleQuestionClass = 'default';
     $scope.showCheckAnswerButton = true;
     $timeout.cancel($scope.shortAnswerPromise);
   });
 
-  $scope.checkAnswer = function() {
+  $scope.checkAnswer = function () {
     var rq = $scope.ruleQuestion;
     var answer = rq.response;
     var correct = false;
@@ -88,7 +87,7 @@ module.exports = function($scope, _, $timeout) {
     if (!answer) {
       setMessage($scope.answerText.noAnswer);
       $scope.ruleQuestionClass = 'try_again';
-      $scope.shortAnswerPromise = $timeout(function() {
+      $scope.shortAnswerPromise = $timeout(function () {
         setMessage('');
         $scope.ruleQuestionClass = 'default';
       }, 3000);
@@ -144,7 +143,7 @@ module.exports = function($scope, _, $timeout) {
    * Event handler for input paste. This is to
    * prevent students from pasting into this field
    */
-  $scope.capturePasteEvent = function(event) {
+  $scope.capturePasteEvent = function (event) {
     event.preventDefault();
   };
 };
