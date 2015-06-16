@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports.formatPrompt = function() {
-  return function(input) {
+module.exports.formatPrompt = function () {
+  return function (input) {
     return input;
   };
 };

@@ -3,7 +3,7 @@
 module.exports =
 /*@ngInject*/
 angular.module('quill-grammar.play.directives.proofreader', [])
-.directive('proofreaderSampleResult', function() {
+.directive('proofreaderSampleResult', function () {
   return {
     restrict: 'E',
     templateUrl: 'proofreader-sample-result.html',
@@ -13,7 +13,7 @@ angular.module('quill-grammar.play.directives.proofreader', [])
     controller: 'ProofreadingDirCtrl'
   };
 })
-.directive('proofreadingResultLargeFlag', function() {
+.directive('proofreadingResultLargeFlag', function () {
   return {
     restrict: 'E',
     templateUrl: 'proofreader-result-large-flag.html',
@@ -23,7 +23,7 @@ angular.module('quill-grammar.play.directives.proofreader', [])
     controller: 'ProofreadingDirCtrl'
   };
 })
-.controller('ProofreadingDirCtrl', function(
+.controller('ProofreadingDirCtrl', function (
   $scope, localStorageService, _
 ) {
   var pfResults = localStorageService.get('pf-' + $scope.uid);
@@ -34,7 +34,7 @@ angular.module('quill-grammar.play.directives.proofreader', [])
     var total = 0;
 
     if (_.isArray(set)) {
-      _.each(set, function(s) {
+      _.each(set, function (s) {
         if (!_.isNumber(s.correct) || !_.isNumber(s.total)) {
           throw new Error('incorrect object sent to getTotals iterator');
         }
@@ -75,7 +75,6 @@ angular.module('quill-grammar.play.directives.proofreader', [])
     }
   };
 
-
   function totalRanking(totals) {
     if (!_.isNumber(totals.correct) || !_.isNumber(totals.total)) {
       throw new Error('incorrect object sent to totalRanking');
@@ -85,10 +84,10 @@ angular.module('quill-grammar.play.directives.proofreader', [])
       var score = (totals.correct / totals.total) * 100;
       return _.chain($scope.rankings)
         //We'll guarantee
-        .sortBy(function(r) {
+        .sortBy(function (r) {
           return r.threshold;
         })
-        .reject(function(r) {
+        .reject(function (r) {
           return score < r.threshold;
         })
         .last()
@@ -98,7 +97,6 @@ angular.module('quill-grammar.play.directives.proofreader', [])
     }
   }
 
-
   if (totals.total > 0) {
     var rankObj = totalRanking(totals);
     $scope.ranking = rankObj.title;
@@ -107,5 +105,4 @@ angular.module('quill-grammar.play.directives.proofreader', [])
     $scope.rankingClass = {};
     $scope.rankingClass[rankObj.class] = true;
   }
-
 });

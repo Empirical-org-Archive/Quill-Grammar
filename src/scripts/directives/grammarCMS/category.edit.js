@@ -14,39 +14,39 @@ function panel() {
 module.exports.panel = panel;
 
 function controller($scope, cs, rs, $q) {
-  $scope.deleteCategory = function(category) {
-    return cs.deleteCategory(category).then(function() {
+  $scope.deleteCategory = function (category) {
+    return cs.deleteCategory(category).then(function () {
       console.log('deleting category ', category);
     });
   };
 
-  $scope.editCategory = function(category) {
+  $scope.editCategory = function (category) {
     console.log(category);
   };
 
-  $scope.newRule = function() {
+  $scope.newRule = function () {
     $scope.showNewRuleModal = true;
   };
 
-  $scope.showDeleteCategory = function() {
+  $scope.showDeleteCategory = function () {
     $scope.showDeleteCategoryModal = true;
   };
 
-  $scope.saveRule = function(category, rule) {
+  $scope.saveRule = function (category, rule) {
     var d = $q.defer();
-    rs.saveRule(rule).then(function(ruleId) {
+    rs.saveRule(rule).then(function (ruleId) {
       if (!category.rules) {
         category.rules = {};
       }
       category.rules[ruleId] = true;
-      cs.updateCategory(category).then(function() {
+      cs.updateCategory(category).then(function () {
         if (!category.resolvedRules) {
           category.resolvedRules = [];
         }
         category.resolvedRules.push(rule);
         $scope.category = category;
         d.resolve();
-      } ,d.reject);
+      } , d.reject);
     }, d.reject);
     return d.promise;
   };

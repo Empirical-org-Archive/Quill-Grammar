@@ -18,6 +18,6 @@ angular
     require('../../../../.tmp/templates').name,
     require('../../directives/index.js').name,
   ])
-  .config(function($analyticsProvider) {
+  .config(function ($analyticsProvider) {
     $analyticsProvider.virtualPageviews(false);
   });

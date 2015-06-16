@@ -3,33 +3,33 @@
 module.exports =
 
 /*@ngInject*/
-function sentences(
+function sentences (
   $scope, CategoryService, $state, RuleService,
   SentenceWritingService, FlagService, _, $timeout
 ) {
   $scope.newSentence = {};
 
-  FlagService.getFlags().then(function(flags) {
+  FlagService.getFlags().then(function (flags) {
     $scope.flags = flags;
   });
 
-  SentenceWritingService.getAllSentenceWritings().then(function(ss) {
+  SentenceWritingService.getAllSentenceWritings().then(function (ss) {
     $scope.sentences = ss;
   });
 
-  CategoryService.getCategories().then(function(cats) {
+  CategoryService.getCategories().then(function (cats) {
     $scope.availableCategories = cats;
   });
 
-  RuleService.getAllRules().then(function(rules) {
+  RuleService.getAllRules().then(function (rules) {
     $scope.availableRules = rules;
   });
 
-  $scope.nextStep = function() {
+  $scope.nextStep = function () {
     $state.go('^.questions', {uid: $state.params.uid});
   };
 
-  $scope.addRule = function(s, r) {
+  $scope.addRule = function (s, r) {
     try {
       if (!s.rules) {
         s.rules = [];
@@ -44,13 +44,13 @@ function sentences(
     }
   };
 
-  $scope.removeRule = function(s, r) {
+  $scope.removeRule = function (s, r) {
     if (s) {
       s.rules = _.without(s.rules, r);
     }
   };
 
-  $scope.submitSentence = function(stateString, s, edit) {
+  $scope.submitSentence = function (stateString, s, edit) {
     function handleResult() {
       $scope.newSentence = {};
       $state.go(stateString);
@@ -60,7 +60,7 @@ function sentences(
       setError(e.message || e);
     }
     try {
-      var allPositiveQuantities = _.every(s.rules, function(r) {
+      var allPositiveQuantities = _.every(s.rules, function (r) {
         return Number(r.quantity) > 0;
       });
 
@@ -86,7 +86,6 @@ function sentences(
     }
   };
 
-
   function clearError() {
     $scope.error = null;
   }
@@ -95,5 +94,4 @@ function sentences(
     $scope.error = msg;
     $timeout(clearError, 5000);
   }
-
 };

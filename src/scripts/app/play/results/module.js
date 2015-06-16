@@ -6,7 +6,7 @@ angular.module('quill-grammar.play.results', [
   require('./../directives/').name,
 ])
 .config(require('./config.js'))
-.directive('internalResultsTable', function() {
+.directive('internalResultsTable', function () {
   return {
     restrict: 'E',
     templateUrl: 'internal-results-table.html',

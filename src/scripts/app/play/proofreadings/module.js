@@ -8,7 +8,7 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
 ])
 .config(require('./config.js'))
 .filter('passageProofreadingFormatter', require('./passageFormatter.js'))
-.directive('quillGrammarPassage', function() {
+.directive('quillGrammarPassage', function () {
   return {
     restrict: 'E',
     controller: 'ProofreadingPlayCtrl',
@@ -19,7 +19,7 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
     templateUrl: 'passage.html'
   };
 })
-.directive('quillGrammarPfHeading', function() {
+.directive('quillGrammarPfHeading', function () {
   return {
     restrict: 'E',
     controller: 'ProofreadingPlayCtrl',
@@ -30,7 +30,7 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
     templateUrl: 'pf-heading.html'
   };
 })
-.directive('quillGrammarPassageSubmitPanel', function() {
+.directive('quillGrammarPassageSubmitPanel', function () {
   return {
     restrict: 'E',
     controller: 'ProofreadingPlayCtrl',

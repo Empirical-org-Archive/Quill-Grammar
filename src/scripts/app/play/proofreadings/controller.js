@@ -3,7 +3,7 @@
 module.exports =
 
 /*@ngInject*/
-function ProofreadingPlayCtrl(
+function ProofreadingPlayCtrl (
   $scope, $state, ProofreadingService, RuleService, _,
   $location, localStorageService, $document, $timeout,
   $analytics
@@ -18,25 +18,21 @@ function ProofreadingPlayCtrl(
   }
 
   //Add in some custom images for the 3 stories we are showcasing
-  $scope.pfImages = {
-    '70B-T6vLMTM9zjQ9LCwoCg': 'the_princes_and_the_turtle_story_header.png',
-    'MJCtkml_69W2Dav79v4r9Q': 'ernest_shackleton_story_header.png',
-    'Yh49ICvX_YME8ui7cDoFXQ': 'the_apollo_8_photograph_story_header.png'
-  };
+  $scope.pfImages = require('./pfImages');
 
   function error() {
     $state.go('index');
   }
 
-  $scope.obscure = function(key) {
+  $scope.obscure = function (key) {
     return btoa(key);
   };
 
-  $scope.ubObscure = function(o) {
+  $scope.ubObscure = function (o) {
     return atob(o);
   };
 
-  $scope.$on('$locationChangeStart', function(event, next) {
+  $scope.$on('$locationChangeStart', function (event, next) {
     if (next.indexOf('play/results') !== -1 || next.indexOf('play/sw') !== -1) {
       console.log('allow transition');
     } else if (next.indexOf('play/pf') !== -1 && $scope.allowTransition) {
@@ -48,11 +44,11 @@ function ProofreadingPlayCtrl(
   });
 
   $scope.allowTransition = true;
-  $timeout(function() {
+  $timeout(function () {
     $scope.allowTransition = false;
   }, 100);
 
-  ProofreadingService.getProofreading($scope.id).then(function(pf) {
+  ProofreadingService.getProofreading($scope.id).then(function (pf) {
     pf.passage = ProofreadingService.prepareProofreading(pf.passage, $scope);
     $scope.pf = pf;
     if ($scope.pfImages[$scope.id]) {
@@ -68,7 +64,7 @@ function ProofreadingPlayCtrl(
   $scope.numChanges = 0;
   $scope.madeChange = false;
 
-  $scope.onInputChange = function(word) {
+  $scope.onInputChange = function (word) {
     var nc = $scope.numChanges;
     if (word.responseText === '') {
       if (!word.countedChange) {
@@ -98,12 +94,12 @@ function ProofreadingPlayCtrl(
 
   function fetchListedRules() {
     var ruleIds = _.pluck($scope.passageQuestions, 'ruleNumber');
-    RuleService.getRules(ruleIds).then(function(rules) {
+    RuleService.getRules(ruleIds).then(function (rules) {
       $scope.referencedRules = rules;
     });
   }
 
-  $scope.getRuleInfoBy = function(ruleNumber) {
+  $scope.getRuleInfoBy = function (ruleNumber) {
     return _.findWhere($scope.referencedRules, {ruleNumber: Number(ruleNumber)}).title;
   };
 
@@ -117,19 +113,19 @@ function ProofreadingPlayCtrl(
   $scope.NOT_NECESSARY_ERROR = 'Not Necessary';
   $scope.CORRECT = 'Correct';
 
-  $scope.hasNotNecessaryError = function(word) {
+  $scope.hasNotNecessaryError = function (word) {
     return word.type === $scope.NOT_NECESSARY_ERROR;
   };
 
-  $scope.hasIncorrectError = function(word) {
+  $scope.hasIncorrectError = function (word) {
     return word.type === $scope.INCORRECT_ERROR;
   };
 
-  $scope.hasCorrect = function(word) {
+  $scope.hasCorrect = function (word) {
     return word.type === $scope.CORRECT;
   };
 
-  $scope.submitPassage = function() {
+  $scope.submitPassage = function () {
     var passage = $scope.pf.passage;
     function isValid(passageEntry) {
       if (_.has(passageEntry, 'minus')) {
@@ -144,7 +140,7 @@ function ProofreadingPlayCtrl(
       return _.has(passageEntry, 'minus') ? $scope.INCORRECT_ERROR : $scope.NOT_NECESSARY_ERROR;
     }
     $scope.results = [];
-    _.each(passage, function(p, i) {
+    _.each(passage, function (p, i) {
       if (!isValid(p)) {
         $scope.results.push({index: i, passageEntry: p, type: getErrorType(p)});
       }
@@ -167,7 +163,7 @@ function ProofreadingPlayCtrl(
     return _.where(results, {type: $scope.CORRECT}).length;
   }
 
-  $scope.getNumErrors = function() {
+  $scope.getNumErrors = function () {
     return _.keys($scope.passageQuestions).length;
   };
 
@@ -182,7 +178,7 @@ function ProofreadingPlayCtrl(
       title: 'Keep Trying!',
       message: 'You must make at least ' + needed + ' edits.',
       buttonMessage: 'Find Edits',
-      buttonClick: function() {
+      buttonClick: function () {
         $scope.pf.modal.show = false;
       },
       show: true
@@ -205,7 +201,7 @@ function ProofreadingPlayCtrl(
       title: title,
       message: 'You found ' + nf + ' errors.',
       buttonMessage: 'Review Your Work',
-      buttonClick: function() {
+      buttonClick: function () {
         $scope.pf.modal.show = false;
         showResults(results);
       },
@@ -217,7 +213,7 @@ function ProofreadingPlayCtrl(
    * Convenience html methods
    */
 
-  $scope.nextAction = function(word, index) {
+  $scope.nextAction = function (word, index) {
     if (!$scope.results) {
       return {};
     }
@@ -228,7 +224,7 @@ function ProofreadingPlayCtrl(
     };
     if (word.resultIndex + 1 >= getNumResults()) {
       if (allCorrect) {
-        na.fn = function() {
+        na.fn = function () {
           $state.go('play-internal-results', {
             passageId: $scope.id,
             partnerIframe: true
@@ -236,13 +232,13 @@ function ProofreadingPlayCtrl(
         };
         na.title = 'View Results';
       } else {
-        na.fn = function() {
+        na.fn = function () {
           $scope.goToLesson();
         };
         na.title = 'Start My Activity';
       }
     } else {
-      na.fn = function() {
+      na.fn = function () {
         $scope.focusResult(word.resultIndex + 1, index);
       };
       na.title = 'Next Edit';
@@ -250,46 +246,45 @@ function ProofreadingPlayCtrl(
 
     return na;
   };
-  var getAbsPosition = function(el){
-      var el2 = el;
-      var curtop = 0;
-      var curleft = 0;
-      if (document.getElementById || document.all) {
-          do  {
-              curleft += el.offsetLeft-el.scrollLeft;
-              curtop += el.offsetTop-el.scrollTop;
-              el = el.offsetParent;
-              el2 = el2.parentNode;
-              while (el2 !== el) {
-                  curleft -= el2.scrollLeft;
-                  curtop -= el2.scrollTop;
-                  el2 = el2.parentNode;
-              }
-          } while (el.offsetParent);
-
-      } else if (document.layers) {
-          curtop += el.y;
-          curleft += el.x;
-      }
-      return [curtop, curleft];
+  var getAbsPosition = function (el) {
+    var el2 = el;
+    var curtop = 0;
+    var curleft = 0;
+    if (document.getElementById || document.all) {
+      do {
+        curleft += el.offsetLeft - el.scrollLeft;
+        curtop += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
+        el2 = el2.parentNode;
+        while (el2 !== el) {
+          curleft -= el2.scrollLeft;
+          curtop -= el2.scrollTop;
+          el2 = el2.parentNode;
+        }
+      } while (el.offsetParent);
+    } else if (document.layers) {
+      curtop += el.y;
+      curleft += el.x;
+    }
+    return [curtop, curleft];
   };
 
   function calculateTop(sIndex) {
     var breakIndexes = _.chain($scope.pf.passage)
-      .map(function(word, index) {
+      .map(function (word, index) {
         return [index, $scope.isBr(word.responseText)];
       })
-      .filter(function(v) {
+      .filter(function (v) {
         return v[1];
       })
-      .map(function(v) {
+      .map(function (v) {
         return v[0];
       })
-      .sortBy(function(num) {
+      .sortBy(function (num) {
         return num;
       })
       .value();
-    var indexWithOutGoingOver = _.find(breakIndexes, function(i) {
+    var indexWithOutGoingOver = _.find(breakIndexes, function (i) {
       return i >= sIndex;
     });
     var scrollId = 'last-chance-tooltip-breakpoint-at-panel';
@@ -301,7 +296,7 @@ function ProofreadingPlayCtrl(
     return String(top) + 'px';
   }
 
-  $scope.focusResult = function(resultIndex, scrollIndex) {
+  $scope.focusResult = function (resultIndex, scrollIndex) {
     var p = $scope.results[resultIndex - 1];
     var r = $scope.results[resultIndex];
     if (p) {
@@ -328,7 +323,7 @@ function ProofreadingPlayCtrl(
     }
   };
 
-  $scope.getErrorTooltipClass = function(index) {
+  $scope.getErrorTooltipClass = function (index) {
     var results = $scope.$parent.results;
     var d = {'error-tooltip-reverse': true};
     if (false) {
@@ -342,37 +337,37 @@ function ProofreadingPlayCtrl(
     return d;
   };
 
-  $scope.getErrorTooltipTopClass = function(type) {
+  $scope.getErrorTooltipTopClass = function (type) {
     var obj = {'top-panel': true};
     obj[type] = true;
     return obj;
   };
 
-  $scope.errorCounter = function(word) {
+  $scope.errorCounter = function (word) {
     return 'Edit ' + String(word.resultIndex + 1) + ' of ' + word.totalResults;
   };
 
-  $scope.answerImageName = function(t) {
+  $scope.answerImageName = function (t) {
     if (!t) {
       return;
     }
-    return _.map(t.split(' '), function(s) {
+    return _.map(t.split(' '), function (s) {
       return s.toLowerCase();
     }).join('_');
   };
 
-  $scope.needsUnderlining = function(p) {
+  $scope.needsUnderlining = function (p) {
     if ($scope.pf && $scope.pf.underlineErrorsInProofreader && _.has(p, 'minus')) {
       return true;
     }
   };
 
-  $scope.isBr = function(text) {
+  $scope.isBr = function (text) {
     return ProofreadingService.htmlMatches(text) !== null;
   };
 
-  $scope.hasErrorToShow = function(word) {
-    return _.any([$scope.hasNotNecessaryError, $scope.hasCorrect, $scope.hasIncorrectError], function(fn) {
+  $scope.hasErrorToShow = function (word) {
+    return _.any([$scope.hasNotNecessaryError, $scope.hasCorrect, $scope.hasIncorrectError], function (fn) {
       return fn(word);
     });
   };
@@ -382,7 +377,7 @@ function ProofreadingPlayCtrl(
    * With v1, we are just using the rule title. In the future
    * we will make a data model change.
    */
-  $scope.getGrammaticalConceptForWord = function(word) {
+  $scope.getGrammaticalConceptForWord = function (word) {
     if (word.ruleNumber) {
       var rule = _.findWhere($scope.referencedRules, {ruleNumber: Number(word.ruleNumber)});
       if (rule && rule.title) {
@@ -392,7 +387,7 @@ function ProofreadingPlayCtrl(
   };
 
   function showResults(passageResults) {
-    _.each(passageResults, function(pr, i) {
+    _.each(passageResults, function (pr, i) {
       $scope.pf.passage[pr.index].type = pr.type;
       $scope.pf.passage[pr.index].resultIndex = i;
       $scope.pf.passage[pr.index].ruleNumber = pr.passageEntry.ruleNumber;
@@ -401,7 +396,7 @@ function ProofreadingPlayCtrl(
     });
     var ruleNumbers = _.chain(passageResults)
       .pluck('passageEntry')
-      .reject(function(r) {
+      .reject(function (r) {
         return r.type !== $scope.INCORRECT_ERROR;
       })
       .pluck('ruleNumber')
@@ -428,30 +423,30 @@ function ProofreadingPlayCtrl(
     var event = 'Press Check Answer';
     var passageResults = _.chain(results)
       .pluck('passageEntry')
-      .map(function pick(p) {
+      .map(function pick (p) {
         return _.pick(p, ['minus', 'ruleNumber', 'responseText', 'plus', 'type']);
       })
       .value();
-    var correct = _.filter(passageResults, function(pr) {
+    var correct = _.filter(passageResults, function (pr) {
       return pr.type === $scope.CORRECT;
     });
-    var incorrect = _.filter(passageResults, function(pr) {
+    var incorrect = _.filter(passageResults, function (pr) {
       return pr.type !== $scope.CORRECT;
     });
 
-    var correctWords = _.map(correct, function(c) {
+    var correctWords = _.map(correct, function (c) {
       return c.responseText;
     });
 
-    var incorrectWords = _.map(incorrect, function(i) {
+    var incorrectWords = _.map(incorrect, function (i) {
       return i.responseText;
     });
 
-    var correctRuleNumbers = _.map(correct, function(c) {
+    var correctRuleNumbers = _.map(correct, function (c) {
       return c.ruleNumber;
     });
 
-    var incorrectRuleNumbers = _.map(incorrect, function(i) {
+    var incorrectRuleNumbers = _.map(incorrect, function (i) {
       return i.ruleNumber;
     });
 
@@ -467,7 +462,6 @@ function ProofreadingPlayCtrl(
     $analytics.eventTrack(event, attrs);
   }
 
-
   /*
    * generate passage results for local results
    */
@@ -476,10 +470,10 @@ function ProofreadingPlayCtrl(
     var rules = $scope.referencedRules;
     return _.chain(passageResults)
       .pluck('passageEntry')
-      .reject(function(pe) {
+      .reject(function (pe) {
         return _.isUndefined(pe.ruleNumber);
       })
-      .map(function(pe) {
+      .map(function (pe) {
         var rule = _.findWhere(rules, {ruleNumber: Number(pe.ruleNumber)});
         return {
           title: rule.title,
@@ -487,16 +481,15 @@ function ProofreadingPlayCtrl(
         };
       })
       .groupBy('title')
-      .map(function(entries, title) {
+      .map(function (entries, title) {
         return {
           conceptClass: title,
           total: entries.length,
-          correct: _.filter(entries, function(v) { return v.correct; }).length
+          correct: _.filter(entries, function (v) { return v.correct; }).length
         };
       })
       .value();
   }
-
 
   /*
    * Below when handle building the lesson and showing
@@ -504,7 +497,7 @@ function ProofreadingPlayCtrl(
    */
 
   function generateLesson(ruleNumbers) {
-    $scope.goToLesson = function() {
+    $scope.goToLesson = function () {
       $state.go('play-sw-gen', {
         ids: ruleNumbers,
         partnerIframe: true,
@@ -513,5 +506,4 @@ function ProofreadingPlayCtrl(
     };
     $scope.hasLesson = true;
   }
-
 };

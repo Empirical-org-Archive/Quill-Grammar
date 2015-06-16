@@ -20,13 +20,13 @@ function panel() {
 module.exports.panel = panel;
 
 function controller($scope, rqs, rs) {
-  $scope.showDeleteRuleQuestion = function() {
+  $scope.showDeleteRuleQuestion = function () {
     $scope.showDeleteRuleQuestionModal = true;
   };
 
-  $scope.deleteRuleQuestion = function(question) {
+  $scope.deleteRuleQuestion = function (question) {
     var rule = $scope.rule;
-    return rqs.deleteRuleQuestion(question).then(function(){
+    return rqs.deleteRuleQuestion(question).then(function () {
       return rs.removeRuleQuestionFromRule(rule, question);
     });
   };

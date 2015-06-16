@@ -2,6 +2,5 @@
 module.exports =
 
 /*@ngInject*/
-function activities() {
-
+function activities () {
 };
