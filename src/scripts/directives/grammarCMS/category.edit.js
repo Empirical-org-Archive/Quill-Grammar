@@ -1,3 +1,5 @@
+'use strict';
+
 function panel() {
   return {
     restrict: 'E',

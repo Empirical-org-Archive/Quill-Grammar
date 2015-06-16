@@ -1,6 +1,4 @@
-'use-strict';
-
-
+'use strict';
 
 function cmsController($scope, cs, rs) {
 
