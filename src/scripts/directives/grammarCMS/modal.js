@@ -10,7 +10,7 @@ function modal() {
     transclude: true,
     templateUrl: 'modal.html',
     controller: 'ModalDialogCtrl',
-    link: function(scope, element, attrs) {
+    link: function(scope) {
       scope.hideModal = function() {
         scope.show = false;
       };
@@ -36,7 +36,7 @@ function deleteModal() {
     replace: true,
     transclude: true,
     templateUrl: 'deleteModal.html',
-    link: function(scope, element, attrs) {
+    link: function(scope) {
       scope.hideModal = function() {
         scope.show = false;
       };
@@ -54,8 +54,8 @@ function deleteModal() {
 module.exports.deleteModal = deleteModal;
 
 
-function controller($scope) {
+function controller() {
 
 }
 
-module.exports.controller = ['$scope', controller];
+module.exports.controller = [controller];

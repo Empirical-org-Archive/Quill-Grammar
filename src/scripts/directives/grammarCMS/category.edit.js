@@ -24,7 +24,7 @@ function controller($scope, cs, rs, $q) {
     console.log(category);
   };
 
-  $scope.newRule = function(category) {
+  $scope.newRule = function() {
     $scope.showNewRuleModal = true;
   };
 

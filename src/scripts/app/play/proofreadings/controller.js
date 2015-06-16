@@ -24,7 +24,7 @@ function ProofreadingPlayCtrl(
     'Yh49ICvX_YME8ui7cDoFXQ': 'the_apollo_8_photograph_story_header.png'
   };
 
-  function error(e) {
+  function error() {
     $state.go('index');
   }
 
@@ -260,7 +260,7 @@ function ProofreadingPlayCtrl(
               curtop += el.offsetTop-el.scrollTop;
               el = el.offsetParent;
               el2 = el2.parentNode;
-              while (el2 != el) {
+              while (el2 !== el) {
                   curleft -= el2.scrollLeft;
                   curtop -= el2.scrollTop;
                   el2 = el2.parentNode;
