@@ -9,10 +9,7 @@ module.exports = function (grunt) {
   grunt.initConfig({
     jshint: {
       all: ['*.js', 'src/scripts/**/**/*.js'],
-      jshintrc: '.jshintrc',
-      options: {
-        node: true
-      }
+      options: require('./.jshintrc')
     },
     jscs: {
       all: '<%= jshint.all %>',
