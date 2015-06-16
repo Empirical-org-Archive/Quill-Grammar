@@ -1,4 +1,4 @@
 #!/bin/bash
 
-./node_modules/.bin/grunt lint
+./node_modules/.bin/grunt lint && \
 gulp --env=production
