@@ -51,6 +51,7 @@ function SentencePlayCtrl (
         concept_tag: crq.conceptTag,
         concept_class: crq.conceptClass,
         concept_category: crq.conceptCategory,
+        concept_id: crq.conceptId,
         answer: answer,
         correct: correct ? 1 : 0
       });
