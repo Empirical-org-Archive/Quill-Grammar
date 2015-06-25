@@ -2,7 +2,12 @@
 module.exports =
 
 /*@ngInject*/
-function index ($scope, RuleQuestionService) {
+function index ($scope, RuleQuestionService, FirebaseLmsAuthService, firebaseUrl) {
+  var ref = new Firebase(firebaseUrl);
+  FirebaseLmsAuthService.authenticate(ref).then(function(authData) {
+    console.log(authData);
+  });
+
   RuleQuestionService._getAllRuleQuestionsWithInstructions().then(function (questions) {
     var i = 0;
     $scope.showNextQuestion = false;
