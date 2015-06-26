@@ -1,0 +1,25 @@
+schema:
+  type: object
+  properties:
+    activities:
+      type: object
+    cms:
+      type: object
+    indicies:
+      type: object
+    concept_tag_results:
+      type: object
+
+access:
+  - location: /activities
+    read: true
+    write: false
+  - location: /cms
+    read: true
+    write: false
+  - location: /indicies
+    read: true
+    write: false
+  - location: /concept_tag_results
+    read: true
+    write: true

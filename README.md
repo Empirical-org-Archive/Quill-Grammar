@@ -43,3 +43,5 @@ browser to load only the elements it needs.
 The data is split according to make importing and exporting JSON files to the Firebase
 data store during the early development phase.
 
+We are using the [blaze compiler](https://github.com/firebase/blaze_compiler) to generate
+rules for our data. Install it with `npm install -g blaze_compiler`.
