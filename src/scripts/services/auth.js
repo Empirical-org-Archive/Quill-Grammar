@@ -1,47 +1,72 @@
 'use strict';
 
+var R = require('ramda');
+
 module.exports =
 angular.module('services.auth', [
   'firebase'
 ])
 
-.factory('FirebaseLmsAuthService', function ($firebaseAuth, empiricalBaseURL, $http, localStorageService, $q) {
-  var firebaseTokenUrl = empiricalBaseURL + 'firebase_tokens?app=quill-grammar-staging';
+.factory('FirebaseLmsAuthService', function ($firebaseAuth, firebaseApp, empiricalBaseURL, $http, localStorageService) {
+  var firebaseTokenUrl = empiricalBaseURL + 'firebase_tokens?app=' + firebaseApp;
+  var authObj, offAuth; // offAuth = handler for disabling
 
   function fetchToken() {
-    return $http.post(firebaseTokenUrl).then(function(response) {
+    console.log('fetching token');
+    return $http.post(firebaseTokenUrl).then(function success(response) {
       return response.data.token;
+    }, function error(response) {
+      console.log('an error occurred while fetching the firebase token: ', response);
     });
   }
 
-  function storeAuthData(authData) {
-    localStorageService.set('authData', authData);
+  function storeToken(token) {
+    localStorageService.set('token', token);
   }
 
-  // Return data via promise.
-  function getCachedAuthData() {
-    var d = $q.defer();
-    d.resolve(localStorageService.get('authData'));
-    return d.promise;
+  function resetToken() {
+    console.log('resetting the token');
+    storeToken(null);
+  }
+
+  function getCached(prop) {
+    return localStorageService.get(prop);
+  }
+
+  function debug(x) {
+    console.log(x);
+  }
+
+  // If a token is not provided, fetch and store it.
+  var maybeFetchToken = R.ifElse(R.not, R.pipeP(fetchToken, R.tap(storeToken)), R.identity);
+
+  var firebaseAuthWithToken = function(token) {
+    // authObj.$onAuth()
+    return authObj.$authWithCustomToken(token).then(R.identity, handleErrors);
+  };
+
+  var fetchAndAuthWithToken = R.pipeP(maybeFetchToken, firebaseAuthWithToken);
+
+  var resetAndFetch = R.pipeP(resetToken, fetchAndAuthWithToken);
+
+  // If token is expired, try to re-fetch and auth again.
+  var handleErrors = R.cond([R.propEq('code', 'EXPIRED_TOKEN'), resetAndFetch],
+                            [R.propEq('code', 'INVALID_TOKEN'), resetAndFetch],
+                            [R.T, R.identity]); // Fall through to error handlers further down the promise chain.
+
+  var reAuthIfLoggedOut = R.ifElse(R.not, fetchAndAuthWithToken, R.identity);
+
+  function authenticate(ref) {
+    if (offAuth) {
+      console.log('disabling auth callback');
+      offAuth();
+    }
+    authObj = $firebaseAuth(ref);
+    offAuth = authObj.$onAuth(reAuthIfLoggedOut);
+    return fetchAndAuthWithToken(getCached('token'));
   }
 
   return {
-    authenticate: function(ref) {
-      return getCachedAuthData().then(function(authData) {
-        if (!authData) {
-          console.log('cache miss');
-          return fetchToken().then(function(token) {
-            var authObj = $firebaseAuth(ref);
-            return authObj.$authWithCustomToken(token);
-          }).then(function(authData) {
-            storeAuthData(authData);
-            return authData;
-          });
-        }
-        console.log('cache hit');
-        return authData;
-      });
-
-    }
-  }
+    authenticate: authenticate
+  };
 });

@@ -2,5 +2,6 @@
   "environment": "production",
   "firebaseUrl": "https://quillgrammar.firebaseio.com/",
   "empiricalBaseURL": "https://quill.org/api/v1/",
-  "portholeProxy": "https://quill.org/porthole_proxy"
+  "portholeProxy": "https://quill.org/porthole_proxy",
+  "firebaseApp": "quillgrammar"
 }
