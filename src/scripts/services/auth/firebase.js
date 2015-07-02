@@ -2,12 +2,8 @@
 
 var R = require('ramda');
 
-module.exports =
-angular.module('services.auth', [
-  'firebase'
-])
-
-.factory('FirebaseLmsAuthService', function ($firebaseAuth, firebaseApp, empiricalBaseURL, $http, localStorageService) {
+/*@ngInject*/
+module.exports = function ($firebaseAuth, firebaseApp, empiricalBaseURL, $http, localStorageService) {
   var firebaseTokenUrl = empiricalBaseURL + 'firebase_tokens?app=' + firebaseApp;
   var authObj, offAuth; // offAuth = handler for disabling
 
@@ -69,4 +65,4 @@ angular.module('services.auth', [
   return {
     authenticate: authenticate
   };
-});
+};
