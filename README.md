@@ -38,6 +38,12 @@ The module url for sentence writing is `/play/sw?uid&student`. It is assumed tha
 a `uid` parameter identifying the id of the sentence writing activity in Quill Grammar.
 The LMS may also pass a `student` parameter to identify the student.
 
+#### Proofreading Story
+
+The module url for story (proofreading activity) is `/play/pf?uid`. It is assumed that
+the LMS will add a `uid` parameter identifying the id of the proofreading story activity
+in Quill Grammar.
+
 Firebase Data
 =============
 
