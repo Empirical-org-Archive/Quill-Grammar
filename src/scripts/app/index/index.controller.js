@@ -7,9 +7,9 @@ function index ($scope, RuleQuestionService, QuillFirebaseAuthService, firebaseU
 
   QuillOAuthService.authenticate('index');
 
-  QuillFirebaseAuthService.authenticate(ref).then(function success(authData) {
-  console.log(authData);
-  }, function error(response) {
+  QuillFirebaseAuthService.authenticate(ref).then(function success (authData) {
+    console.log(authData);
+  }, function error (response) {
     console.log('error when authenticating', response);
   });
 

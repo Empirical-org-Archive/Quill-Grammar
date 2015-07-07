@@ -9,9 +9,9 @@ module.exports = function ($firebaseAuth, firebaseApp, empiricalBaseURL, $http, 
 
   function fetchToken() {
     console.log('fetching token');
-    return $http.post(firebaseTokenUrl).then(function success(response) {
+    return $http.post(firebaseTokenUrl).then(function success (response) {
       return response.data.token;
-    }, function error(response) {
+    }, function error (response) {
       console.log('an error occurred while fetching the firebase token: ', response);
     });
   }
@@ -32,10 +32,10 @@ module.exports = function ($firebaseAuth, firebaseApp, empiricalBaseURL, $http, 
   // If a token is not provided, fetch and store it.
   var maybeFetchToken = R.ifElse(R.not, R.pipeP(fetchToken, R.tap(storeToken)), R.identity);
 
-  var firebaseAuthWithToken = function(token) {
+  function firebaseAuthWithToken(token) {
     // authObj.$onAuth()
     return authObj.$authWithCustomToken(token).then(R.identity, handleErrors);
-  };
+  }
 
   var fetchAndAuthWithToken = R.pipeP(maybeFetchToken, firebaseAuthWithToken);
 

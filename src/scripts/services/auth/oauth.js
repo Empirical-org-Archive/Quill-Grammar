@@ -1,8 +1,7 @@
 'use strict';
 
 /*@ngInject*/
-module.exports = function(empiricalBaseURL, oauthClientId, oauthRedirectUri, AccessToken, Endpoint, Storage) {
-
+module.exports = function (empiricalBaseURL, oauthClientId, oauthRedirectUri, AccessToken, Endpoint, Storage) {
   var endpointParams = {
     authorizePath: 'oauth/authorize',
     site: empiricalBaseURL.replace('/api/v1', ''),
