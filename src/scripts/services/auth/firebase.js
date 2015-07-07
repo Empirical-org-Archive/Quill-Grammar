@@ -29,10 +29,6 @@ module.exports = function ($firebaseAuth, firebaseApp, empiricalBaseURL, $http, 
     return localStorageService.get(prop);
   }
 
-  function debug(x) {
-    console.log(x);
-  }
-
   // If a token is not provided, fetch and store it.
   var maybeFetchToken = R.ifElse(R.not, R.pipeP(fetchToken, R.tap(storeToken)), R.identity);
 

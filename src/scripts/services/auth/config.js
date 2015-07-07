@@ -17,6 +17,7 @@ function($httpProvider, $stateProvider) {
       ].join('&');
       AccessToken.setTokenFromString(hashStr);
       var originalState = Storage.get('originalState') || 'index';
+      Storage.delete('originalState');
       $state.go(originalState);
     }
   });

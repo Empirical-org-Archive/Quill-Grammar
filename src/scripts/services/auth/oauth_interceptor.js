@@ -1,20 +1,17 @@
 'use strict';
 
 /*@ngInject*/
-module.exports = function($q, localStorageService) {
-  function getOAuthToken() {
-    return localStorageService.get('oauth_access_token');
-  }
-
+module.exports = function($q, AccessToken) {
   return {
     'request': function(config) {
-      var token = getOAuthToken();
+      AccessToken.set();
+      var token = AccessToken.get();
       if (token) {
-        config.headers['Authorization'] = 'Bearer ' + token;
+        config.headers.Authorization = 'Bearer ' + token.token;
       } else {
-        delete config.headers['Authorization'];
+        delete config.headers.Authorization;
       }
       return config;
     }
-  }
-}
+  };
+};

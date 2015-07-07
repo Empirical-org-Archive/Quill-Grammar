@@ -1,13 +1,13 @@
 'use strict';
 
 /*@ngInject*/
-module.exports = function(empiricalBaseURL, AccessToken, Endpoint, Storage) {
+module.exports = function(empiricalBaseURL, oauthClientId, oauthRedirectUri, AccessToken, Endpoint, Storage) {
 
   var endpointParams = {
     authorizePath: 'oauth/authorize',
     site: empiricalBaseURL.replace('/api/v1', ''),
-    clientId: 'd64dad998f15b369210884f6e6074af87bd58657757cf76f2c1d3e209a66d2bd',
-    redirectUri: 'http://localhost:3001',
+    clientId: oauthClientId,
+    redirectUri: oauthRedirectUri,
     responseType: 'token'
   };
 
