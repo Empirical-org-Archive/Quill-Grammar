@@ -30,6 +30,14 @@ Routes
 * `/play/partner-pf` - Play the 3 selected Partner Stories.
 * `/` - Will let you iterate over all rule questions.
 
+### Module URLs
+
+#### Sentence Writing
+
+The module url for sentence writing is `/play/sw?uid&student`. It is assumed that LMS will add
+a `uid` parameter identifying the id of the sentence writing activity in Quill Grammar.
+The LMS may also pass a `student` parameter to identify the student.
+
 Firebase Data
 =============
 
