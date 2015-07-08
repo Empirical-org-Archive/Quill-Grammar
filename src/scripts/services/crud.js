@@ -4,6 +4,7 @@ module.exports =
 angular.module('quill-grammar.services.crud', [
   'firebase',
   'underscore',
+  require('../../../.tmp/config').name
 ])
 
 .factory('CrudService', function (firebaseUrl, $firebase, $q, _) {
