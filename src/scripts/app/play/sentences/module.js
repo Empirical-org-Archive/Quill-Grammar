@@ -4,6 +4,12 @@ module.exports =
 
 angular.module('quill-grammar.play.sentences', [
   require('./../../../services/sentenceWriting.js').name,
+  require('./../../../services/rule.js').name,
+  require('./../../../services/category.js').name,
+  'empirical-angular',
+  'LocalStorageModule',
+  'angulartics',
+  'ui.router',
 ])
 .config(require('./config.js'))
 .directive('sentenceWritingConceptOverview', function () {
