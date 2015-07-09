@@ -23,7 +23,12 @@ module.exports = function (empiricalBaseURL, oauthClientId, oauthRedirectUri, Ac
     }
   }
 
+  function expireToken() {
+    AccessToken.destroy();
+  }
+
   return {
-    authenticate: authenticate
+    authenticate: authenticate,
+    expire: expireToken
   };
 };

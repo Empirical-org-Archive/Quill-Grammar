@@ -3,7 +3,9 @@
 module.exports =
 angular.module('services.auth', [
   'firebase',
-  'oauth'
+  'oauth',
+  'ui.router',
+  require('../../../../.tmp/config').name,
 ])
 .config(require('./config.js'))
 .factory('QuillFirebaseAuthService', require('./firebase.js'))
