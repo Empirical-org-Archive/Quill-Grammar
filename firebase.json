@@ -1,6 +1,7 @@
 {
   "firebase": "quillgrammarstaging",
   "public": "build",
+  "rules": "rules.json",
   "ignore": [
     "firebase.json",
     "**/.*",

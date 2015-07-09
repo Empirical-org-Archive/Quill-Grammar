@@ -1,6 +1,6 @@
 {
   "name": "quill-writer",
-  "version": "0.3.28",
+  "version": "0.3.29",
   "private": "true",
   "scripts": {
     "test": "./test.sh"
@@ -24,6 +24,7 @@
   "browserify-shim": {},
   "dependencies": {
     "empirical-angular": "^0.1.0",
+    "empirical-angular-gulp-tasks": "^0.3.1",
     "ng-autofocus": "0.0.10",
     "ramda": "^0.15.1"
   }
