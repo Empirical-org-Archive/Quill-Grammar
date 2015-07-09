@@ -9,13 +9,21 @@
     "node": ">=0.10.0"
   },
   "devDependencies": {
+    "chai": "^3.0.0",
     "empirical-angular-gulp-tasks": "0.1.0",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-jscs": "^1.8.0",
     "grunt-lintspaces": "^0.7.0",
-    "gulp": "^3.8.10"
+    "gulp": "^3.8.10",
+    "karma": "^0.12.37",
+    "karma-chai": "^0.1.0",
+    "karma-chai-plugins": "^0.6.0",
+    "karma-mocha": "^0.2.0",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "mocha": "^2.2.5",
+    "phantomjs": "^1.9.17"
   },
   "browser": {
     "angular": "./bower_components/angular/angular.min.js",
