@@ -1,5 +1,3 @@
-/* global _ */
-
 'use strict';
 
 // Finalize the play session. Save results to localStorage and the LMS.
@@ -11,8 +9,7 @@ angular.module('quill-grammar.services.finalize', [
 ])
 .factory('finalizeService', function ($q, ConceptTagResult, ActivitySession) {
   function finalize(sessionId) {
-    var d = $q.defer();
-    var p = d.promise;
+    var p = $q.when();
 
     if (sessionId) {
       //Do LMS logging if we have a sessionId
@@ -29,7 +26,6 @@ angular.module('quill-grammar.services.finalize', [
           });
       });
     }
-    d.resolve();
     return p;
   }
 

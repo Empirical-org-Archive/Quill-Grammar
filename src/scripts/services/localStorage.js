@@ -23,10 +23,6 @@ angular.module('quill-grammar.services.localStorage', [
     localStorageService.set(key, rs);
   }
 
-  function getTempResults(passageId) {
-
-  }
-
   /*
    * Function to map temporary local results into
    */
