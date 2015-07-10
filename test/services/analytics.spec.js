@@ -47,8 +47,4 @@ describe('analytics service', function() {
       expect($analytics.eventTrack).to.have.been.calledWith('Sentence Writing Submitted', payload);
     });
   });
-
-  describe('#trackProofreadingSubmission', function() {
-
-  });
 });

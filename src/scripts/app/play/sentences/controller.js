@@ -5,8 +5,8 @@ module.exports =
 /*@ngInject*/
 function SentencePlayCtrl (
   $scope, $state, SentenceWritingService, RuleService, _,
-  ConceptTagResult, ActivitySession, localStorageService, $analytics,
-  finalizeService
+  ConceptTagResult, ActivitySession, SentenceLocalStorage, $analytics,
+  AnalyticsService, finalizeService
 ) {
   $scope.$on('$locationChangeStart', function (event, next) {
     if (next.indexOf('gen-results') !== -1) {
@@ -61,17 +61,7 @@ function SentencePlayCtrl (
       $scope.showNextQuestion = true;
       var passageId = $state.params.passageId;
       if (passageId) {
-        var key = 'sw-temp-' + passageId;
-        var rs = localStorageService.get(key);
-        if (!rs) {
-          rs = [];
-        }
-        rs.push({
-          conceptClass: crq.conceptCategory,
-          correct: correct,
-          answer: answer
-        });
-        localStorageService.set(key, rs);
+        SentenceLocalStorage.storeTempResult(passageId, crq, answer, correct);
       }
     }
   });
@@ -83,7 +73,10 @@ function SentencePlayCtrl (
 
   //This is what we need to do after a student has completed the set
   $scope.finish = function () {
-    return finalizeService($scope.sessionId, $state.params.passageId).then(function () {
+    var passageId = $state.params.passageId;
+    var tempResults = SentenceLocalStorage.saveResults(passageId);
+    AnalyticsService.trackSentenceWritingSubmission(tempResults, passageId);
+    return finalizeService($scope.sessionId).then(function () {
       if ($scope.sessionId) {
         $state.go('.results', {student: $scope.sessionId});
       } else {
