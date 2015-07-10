@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "chai": "^3.0.0",
-    "empirical-angular-gulp-tasks": "empirical-org/empirical-angular-gulp-tasks",
+    "empirical-angular-gulp-tasks": "^0.4.0",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-jshint": "^0.11.2",
