@@ -1,7 +1,10 @@
-describe('core module run', function() {
+/* jshint expr:true */
 
+'use strict';
+
+describe('core module run', function () {
   var sandbox, firebaseAuthService;
-  beforeEach(function() {
+  beforeEach(function () {
     sandbox = sinon.sandbox.create();
   });
 
@@ -9,7 +12,7 @@ describe('core module run', function() {
   // See: https://medium.com/@a_eife/testing-config-and-run-blocks-in-angularjs-1809bd52977e
   beforeEach(module('quill-grammar.core', function ($provide) {
     $provide.value('QuillFirebaseAuthService', {
-        authenticate: sandbox.spy()
+      authenticate: sandbox.spy()
     });
   }));
 
@@ -17,12 +20,11 @@ describe('core module run', function() {
     firebaseAuthService = _QuillFirebaseAuthService_;
   }));
 
-
-  afterEach(function() {
+  afterEach(function () {
     sandbox.verifyAndRestore();
   });
 
-  it('does anything', function() {
+  it('authenticates with the firebase service', function () {
     expect(firebaseAuthService.authenticate).to.have.been.called;
   });
 });

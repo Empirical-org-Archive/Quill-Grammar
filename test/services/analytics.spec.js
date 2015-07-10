@@ -1,28 +1,30 @@
-describe('analytics service', function() {
+'use strict';
+
+describe('analytics service', function () {
   var sandbox,
       $rootScope,
       analyticsService,
       $analytics,
       $q;
 
-  beforeEach(function() {
+  beforeEach(function () {
     sandbox = sinon.sandbox.create();
   });
 
   beforeEach(module('quill-grammar.services.analytics'));
 
-  beforeEach(inject(function(_$rootScope_, _$q_, _$analytics_, AnalyticsService) {
+  beforeEach(inject(function (_$rootScope_, _$q_, _$analytics_, AnalyticsService) {
     $rootScope = _$rootScope_;
     $q = _$q_;
     analyticsService = AnalyticsService;
     $analytics = _$analytics_;
   }));
 
-  afterEach(function() {
+  afterEach(function () {
     sandbox.verifyAndRestore();
   });
 
-  describe('#trackSentenceWritingSubmission', function() {
+  describe('#trackSentenceWritingSubmission', function () {
     var fakeResults = [
       {
         conceptClass: 'gerblah',
@@ -33,7 +35,7 @@ describe('analytics service', function() {
 
     var fakePassageId = 'fake-passage-id';
 
-    it('sends the event with the expected payload', function() {
+    it('sends the event with the expected payload', function () {
       var payload = {
         uid: fakePassageId,
         answers: ['pffft'],

@@ -1,4 +1,6 @@
-describe('finalizeService', function() {
+'use strict';
+
+describe('finalizeService', function () {
   beforeEach(module('quill-grammar.services.finalize'));
 
   var sandbox,
@@ -8,7 +10,7 @@ describe('finalizeService', function() {
       activitySessionService,
       $q;
 
-  beforeEach(inject(function(_finalizeService_, _$rootScope_, ConceptTagResult, ActivitySession, _$q_) {
+  beforeEach(inject(function (_finalizeService_, _$rootScope_, ConceptTagResult, ActivitySession, _$q_) {
     sandbox = sinon.sandbox.create();
     finalizeService = _finalizeService_;
     conceptTagResultService = ConceptTagResult;
@@ -17,21 +19,21 @@ describe('finalizeService', function() {
     $q = _$q_;
   }));
 
-  afterEach(function() {
+  afterEach(function () {
     sandbox.verifyAndRestore();
   });
 
-  it('returns a promise', function(done) {
+  it('returns a promise', function (done) {
     finalizeService().then(done);
     $rootScope.$apply();
   });
 
-  describe('saving to the LMS', function() {
+  describe('saving to the LMS', function () {
     var fakeConceptTagResultsList = [
       {foo: 'bar'}
     ];
 
-    beforeEach(function() {
+    beforeEach(function () {
       // ConceptTagResult.findAsJsonByActivitySessionId(...)
       sandbox.mock(conceptTagResultService)
              .expects('findAsJsonByActivitySessionId')
@@ -44,8 +46,8 @@ describe('finalizeService', function() {
       sandbox.mock(activitySessionService)
              .expects('finish')
              .withArgs('fake-session-id', {
-              concept_tag_results: fakeConceptTagResultsList,
-              percentage: 1,
+               concept_tag_results: fakeConceptTagResultsList,
+               percentage: 1
              })
              .returns($q.when());
 
@@ -56,7 +58,7 @@ describe('finalizeService', function() {
               .returns($q.when());
     });
 
-    it('saves when a session ID is present', function(done) {
+    it('saves when a session ID is present', function (done) {
       finalizeService('fake-session-id').then(done);
       $rootScope.$apply();
     });

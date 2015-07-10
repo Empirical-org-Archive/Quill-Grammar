@@ -3,8 +3,7 @@
 module.exports =
 
 /*@ngInject*/
-function(QuillFirebaseAuthService) {
-
+function (QuillFirebaseAuthService) {
   // Always authenticate with Firebase.
   QuillFirebaseAuthService.authenticate();
 };
