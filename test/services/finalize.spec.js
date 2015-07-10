@@ -1,6 +1,4 @@
-// MockFirebase.override();
-
-describe('', function() {
+describe('finalizeService', function() {
   beforeEach(module('quill-grammar.services.finalize'));
 
   var sandbox,
@@ -10,22 +8,14 @@ describe('', function() {
       activitySessionService,
       $q;
 
-  function promiseReturning(val) {
-    var d = $q.defer();
-    d.resolve(val);
-    return d.promise;
-  }
-  beforeEach(function() {
+  beforeEach(inject(function(_finalizeService_, _$rootScope_, ConceptTagResult, ActivitySession, _$q_) {
     sandbox = sinon.sandbox.create();
-
-    inject(function(_finalizeService_, _$rootScope_, ConceptTagResult, ActivitySession, _$q_) {
-      finalizeService = _finalizeService_;
-      conceptTagResultService = ConceptTagResult;
-      activitySessionService = ActivitySession;
-      $rootScope = _$rootScope_;
-      $q = _$q_;
-    });
-  });
+    finalizeService = _finalizeService_;
+    conceptTagResultService = ConceptTagResult;
+    activitySessionService = ActivitySession;
+    $rootScope = _$rootScope_;
+    $q = _$q_;
+  }));
 
   afterEach(function() {
     sandbox.verifyAndRestore();
@@ -46,7 +36,7 @@ describe('', function() {
       sandbox.mock(conceptTagResultService)
              .expects('findAsJsonByActivitySessionId')
              .withArgs('fake-session-id')
-             .returns(promiseReturning(fakeConceptTagResultsList));
+             .returns($q.when(fakeConceptTagResultsList));
 
       // gets concept tag results from firebase and sends to LMS
 
@@ -57,15 +47,16 @@ describe('', function() {
               concept_tag_results: fakeConceptTagResultsList,
               percentage: 1,
              })
-             .returns(promiseReturning());
+             .returns($q.when());
 
-       sandbox.mock(conceptTagResultService)
+      // Removes the concept tag results afterwards
+      sandbox.mock(conceptTagResultService)
               .expects('removeBySessionId')
               .withArgs('fake-session-id')
-              .returns(promiseReturning());
+              .returns($q.when());
     });
 
-    it('only saves when a session ID is present', function(done) {
+    it('saves when a session ID is present', function(done) {
       finalizeService('fake-session-id').then(done);
       $rootScope.$apply();
     });

@@ -12,7 +12,6 @@ function SentencePlayCtrl (
     if (next.indexOf('gen-results') !== -1) {
       console.log('allow transition');
     } else {
-      console.log('not allowing');
       event.preventDefault();
     }
   });
