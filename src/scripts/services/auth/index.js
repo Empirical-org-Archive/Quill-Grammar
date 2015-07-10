@@ -5,6 +5,7 @@ angular.module('services.auth', [
   'firebase',
   'oauth',
   'ui.router',
+  'LocalStorageModule',
   require('../../../../.tmp/config').name,
 ])
 .config(require('./config.js'))

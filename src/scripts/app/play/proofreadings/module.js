@@ -3,7 +3,12 @@
 module.exports = angular.module('quill-grammar.play.proofreadings', [
   require('./../directives/').name,
   require('./../../../services/proofreading.js').name,
+  require('./../../../services/category.js').name,
+  require('./../../../services/finalize.js').name,
+  'LocalStorageModule',
+  'angulartics',
   'angular.filter',
+  'ui.router',
   'uuid4',
 ])
 .config(require('./config.js'))
