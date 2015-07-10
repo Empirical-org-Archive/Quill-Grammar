@@ -1,4 +1,4 @@
-describe('', function() {
+describe('oauth service', function() {
   beforeEach(module('services.auth'));
 
   var oauthService, accessTokenService, sandbox;

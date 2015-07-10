@@ -8,28 +8,10 @@ module.exports =
 angular.module('quill-grammar.services.finalize', [
   require('empirical-angular').name,
   require('../../../.tmp/config').name,
-  'angulartics',
+  require('./analytics.js').name,
   'LocalStorageModule'
 ])
-.factory('finalizeService', function ($q, ConceptTagResult, ActivitySession, $analytics, localStorageService) {
-  /*
-   * Function to map and send analytic information
-   */
-  function sendSentenceWritingAnalytics(results, passageId) {
-    var event = 'Sentence Writing Submitted';
-    var c = _.pluck(results, 'correct');
-    var attrs = {
-      uid: passageId,
-      answers: _.pluck(results, 'answer'),
-      correct: c,
-      conceptCategory: _.pluck(results, 'conceptClass'),
-      total: results.length,
-      numCorrect: c.length
-    };
-
-    $analytics.eventTrack(event, attrs);
-  }
-
+.factory('finalizeService', function ($q, ConceptTagResult, ActivitySession, AnalyticsService, localStorageService) {
   /*
    * Function to map temporary local results into
    */
@@ -37,7 +19,7 @@ angular.module('quill-grammar.services.finalize', [
     if (passageId) {
       var tempKey = 'sw-temp-' + passageId;
       var trs = localStorageService.get(tempKey);
-      sendSentenceWritingAnalytics(trs, passageId);
+      AnalyticsService.trackSentenceWritingSubmission(trs, passageId);
       var rs = _.chain(trs)
         .groupBy('conceptClass')
         .map(function (entries, cc) {
