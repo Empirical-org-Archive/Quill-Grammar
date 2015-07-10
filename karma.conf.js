@@ -12,7 +12,8 @@ module.exports = function (config) {
     plugins: [
       'karma-mocha',
       'karma-chai-plugins',
-      'karma-phantomjs-launcher'
+      'karma-phantomjs-launcher',
+      'karma-sourcemap-loader'
     ],
 
     // frameworks to use
@@ -23,18 +24,18 @@ module.exports = function (config) {
     files: [
       'build/vendors*.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'build/app**.js*',
+      'build/app**.js',
       'test/**/*.spec.js'
     ],
 
     // list of files to exclude
     exclude: [
-      'build/*.js.map'
     ],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      '**/*.js': ['sourcemap']
     },
 
     // test results reporter to use
