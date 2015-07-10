@@ -2,16 +2,8 @@
 module.exports =
 
 /*@ngInject*/
-function index ($scope, RuleQuestionService, QuillFirebaseAuthService, firebaseUrl, QuillOAuthService) {
-  var ref = new Firebase(firebaseUrl);
-
+function index ($scope, RuleQuestionService, QuillOAuthService) {
   QuillOAuthService.authenticate('index');
-
-  QuillFirebaseAuthService.authenticate(ref).then(function success (authData) {
-    console.log(authData);
-  }, function error (response) {
-    console.log('error when authenticating', response);
-  });
 
   RuleQuestionService._getAllRuleQuestionsWithInstructions().then(function (questions) {
     var i = 0;

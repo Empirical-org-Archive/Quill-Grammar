@@ -3,12 +3,11 @@
 var R = require('ramda');
 
 /*@ngInject*/
-module.exports = function ($firebaseAuth, firebaseApp, empiricalBaseURL, $http, localStorageService) {
+module.exports = function ($firebaseAuth, firebaseApp, firebaseUrl, empiricalBaseURL, $http, localStorageService) {
   var firebaseTokenUrl = empiricalBaseURL + 'firebase_tokens?app=' + firebaseApp;
   var authObj, offAuth; // offAuth = handler for disabling
 
   function fetchToken() {
-    console.log('fetching token');
     return $http.post(firebaseTokenUrl).then(function success (response) {
       return response.data.token;
     }, function error (response) {
@@ -48,11 +47,12 @@ module.exports = function ($firebaseAuth, firebaseApp, empiricalBaseURL, $http, 
 
   var reAuthIfLoggedOut = R.ifElse(R.not, fetchAndAuthWithToken, R.identity);
 
-  function authenticate(ref) {
+  function authenticate() {
     if (offAuth) {
       console.log('disabling auth callback');
       offAuth();
     }
+    var ref = new Firebase(firebaseUrl);
     authObj = $firebaseAuth(ref);
     offAuth = authObj.$onAuth(reAuthIfLoggedOut);
     return fetchAndAuthWithToken(getCached('token'));
