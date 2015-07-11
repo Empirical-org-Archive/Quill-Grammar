@@ -20,16 +20,15 @@ describe('QuillFirebaseAuthService', function () {
       $onAuth: onAuthSpy,
       $authWithCustomToken: authWithCustomTokenSpy
     };
-    var fakeEmpiricalBaseUrl = 'http://foo.bar';
     var fakeFirebaseApp = 'foo-bar';
     authSpy = sandbox.stub().returns(fakeAuthObj);
     module(function ($provide) {
       $provide.value('$firebaseAuth', authSpy);
-      $provide.constant('empiricalBaseUrl', fakeEmpiricalBaseUrl);
+      $provide.constant('empiricalBaseURL', 'http://foo.bar');
       $provide.constant('firebaseApp', fakeFirebaseApp);
     });
 
-    inject(function (QuillFirebaseAuthService, _$q_, _$firebaseAuth_, _$httpBackend_) {
+    inject(function (QuillFirebaseAuthService, _$q_, _$httpBackend_) {
       quillFirebaseAuthService = QuillFirebaseAuthService;
       $q = _$q_;
       $httpBackend = _$httpBackend_;
@@ -38,8 +37,8 @@ describe('QuillFirebaseAuthService', function () {
     authWithCustomTokenSpy.returns($q.when()); // returns a promise
 
     // HTTP request for the token
-    $httpBackend.when('POST', 'firebase_tokens?app=foo-bar')
-                .respond('garbaggeee');
+    $httpBackend.when('POST', /firebase_tokens\?app=/)
+                .respond({token: 'foobar'});
   });
 
   afterEach(function () {

@@ -3,7 +3,7 @@ module.exports =
 
 /*@ngInject*/
 function index ($scope, RuleQuestionService, QuillOAuthService) {
-  QuillOAuthService.authenticate('index');
+  QuillOAuthService.authenticate();
 
   RuleQuestionService._getAllRuleQuestionsWithInstructions().then(function (questions) {
     var i = 0;
