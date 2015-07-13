@@ -8,9 +8,12 @@ describe('QuillFirebaseAuthService', function () {
       $q,
       authSpy,
       $httpBackend,
+      $rootScope,
       fakeAuthObj,
       authWithCustomTokenSpy,
-      onAuthSpy;
+      onAuthSpy,
+      localStorageGetSpy,
+      localStorageSetSpy;
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
@@ -24,21 +27,19 @@ describe('QuillFirebaseAuthService', function () {
     authSpy = sandbox.stub().returns(fakeAuthObj);
     module(function ($provide) {
       $provide.value('$firebaseAuth', authSpy);
-      $provide.constant('empiricalBaseURL', 'http://foo.bar');
+      $provide.constant('empiricalBaseURL', 'http://foo.bar/api/v1/');
       $provide.constant('firebaseApp', fakeFirebaseApp);
     });
 
-    inject(function (QuillFirebaseAuthService, _$q_, _$httpBackend_) {
+    inject(function (QuillFirebaseAuthService, _$q_, _$httpBackend_, localStorageService, _$rootScope_) {
       quillFirebaseAuthService = QuillFirebaseAuthService;
       $q = _$q_;
+      $rootScope = _$rootScope_;
       $httpBackend = _$httpBackend_;
+      localStorageGetSpy = sandbox.stub(localStorageService, 'get');
+      localStorageSetSpy = sandbox.spy(localStorageService, 'set');
     });
 
-    authWithCustomTokenSpy.returns($q.when()); // returns a promise
-
-    // HTTP request for the token
-    $httpBackend.when('POST', /firebase_tokens\?app=/)
-                .respond({token: 'foobar'});
   });
 
   afterEach(function () {
@@ -46,9 +47,47 @@ describe('QuillFirebaseAuthService', function () {
   });
 
   describe('#authenticate', function () {
-    it('returns a promise', function (done) {
-      quillFirebaseAuthService.authenticate().then(done);
-      $httpBackend.flush();
+    describe('when there is no cached firebase token', function() {
+      beforeEach(function() {
+        // HTTP request for the token
+        $httpBackend.expectPOST('http://foo.bar/api/v1/firebase_tokens?app=foo-bar')
+                    .respond({token: 'fake-token-from-lms'});
+
+        // Stub only returns a promise when actually called with the token.
+        authWithCustomTokenSpy.withArgs('fake-token-from-lms').returns($q.when()); // returns a promise
+      });
+
+      it('requests a firebase token from the LMS and authenticates with it', function(done) {
+        quillFirebaseAuthService.authenticate().then(done);
+        $httpBackend.flush();
+      });
+
+      it('caches the token for future requests', function(done) {
+        quillFirebaseAuthService.authenticate().then(function() {
+          expect(localStorageSetSpy).to.have.been.calledWith('token', 'fake-token-from-lms');
+          done();
+        });
+        $httpBackend.flush();
+      });
+    });
+
+    describe('when there is a cached firebase token', function() {
+      beforeEach(function() {
+        localStorageGetSpy.withArgs('token').returns('cached-fake-token');
+        authWithCustomTokenSpy.withArgs('cached-fake-token').returns($q.when()); // returns a promise
+      });
+
+      it('retrieves the existing token from the cache', function(done) {
+        quillFirebaseAuthService.authenticate().then(function(token) {
+          done();
+        });
+        $rootScope.$apply();
+      });
+    });
+
+    describe('when the authentication status changes ($onAuth callback)', function() {
+      describe('when the authentication expires (falsy argument to callback)', function() {
+      });
     });
   });
 });

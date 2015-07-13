@@ -4,7 +4,7 @@ var R = require('ramda');
 
 /*@ngInject*/
 module.exports = function ($firebaseAuth, firebaseApp, firebaseUrl, empiricalBaseURL, $http, localStorageService) {
-  var firebaseTokenUrl = empiricalBaseURL + 'firebase_tokens?app=' + firebaseApp;
+  var firebaseTokenUrl = empiricalBaseURL.replace(/\/?$/, '/firebase_tokens') + '?app=' + firebaseApp;
   var authObj, offAuth; // offAuth = handler for disabling
 
   function fetchToken() {
