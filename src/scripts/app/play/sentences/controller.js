@@ -8,6 +8,8 @@ function SentencePlayCtrl (
   ConceptTagResult, ActivitySession, SentenceLocalStorage, $analytics,
   AnalyticsService, finalizeService, calculatePercentageService
 ) {
+
+  console.log('result of calculatePercentageService()', calculatePercentageService())
   $scope.$on('$locationChangeStart', function (event, next) {
     if (next.indexOf('gen-results') !== -1) {
       console.log('allow transition');
