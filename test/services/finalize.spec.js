@@ -62,5 +62,6 @@ describe('finalizeService', function () {
       finalizeService('fake-session-id').then(done);
       $rootScope.$apply();
     });
+
   });
 });
