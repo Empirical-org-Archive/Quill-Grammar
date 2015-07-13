@@ -16,9 +16,8 @@ function ($httpProvider, $stateProvider) {
         'expires_in=' + $stateParams.expiresIn
       ].join('&');
       AccessToken.setTokenFromString(hashStr);
-      var originalState = Storage.get('originalState') || 'index';
-      Storage.delete('originalState');
-      $state.go(originalState);
+      var postAuthenticationRedirect = Storage.delete('postAuthenticationRedirect');
+      $state.go(postAuthenticationRedirect.stateName, postAuthenticationRedirect.stateParams);
     }
   });
 };

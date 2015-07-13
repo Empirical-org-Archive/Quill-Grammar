@@ -39,7 +39,6 @@ describe('QuillFirebaseAuthService', function () {
       localStorageGetSpy = sandbox.stub(localStorageService, 'get');
       localStorageSetSpy = sandbox.spy(localStorageService, 'set');
     });
-
   });
 
   afterEach(function () {
@@ -47,8 +46,8 @@ describe('QuillFirebaseAuthService', function () {
   });
 
   describe('#authenticate', function () {
-    describe('when there is no cached firebase token', function() {
-      beforeEach(function() {
+    describe('when there is no cached firebase token', function () {
+      beforeEach(function () {
         // HTTP request for the token
         $httpBackend.expectPOST('http://foo.bar/api/v1/firebase_tokens?app=foo-bar')
                     .respond({token: 'fake-token-from-lms'});
@@ -57,13 +56,13 @@ describe('QuillFirebaseAuthService', function () {
         authWithCustomTokenSpy.withArgs('fake-token-from-lms').returns($q.when()); // returns a promise
       });
 
-      it('requests a firebase token from the LMS and authenticates with it', function(done) {
+      it('requests a firebase token from the LMS and authenticates with it', function (done) {
         quillFirebaseAuthService.authenticate().then(done);
         $httpBackend.flush();
       });
 
-      it('caches the token for future requests', function(done) {
-        quillFirebaseAuthService.authenticate().then(function() {
+      it('caches the token for future requests', function (done) {
+        quillFirebaseAuthService.authenticate().then(function () {
           expect(localStorageSetSpy).to.have.been.calledWith('token', 'fake-token-from-lms');
           done();
         });
@@ -71,22 +70,20 @@ describe('QuillFirebaseAuthService', function () {
       });
     });
 
-    describe('when there is a cached firebase token', function() {
-      beforeEach(function() {
+    describe('when there is a cached firebase token', function () {
+      beforeEach(function () {
         localStorageGetSpy.withArgs('token').returns('cached-fake-token');
         authWithCustomTokenSpy.withArgs('cached-fake-token').returns($q.when()); // returns a promise
       });
 
-      it('retrieves the existing token from the cache', function(done) {
-        quillFirebaseAuthService.authenticate().then(function(token) {
-          done();
-        });
+      it('retrieves the existing token from the cache', function (done) {
+        quillFirebaseAuthService.authenticate().then(done);
         $rootScope.$apply();
       });
     });
 
-    describe('when the authentication status changes ($onAuth callback)', function() {
-      describe('when the authentication expires (falsy argument to callback)', function() {
+    describe('when the authentication status changes ($onAuth callback)', function () {
+      describe('when the authentication expires (falsy argument to callback)', function () {
       });
     });
   });
