@@ -8,6 +8,7 @@ angular.module('quill-grammar.play.sentences', [
   require('./../../../services/category.js').name,
   require('./../../../services/analytics.js').name,
   require('./../../../services/localStorage.js').name,
+  require('./../../../services/calculatePercentage.js').name,
   'empirical-angular',
   'ui.router',
 ])

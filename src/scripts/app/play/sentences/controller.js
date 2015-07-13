@@ -6,7 +6,7 @@ module.exports =
 function SentencePlayCtrl (
   $scope, $state, SentenceWritingService, RuleService, _,
   ConceptTagResult, ActivitySession, SentenceLocalStorage, $analytics,
-  AnalyticsService, finalizeService
+  AnalyticsService, finalizeService, calculatePercentageService
 ) {
   $scope.$on('$locationChangeStart', function (event, next) {
     if (next.indexOf('gen-results') !== -1) {

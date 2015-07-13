@@ -4,7 +4,7 @@ describe.only('calculatePercentageService', function () {
   beforeEach(module('quill-grammar.services.calculatePercentage'))
 
   beforeEach(inject(function (_calculatePercentageService_) {
-    calculatePercentageService = _calculatePercentageService_;
+    var calculatePercentageService = _calculatePercentageService_;
   }))
 
 
