@@ -17,5 +17,5 @@ describe('calculatePercentageService', function () {
 
     var percentage = calculatePercentageService(fakeConceptTagResults);
     expect(percentage).to.eq(0.5);
-  })
-})
+  });
+});
