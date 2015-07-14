@@ -30,7 +30,8 @@ describe('finalizeService', function () {
 
   describe('saving to the LMS', function () {
     var fakeConceptTagResultsList = [
-      {foo: 'bar'}
+      {foo: 'bar', correct: 1},
+      {foo: 'bar', correct: 0}
     ];
 
     beforeEach(function () {
@@ -47,7 +48,7 @@ describe('finalizeService', function () {
              .expects('finish')
              .withArgs('fake-session-id', {
                concept_tag_results: fakeConceptTagResultsList,
-               percentage: 1
+               percentage: 0.5
              })
              .returns($q.when());
 
