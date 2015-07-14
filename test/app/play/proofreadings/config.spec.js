@@ -1,3 +1,4 @@
+/* jshint expr:true */
 'use strict';
 
 describe('quill-grammar.play.proofreadings config', function () {
@@ -24,18 +25,18 @@ describe('quill-grammar.play.proofreadings config', function () {
     sandbox.verifyAndRestore();
   });
 
-  describe('routes', function() {
-    describe('play route', function() {
-      it('has the route', function() {
+  describe('routes', function () {
+    describe('play route', function () {
+      it('has the route', function () {
         expect($state.get('play-pf')).to.exist;
       });
 
-      it('accepts uid, student, and anonymous params (starting activity from the LMS)', function() {
+      it('accepts uid, student, and anonymous params (starting activity from the LMS)', function () {
         expect($state.href('play-pf', {uid: 'foo', student: 'bar', anonymous: 'true'}))
           .to.equal('#/play/pf?uid=foo&student=bar&anonymous=true');
       });
 
-      it('is integrated with OAuth', function() {
+      it('is integrated with OAuth', function () {
         expect($state.get('play-pf').data.authenticateUser).to.be.true;
       });
     });
