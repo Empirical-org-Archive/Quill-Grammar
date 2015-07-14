@@ -1,6 +1,6 @@
 'use strict';
 
-describe.only('finalizeService', function () {
+describe('finalizeService', function () {
   beforeEach(module('quill-grammar.services.finalize'));
 
   var sandbox,
@@ -63,6 +63,5 @@ describe.only('finalizeService', function () {
       finalizeService('fake-session-id').then(done);
       $rootScope.$apply();
     });
-
   });
 });
