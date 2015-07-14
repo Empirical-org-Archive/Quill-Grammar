@@ -21,6 +21,7 @@ function ProofreadingPlayCtrl (
   $scope.pfImages = require('./pfImages');
 
   function error() {
+    console.error(arguments[0].stack);
     $state.go('index');
   }
 

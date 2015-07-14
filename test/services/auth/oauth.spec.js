@@ -7,6 +7,7 @@ describe('oauth service', function () {
       accessTokenService,
       sandbox,
       redirectSpy,
+      storageSpy,
       $state;
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
@@ -15,17 +16,18 @@ describe('oauth service', function () {
       $provide.constant('empiricalBaseURL', 'http://foo.bar/api/v1/');
       $provide.constant('oauthClientId', 'baz');
       $stateProvider
-        .state('play-sw', {
+        .state('index', {
           controller: function () {},
-          url: '/play/sw?uid&student'
+          url: '/foo/bar'
         });
     });
 
-    inject(function (QuillOAuthService, AccessToken, Endpoint, _$state_) {
+    inject(function (QuillOAuthService, AccessToken, Endpoint, _$state_, Storage) {
       oauthService = QuillOAuthService;
       accessTokenService = AccessToken;
       $state = _$state_;
       redirectSpy = Endpoint.redirect = sandbox.spy();
+      storageSpy = Storage.set = sandbox.spy();
     });
   });
 
@@ -40,22 +42,48 @@ describe('oauth service', function () {
     });
   });
 
-  describe('authenticate', function () {
-    it('sets the redirect URI to the current state + params', function () {
-      $state.current = {
-        name: 'play-sw'
-      };
-      $state.params = {
-        uid: 'foo',
-        student: 'bar'
-      };
+  describe('isAuthenticated', function () {
+    beforeEach(function () {
+      sandbox.mock(accessTokenService).expects('set').once();
+    });
 
-      oauthService.authenticate();
+    context('when the token has been set', function () {
+      beforeEach(function () {
+        sandbox.mock(accessTokenService).expects('get').once().returns('a-fake-token');
+      });
+
+      it('returns true', function () {
+        expect(oauthService.isAuthenticated()).to.equal(true);
+      });
+    });
+
+    context('when the token has not been set previously', function () {
+      beforeEach(function () {
+        sandbox.mock(accessTokenService).expects('get').once().returns(null);
+      });
+
+      it('returns false', function () {
+        expect(oauthService.isAuthenticated()).to.equal(false);
+      });
+    });
+  });
+
+  describe('authenticate', function () {
+    it('stores the current state + params', function () {
+      oauthService.authenticate({name: 'foobar'}, {student: 'baz'});
+      expect(storageSpy).to.have.been.calledWith('postAuthenticationRedirect', {
+        stateName: 'foobar',
+        stateParams: {student: 'baz'}
+      });
+    });
+
+    it('redirects to the LMS to do the OAuth handshake', function () {
+      oauthService.authenticate({name: 'foobar'}, {student: 'baz'});
       expect(redirectSpy).to.have.been.calledWith({
         authorizePath: 'oauth/authorize',
         site: 'http://foo.bar/',
         clientId: 'baz',
-        redirectUri: 'http://server/#/play/sw?uid=foo&student=bar', // 'server' becomes the host magically somehow.
+        redirectUri: 'http://server/#/foo/bar', // 'server' becomes the host magically somehow.
         responseType: 'token'
       });
     });

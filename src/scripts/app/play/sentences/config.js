@@ -8,7 +8,10 @@ function configure ($stateProvider) {
     parent: 'app',
     templateUrl: 'sentences.play.html',
     controller: 'SentencePlayCtrl',
-    url: '/play/sw?uid&student'
+    url: '/play/sw?uid&student',
+    data: {
+      authenticateUser: true
+    }
   })
   .state('play-sw.results', {
     parent: 'app',
