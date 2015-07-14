@@ -47,27 +47,27 @@ describe('core module run', function () {
     expect(firebaseAuthService.authenticate).to.have.been.called;
   });
 
-  describe('$stateChangeStart event', function() {
-    describe('when the new state requires OAuth authentication', function() {
+  describe('$stateChangeStart event', function () {
+    describe('when the new state requires OAuth authentication', function () {
       it('checks the authenticated state', function () {
         $rootScope.$broadcast('$stateChangeStart', $state.get('state-requiring-oauth'), {});
         expect(quillOAuthService.isAuthenticated).to.have.been.called;
       });
 
-      it('authenticates if necessary', function() {
+      it('authenticates if necessary', function () {
         quillOAuthService.isAuthenticated.returns(false);
         $rootScope.$broadcast('$stateChangeStart', $state.get('state-requiring-oauth'), {});
         expect(quillOAuthService.authenticate).to.have.been.called;
       });
 
-      it('does not authenticate if not necessary', function() {
+      it('does not authenticate if not necessary', function () {
         quillOAuthService.isAuthenticated.returns(true);
         $rootScope.$broadcast('$stateChangeStart', $state.get('state-requiring-oauth'), {});
         expect(quillOAuthService.authenticate).not.to.have.been.called;
       });
 
-      describe('when the anonymous flag has been passed', function() {
-        it('does not try to authenticate the user', function() {
+      describe('when the anonymous flag has been passed', function () {
+        it('does not try to authenticate the user', function () {
           quillOAuthService.isAuthenticated.returns(false);
           $rootScope.$broadcast('$stateChangeStart', $state.get('state-requiring-oauth'), {anonymous: 'true'});
           expect(quillOAuthService.authenticate).not.to.have.been.called;
