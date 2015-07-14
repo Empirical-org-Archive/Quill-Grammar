@@ -8,10 +8,9 @@ angular.module('quill-grammar.services.finalize', [
   require('../../../.tmp/config').name,
   require('./calculatePercentage.js').name
 ])
-.factory('finalizeService', function ($q, ConceptTagResult, ActivitySession, calculatePercentage) {
+.factory('finalizeService', function ($q, ConceptTagResult, ActivitySession, calculatePercentageService) {
   function finalize(sessionId) {
     var p = $q.when();
-
     if (sessionId) {
       //Do LMS logging if we have a sessionId
       p.then(function () {
@@ -19,7 +18,7 @@ angular.module('quill-grammar.services.finalize', [
           .then(function (list) {
             return ActivitySession.finish(sessionId, {
               concept_tag_results: list,
-              percentage: calculatePercentage(list),
+              percentage: calculatePercentageService(list)
             });
           })
           .then(function () {
