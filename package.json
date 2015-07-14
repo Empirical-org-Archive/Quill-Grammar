@@ -3,7 +3,7 @@
   "version": "0.3.29",
   "private": "true",
   "scripts": {
-    "test": "./test.sh",
+    "test": "npm run ci",
     "lint": "./node_modules/.bin/grunt lint",
     "ci": "npm run lint && gulp ci --env=test"
   },
