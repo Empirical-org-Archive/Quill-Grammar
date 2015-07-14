@@ -4,7 +4,8 @@
     "Firebase": true,
     "sinon": true,
     "inject": true,
-    "expect": true
+    "expect": true,
+    "_": true
   },
   "node": true,
   "browser": true,
