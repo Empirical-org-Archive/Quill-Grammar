@@ -1,10 +1,11 @@
 'use strict';
 
-describe.only('calculatePercentageService', function () {
+describe('calculatePercentageService', function () {
   beforeEach(module('quill-grammar.services.calculatePercentage'))
 
+  var calculatePercentageService
   beforeEach(inject(function (_calculatePercentageService_) {
-    var calculatePercentageService = _calculatePercentageService_;
+    calculatePercentageService = _calculatePercentageService_;
   }))
 
 
@@ -13,7 +14,12 @@ describe.only('calculatePercentageService', function () {
   })
 
   it('calculates percentage', function () {
-    var percentage = calculatePercentageService();
-    expect(percentage).to.eq(0.6);
+    var conceptTagResults = [
+      {correct: 0},
+      {correct: 1}
+    ]
+
+    var percentage = calculatePercentageService(conceptTagResults);
+    expect(percentage).to.eq(0.5);
   })
 })
