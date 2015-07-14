@@ -8,7 +8,7 @@ function configure ($stateProvider) {
     parent: 'app',
     templateUrl: 'proofreadings.play.html',
     controller: 'ProofreadingPlayCtrl',
-    url: '/play/pf?uid&brainpop',
+    url: '/play/pf?uid&brainpop&student&anonymous',
     data: {
       authenticateUser: true
     }
