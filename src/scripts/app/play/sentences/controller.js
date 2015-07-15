@@ -74,8 +74,10 @@ function SentencePlayCtrl (
   //This is what we need to do after a student has completed the set
   $scope.finish = function () {
     var passageId = $state.params.passageId;
-    var tempResults = SentenceLocalStorage.saveResults(passageId);
-    AnalyticsService.trackSentenceWritingSubmission(tempResults, passageId);
+    if (passageId) { // Prevent explosions when there is no passage ID (started 'Sentence Writing' activity).
+      var tempResults = SentenceLocalStorage.saveResults(passageId);
+      AnalyticsService.trackSentenceWritingSubmission(tempResults, passageId);
+    }
     return finalizeService($scope.sessionId).then(function () {
       if ($scope.sessionId) {
         $state.go('.results', {student: $scope.sessionId});
