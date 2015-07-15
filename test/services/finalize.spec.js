@@ -60,7 +60,7 @@ describe('finalizeService', function () {
     });
 
     it('saves when a session ID is present', function (done) {
-      finalizeService('fake-session-id').then(done);
+      finalizeService('fake-session-id', null).then(done);
       $rootScope.$apply();
     });
   });

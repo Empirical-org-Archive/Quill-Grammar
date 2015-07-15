@@ -77,8 +77,10 @@ function SentencePlayCtrl (
     if (passageId) { // Prevent explosions when there is no passage ID (started 'Sentence Writing' activity).
       var tempResults = SentenceLocalStorage.saveResults(passageId);
       AnalyticsService.trackSentenceWritingSubmission(tempResults, passageId);
+    } else {
+      passageId = null;
     }
-    return finalizeService($scope.sessionId).then(function () {
+    return finalizeService($scope.sessionId, passageId).then(function () {
       if ($scope.sessionId) {
         $state.go('.results', {student: $scope.sessionId});
       } else {
