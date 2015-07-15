@@ -10,8 +10,11 @@ function (QuillFirebaseAuthService, QuillOAuthService, $rootScope) {
   $rootScope.$on('$stateChangeStart', function (event, state, params) {
     if (state.data && state.data.authenticateUser) {
       var isAnonymous = ('anonymous' in params) && params.anonymous === 'true';
-      if (!isAnonymous && !QuillOAuthService.isAuthenticated()) {
-        QuillOAuthService.authenticate(state, params);
+      if (!isAnonymous) {
+        QuillOAuthService.watchForExpiration(state, params);
+        if (!QuillOAuthService.isAuthenticated()) {
+          QuillOAuthService.authenticate(state, params);
+        }
       }
     }
   });

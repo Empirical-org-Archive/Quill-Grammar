@@ -1,7 +1,7 @@
 'use strict';
 
 /*@ngInject*/
-module.exports = function (empiricalBaseURL, oauthClientId, AccessToken, Endpoint, $state, Storage) {
+module.exports = function (empiricalBaseURL, oauthClientId, AccessToken, Endpoint, $state, Storage, $rootScope) {
   function isAuthenticated() {
     AccessToken.set();
     return !!AccessToken.get();
@@ -34,9 +34,16 @@ module.exports = function (empiricalBaseURL, oauthClientId, AccessToken, Endpoin
     AccessToken.destroy();
   }
 
+  function watchForExpiration(currentState, currentStateParams) {
+    $rootScope.$on('oauth:expired', function () {
+      authenticate(currentState, currentStateParams);
+    });
+  }
+
   return {
     isAuthenticated: isAuthenticated,
     authenticate: authenticate,
-    expire: expireToken
+    expire: expireToken,
+    watchForExpiration: watchForExpiration
   };
 };

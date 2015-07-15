@@ -10,23 +10,26 @@ angular.module('quill-grammar.services.finalize', [
 ])
 .factory('finalizeService', function ($q, ConceptTagResult, ActivitySession, calculatePercentageService) {
   function finalize(sessionId) {
-    var p = $q.when();
     if (sessionId) {
       //Do LMS logging if we have a sessionId
-      p.then(function () {
-        return ConceptTagResult.findAsJsonByActivitySessionId(sessionId)
-          .then(function (list) {
-            return ActivitySession.finish(sessionId, {
-              concept_tag_results: list,
-              percentage: calculatePercentageService(list)
-            });
-          })
-          .then(function () {
-            return ConceptTagResult.removeBySessionId(sessionId);
-          });
+      return ConceptTagResult.findAsJsonByActivitySessionId(sessionId).then(function (list) {
+        return ActivitySession.finish(sessionId, {
+          concept_tag_results: list,
+          percentage: calculatePercentageService(list)
+        });
+      }, function (e) {
+        throw e;
+      }).then(function () {
+        return ConceptTagResult.removeBySessionId(sessionId);
+      }, function (e) {
+        throw e;
+      }).catch(function (e) {
+        console.log('An error occurred while saving results to the LMS', e);
+        throw e;
       });
+    } else {
+      return $q.when();
     }
-    return p;
   }
 
   return finalize;
