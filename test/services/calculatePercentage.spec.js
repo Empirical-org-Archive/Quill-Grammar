@@ -26,7 +26,7 @@ describe('calculatePercentageService', function () {
         correct: 0,
         total: 5
       }
-    ]
+    ];
 
     var percentage = calculatePercentageService(fakeConceptTagResults, fakePfResults);
     expect(percentage).to.eq(0.3);
