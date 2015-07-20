@@ -27,7 +27,6 @@ angular.module('quill-grammar.services.calculatePercentage', [])
       pfNumTotal = _.reduce(pfResults, function (memo, r) {
         return memo + r.total;
       }, 0);
-
     } else {
       pfNumCorrect = 0;
       pfNumTotal = 0;

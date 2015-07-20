@@ -8,13 +8,15 @@ describe('finalizeService', function () {
       $rootScope,
       conceptTagResultService,
       activitySessionService,
+      localStorageService,
       $q;
 
-  beforeEach(inject(function (_finalizeService_, _$rootScope_, ConceptTagResult, ActivitySession, _$q_) {
+  beforeEach(inject(function (_finalizeService_, _$rootScope_, ConceptTagResult, _localStorageService_, ActivitySession, _$q_) {
     sandbox = sinon.sandbox.create();
     finalizeService = _finalizeService_;
     conceptTagResultService = ConceptTagResult;
     activitySessionService = ActivitySession;
+    localStorageService = _localStorageService_;
     $rootScope = _$rootScope_;
     $q = _$q_;
   }));
@@ -34,6 +36,19 @@ describe('finalizeService', function () {
       {foo: 'bar', correct: 0}
     ];
 
+    var fakePfResults = [
+      {
+        conceptClass: 'cool',
+        correct: 2,
+        total: 3
+      },
+      {
+        conceptClass: 'very cool',
+        correct: 0,
+        total: 5
+      }
+    ];
+
     beforeEach(function () {
       // ConceptTagResult.findAsJsonByActivitySessionId(...)
       sandbox.mock(conceptTagResultService)
@@ -41,11 +56,10 @@ describe('finalizeService', function () {
              .withArgs('fake-session-id')
              .returns($q.when(fakeConceptTagResultsList));
 
-      var localStorageService;
       sandbox.mock(localStorageService)
              .expects('get')
-             .withArgs('pf-fake-passageId')
-             .returns($q.when(fakeConceptTagResultsList));
+             .withArgs('pf-fake-passage-id')
+             .returns(fakePfResults);
 
       // gets concept tag results from firebase and sends to LMS
 
@@ -54,7 +68,7 @@ describe('finalizeService', function () {
              .expects('finish')
              .withArgs('fake-session-id', {
                concept_tag_results: fakeConceptTagResultsList,
-               percentage: 0.5
+               percentage: 0.3
              })
              .returns($q.when());
 
