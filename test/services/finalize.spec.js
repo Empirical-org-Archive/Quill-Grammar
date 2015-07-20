@@ -8,13 +8,15 @@ describe('finalizeService', function () {
       $rootScope,
       conceptTagResultService,
       activitySessionService,
+      localStorageService,
       $q;
 
-  beforeEach(inject(function (_finalizeService_, _$rootScope_, ConceptTagResult, ActivitySession, _$q_) {
+  beforeEach(inject(function (_finalizeService_, _$rootScope_, ConceptTagResult, _localStorageService_, ActivitySession, _$q_) {
     sandbox = sinon.sandbox.create();
     finalizeService = _finalizeService_;
     conceptTagResultService = ConceptTagResult;
     activitySessionService = ActivitySession;
+    localStorageService = _localStorageService_;
     $rootScope = _$rootScope_;
     $q = _$q_;
   }));
@@ -34,6 +36,19 @@ describe('finalizeService', function () {
       {foo: 'bar', correct: 0}
     ];
 
+    var fakePfResults = [
+      {
+        conceptClass: 'cool',
+        correct: 2,
+        total: 3
+      },
+      {
+        conceptClass: 'very cool',
+        correct: 0,
+        total: 5
+      }
+    ];
+
     beforeEach(function () {
       // ConceptTagResult.findAsJsonByActivitySessionId(...)
       sandbox.mock(conceptTagResultService)
@@ -41,14 +56,19 @@ describe('finalizeService', function () {
              .withArgs('fake-session-id')
              .returns($q.when(fakeConceptTagResultsList));
 
+      sandbox.mock(localStorageService)
+             .expects('get')
+             .withArgs('pf-fake-passage-id')
+             .returns(fakePfResults);
+
       // gets concept tag results from firebase and sends to LMS
 
       // ActivitySession.finish(...)
       sandbox.mock(activitySessionService)
              .expects('finish')
              .withArgs('fake-session-id', {
-               // concept_tag_results: fakeConceptTagResultsList,
-               percentage: 0.5
+               concept_tag_results: fakeConceptTagResultsList,
+               percentage: 0.3
              })
              .returns($q.when());
 
@@ -60,7 +80,7 @@ describe('finalizeService', function () {
     });
 
     it('saves when a session ID is present', function (done) {
-      finalizeService('fake-session-id').then(done);
+      finalizeService('fake-session-id', 'fake-passage-id').then(done);
       $rootScope.$apply();
     });
   });
