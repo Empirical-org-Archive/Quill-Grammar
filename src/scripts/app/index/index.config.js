@@ -8,5 +8,6 @@ function configure ($stateProvider) {
       url: '/',
       templateUrl: 'index.html',
       controller: 'index as ind',
-    });
+    })
+    ;
 };

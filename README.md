@@ -12,8 +12,13 @@ To Deploy this project:
 
 Assuming, you are developing
 
-* `gulp --env=prod`
+* `gulp --env=production`
 * firebase deploy
+
+For developing:
+
+In one terminal window run `gulp` or `gulp --env=development`
+In another terminal, run `gulp test` to test your changes or after you add new tests.
 
 Any issues with gulp tasks should be addressed in the [Empirical Angular Gulp Tasks Repo](https://github.com/empirical-org/empirical-angular-gulp-tasks).
 This is an opinionated gulp project setup. If you run into any build chain issues,

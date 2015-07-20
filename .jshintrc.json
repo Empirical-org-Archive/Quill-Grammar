@@ -1,7 +1,11 @@
 {
   "globals": {
     "angular": true,
-    "Firebase": true
+    "Firebase": true,
+    "sinon": true,
+    "inject": true,
+    "expect": true,
+    "_": true
   },
   "node": true,
   "browser": true,
@@ -12,6 +16,7 @@
   "immed": true,
   "indent": 2,
   "latedef": true,
+  "mocha": true,
   "newcap": true,
   "noarg": true,
   "quotmark": "single",
