@@ -47,7 +47,7 @@ describe('finalizeService', function () {
       sandbox.mock(activitySessionService)
              .expects('finish')
              .withArgs('fake-session-id', {
-               concept_tag_results: fakeConceptTagResultsList,
+               // concept_tag_results: fakeConceptTagResultsList,
                percentage: 0.5
              })
              .returns($q.when());

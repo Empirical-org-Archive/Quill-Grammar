@@ -14,7 +14,9 @@ angular.module('quill-grammar.services.finalize', [
       //Do LMS logging if we have a sessionId
       return ConceptTagResult.findAsJsonByActivitySessionId(sessionId).then(function (list) {
         return ActivitySession.finish(sessionId, {
-          concept_tag_results: list,
+          // TODO: The API for concept tags needs to be sorted out on the LMS
+          // before this will work.
+          // concept_tag_results: list,
           percentage: calculatePercentageService(list)
         });
       }, function (e) {
