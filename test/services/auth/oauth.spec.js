@@ -1,3 +1,4 @@
+/* jshint expr:true */
 'use strict';
 
 describe('oauth service', function () {
