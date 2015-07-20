@@ -1,2 +1,2 @@
 #!/bin/bash
-firebase deploy --firebase quillgrammar --public dist/ -m `git describe --always`
+firebase deploy --firebase quillgrammarpartner --public dist/ -m `git describe --always`
