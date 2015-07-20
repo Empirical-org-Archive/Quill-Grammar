@@ -5,6 +5,7 @@
   "scripts": {
     "test": "npm run ci",
     "lint": "./node_modules/.bin/grunt lint",
+    "deploy-staging": "gulp --env=staging && firebase deploy",
     "ci": "npm run lint && gulp ci --env=test"
   },
   "engines": {

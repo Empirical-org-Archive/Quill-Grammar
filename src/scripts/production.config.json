@@ -1,7 +1,8 @@
 {
   "environment": "production",
   "firebaseUrl": "https://quillgrammar.firebaseio.com/",
-  "empiricalBaseURL": "https://quill.org/api/v1/",
+  "empiricalBaseURL": "https://quill.org/api/v1",
   "portholeProxy": "https://quill.org/porthole_proxy",
-  "firebaseApp": "quillgrammar"
+  "firebaseApp": "quillgrammar",
+  "oauthClientId": "2e8c49f66d9ea0ccbd71ea568c75eef96782e6a7510ebab7c537f3c6d563f6f2"
 }

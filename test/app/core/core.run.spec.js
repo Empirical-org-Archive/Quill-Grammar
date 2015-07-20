@@ -21,7 +21,8 @@ describe('core module run', function () {
     });
     $provide.value('QuillOAuthService', {
       isAuthenticated: sandbox.stub(),
-      authenticate: sandbox.stub()
+      authenticate: sandbox.stub(),
+      watchForExpiration: sandbox.stub()
     });
 
     $stateProvider.state('state-requiring-oauth', {
@@ -64,6 +65,11 @@ describe('core module run', function () {
         quillOAuthService.isAuthenticated.returns(true);
         $rootScope.$broadcast('$stateChangeStart', $state.get('state-requiring-oauth'), {});
         expect(quillOAuthService.authenticate).not.to.have.been.called;
+      });
+
+      it('watches for expiration of the access token', function () {
+        $rootScope.$broadcast('$stateChangeStart', $state.get('state-requiring-oauth'), {});
+        expect(quillOAuthService.watchForExpiration).to.have.been.called;
       });
 
       describe('when the anonymous flag has been passed', function () {

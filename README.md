@@ -6,19 +6,16 @@ To Develop on this project:
 * Make a fork
 * `npm install`
 * `gem install sass`
-* `gulp`
 
-To Deploy this project:
+Useful commands:
 
-Assuming, you are developing
-
-* `gulp --env=production`
-* firebase deploy
-
-For developing:
-
-In one terminal window run `gulp` or `gulp --env=development`
-In another terminal, run `gulp test` to test your changes or after you add new tests.
+* `gulp --env=development` - Run the development server and rebuild after every change. This is the main command to use while developing.
+* `npm run lint` - Run the linter. All code needs to be properly linted or the CI build will fail.
+* `npm run deploy-staging` - Deploy to the firebase staging environment.
+* `npm run ci` - The command that TravisCI runs. If TravisCI is failing and you can't figure out why, try running this command locally to recreate the failures.
+* `gulp test --env=test` - Run the test suite once.
+* `gulp test:auto --env=test` - Run the test suite continuously. Tests will re-run after changes.
+* IMPORTANT: If you run either of these `gulp test` commands, you will also need to run `gulp --env=test` in a different terminal window to make sure that your tests are running against the latest version of your code.
 
 Any issues with gulp tasks should be addressed in the [Empirical Angular Gulp Tasks Repo](https://github.com/empirical-org/empirical-angular-gulp-tasks).
 This is an opinionated gulp project setup. If you run into any build chain issues,
@@ -29,9 +26,9 @@ Routes
 
 * `/cms` - Admins can CRUD Categories, Rules, Rule Questions
 * `/activities` - Teachers and Admins can see activities, make new ones, and edit existing ones. The list of activities is a link to play the activity.
-* `/play/sw/:id` - Play the given id of the sentence writing activity.
-* `/play/pf/:id` - Play the given id of the proofreading activity.
-* `/play/sw/g/:ids` - Play the comma delimited list of rule ids
+* `/play/sw?:uid&student` - Play the given id of the sentence writing activity.
+* `/play/pf?:uid&brainpop` - Play the given id of the proofreading activity.
+* `/play/sw/g/:ids?student&passageId&partnerIframe` - Play the comma delimited list of rule ids
 * `/play/partner-pf` - Play the 3 selected Partner Stories.
 * `/` - Will let you iterate over all rule questions.
 

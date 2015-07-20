@@ -1,3 +1,4 @@
+/* jshint expr:true */
 'use strict';
 
 describe('oauth service', function () {
@@ -8,7 +9,8 @@ describe('oauth service', function () {
       sandbox,
       redirectSpy,
       storageSpy,
-      $state;
+      $state,
+      $rootScope;
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
 
@@ -22,10 +24,11 @@ describe('oauth service', function () {
         });
     });
 
-    inject(function (QuillOAuthService, AccessToken, Endpoint, _$state_, Storage) {
+    inject(function (QuillOAuthService, AccessToken, Endpoint, _$state_, Storage, _$rootScope_) {
       oauthService = QuillOAuthService;
       accessTokenService = AccessToken;
       $state = _$state_;
+      $rootScope = _$rootScope_;
       redirectSpy = Endpoint.redirect = sandbox.spy();
       storageSpy = Storage.set = sandbox.spy();
     });
@@ -65,6 +68,15 @@ describe('oauth service', function () {
       it('returns false', function () {
         expect(oauthService.isAuthenticated()).to.equal(false);
       });
+    });
+  });
+
+  describe('watchForExpiration', function () {
+    it('watches the oauth:expired event and expires the token', function () {
+      oauthService.watchForExpiration({name: 'foobar'}, {student: 'baz'});
+      expect(redirectSpy).not.to.have.been.called;
+      $rootScope.$broadcast('oauth:expired');
+      expect(redirectSpy).to.have.been.called;
     });
   });
 

@@ -7,7 +7,7 @@ module.exports = function ($q, AccessToken) {
       AccessToken.set();
       var token = AccessToken.get();
       if (token) {
-        config.headers.Authorization = 'Bearer ' + token.token;
+        config.headers.Authorization = 'Bearer ' + token.access_token;
       } else {
         delete config.headers.Authorization;
       }
