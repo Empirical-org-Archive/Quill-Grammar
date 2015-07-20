@@ -44,5 +44,4 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
   };
 })
 .directive('ngSize', require('./ngSize.js'))
-.controller('PartnerPlayCtrl', require('./partner-play-ctrl.js'))
 .controller('ProofreadingPlayCtrl', require('./controller.js'));

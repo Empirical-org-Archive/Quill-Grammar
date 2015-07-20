@@ -10,16 +10,6 @@ function ProofreadingPlayCtrl (
 ) {
   $scope.id = $state.params.uid;
 
-  //If brainpop is truthy, we setup some scope state
-  //that the template will react to. The template
-  //adds the brainpop script and assigns an id to the div
-  if ($state.params.brainpop) {
-    $scope.brainpop = 'BrainPOPsnapArea';
-  }
-
-  //Add in some custom images for the 3 stories we are showcasing
-  $scope.pfImages = require('./pfImages');
-
   function error() {
     console.error(arguments[0].stack);
     $state.go('index');
@@ -33,28 +23,9 @@ function ProofreadingPlayCtrl (
     return atob(o);
   };
 
-  $scope.$on('$locationChangeStart', function (event, next) {
-    if (next.indexOf('play/results') !== -1 || next.indexOf('play/sw') !== -1) {
-      console.log('allow transition');
-    } else if (next.indexOf('play/pf') !== -1 && $scope.allowTransition) {
-      console.log('allow transition');
-    } else {
-      console.log('not allowing');
-      event.preventDefault();
-    }
-  });
-
-  $scope.allowTransition = true;
-  $timeout(function () {
-    $scope.allowTransition = false;
-  }, 100);
-
   ProofreadingService.getProofreading($scope.id).then(function (pf) {
     pf.passage = ProofreadingService.prepareProofreading(pf.passage, $scope);
     $scope.pf = pf;
-    if ($scope.pfImages[$scope.id]) {
-      $scope.pf.image = $scope.pfImages[$scope.id];
-    }
     fetchListedRules();
   }, error);
 
@@ -225,6 +196,8 @@ function ProofreadingPlayCtrl (
     };
     if (word.resultIndex + 1 >= getNumResults()) {
       if (allCorrect) {
+        /*
+         * TODO, Report to the LMS Here for passage proofreadings
         na.fn = function () {
           $state.go('play-internal-results', {
             passageId: $scope.id,
@@ -232,6 +205,7 @@ function ProofreadingPlayCtrl (
           });
         };
         na.title = 'View Results';
+        */
       } else {
         na.fn = function () {
           $scope.goToLesson();
@@ -501,7 +475,6 @@ function ProofreadingPlayCtrl (
     $scope.goToLesson = function () {
       $state.go('play-sw-gen', {
         ids: ruleNumbers,
-        partnerIframe: true,
         passageId: $scope.id,
       });
     };

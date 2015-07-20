@@ -8,39 +8,23 @@ function SentencePlayCtrl (
   ConceptTagResult, ActivitySession, SentenceLocalStorage, $analytics,
   AnalyticsService, finalizeService
 ) {
-  $scope.$on('$locationChangeStart', function (event, next) {
-    if (next.indexOf('gen-results') !== -1) {
-      console.log('allow transition');
-    } else {
-      event.preventDefault();
-    }
-  });
-
   $scope.$watch('currentRuleQuestion', function (crq) {
     if (_.isObject(crq)) {
       $scope.currentRule = $scope.swSet[crq.ruleIndex];
     }
   });
 
-  $scope.partnerIframe = $state.params.partnerIframe;
-
-  /*
-   * This is some extra stuff for the partner integration
-   * TODO move this out of here
-   */
-  //Add in some custom images for the 3 stories we are showcasing
-  $scope.pfImages = require('./../proofreadings/pfImages');
-
-  $scope.pfTitles = require('./../proofreadings/pfTitles');
-
-  if ($state.params.passageId) {
-    $scope.passageImageUrl = $scope.pfImages[$state.params.passageId];
-    $scope.passageTitle = $scope.pfTitles[$state.params.passageId];
-  }
-
   $scope.number = 0;
   $scope.numAttempts = 2;
 
+  /*
+   * When the underlying rule question directive fires the 'answerRuleQuestion'
+   * event we catch it here. If we are a valid student, then we queue up
+   * the results to send to the LMS when the activity is finished.
+   *
+   * If the max number of attempts are reached, we set show next question to
+   * true.
+   */
   $scope.$on('answerRuleQuestion', function (e, crq, answer, correct) {
     if (!answer || !crq) {
       throw new Error('We need a rule question and answer');
@@ -81,17 +65,16 @@ function SentencePlayCtrl (
       passageId = null;
     }
     return finalizeService($scope.sessionId, passageId).then(function () {
-      if ($scope.sessionId) {
-        $state.go('.results', {student: $scope.sessionId});
-      } else {
-        $state.go('.results', {
-          partnerIframe: true,
-          passageId: $state.params.passageId
-        });
-      }
+      //TODO Before striping out partner components, this went to
+      //an internal QG results page. Now, we need to redirect to the LMS.
     });
   };
 
+  /*
+   * Next question is a scope function that is called
+   * when the student presses the next button. It advances
+   * the pointer on the list of questions.
+   */
   $scope.nextQuestion = function () {
     $scope.showNextQuestion = false;
     var crq = $scope.currentRuleQuestion;
@@ -109,6 +92,11 @@ function SentencePlayCtrl (
     $state.go('index');
   }
 
+  /*
+   * Retrieves the corresponding quantity of rule questions
+   * for each rule id. It sets up the $scope parameters at
+   * the first question.
+   */
   function retrieveNecessaryRules(ruleIds, quantities) {
     RuleService.getRules(ruleIds).then(function (resolvedRules) {
       $scope.swSet = _.chain(resolvedRules)
@@ -137,6 +125,13 @@ function SentencePlayCtrl (
     });
   }
 
+  /*
+   * If we have a uid of a sentence writing activity, we fetch,
+   * then build a list of rule ids with their needed quantity.
+   *
+   * If we have ids of rules, we default to a quantity of 3
+   * for the max number of rule questions to retrieve.
+   */
   if ($state.params.uid) {
     SentenceWritingService.getSentenceWriting($state.params.uid).then(function (sw) {
       $scope.sentenceWriting = sw;
@@ -154,6 +149,9 @@ function SentencePlayCtrl (
 
   /*
    * Format Description
+   * This function takes a description and splits the sentences
+   * into a unordered list of phrases and example sentences.
+   * These two lists are divided by a horizontal rule bar.
    */
   $scope.formatDescription = function (des) {
     if (!des) {
