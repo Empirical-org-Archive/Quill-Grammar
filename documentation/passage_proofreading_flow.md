@@ -5,14 +5,14 @@ Im going to focus on detail that would be relevant to the project of modifying t
 
 
 first user visits
-
+```
 /play/pf?uid&brainpop
-
+```
 the code listens for that here :
 
----
-//https://github.com/empirical-org/Quill-Grammar/blob/master/src/scripts/app/play/proofreadings/config.js#L11
+https://github.com/empirical-org/Quill-Grammar/blob/master/src/scripts/app/play/proofreadings/config.js#L11
 
+```javascript
 'use strict';
 
 module.exports =
@@ -30,7 +30,8 @@ function configure ($stateProvider) {
   })
   ...
 };
----
+```
+
 the first state is detected, and so the corresponding templateUrl is rendered, and the corresponding
 controller is hooked up to that template, and the parent module is 'app'
 
@@ -38,7 +39,7 @@ now that the user is presented with the proofreading template, how does the user
 
 well here is the template that gets shown
 
----
+```javascript
 
 <div ng-class="{proofreading:true, 'partner-iframe': brainpop}" ng-show="pf">
   <quill-grammar-pf-heading pf="pf" num-changes="numChanges"></quill-grammar-pf-heading>
@@ -58,14 +59,14 @@ well here is the template that gets shown
 
 </div>
 
+```
 
----
 Youll notice that a lot of directive elements are used.
 These are defined in the sibling document module.js,
 The ProofreadingPlayCtrl Controller is defined in this module, so it will have access to it.
 Lets take a look at the directive called quill-grammar-passage. it is defined in the module.js here :
 
----
+```javascript
 .directive('quillGrammarPassage', function () {
   return {
     restrict: 'E',
@@ -77,14 +78,14 @@ Lets take a look at the directive called quill-grammar-passage. it is defined in
     templateUrl: 'passage.html'
   };
 })
----
+```
 
 Notice that the directive is named in the module using camelCase, but that it appears in the html file as quill-grammar-passage.
 Angular knows to translate between the two styles.
 
 Lets now look at the template for that directive
 
----
+```javascript
 
 <div class="passage">
   <div ng-class="{'word':true, 'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="(index, word) in passage" id="error-tooltip-scroll-{{index}}">
@@ -125,12 +126,12 @@ Lets now look at the template for that directive
   </div>
 </div>
 
-
----
+```
 
 A lot going on above. However Im just interested in how correct/incorrect responses get stored, so I think I should be safe to skip over and check out another directives template, f-submit-panel.html (which is also included in proofreadings.play.html)
 
----
+```javascript
+
 <div ng-class="{'passage-submit-panel': true, 'passage-submitted': pf.passage.submitted}" id="last-chance-tooltip-breakpoint-at-panel">
   <div class="passage-message">
     {{pf.message}}
@@ -138,14 +139,17 @@ A lot going on above. However Im just interested in how correct/incorrect respon
   <button ng-show="!pf.passage.submitted" ng-class="{'no-message': !pf.message}" ng-click="submitPassage()">Check Work</button>
 </div>
 
----
+```
+
 The main thing to notice here is
+```javascript
 ng-click="submitPassage()"
+```
 
 Looking at the controller code for this will likely show how correct/incorrect responses get stored
 Lets look for the method in the ProofreadingPlayCtrl
 
----
+```javascript
 
 ...
 
@@ -184,8 +188,8 @@ Lets look for the method in the ProofreadingPlayCtrl
   };
 
 ...
+```
 
---
 so it seems that the results are stored on
 $scope.results
 There is no further form of storage employed within this method. (perhaps later on)
@@ -196,11 +200,14 @@ if it is incorrect, it has the value getErrorType(p) for key 'type'.
 What is $scope.CORRECT ?
 
 We see at the top of the controller that
+```javascript
 $scope.CORRECT = 'Correct'
+```
 
 Is $scope.results stored on something else after the showResultsModal does its thing?
 Lets see by checking otu the showResultsModal method
---
+
+```javascript
 
 
   function showResultsModal(results, numErrorsFound, numErrorsToSolve) {
@@ -227,12 +234,12 @@ Lets see by checking otu the showResultsModal method
     };
   }
 
----
+```
 
 no more storage being done here.
 lets follow the chain of command and check out the method showResults
 
----
+```javascript
   function showResults(passageResults) {
     _.each(passageResults, function (pr, i) {
       $scope.pf.passage[pr.index].type = pr.type;
@@ -256,8 +263,7 @@ lets follow the chain of command and check out the method showResults
     saveResults(getLocalResults(passageResults));
     $scope.pf.passage.submitted = true;
   }
-
----
+```
 
 
 ok we see here a call to generateLesson.
@@ -277,7 +283,7 @@ why do we need to wrap the passageResults in a call to getLocalResults?
 I dont recall anywhere in the flow the results being stored anywhere.
 lets check out getLocalResults
 
----
+```javascript
 
   /*
    * generate passage results for local results
@@ -307,7 +313,7 @@ lets check out getLocalResults
       })
       .value();
   }
----
+```
 
 Ok, now I get it (from the comment in the code).
 Basically this processes this passageResults to get them into the proper format to be saved locally,
@@ -338,7 +344,7 @@ saveResults(getLocalResults(passageResults));
 
 so lets take a look at the saveResults method :
 
----
+```javascript
 
   function saveResults(r) {
     localStorageService.set('pf-' + $scope.id, r);
@@ -346,7 +352,7 @@ so lets take a look at the saveResults method :
     localStorageService.remove('sw-temp-' + $scope.id);
   }
 
----
+```
 
 Note that the r in the above will be an array of results grouped by rule title.
 
@@ -355,7 +361,7 @@ Not sure what the purpose of the remove calls is for.
 Lets check out what goes on in the service localStorageService and its method set
 (also keeping an eye out for a corespnding get method)
 
----
+```javascript
 
 module.exports =
 angular.module('quill-grammar.services.localStorage', [
@@ -405,18 +411,21 @@ angular.module('quill-grammar.services.localStorage', [
   };
 });
 
----
+```
 
 Ok, dont seem to see any 'set' method defined above, though it is used.
 Perhaps it is defined in the module that this service depends upon, 'LocalStorageModule'.
 This module is in fact a node module, downloaded over the internet. This is how its docs describe it is used :
 
+```javascript
 var localStorage = require('localStorage')
   , myValue = { foo: 'bar', baz: 'quux' }
   ;
 
+
 localStorage.setItem('myKey', JSON.stringify(myValue));
 myValue = localStorage.getItem('myKey');
+```
 
 Makes sense.
 
@@ -433,7 +442,9 @@ within the finalizeService. Probably better to do within finalize service becaus
 Lets look back in passageCtrl to find out what $scope.id corresponds to
 
 Its value is taken from $state.params.uid, the uid in the url for example
+```javascript
 '/play/pf?uid=1'
+```
 
 This uid corresponds to the id of the passage.
 It does not corresopnd to the id of the user.
@@ -444,9 +455,9 @@ It would perhaps be better to store the results using the students session id, w
 Is this possible? Does the state have access to this (can it be passed in the url?)
 
 It is, we can see again in play/proofreadings/config.js :
-
+```javascript
 url: '/play/pf?uid&brainpop&student&anonymous',
-
+```
 So the activity_session_id is available as $state.params.student
 
 

@@ -41,6 +41,12 @@ describe('finalizeService', function () {
              .withArgs('fake-session-id')
              .returns($q.when(fakeConceptTagResultsList));
 
+      var localStorageService;
+      sandbox.mock(localStorageService)
+             .expects('get')
+             .withArgs('pf-fake-passageId')
+             .returns($q.when(fakeConceptTagResultsList));
+
       // gets concept tag results from firebase and sends to LMS
 
       // ActivitySession.finish(...)
@@ -60,7 +66,7 @@ describe('finalizeService', function () {
     });
 
     it('saves when a session ID is present', function (done) {
-      finalizeService('fake-session-id', null).then(done);
+      finalizeService('fake-session-id', 'fake-passage-id').then(done);
       $rootScope.$apply();
     });
   });
