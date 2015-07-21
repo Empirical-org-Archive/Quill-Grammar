@@ -78,3 +78,19 @@ with the `applicationId` from your new or modified OAuth LMS Application.
 
 It's important you do not commit the changes for the `development.config.json`.
 The `clientId` is unique to your local LMS instance.
+
+Since QG is a firebase based application, we'll also want authorization tokens
+from firebase. On the LMS there is a route that will return the firebase token
+based on the type of user you are.
+
+As of writing this, there isn't a UI for managing the LMS firebase applications.
+So, in your local dev environment for the LMS, run `rails c` to fireup a rails
+console.
+
+In the console type:
+
+```
+ FirebaseApp.create :name => "quillgrammarstaging", :secret => "Secret key from firebase"
+```
+
+If you need your secret key, go to the `secrets` page of your firebase app admin panel.
