@@ -8,15 +8,9 @@ function configure ($stateProvider) {
     parent: 'app',
     templateUrl: 'proofreadings.play.html',
     controller: 'ProofreadingPlayCtrl',
-    url: '/play/pf?uid&brainpop&student&anonymous',
+    url: '/play/pf?uid&student&anonymous',
     data: {
       authenticateUser: true
     }
-  })
-  .state('play-partner-pf-integration-start', {
-    parent: 'app',
-    templateUrl: 'proofreadings.partner.html',
-    url: '/play/partner-pf',
-    controller: 'PartnerPlayCtrl'
   });
 };

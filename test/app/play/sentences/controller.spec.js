@@ -67,12 +67,6 @@ describe('SentencePlayCtrl', function () {
         $rootScope.$apply();
         expect(stateSpy.calledOne).to.be(true);
       });
-
-      it('transitions to the .results state with the session ID', function (done) {
-        scope.finish().then(done);
-        $rootScope.$apply();
-        expect(stateSpy).to.have.been.calledWith('.results', {student: fakeSessionId});
-      });
     });
 
     describe('with a passage ID', function () {
@@ -84,17 +78,6 @@ describe('SentencePlayCtrl', function () {
         localStorageSpy.returns('foobar'); // fake results
         scope.finish().then(function () {
           expect(analyticsSpy).to.have.been.calledWith('foobar', 'fake-passage-id');
-          done();
-        });
-        $rootScope.$apply();
-      });
-
-      it('transitions to the .results state with the passage ID', function (done) {
-        scope.finish().then(function () {
-          expect(stateSpy).to.have.been.calledWith('.results', {
-            partnerIframe: true,
-            passageId: 'fake-passage-id'
-          });
           done();
         });
         $rootScope.$apply();

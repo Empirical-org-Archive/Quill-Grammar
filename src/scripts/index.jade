@@ -1,5 +1,5 @@
 doctype html
-html(ng-app='quill-grammar', id='BrainPOPsnapArea' ng-strict-di)
+html(ng-app='quill-grammar', ng-strict-di)
   head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
@@ -21,8 +21,6 @@ html(ng-app='quill-grammar', id='BrainPOPsnapArea' ng-strict-di)
     ui-view
     //- inject:js
     //- endinject
-    |<script src="https://cdn.brainpop.com/games/assets/js/html2canvas.js"></script>
-    |<script src="https://cdn.brainpop.com/games/assets/js/cameraProxyDOMCrossDomain.js"></script>
     |<script type="text/javascript">
     |setTimeout(function(){var a=document.createElement("script");
     |var b=document.getElementsByTagName("script")[0];
