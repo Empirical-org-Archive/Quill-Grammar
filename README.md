@@ -60,3 +60,37 @@ data store during the early development phase.
 
 We are using the [blaze compiler](https://github.com/firebase/blaze_compiler) to generate
 rules for our data. Install it with `npm install -g blaze_compiler`.
+
+Intergrating and Testing Against the LMS
+========================================
+
+If you are doing app development that requires integration with
+the [LMS](https://github.com/empirical-org/Empirical-Core), you'll
+want a local instance to practice on. Head over to the LMS repo
+to learn how to set that up.
+
+Once you are up and running the LMS, assuming port 3000 for the LMS,
+head to http://localhost:3000/oauth/applications to tweak your local
+OAuth applications. You'll need to log in with the Admin username/password.
+
+You'll want to fill in the `clientId` in `./src/scripts/development.config.json`
+with the `applicationId` from your new or modified OAuth LMS Application.
+
+It's important you do not commit the changes for the `development.config.json`.
+The `clientId` is unique to your local LMS instance.
+
+Since QG is a firebase based application, we'll also want authorization tokens
+from firebase. On the LMS there is a route that will return the firebase token
+based on the type of user you are.
+
+As of writing this, there isn't a UI for managing the LMS firebase applications.
+So, in your local dev environment for the LMS, run `rails c` to fireup a rails
+console.
+
+In the console type:
+
+```
+ FirebaseApp.create :name => "quillgrammarstaging", :secret => "Secret key from firebase"
+```
+
+If you need your secret key, go to the `secrets` page of your firebase app admin panel.
