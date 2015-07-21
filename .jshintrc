@@ -3,7 +3,12 @@
     "angular": true,
     "Firebase": true,
     "sinon": true,
-    "inject": true
+    "inject": true,
+    "it": true,
+    "describe": true,
+    "beforeEach": true,
+    "afterEach": true,
+    "expect": true
   },
   "node": true,
   "browser": true,
