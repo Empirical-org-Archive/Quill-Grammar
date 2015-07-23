@@ -55,6 +55,17 @@ describe('SentencePlayCtrl', function () {
       fakeFinalizeService.returns($q.when());
     });
 
+    it('redirects to the .results state', function (done) {
+      $state.params.student = 'foobar';
+      scope.finish().then(function () {
+        expect(stateSpy).to.have.been.calledWith('.results', {
+          student: 'foobar'
+        });
+        done();
+      });
+      $rootScope.$apply();
+    });
+
     describe('with a session ID', function () {
       var fakeSessionId = 'fake-session-id';
 
@@ -63,9 +74,11 @@ describe('SentencePlayCtrl', function () {
       });
 
       it('calls the Finalize service', function (done) {
-        scope.finish().then(done);
+        scope.finish().then(function() {
+          expect(fakeFinalizeService).to.have.been.calledOnce;
+          done();
+        });
         $rootScope.$apply();
-        expect(stateSpy.calledOne).to.be(true);
       });
     });
 

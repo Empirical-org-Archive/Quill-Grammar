@@ -65,8 +65,9 @@ function SentencePlayCtrl (
       passageId = null;
     }
     return finalizeService($scope.sessionId, passageId).then(function () {
-      //TODO Before striping out partner components, this went to
-      //an internal QG results page. Now, we need to redirect to the LMS.
+      $state.go('.results', {
+        student: $state.params.student
+      });
     });
   };
 
