@@ -1,3 +1,4 @@
+/* jshint expr:true */
 'use strict';
 
 describe('SentencePlayCtrl', function () {
@@ -74,7 +75,7 @@ describe('SentencePlayCtrl', function () {
       });
 
       it('calls the Finalize service', function (done) {
-        scope.finish().then(function() {
+        scope.finish().then(function () {
           expect(fakeFinalizeService).to.have.been.calledOnce;
           done();
         });

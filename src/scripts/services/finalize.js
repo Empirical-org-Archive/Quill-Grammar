@@ -19,7 +19,7 @@ angular.module('quill-grammar.services.finalize', [
     }
 
     if (sessionId) {
-       //Do LMS logging if we have a sessionId
+      //Do LMS logging if we have a sessionId
       return ConceptTagResult.findAsJsonByActivitySessionId(sessionId).then(function (list) {
         return ActivitySession.finish(sessionId, {
           // FIXME: Uncommenting this line, i.e. sending concept tags to the LMS, is currently broken.
