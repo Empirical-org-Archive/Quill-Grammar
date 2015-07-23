@@ -67,7 +67,8 @@ describe('finalizeService', function () {
       sandbox.mock(activitySessionService)
              .expects('finish')
              .withArgs('fake-session-id', {
-               concept_tag_results: fakeConceptTagResultsList,
+               // FIXME: Do not uncomment this line until the LMS concept tag integration works again.
+               // concept_tag_results: fakeConceptTagResultsList,
                percentage: 0.3
              })
              .returns($q.when());
