@@ -73,7 +73,7 @@ Once you are up and running the LMS, assuming port 3000 for the LMS,
 head to http://localhost:3000/oauth/applications to tweak your local
 OAuth applications. You'll need to log in with the Admin username/password.
 
-You'll want to fill in the `clientId` in `./src/scripts/development.config.json`
+You'll want to fill in the `oauthClientId` in `./src/scripts/development.config.json`
 with the `applicationId` from your new or modified OAuth LMS Application.
 
 It's important you do not commit the changes for the `development.config.json`.
@@ -93,4 +93,4 @@ In the console type:
  FirebaseApp.create :name => "quillgrammarstaging", :secret => "Secret key from firebase"
 ```
 
-If you need your secret key, go to the `secrets` page of your firebase app admin panel.
+If you need your secret key, go to the `secrets` page of your firebase app admin panel. Once you've created a FirebaseApp instance in the console, take that 'name' value and plug it into the `firebaseApp` field of your `development.config.json` file, e.g. `"firebaseApp": "quillgrammarstaging"`.
