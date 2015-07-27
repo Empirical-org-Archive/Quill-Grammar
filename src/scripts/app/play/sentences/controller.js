@@ -126,6 +126,23 @@ function SentencePlayCtrl (
     });
   }
 
+
+  /*
+   * Here, we check for the **All Correct from PF Flag**
+   */
+
+  $scope.checkIfAllPfCorrect = function () {
+    if ($state.params.pfAllCorrect) {
+      return $scope.finish();
+    }
+  };
+  $scope.checkIfAllPfCorrect();
+
+  /*
+   * Function execution stops here if the **All Correct PF Flag
+   * is true.
+   */
+
   /*
    * If we have a uid of a sentence writing activity, we fetch,
    * then build a list of rule ids with their needed quantity.

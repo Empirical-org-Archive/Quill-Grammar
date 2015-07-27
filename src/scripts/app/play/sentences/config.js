@@ -29,6 +29,6 @@ function configure ($stateProvider) {
     parent: 'app',
     templateUrl: 'sentences.play.html',
     controller: 'SentencePlayCtrl',
-    url: '/play/sw/g/:ids?student&passageId'
+    url: '/play/sw/g/:ids?student&passageId&pfAllCorrect'
   });
 };
