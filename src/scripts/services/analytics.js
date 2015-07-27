@@ -13,6 +13,9 @@ angular.module('quill-grammar.services.analytics', [
    * Function to map and send analytic information
    */
   function trackSentenceWritingSubmission(results, passageId) {
+    if (results === null) {
+      results = {};
+    }
     var event = 'Sentence Writing Submitted';
     var c = _.pluck(results, 'correct');
     var attrs = {

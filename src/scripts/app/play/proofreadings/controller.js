@@ -196,7 +196,7 @@ function ProofreadingPlayCtrl (
     };
     if (word.resultIndex + 1 >= getNumResults()) {
       if (allCorrect) {
-        na.fn = function() {
+        na.fn = function () {
           $state.go('play-sw-gen', {
             ids: [],
             passageId: $scope.id,
