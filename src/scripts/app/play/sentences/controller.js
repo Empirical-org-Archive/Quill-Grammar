@@ -126,7 +126,6 @@ function SentencePlayCtrl (
     });
   }
 
-
   /*
    * Here, we check for the **All Correct from PF Flag**
    */
