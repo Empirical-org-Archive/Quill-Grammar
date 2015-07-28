@@ -200,7 +200,8 @@ function ProofreadingPlayCtrl (
           $state.go('play-sw-gen', {
             ids: [],
             passageId: $scope.id,
-            pfAllCorrect: true
+            pfAllCorrect: true,
+            student: $state.params.student
           });
         };
         na.title = 'View Results';
@@ -474,6 +475,7 @@ function ProofreadingPlayCtrl (
       $state.go('play-sw-gen', {
         ids: ruleNumbers,
         passageId: $scope.id,
+        student: $state.params.student
       });
     };
     $scope.hasLesson = true;
