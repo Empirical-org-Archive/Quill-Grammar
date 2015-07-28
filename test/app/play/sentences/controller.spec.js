@@ -10,6 +10,7 @@ describe('SentencePlayCtrl', function () {
       fakeFinalizeService,
       $q,
       $rootScope,
+      $timeout,
       $state,
       stateSpy,
       analyticsSpy,
@@ -19,9 +20,10 @@ describe('SentencePlayCtrl', function () {
     sandbox = sinon.sandbox.create();
     fakeFinalizeService = sandbox.stub();
 
-    inject(function ($controller, _$rootScope_, _$q_, _$state_, AnalyticsService, SentenceLocalStorage) {
+    inject(function ($controller, _$rootScope_, _$q_, _$state_, _$timeout_, AnalyticsService, SentenceLocalStorage) {
       $rootScope = _$rootScope_;
       $state = _$state_;
+      $timeout = _$timeout_;
       scope = $rootScope.$new();
       stateSpy = sandbox.stub($state, 'go');
       localStorageSpy = sandbox.stub(SentenceLocalStorage, 'saveResults');
@@ -76,6 +78,23 @@ describe('SentencePlayCtrl', function () {
 
       it('calls the Finalize service', function (done) {
         scope.finish().then(function () {
+          expect(fakeFinalizeService).to.have.been.calledOnce;
+          done();
+        });
+        $rootScope.$apply();
+      });
+    });
+
+    describe('when pfAllCorrect is true', function () {
+      var fakeSessionId = 'fake-session-id';
+
+      beforeEach(function () {
+        scope.sessionId = fakeSessionId;
+        $state.params.pfAllCorrect = true;
+      });
+
+      it('calls the Finalize service without calling $scope.finish', function (done) {
+        scope.checkIfAllPfCorrect().then(function () {
           expect(fakeFinalizeService).to.have.been.calledOnce;
           done();
         });

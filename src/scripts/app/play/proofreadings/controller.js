@@ -196,16 +196,15 @@ function ProofreadingPlayCtrl (
     };
     if (word.resultIndex + 1 >= getNumResults()) {
       if (allCorrect) {
-        /*
-         * TODO, Report to the LMS Here for passage proofreadings
         na.fn = function () {
-          $state.go('play-internal-results', {
+          $state.go('play-sw-gen', {
+            ids: [],
             passageId: $scope.id,
-            partnerIframe: true
+            pfAllCorrect: true,
+            student: $state.params.student
           });
         };
         na.title = 'View Results';
-        */
       } else {
         na.fn = function () {
           $scope.goToLesson();
@@ -476,6 +475,7 @@ function ProofreadingPlayCtrl (
       $state.go('play-sw-gen', {
         ids: ruleNumbers,
         passageId: $scope.id,
+        student: $state.params.student
       });
     };
     $scope.hasLesson = true;
