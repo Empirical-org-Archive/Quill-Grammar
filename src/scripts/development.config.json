@@ -1,6 +1,8 @@
 {
   "environment": "development",
   "firebaseUrl": "https://quillgrammarstaging.firebaseio.com/",
-  "empiricalBaseURL": "https://staging.quill.org/api/v1/",
-  "portholeProxy": "https://staging.quill.org/porthole_proxy"
+  "empiricalBaseURL": "http://localhost:3000/api/v1/",
+  "portholeProxy": "http://localhost:3000/porthole_proxy",
+  "firebaseApp": "",
+  "oauthClientId": ""
 }

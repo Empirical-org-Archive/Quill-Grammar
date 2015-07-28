@@ -5,42 +5,26 @@ module.exports =
 /*@ngInject*/
 function SentencePlayCtrl (
   $scope, $state, SentenceWritingService, RuleService, _,
-  ConceptTagResult, ActivitySession, localStorageService, $analytics
+  ConceptTagResult, ActivitySession, SentenceLocalStorage, $analytics,
+  AnalyticsService, finalizeService
 ) {
-  $scope.$on('$locationChangeStart', function (event, next) {
-    if (next.indexOf('gen-results') !== -1) {
-      console.log('allow transition');
-    } else {
-      console.log('not allowing');
-      event.preventDefault();
-    }
-  });
-
   $scope.$watch('currentRuleQuestion', function (crq) {
     if (_.isObject(crq)) {
       $scope.currentRule = $scope.swSet[crq.ruleIndex];
     }
   });
 
-  $scope.partnerIframe = $state.params.partnerIframe;
-
-  /*
-   * This is some extra stuff for the partner integration
-   * TODO move this out of here
-   */
-  //Add in some custom images for the 3 stories we are showcasing
-  $scope.pfImages = require('./../proofreadings/pfImages');
-
-  $scope.pfTitles = require('./../proofreadings/pfTitles');
-
-  if ($state.params.passageId) {
-    $scope.passageImageUrl = $scope.pfImages[$state.params.passageId];
-    $scope.passageTitle = $scope.pfTitles[$state.params.passageId];
-  }
-
   $scope.number = 0;
   $scope.numAttempts = 2;
 
+  /*
+   * When the underlying rule question directive fires the 'answerRuleQuestion'
+   * event we catch it here. If we are a valid student, then we queue up
+   * the results to send to the LMS when the activity is finished.
+   *
+   * If the max number of attempts are reached, we set show next question to
+   * true.
+   */
   $scope.$on('answerRuleQuestion', function (e, crq, answer, correct) {
     if (!answer || !crq) {
       throw new Error('We need a rule question and answer');
@@ -61,17 +45,7 @@ function SentencePlayCtrl (
       $scope.showNextQuestion = true;
       var passageId = $state.params.passageId;
       if (passageId) {
-        var key = 'sw-temp-' + passageId;
-        var rs = localStorageService.get(key);
-        if (!rs) {
-          rs = [];
-        }
-        rs.push({
-          conceptClass: crq.conceptCategory,
-          correct: correct,
-          answer: answer
-        });
-        localStorageService.set(key, rs);
+        SentenceLocalStorage.storeTempResult(passageId, crq, answer, correct);
       }
     }
   });
@@ -81,78 +55,27 @@ function SentencePlayCtrl (
     $scope.sessionId = $state.params.student;
   }
 
-  /*
-   * Function to map and send analytic information
-   */
-  function sendSentenceWritingAnalytics(results, passageId) {
-    var event = 'Sentence Writing Submitted';
-    var c = _.pluck(results, 'correct');
-    var attrs = {
-      uid: passageId,
-      answers: _.pluck(results, 'answer'),
-      correct: c,
-      conceptCategory: _.pluck(results, 'conceptClass'),
-      total: results.length,
-      numCorrect: c.length
-    };
-
-    $analytics.eventTrack(event, attrs);
-  }
-
-  /*
-   * Function to map temporary local results into
-   */
-  function saveLocalResults() {
-    var passageId = $state.params.passageId;
-    if (passageId) {
-      var tempKey = 'sw-temp-' + passageId;
-      var trs = localStorageService.get(tempKey);
-      sendSentenceWritingAnalytics(trs, passageId);
-      var rs = _.chain(trs)
-        .groupBy('conceptClass')
-        .map(function (entries, cc) {
-          return {
-            conceptClass: cc,
-            total: entries.length,
-            correct: _.filter(entries, function (v) { return v.correct; }).length
-          };
-        })
-        .value();
-      localStorageService.set('sw-' + passageId, rs);
-      localStorageService.remove(tempKey);
-    }
-  }
-
   //This is what we need to do after a student has completed the set
   $scope.finish = function () {
-    var sid = $scope.sessionId;
-    var p = null;
-    saveLocalResults();
-    if (sid) {
-      //Do LMS logging if we have a sessionId
-      p = ConceptTagResult.findAsJsonByActivitySessionId(sid)
-      .then(function (list) {
-        return ActivitySession.finish(sid, {
-          concept_tag_results: list,
-          percentage: 1,
-        });
-      })
-      .then(function () {
-        return ConceptTagResult.removeBySessionId(sid);
-      });
-    }
-    if (p) {
-      p.then(function () {
-        $state.go('.results', {student: sid});
-      });
+    var passageId = $state.params.passageId;
+    if (passageId) { // Prevent explosions when there is no passage ID (started 'Sentence Writing' activity).
+      var tempResults = SentenceLocalStorage.saveResults(passageId);
+      AnalyticsService.trackSentenceWritingSubmission(tempResults, passageId);
     } else {
-      $state.go('.results', {
-        partnerIframe: true,
-        passageId: $state.params.passageId
-      });
+      passageId = null;
     }
+    return finalizeService($scope.sessionId, passageId).then(function () {
+      $state.go('.results', {
+        student: $state.params.student
+      });
+    });
   };
 
+  /*
+   * Next question is a scope function that is called
+   * when the student presses the next button. It advances
+   * the pointer on the list of questions.
+   */
   $scope.nextQuestion = function () {
     $scope.showNextQuestion = false;
     var crq = $scope.currentRuleQuestion;
@@ -170,6 +93,11 @@ function SentencePlayCtrl (
     $state.go('index');
   }
 
+  /*
+   * Retrieves the corresponding quantity of rule questions
+   * for each rule id. It sets up the $scope parameters at
+   * the first question.
+   */
   function retrieveNecessaryRules(ruleIds, quantities) {
     RuleService.getRules(ruleIds).then(function (resolvedRules) {
       $scope.swSet = _.chain(resolvedRules)
@@ -198,6 +126,29 @@ function SentencePlayCtrl (
     });
   }
 
+  /*
+   * Here, we check for the **All Correct from PF Flag**
+   */
+
+  $scope.checkIfAllPfCorrect = function () {
+    if ($state.params.pfAllCorrect) {
+      return $scope.finish();
+    }
+  };
+  $scope.checkIfAllPfCorrect();
+
+  /*
+   * Function execution stops here if the **All Correct PF Flag
+   * is true.
+   */
+
+  /*
+   * If we have a uid of a sentence writing activity, we fetch,
+   * then build a list of rule ids with their needed quantity.
+   *
+   * If we have ids of rules, we default to a quantity of 3
+   * for the max number of rule questions to retrieve.
+   */
   if ($state.params.uid) {
     SentenceWritingService.getSentenceWriting($state.params.uid).then(function (sw) {
       $scope.sentenceWriting = sw;
@@ -215,6 +166,9 @@ function SentencePlayCtrl (
 
   /*
    * Format Description
+   * This function takes a description and splits the sentences
+   * into a unordered list of phrases and example sentences.
+   * These two lists are divided by a horizontal rule bar.
    */
   $scope.formatDescription = function (des) {
     if (!des) {
