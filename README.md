@@ -6,6 +6,7 @@ To Develop on this project:
 * Make a fork
 * `npm install`
 * `gem install sass`
+* `cp src/scripts/development.config.json.example src/scripts/development.config.json` and fill in the empty values.
 
 Useful commands:
 
