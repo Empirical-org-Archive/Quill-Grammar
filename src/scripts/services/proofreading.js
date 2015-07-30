@@ -45,6 +45,15 @@ angular.module('quill-grammar.services.proofreading', [
       };
       pf = pf.replace(key, genKey);
     });
+    pf.replace(/{-([^|]+)\+([^-]+)\|([^}]+)}/g, function (key, minus, plus, ruleNumber) {
+      var genKey = uuid4.generate();
+      $scope.passageQuestions[genKey] = {
+        plus: plus,
+        minus: minus,
+        ruleNumber: ruleNumber
+      };
+      pf = pf.replace(key, genKey);
+    });
     var prepared = _.chain(pf.split(/\s/))
       .filter(function removeNullWords (n) {
         return n !== '';
