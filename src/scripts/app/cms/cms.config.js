@@ -8,5 +8,8 @@ function configure ($stateProvider) {
       url: '/cms',
       templateUrl: 'cms.html',
       controller: 'cms',
+      data: {
+        //authenticateUser: true
+      }
     });
 };

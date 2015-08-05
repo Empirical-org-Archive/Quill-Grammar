@@ -1,6 +1,10 @@
 'use strict';
+
 module.exports =
 
 /*@ngInject*/
-function cms () {
+function PracticeQuestionsCmsCtrl (
+
+) {
+
 };
