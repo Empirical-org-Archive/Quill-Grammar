@@ -3,8 +3,8 @@ module.exports =
 /*@ngInject*/
 function configure ($stateProvider) {
   $stateProvider
-  .state('cms-stories', {
-    parent: 'cms',
+  .state('cms-activities-stories', {
+    parent: 'cms-activities',
     templateUrl: 'stories.cms.html',
     contoller: 'StoriesCmsCtrl',
     url: '/stories'

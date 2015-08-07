@@ -2,7 +2,7 @@
 
 module.exports =
 
-angular.module('quill-grammar.cms.practiceQuestions', [
+angular.module('quill-grammar.cms.activities.practiceQuestions', [
 
 ])
 .config(require('./config.js'))

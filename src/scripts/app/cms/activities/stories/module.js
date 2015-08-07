@@ -2,7 +2,7 @@
 
 module.exports =
 
-angular.module('quill-grammar.cms.stories', [
+angular.module('quill-grammar.cms.activities.stories', [
 
 ])
 .config(require('./config.js'))
