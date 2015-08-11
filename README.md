@@ -34,7 +34,7 @@ Routes
 ###CMS Routes
 
 * `/cms` - Entry point for the Quill Grammar CMS system.
-* `/cms/proofreadingActivities` - Entry point for the Proofreading Activities (Passages)
+* `/cms/proofreaderActivities` - Entry point for the Proofreader Activities (Passages)
 * `/cms/grammarActivities` - Entry point for the Grammar Activities (Sentence Writing)
 * `/cms/concepts` - Entry point for the concepts (Rules)
 

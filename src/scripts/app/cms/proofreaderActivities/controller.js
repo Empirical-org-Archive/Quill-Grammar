@@ -3,7 +3,7 @@
 module.exports =
 
 /*@ngInject*/
-function ProofreadingActivitiesCmsCtrl (
+function ProofreaderActivitiesCmsCtrl (
 
 ) {
 };
