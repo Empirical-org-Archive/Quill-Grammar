@@ -9,14 +9,16 @@ describe('finalizeService', function () {
       conceptTagResultService,
       activitySessionService,
       localStorageService,
+      quillOAuthService,
       $q;
 
-  beforeEach(inject(function (_finalizeService_, _$rootScope_, ConceptTagResult, _localStorageService_, ActivitySession, _$q_) {
+  beforeEach(inject(function (_finalizeService_, _$rootScope_, ConceptTagResult, _localStorageService_, ActivitySession, _$q_, QuillOAuthService) {
     sandbox = sinon.sandbox.create();
     finalizeService = _finalizeService_;
     conceptTagResultService = ConceptTagResult;
     activitySessionService = ActivitySession;
     localStorageService = _localStorageService_;
+    quillOAuthService = QuillOAuthService;
     $rootScope = _$rootScope_;
     $q = _$q_;
   }));
@@ -78,6 +80,10 @@ describe('finalizeService', function () {
               .expects('removeBySessionId')
               .withArgs('fake-session-id')
               .returns($q.when());
+
+      sandbox.mock(quillOAuthService)
+             .expects('expire')
+             .returns($q.when());
     });
 
     it('saves when a session ID is present', function (done) {
