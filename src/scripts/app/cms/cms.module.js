@@ -3,8 +3,9 @@ module.exports =
 
 angular
   .module('quill-grammar.cms', [
-    require('./../../directives/grammarCMS').name,
-    require('./../../filters/').name,
+    require('./concepts/module.js').name,
+    require('./grammarActivities/module.js').name,
+    require('./proofreadingActivities/module.js').name,
   ])
   .config(require('./cms.config.js'))
   .controller('cms', require('./cms.controller.js'));
