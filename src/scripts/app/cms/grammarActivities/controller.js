@@ -3,7 +3,7 @@
 module.exports =
 
 /*@ngInject*/
-function ActivitiesCmsCtrl (
+function GrammarActivitiesCmsCtrl (
 
 ) {
 };

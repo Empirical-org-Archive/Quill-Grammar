@@ -21,5 +21,11 @@ function configure ($stateProvider) {
       data: {
         //authenticateUser: true
       }
+    })
+    .state('cms-activities-base', {
+      parent: 'cms',
+      url: '',
+      abstract: true,
+      templateUrl: 'activities.cms.base.html'
     });
 };
