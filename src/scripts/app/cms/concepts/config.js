@@ -4,9 +4,16 @@ module.exports =
 function configure ($stateProvider) {
   $stateProvider
   .state('cms-concepts', {
-    parent: 'cms',
+    parent: 'cms-concepts-base',
     templateUrl: 'concepts.cms.html',
     contoller: 'ConceptsCmsCtrl',
-    url: '/concepts'
+    url: '?/'
+  })
+  .state('cms-concepts-base', {
+    parent: 'cms',
+    templateUrl: 'concepts.cms.base.html',
+    contoller: 'ConceptsCmsCtrl',
+    url: '/concepts',
+    abstract: true
   });
 };

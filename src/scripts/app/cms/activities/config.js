@@ -7,7 +7,7 @@ function configure ($stateProvider) {
     parent: 'cms-activities-base',
     templateUrl: 'activities.cms.html',
     contoller: 'ActivitiesCmsCtrl',
-    url: '/activities'
+    url: ''
   })
   .state('cms-activities-base', {
     parent: 'cms',
