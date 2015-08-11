@@ -25,12 +25,18 @@ address them in the task repository.
 Routes
 ======
 
-* `/cms` - Admins can CRUD Categories, Rules, Rule Questions
 * `/activities` - Teachers and Admins can see activities, make new ones, and edit existing ones. The list of activities is a link to play the activity.
 * `/play/sw?:uid&student` - Play the given id of the sentence writing activity.
 * `/play/pf?:uid` - Play the given id of the proofreading activity.
 * `/play/sw/g/:ids?student&passageId` - Play the comma delimited list of rule ids
 * `/play/partner-pf` - Play the 3 selected Partner Stories.
+
+###CMS Routes
+
+* `/cms` - Entry point for the Quill Grammar CMS system.
+* `/cms/proofreadingActivities` - Entry point for the Proofreading Activities (Passages)
+* `/cms/grammarActivities` - Entry point for the Grammar Activities (Sentence Writing)
+* `/cms/concepts` - Entry point for the concepts (Rules)
 
 ### Module URLs
 
