@@ -7,6 +7,6 @@ function configure ($stateProvider) {
     parent: 'cms-activities-base',
     templateUrl: 'grammar.activities.cms.html',
     contoller: 'GrammarActivitiesCmsCtrl',
-    url: '/'
+    url: '/grammarActivities'
   });
 };

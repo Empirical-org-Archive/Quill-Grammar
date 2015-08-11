@@ -14,8 +14,8 @@ function configure ($stateProvider) {
       }
     })
     .state('cms-list', {
-      parent: 'app',
-      url: '/cms',
+      parent: 'cms',
+      url: '',
       templateUrl: 'cms.html',
       controller: 'cms',
       data: {
