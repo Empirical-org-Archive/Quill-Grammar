@@ -2,7 +2,8 @@
 
 module.exports =
 angular.module('quill-grammar.cms.grammarActivities.directives', [
-  'dynform'
+  'dynform',
+  require('../../../../services/lms/theme.js').name,
 ])
 .controller('GrammarActivityFormCtrl', require('./grammarActivityForm.controller.js'))
 .directive('grammarActivityForm', require('./grammarActivityForm.directive.js'))
