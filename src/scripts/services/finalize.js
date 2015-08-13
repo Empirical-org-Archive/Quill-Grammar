@@ -7,9 +7,10 @@ angular.module('quill-grammar.services.finalize', [
   require('empirical-angular').name,
   require('../../../.tmp/config').name,
   require('./calculatePercentage.js').name,
-  require('./localStorage.js').name
+  require('./localStorage.js').name,
+  require('./auth').name
 ])
-.factory('finalizeService', function ($q, ConceptTagResult, ActivitySession, calculatePercentageService, localStorageService) {
+.factory('finalizeService', function ($q, ConceptTagResult, ActivitySession, calculatePercentageService, localStorageService, QuillOAuthService) {
   function finalize(sessionId, passageId) {
     var pfResults;
     if (passageId) {
@@ -29,6 +30,8 @@ angular.module('quill-grammar.services.finalize', [
         });
       }).then(function () {
         return ConceptTagResult.removeBySessionId(sessionId);
+      }).then(function () {
+        QuillOAuthService.expire();
       }).catch(function (e) {
         console.log('An error occurred while saving results to the LMS', e);
         throw e;
