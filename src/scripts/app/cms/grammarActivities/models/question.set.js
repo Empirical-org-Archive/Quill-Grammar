@@ -3,29 +3,17 @@
 module.exports = [
   {
     type: 'select',
-    options: [
-      {label: 'concept level 2 - ex1'},
-      {label: 'concept level 2 - ex2'},
-      {label: 'concept level 2 - ex3'},
-    ],
+    autoOptions: 'concept.title for concept in concepts.concept_level_2 track by concept.uid',
     model: 'concept_level_2'
   },
   {
     type: 'select',
-    options: [
-      {label: 'concept level 1 - ex1'},
-      {label: 'concept level 1 - ex2'},
-      {label: 'concept level 1 - ex3'},
-    ],
+    autoOptions: 'concept.title for concept in concepts.concept_level_1 track by concept.uid',
     model: 'concept_level_1'
   },
   {
     type: 'select',
-    options: [
-      {label: 'concept level 0 - ex1'},
-      {label: 'concept level 0 - ex2'},
-      {label: 'concept level 0 - ex3'},
-    ],
+    autoOptions: 'concept.title for concept in concepts.concept_level_0 track by concept.uid',
     model: 'concept_level_0'
   },
   {
