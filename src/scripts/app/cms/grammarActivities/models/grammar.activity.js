@@ -32,10 +32,7 @@ module.exports = [
   {
     type: 'select',
     label: 'Theme',
-    options: [
-      {label: 'Theme 1'},
-      {label: 'Theme 2'}
-    ],
+    autoOptions: 'theme.title for theme in themes track by theme.uid',
     model: 'theme'
   },
   {

@@ -12,7 +12,7 @@ angular.module('quill-grammar.services.lms.theme', [
           title: 'Theme1'
         }, {
           uid: 'theme-uid-2',
-          title: 'Theme1'
+          title: 'Theme2'
         }, {
           uid: 'theme-uid-3',
           title: 'Theme3'
