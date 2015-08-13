@@ -2,8 +2,10 @@
 
 module.exports =
 angular.module('quill-grammar.services.lms.concept', [
+  'underscore'
 ])
-.factory('ConceptService', function ($timeout) {
+/*@ngInject*/
+.factory('ConceptService', function ($timeout, _) {
   this.get = function () {
     return $timeout(function () {
       var concepts = {
@@ -337,7 +339,17 @@ angular.module('quill-grammar.services.lms.concept', [
           'Prepositions'
         ]
       };
-      return concepts;
+      return _.chain(concepts)
+        .map(function (level, key) {
+          return [key, _.map(level, function (value, index) {
+            return {
+              uid: String(index),
+              title: value
+            };
+          })];
+        })
+        .object()
+        .value();
     }, 200);
   };
   return this;
