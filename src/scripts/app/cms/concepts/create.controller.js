@@ -3,7 +3,7 @@
 module.exports =
 
 /*@ngInject*/
-function ConceptsCreateCmsCtrl(
+function ConceptsCreateCmsCtrl (
   $scope
 ) {
   $scope.concept = {};
