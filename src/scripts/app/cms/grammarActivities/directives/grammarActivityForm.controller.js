@@ -11,7 +11,8 @@ module.exports =
 
 /*@ngInject*/
 function GrammarActivityFormCtrl (
-  $scope, _, ThemeService, ConceptService
+  $scope, _, ThemeService, ConceptService,
+  StandardService
 ) {
   if (_.isUndefined($scope.grammarActivity) || !_.isObject($scope.grammarActivity)) {
     throw new Error('Please define grammarActivity object in controller scope');
@@ -31,6 +32,10 @@ function GrammarActivityFormCtrl (
 
   ConceptService.get().then(function (concepts) {
     $scope.concepts = concepts;
+  });
+
+  StandardService.get().then(function (standards) {
+    $scope.standards = standards;
   });
 
   $scope.removeQuestionFromSet = function (qs) {
