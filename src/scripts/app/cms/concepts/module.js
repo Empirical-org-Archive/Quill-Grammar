@@ -4,6 +4,7 @@ module.exports =
 
 angular.module('quill-grammar.cms.concepts', [
   require('./directives/index.js').name,
+  require('./../../../services/v2/concepts.js').name,
 ])
 .config(require('./config.js'))
 .controller('ConceptsCmsCtrl', require('./controller.js'))
