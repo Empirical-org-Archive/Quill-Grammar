@@ -2,22 +2,22 @@
   "name": "quill-grammar",
   "private": true,
   "dependencies": {
-    "angular": "~1.3.6",
+    "angular": "~1.4.4",
     "ui-router": "~0.2.11",
-    "angularfire": "~0.9.1",
-    "bourbon": "4.0.2",
-    "neat": "1.7.0",
-    "firebase": "~2.1.0",
-    "underscore": "~1.7.0",
+    "angularfire": "~1.1.2",
+    "bourbon": "~4.2.3",
+    "neat": "~1.7.2",
+    "firebase": "~2.2.9",
+    "underscore": "~1.8.3",
     "angular-underscore-module": "~1.0.1",
     "angular-filter": "~0.5.4",
     "angular-uuid4": "~0.3.0",
     "porthole": "~1.0.0",
-    "angular-local-storage": "~0.1.5",
-    "angular-scroll": "~0.6.5",
+    "angular-local-storage": "~0.2.2",
+    "angular-scroll": "~0.7.2",
     "angulartics": "~0.17.2",
     "oauth-ng": "~0.4.2",
-    "angular-mocks": "1.3.17",
+    "angular-mocks": "~1.4.4",
     "angular-dynforms": "~0.0.4"
   },
   "overrides": {
@@ -27,5 +27,18 @@
     "angular-mocks": {
       "ignore": true
     }
+  },
+  "resolutions": {
+    "angularfire": "~1.1.2",
+    "bourbon": "~4.2.3",
+    "neat": "~1.7.2",
+    "firebase": "~2.2.9",
+    "underscore": "~1.8.3",
+    "angular-local-storage": "~0.2.2",
+    "angular-scroll": "~0.7.2",
+    "angulartics": "~0.20.0",
+    "waypoints": "~3.1.1",
+    "angular-mocks": "~1.4.4",
+    "angular": "~1.4.4"
   }
 }

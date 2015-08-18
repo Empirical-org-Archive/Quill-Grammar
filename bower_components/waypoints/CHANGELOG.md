@@ -1,5 +1,34 @@
 # Changelog
 
+## v3.1.1
+
+- Fix bad `isWindow` checks causing errors in IE8-. (Issue #372)
+
+## v3.1.0
+
+- Add `Waypoint.disableAll` and `Waypoint.enableAll` methods.
+- Fix Illegal Invocation errors stemming from non-window context use of `requestAnimationFrame`. (Pull #366)
+- Keep disabled waypoints from triggering debug script errors. (Pull #365)
+- Allow Infinite Scroll items to be root elements in the AJAX response. (Pull #361)
+- In debug script, detect display none and fixed positioning defined in CSS.
+
+## v3.0.1
+
+- Add semicolons to the end of built files to aid in clean concatenation. (Issue #353)
+
+## v3.0.0
+
+- Remove hard jQuery dependency. Create builds for jQuery, Zepto, and no DOM framework. (Issue #282)
+- Expose `Waypoint` and `Context` classes. (Issue #281)
+- Add `Group` class and `group` option for grouping waypoints. Make `continuous` option work within these groups. (Issue #264)
+- Add Inview shortcut. (Issue #131)
+- Extend `continuous` option to cover refreshes. (Issue #166)
+- Throttle resize and scroll handlers using `requestAnimationFrame` instead of a set millisecond timeout. Fallback to the old 60 FPS `setTimeout` throttle for unsupported browsers. (Issue #242)
+- Add debugging script for diagnosing common problems.
+- Remove `triggerOnce` option.
+- Add `viewportWidth` utility method.
+- Remove all traces of CoffeeScript.
+
 ## v2.0.5
 
 - Allow sticky users to define which direction the stuck class shold be applied. (Issue #192)

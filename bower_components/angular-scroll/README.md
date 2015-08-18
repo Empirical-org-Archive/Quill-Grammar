@@ -18,7 +18,7 @@ Install
 
     $ npm install angular-scroll
 
-You can also download the [production version](https://raw.github.com/oblador/angular-scroll/master/angular-scroll.min.js)or the [development version](https://raw.github.com/oblador/angular-scroll/master/angular-scroll.js).
+You can also download the [production version](https://raw.github.com/oblador/angular-scroll/master/angular-scroll.min.js) or the [development version](https://raw.github.com/oblador/angular-scroll/master/angular-scroll.js).
 
 If you prefer a CDN hosted version (which might speed up your load times), check out [cdnjs.com/libraries/angular-scroll](https://cdnjs.com/libraries/angular-scroll).
 
@@ -101,6 +101,8 @@ Provides smooth anchor scrolling.
 ```html
 <a href="#anchor" du-smooth-scroll>Scroll it!</a>
 ```
+
+If you for some reason you do not want to use the `href` attribute as fallback, just use the `du-smooth-scroll` attribute instead but without leading #. Example: `<a du-smooth-scroll="anchor">`.
 
 ### `du-scrollspy`
 Observes whether the target element is at the top of the viewport (or container) and adds an `active` class if so. Takes optional `offset` and `duration` attributes which is passed on to `.scrollTo`,
@@ -225,6 +227,27 @@ To change default offset (in pixels) for the `du-smooth-scroll` directive:
 angular.module('myApp', ['duScroll']).value('duScrollOffset', 30);
 ```
 
+### When to cancel scroll animation
+Specify on which events on the container the scroll animation should be cancelled by modifying `duScrollCancelOnEvents`, set to `false` to disable entirely as shown below. Defaults to `scroll mousedown mousewheel touchmove keydown`.
+
+```js
+angular.module('myApp', ['duScroll']).value('duScrollCancelOnEvents', false);
+```
+
+### Bottom spy
+To make the last `du-scrollspy` link active when scroll reaches page/container bottom:
+
+```js
+angular.module('myApp', ['duScroll']).value('duScrollBottomSpy', true);
+```
+
+### Active class
+Specify the active class name to apply to a link when it is active, default is `active`.
+
+```js
+angular.module('myApp', ['duScroll']).value('duScrollActiveClass', 'custom-class');
+```
+
 Events
 ------
 
@@ -232,16 +255,15 @@ The `duScrollspy` directive fires the global events `duScrollspy:becameActive` a
 
 ```js
 angular.module('myApp', ['duScroll']).
-  config(function($locationProvider) {
-    $locationProvider.html5Mode(true);
-  }).
-  run(function($rootScope, $location){
+  run(function($rootScope) {
+    if(!window.history || !history.replaceState) {
+      return;
+    }
     $rootScope.$on('duScrollspy:becameActive', function($event, $element){
       //Automaticly update location
       var hash = $element.prop('hash');
-      if(hash) {
-        $location.hash(hash.substr(1)).replace();
-        $rootScope.$apply();
+      if (hash) {
+        history.replaceState(null, null, hash);
       }
     });
   });
@@ -251,6 +273,8 @@ angular.module('myApp', ['duScroll']).
 Building
 --------
 
+    $ npm install
+    $ bower install
     $ gulp
 
 Tests
