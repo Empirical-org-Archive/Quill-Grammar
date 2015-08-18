@@ -1,21 +1,9 @@
 'use strict';
 
 module.exports = [
-  {
-    type: 'select',
-    autoOptions: 'concept.title for concept in concepts.concept_level_2 track by concept.uid',
-    model: 'concept_level_2'
-  },
-  {
-    type: 'select',
-    autoOptions: 'concept.title for concept in concepts.concept_level_1 track by concept.uid',
-    model: 'concept_level_1'
-  },
-  {
-    type: 'select',
-    autoOptions: 'concept.title for concept in concepts.concept_level_0 track by concept.uid',
-    model: 'concept_level_0'
-  },
+  require('./../../base_models/concept_level_2.model.js'),
+  require('./../../base_models/concept_level_1.model.js'),
+  require('./../../base_models/concept_level_0.model.js'),
   {
     type: 'number',
     label: 'Number of Questions',
