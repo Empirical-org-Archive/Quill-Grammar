@@ -7,7 +7,7 @@ angular.module('quill-grammar.services.crud', [
   require('../../../.tmp/config').name
 ])
 
-.factory('CrudService', function (firebaseUrl, $firebase, $q, _) {
+.factory('CrudService', function (firebaseUrl, $firebaseObject, $firebaseArray, $q, _) {
   function crud(entity, properties, prefix) {
     if (!entity || entity === '') {
       throw new Error('Firebase Entity MUST be defined');
@@ -23,8 +23,8 @@ angular.module('quill-grammar.services.crud', [
       baseUrl = baseUrl + prefix + '/';
     }
     var baseRoute = baseUrl + entity;
-    var baseRef = $firebase(new Firebase(baseRoute));
-    var baseCollection = baseRef.$asObject();
+    var baseRef = new Firebase(baseRoute);
+    var baseCollection = $firebaseObject(baseRef);
 
     function getRef() {
       return baseRef;
@@ -74,7 +74,7 @@ angular.module('quill-grammar.services.crud', [
 
     function all() {
       var d = $q.defer();
-      var a = baseRef.$asArray();
+      var a = $firebaseArray(baseRef);
       a.$loaded().then(function () {
         d.resolve(a);
       }, function (error) {
@@ -86,7 +86,7 @@ angular.module('quill-grammar.services.crud', [
     function get(entityId) {
       var d = $q.defer();
       var entityRef = new Firebase(baseRoute + '/' + entityId);
-      var entity = $firebase(entityRef).$asObject();
+      var entity = $firebaseObject(entityRef);
       entity.$loaded().then(function (entityData) {
         if (isValid(entityData)) {
           d.resolve(entityData);
@@ -124,8 +124,8 @@ angular.module('quill-grammar.services.crud', [
       var id = String(item.$id);
       delete(item.$id);
       item = sanitize(item);
-      var fb = $firebase(new Firebase(baseRoute + '/' + id));
-      return fb.$set(item);
+      var fb = new Firebase(baseRoute + '/' + id);
+      return fb.set(item);
     }
 
     return {

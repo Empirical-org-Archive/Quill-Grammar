@@ -5,7 +5,7 @@ angular.module('quill-grammar.services.index', [
   require('./crud.js').name,
 ])
 
-.factory('IndexService', function (firebaseUrl, $firebase) {
+.factory('IndexService', function (firebaseUrl, $firebaseObject) {
   function index(indexName) {
     if (firebaseUrl[firebaseUrl.length - 1] !== '/') {
       firebaseUrl = firebaseUrl + '/';
@@ -16,10 +16,10 @@ angular.module('quill-grammar.services.index', [
     }
 
     function getEntries() {
-      return $firebase(new Firebase(firebaseUrl + indexName)).$asObject();
+      return $firebaseObject(new Firebase(firebaseUrl + indexName));
     }
     function getEntry(e) {
-      return $firebase(new Firebase(firebaseUrl + indexName + '/' + e)).$asObject();
+      return $firebaseObject(new Firebase(firebaseUrl + indexName + '/' + e));
     }
 
     function addElementToEntry(entry, element) {
