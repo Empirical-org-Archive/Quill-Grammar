@@ -8,20 +8,16 @@ module.exports = [
   },
   {
     type: 'textarea',
-    label: 'Description',
-    model: 'description'
+    label: 'Explanation',
+    model: 'explanation'
   },
   require('./../../base_models/standard.model.js'),
   require('./../../base_models/standards_level.model.js'),
-  {
-    type: 'select',
-    label: 'Theme',
-    autoOptions: 'theme.title for theme in themes track by theme.uid',
-    model: 'theme'
-  },
+  require('./../../base_models/concept_level_2.model.js'),
+  require('./../../base_models/concept_level_1.model.js'),
   {
     type: 'submit',
-    label: 'Submit Activity',
+    label: 'Submit Concept',
     model: 'submit'
   }
 ];
