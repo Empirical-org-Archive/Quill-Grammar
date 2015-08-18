@@ -6,7 +6,7 @@ function configure ($stateProvider) {
   .state('cms-concepts', {
     parent: 'cms-concepts-base',
     templateUrl: 'concepts.cms.html',
-    contoller: 'ConceptsCmsCtrl',
+    controller: 'ConceptsCmsCtrl',
     url: '?/'
   })
   .state('cms-concepts-base', {
@@ -15,5 +15,11 @@ function configure ($stateProvider) {
     contoller: 'ConceptsCmsCtrl',
     url: '/concepts',
     abstract: true
+  })
+  .state('cms-concepts-create', {
+    parent: 'cms-concepts-base',
+    templateUrl: 'concepts.create.cms.html',
+    controller: 'ConceptsCreateCmsCtrl',
+    url: '/create'
   });
 };

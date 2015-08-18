@@ -7,4 +7,5 @@ angular.module('quill-grammar.cms.concepts', [
 ])
 .config(require('./config.js'))
 .controller('ConceptsCmsCtrl', require('./controller.js'))
+.controller('ConceptsCreateCmsCtrl', require('./create.controller.js'))
 ;
