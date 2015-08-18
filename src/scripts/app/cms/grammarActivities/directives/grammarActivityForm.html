@@ -1,0 +1,15 @@
+<dynamic-form template="grammarActivityTemplate"
+  ng-model="grammarActivity"
+  ng-submit="processGrammarActivityForm()">
+</dynamic-form>
+<h3>Question Set</h3>
+<ul>
+  <li ng-repeat="qs in grammarActivity.question_set">
+    <dynamic-form template="grammarActivityQuestionSetTemplate"
+                  ng-model="qs">
+    </dynamic-form>
+    <button ng-click="removeQuestionFromSet(qs)">X</button>
+  </li>
+</ul>
+<button ng-click="addAnotherQuestionToSet()">Add Another Question</button>
+

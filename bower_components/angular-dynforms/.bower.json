@@ -1,0 +1,32 @@
+{
+  "name": "angular-dynforms",
+  "version": "0.0.4",
+  "homepage": "https://github.com/danhunsaker/angular-dynamic-forms",
+  "authors": [
+    "Daniel Hunsaker <danhunsaker@gmail.com>"
+  ],
+  "description": "Build Forms in AngularJS From Nothing But JSON",
+  "main": "dynamic-forms.js",
+  "keywords": [
+    "angular",
+    "form"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.0.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.4",
+    "commit": "cb0dec49ff052c2fbac56a6b59d26fa12ac96d3c"
+  },
+  "_source": "git://github.com/danhunsaker/angular-dynamic-forms.git",
+  "_target": "~0.0.4",
+  "_originalSource": "angular-dynforms",
+  "_direct": true
+}
