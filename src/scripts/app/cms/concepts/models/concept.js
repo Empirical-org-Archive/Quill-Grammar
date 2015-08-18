@@ -4,12 +4,14 @@ module.exports = [
   {
     type: 'text',
     label: 'Title',
-    model: 'title'
+    model: 'title',
+    required: true
   },
   {
     type: 'textarea',
     label: 'Explanation',
-    model: 'explanation'
+    model: 'explanation',
+    required: true
   },
   require('./../../base_models/standard.model.js'),
   require('./../../base_models/standards_level.model.js'),

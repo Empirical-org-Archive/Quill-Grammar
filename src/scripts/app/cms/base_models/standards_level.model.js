@@ -7,5 +7,6 @@ module.exports = {
     {label: 'Standard 1'},
     {label: 'Standard 2'}
   ],
-  model: 'standard_level'
+  model: 'standard_level',
+  required: true
 };

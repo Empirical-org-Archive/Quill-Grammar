@@ -3,5 +3,6 @@
 module.exports = {
   type: 'select',
   autoOptions: 'concept.title for concept in concepts.concept_level_2 track by concept.uid',
-  model: 'concept_level_2'
+  model: 'concept_level_2',
+  required: true
 };
