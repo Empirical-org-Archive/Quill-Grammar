@@ -14,6 +14,7 @@ describe('ConceptFBService', function () {
   describe('Firebase Concepts', function () {
     it('should be defined', function () {
       expect(conceptService).to.be.an('object');
+      expect(conceptService.get).to.be.a('function');
     });
   });
 });
