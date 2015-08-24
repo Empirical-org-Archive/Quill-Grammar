@@ -5,7 +5,7 @@ module.exports =
 /*@ngInject*/
 function SentencePlayCtrl (
   $scope, $state, SentenceWritingService, RuleService, _,
-  ConceptTagResult, ActivitySession, SentenceLocalStorage, $analytics,
+  ConceptResult, SentenceLocalStorage, $analytics,
   AnalyticsService, finalizeService
 ) {
   $scope.$watch('currentRuleQuestion', function (crq) {
@@ -31,7 +31,7 @@ function SentencePlayCtrl (
     }
     if ($scope.sessionId) {
       //we only need to communicate with the LMS if there is a valid session
-      ConceptTagResult.save($scope.sessionId, {
+      ConceptResult.save($scope.sessionId, {
         concept_tag: crq.conceptTag,
         concept_class: crq.conceptClass,
         concept_category: crq.conceptCategory,

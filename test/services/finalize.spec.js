@@ -6,16 +6,16 @@ describe('finalizeService', function () {
   var sandbox,
       finalizeService,
       $rootScope,
-      conceptTagResultService,
+      conceptResultService,
       activitySessionService,
       localStorageService,
       quillOAuthService,
       $q;
 
-  beforeEach(inject(function (_finalizeService_, _$rootScope_, ConceptTagResult, _localStorageService_, ActivitySession, _$q_, QuillOAuthService) {
+  beforeEach(inject(function (_finalizeService_, _$rootScope_, ConceptResult, _localStorageService_, ActivitySession, _$q_, QuillOAuthService) {
     sandbox = sinon.sandbox.create();
     finalizeService = _finalizeService_;
-    conceptTagResultService = ConceptTagResult;
+    conceptResultService = ConceptResult;
     activitySessionService = ActivitySession;
     localStorageService = _localStorageService_;
     quillOAuthService = QuillOAuthService;
@@ -33,7 +33,7 @@ describe('finalizeService', function () {
   });
 
   describe('saving to the LMS', function () {
-    var fakeConceptTagResultsList = [
+    var fakeConceptResultsList = [
       {foo: 'bar', correct: 1},
       {foo: 'bar', correct: 0}
     ];
@@ -52,11 +52,11 @@ describe('finalizeService', function () {
     ];
 
     beforeEach(function () {
-      // ConceptTagResult.findAsJsonByActivitySessionId(...)
-      sandbox.mock(conceptTagResultService)
+      // ConceptResult.findAsJsonByActivitySessionId(...)
+      sandbox.mock(conceptResultService)
              .expects('findAsJsonByActivitySessionId')
              .withArgs('fake-session-id')
-             .returns($q.when(fakeConceptTagResultsList));
+             .returns($q.when(fakeConceptResultsList));
 
       sandbox.mock(localStorageService)
              .expects('get')
@@ -70,13 +70,13 @@ describe('finalizeService', function () {
              .expects('finish')
              .withArgs('fake-session-id', {
                // FIXME: Do not uncomment this line until the LMS concept tag integration works again.
-               // concept_tag_results: fakeConceptTagResultsList,
+               // concept_tag_results: fakeConceptResultsList,
                percentage: 0.3
              })
              .returns($q.when());
 
       // Removes the concept tag results afterwards
-      sandbox.mock(conceptTagResultService)
+      sandbox.mock(conceptResultService)
               .expects('removeBySessionId')
               .withArgs('fake-session-id')
               .returns($q.when());
