@@ -19,7 +19,7 @@ describe('ConceptResultService', function () {
       correct: 1
     };
 
-    it('saves the concept result and its metadata to firebase', function() {
+    it('saves the concept result and its metadata to firebase', function () {
       conceptResultService.saveToFirebase(fakeSessionId, fakeConceptUid, fakeMetadata);
       $rootScope.$apply();
       conceptResultService.ref.flush();

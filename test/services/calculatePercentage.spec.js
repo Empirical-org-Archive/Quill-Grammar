@@ -11,8 +11,8 @@ describe('calculatePercentageService', function () {
 
   it('calculates a percentage', function () {
     var fakeConceptResultsList = [
-      {concept_uid: 'foo', metadata: { correct: 1} },
-      {concept_uid: 'bar', metadata: { correct: 0} }
+      {concept_uid: 'foo', metadata: {correct: 1}},
+      {concept_uid: 'bar', metadata: {correct: 0}}
     ];
 
     var fakePfResults = [

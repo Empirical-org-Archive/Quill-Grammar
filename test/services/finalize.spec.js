@@ -34,8 +34,8 @@ describe('finalizeService', function () {
 
   describe('saving to the LMS', function () {
     var fakeConceptResultsList = [
-      {concept_uid: 'foo', metadata: { correct: 1} },
-      {concept_uid: 'bar', metadata: { correct: 0} }
+      {concept_uid: 'foo', metadata: {correct: 1}},
+      {concept_uid: 'bar', metadata: {correct: 0}}
     ];
 
     var fakePfResults = [
