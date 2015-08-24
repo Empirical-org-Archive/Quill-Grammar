@@ -34,8 +34,8 @@ describe('finalizeService', function () {
 
   describe('saving to the LMS', function () {
     var fakeConceptResultsList = [
-      {foo: 'bar', correct: 1},
-      {foo: 'bar', correct: 0}
+      {concept_uid: 'foo', metadata: { correct: 1} },
+      {concept_uid: 'bar', metadata: { correct: 0} }
     ];
 
     var fakePfResults = [
@@ -69,8 +69,7 @@ describe('finalizeService', function () {
       sandbox.mock(activitySessionService)
              .expects('finish')
              .withArgs('fake-session-id', {
-               // FIXME: Do not uncomment this line until the LMS concept tag integration works again.
-               // concept_tag_results: fakeConceptResultsList,
+               concept_results: fakeConceptResultsList,
                percentage: 0.3
              })
              .returns($q.when());

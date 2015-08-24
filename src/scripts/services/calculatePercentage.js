@@ -8,7 +8,7 @@ angular.module('quill-grammar.services.calculatePercentage', [])
     var swNumCorrect, swNumTotal;
     if (conceptTagResults.length) {
       swNumCorrect = _.reduce(conceptTagResults, function (memo, ctr) {
-        return memo + ctr.correct;
+        return memo + ctr.metadata.correct;
       }, 0);
       swNumTotal = conceptTagResults.length;
     } else {
