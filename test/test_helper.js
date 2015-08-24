@@ -1,1 +1,2 @@
+/* globals MockFirebase */
 MockFirebase.override();

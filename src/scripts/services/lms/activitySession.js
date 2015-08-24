@@ -3,7 +3,7 @@
 module.exports =
 angular.module('quill-grammar.services.lms.activity-session', [])
 /*@ngInject*/
-.service('ActivitySession', function ActivitySession($http, empiricalBaseURL) {
+.service('ActivitySession', function ActivitySession ($http, empiricalBaseURL) {
   var activitySession = this;
 
   function activitySessionUrl(id) {
@@ -26,9 +26,9 @@ angular.module('quill-grammar.services.lms.activity-session', [])
    * TODO: Serialize concept tag results and send as part of the
    * request body.
    */
-  activitySession.finish = function(sessionId, putData, cb) {
+  activitySession.finish = function (sessionId, putData) {
     putData.state = 'finished';
-    return update(sessionId, putData).then(function next(response) {
+    return update(sessionId, putData).then(function next (response) {
       return response.data.activity_session;
     });
   };

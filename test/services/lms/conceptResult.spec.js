@@ -1,3 +1,4 @@
+/* jshint expr:true */
 'use strict';
 
 describe('ConceptResultService', function () {
@@ -22,13 +23,11 @@ describe('ConceptResultService', function () {
       $rootScope.$apply(); // Have to invoke this twice in order to resolve after the firebase remove() callback.
     });
 
-    it('removes the data', function() {
+    it('removes the data', function () {
       conceptResultService.ref.child(fakeSessionId).set('fooo');
       conceptResultService.ref.flush();
       expect(conceptResultService.ref.getData()).to.be.ok;
-      conceptResultService.removeBySessionId(fakeSessionId).then(function () {
-        done();
-      });
+      conceptResultService.removeBySessionId(fakeSessionId);
       $rootScope.$apply();
       conceptResultService.ref.flush();
       expect(conceptResultService.ref.getData()).to.not.be.ok;

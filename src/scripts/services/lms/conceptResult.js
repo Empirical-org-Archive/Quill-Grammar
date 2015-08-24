@@ -7,9 +7,9 @@ angular.module('quill-grammar.services.lms.concept-result', [
 ])
 /*@ngInject*/
 // Save/retrieve concept tag results from firebase
-.service('ConceptResult', function ConceptResult($firebaseArray, firebaseUrl, $q) {
+.service('ConceptResult', function ConceptResult ($firebaseArray, firebaseUrl, $q) {
   var conceptResult = this;
-  conceptResult.ref = new Firebase(firebaseUrl + "/concept_results");
+  conceptResult.ref = new Firebase(firebaseUrl + '/concept_results');
 
   // Load the list of results from firebase, return a promise that receives
   // the loaded list.
@@ -29,8 +29,8 @@ angular.module('quill-grammar.services.lms.concept-result', [
   // });
   //
   // TODO: Don't store the same result multiple times.
-  conceptResult.save = function(activitySessionId, data) {
-    return getResultList(activitySessionId).then(function(list) {
+  conceptResult.save = function (activitySessionId, data) {
+    return getResultList(activitySessionId).then(function (list) {
       return list.$add(data);
     });
   };
@@ -43,11 +43,11 @@ angular.module('quill-grammar.services.lms.concept-result', [
   // ConceptResult.findAsJsonByActivitySessionId(User.currentUser.sid).then(function(json) {
   //  console.log('here is the prepared json', json);
   // });
-  conceptResult.findAsJsonByActivitySessionId = function(activitySessionId) {
-    return getResultList(activitySessionId).then(function(list) {
+  conceptResult.findAsJsonByActivitySessionId = function (activitySessionId) {
+    return getResultList(activitySessionId).then(function (list) {
       // Need to strip out $id and $priority fields from the JSON, because we do not want the LMS
       // to store that data.
-      return list.map(function(fbResultObject) {
+      return list.map(function (fbResultObject) {
         var clean = JSON.parse(JSON.stringify(fbResultObject));
         delete clean.$id;
         delete clean.$priority;
@@ -59,7 +59,7 @@ angular.module('quill-grammar.services.lms.concept-result', [
   // Remove concept tags by session id
   // Users of this service should call this once they have successfully submitted concept results
   // to the LMS.
-  conceptResult.removeBySessionId = function(activitySessionId) {
+  conceptResult.removeBySessionId = function (activitySessionId) {
     var resultsSessionRef = conceptResult.ref.child(activitySessionId);
     return $q(function (resolve, reject) {
       resultsSessionRef.remove(function (err) {
