@@ -2,19 +2,19 @@
 
 module.exports =
 angular.module('quill-grammar.services.lms.concept-result', [
-  'firebase'
+  'firebase',
+  require('../../../../.tmp/config').name
 ])
 /*@ngInject*/
 // Save/retrieve concept tag results from firebase
-.service('ConceptResult', function ConceptResult($firebase, firebaseUrl) {
+.service('ConceptResult', function ConceptResult($firebaseArray, firebaseUrl, $q) {
   var conceptResult = this;
-
-  var resultsRef = new Firebase(firebaseUrl + "/concept_results");
+  conceptResult.ref = new Firebase(firebaseUrl + "/concept_results");
 
   // Load the list of results from firebase, return a promise that receives
   // the loaded list.
   function getResultList(activitySessionId) {
-    var resultList = $firebase(resultsRef.child(activitySessionId)).$asArray();
+    var resultList = $firebaseArray(conceptResult.ref.child(activitySessionId));
     return resultList.$loaded();
   }
 
@@ -60,6 +60,15 @@ angular.module('quill-grammar.services.lms.concept-result', [
   // Users of this service should call this once they have successfully submitted concept results
   // to the LMS.
   conceptResult.removeBySessionId = function(activitySessionId) {
-    return $firebase(resultsRef).$remove(activitySessionId);
+    var resultsSessionRef = conceptResult.ref.child(activitySessionId);
+    return $q(function (resolve, reject) {
+      resultsSessionRef.remove(function (err) {
+        if (err) {
+          reject('Failed to remove ref!');
+        } else {
+          resolve('Success!');
+        }
+      });
+    });
   };
 });
