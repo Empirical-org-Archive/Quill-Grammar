@@ -1,0 +1,39 @@
+{
+  "name": "mockfirebase",
+  "version": "0.11.0",
+  "homepage": "https://github.com/katowulf/mockfirebase",
+  "authors": [
+    "Kato"
+  ],
+  "description": "Firebase mock library for writing unit tests",
+  "main": "./browser/mockfirebase.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "firebase",
+    "mock"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "test",
+    "helpers",
+    "gulpfile.js",
+    "package.json",
+    "src"
+  ],
+  "_release": "0.11.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.11.0",
+    "commit": "bf5f24bead229b17ed9c773b772fd5ba785b3c97"
+  },
+  "_source": "git://github.com/katowulf/mockfirebase.git",
+  "_target": "~0.11.0",
+  "_originalSource": "mockfirebase",
+  "_direct": true
+}

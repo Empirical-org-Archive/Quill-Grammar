@@ -7,7 +7,7 @@ schema:
       type: object
     indicies:
       type: object
-    concept_tag_results:
+    concept_results:
       type: object
     v2:
       type: object
@@ -22,7 +22,7 @@ access:
   - location: /indicies
     read: true
     write: false
-  - location: /concept_tag_results
+  - location: /concept_results
     read: true
     write: true
   - location: /v2

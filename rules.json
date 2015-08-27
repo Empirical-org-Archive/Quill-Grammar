@@ -3,18 +3,18 @@
     ".write":"false",
     ".read":"false",
     "activities": {
-      ".write":"(false)",
+      ".write":"false",
       ".read":"true"
     },
     "cms": {
-      ".write":"(false)",
+      ".write":"false",
       ".read":"true"
     },
     "indicies": {
-      ".write":"(false)",
+      ".write":"false",
       ".read":"true"
     },
-    "concept_tag_results": {
+    "concept_results": {
       ".write":"(((((!newData.exists()||newData.hasChildren())))))",
       ".read":"true"
     },
