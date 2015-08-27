@@ -22,7 +22,7 @@ function ConceptsQuestionsCreateCmsCtrl (
 
   $scope.processConceptQuestionForm = function() {
     ConceptsFBService.addQuestionToConcept($scope.concept, $scope.conceptQuestion).then(function () {
-      console.log('success');
+      $state.go('cms-concepts-view', {id: $scope.concept.$id});
     }, function (error) {
       console.error(error);
     });
