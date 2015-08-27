@@ -6,19 +6,25 @@ module.exports =
 function ConceptsQuestionsCreateCmsCtrl (
   $scope, $state, ConceptsFBService
 ) {
-  if ($state.params.concept_id === null || $state.params.concept_id === '') {
+  if ($state.params.conceptId === null || $state.params.conceptId === '') {
     $state.go('cms-concepts');
     return;
   }
 
-  ConceptsFBService.getById($state.params.id).then(function (c) {
+  ConceptsFBService.getById($state.params.conceptId).then(function (c) {
     $scope.concept = c;
+  }, function (error) {
+    console.error(error);
   });
 
   $scope.conceptQuestion = {};
   $scope.conceptQuestion.answers = [{}];
 
   $scope.processConceptQuestionForm = function() {
-    console.log($scope.conceptQuestion);
+    ConceptsFBService.addQuestionToConcept($scope.concept, $scope.conceptQuestion).then(function () {
+      console.log('success');
+    }, function (error) {
+      console.error(error);
+    });
   };
 };
