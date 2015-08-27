@@ -6,4 +6,6 @@ angular.module('quill-grammar.cms.concepts.directives', [
 ])
 .controller('ConceptFormCtrl', require('./conceptForm.controller.js'))
 .directive('conceptForm', require('./conceptForm.directive.js'))
+.controller('ConceptQuestionFormCtrl', require('./conceptQuestionForm.controller.js'))
+.directive('conceptQuestionForm', require('./conceptQuestionForm.directive.js'))
 ;

@@ -6,7 +6,7 @@ module.exports =
 function ConceptsQuestionsCreateCmsCtrl (
   $scope, $state, ConceptsFBService
 ) {
-  if ($state.params.id === null || $state.params.id === '') {
+  if ($state.params.concept_id === null || $state.params.concept_id === '') {
     $state.go('cms-concepts');
     return;
   }
@@ -14,4 +14,11 @@ function ConceptsQuestionsCreateCmsCtrl (
   ConceptsFBService.getById($state.params.id).then(function (c) {
     $scope.concept = c;
   });
+
+  $scope.conceptQuestion = {};
+  $scope.conceptQuestion.answers = [{}];
+
+  $scope.processConceptQuestionForm = function() {
+    console.log($scope.conceptQuestion);
+  };
 };
