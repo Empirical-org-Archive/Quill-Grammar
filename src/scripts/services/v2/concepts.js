@@ -14,5 +14,15 @@ angular.module('quill-grammar.services.firebase.concepts', [
   this.get = function () {
     return ref().$loaded();
   };
+
+  this.getById = function (id) {
+    return ref().$loaded().then(function (concepts) {
+      return concepts.$getRecord(id);
+    });
+  };
+
+  this.add = function (record) {
+    return ref().$add(record);
+  };
   return this;
 });

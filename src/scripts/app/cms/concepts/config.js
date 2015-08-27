@@ -21,5 +21,17 @@ function configure ($stateProvider) {
     templateUrl: 'concepts.create.cms.html',
     controller: 'ConceptsCreateCmsCtrl',
     url: '/create'
+  })
+  .state('cms-concepts-view', {
+    parent: 'cms-concepts-base',
+    templateUrl: 'concepts.view.cms.html',
+    controller: 'ConceptsViewCmsCtrl',
+    url: '/:id'
+  })
+  .state('cms-concepts-questions-create', {
+    parent: 'cms-concepts-base',
+    templateUrl: 'concepts.questions.create.cms.html',
+    controller: 'ConceptsQuestionsCreateCmsCtrl',
+    url: '/:conceptId/questions/create'
   });
 };
