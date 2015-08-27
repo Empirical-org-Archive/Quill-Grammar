@@ -17,7 +17,12 @@
 </ul>
 
 <h4>Questions</h4>
-List of questions
+<ul ng-repeat="q in concept.questions">
+  <li>
+    <p>{{q.prompt}}</p>
+    <a ui-sref="cms-concepts-questions-edit({conceptId: concept.$id, conceptQuestionId: q.$id})">edit</a>
+  </li>
+</ul>
 
 <a ui-sref="cms-concepts-questions-create({conceptId: concept.$id})"><button>Create Question</button</a>
 
