@@ -2,11 +2,8 @@
 
 module.exports = {
   type: 'select',
-  label: 'Standard Level',
-  options: [
-    {label: 'Standard Level 1'},
-    {label: 'Standard Level 2'}
-  ],
+  label: 'Standard',
+  autoOptions: 'standard.title for standard in standards track by standard.uid',
   model: 'standard',
   required: true
 };
