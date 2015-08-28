@@ -4,13 +4,14 @@ module.exports =
 
 /*@ngInject*/
 function ConceptsCreateCmsCtrl (
-  $scope, ConceptsFBService
+  $scope, ConceptsFBService, $state
 ) {
   $scope.concept = {};
 
   $scope.processConceptForm = function () {
     ConceptsFBService.add($scope.concept).then(function () {
-      console.log('success');
+      $state.go('cms-concepts');
+      return;
     }, function (error) {
       console.error(error);
     });
