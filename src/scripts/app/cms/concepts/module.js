@@ -10,6 +10,7 @@ angular.module('quill-grammar.cms.concepts', [
 .controller('ConceptsCmsCtrl', require('./controller.js'))
 .controller('ConceptsCreateCmsCtrl', require('./create.controller.js'))
 .controller('ConceptsViewCmsCtrl', require('./view.controller.js'))
+.controller('ConceptsEditCmsCtrl', require('./edit.controller.js'))
 .controller('ConceptsQuestionsCreateCmsCtrl', require('./questions.create.controller.js'))
 .controller('ConceptsQuestionsEditCmsCtrl', require('./questions.edit.controller.js'))
 ;
