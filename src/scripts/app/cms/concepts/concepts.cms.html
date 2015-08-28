@@ -15,7 +15,7 @@
       <td>{{c.standard.title}}</td>
       <td>{{c.standard_level.title}}</td>
       <td>{{c.title}}</td>
-      <td>Num Questions</td>
+      <td>{{getQuestionLength(c.questions)}}</td>
       <td><a ui-sref="cms-concepts-view({id: c.$id})">View</a></td>
     </tr>
   </table>
