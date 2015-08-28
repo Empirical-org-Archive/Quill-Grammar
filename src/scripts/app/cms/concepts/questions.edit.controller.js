@@ -4,7 +4,7 @@ module.exports =
 
 /*@ngInject*/
 function ConceptsQuestionsEditCmsCtrl (
-  $scope, $state, ConceptsFBService, _
+  $scope, $state, ConceptsFBService
 ) {
   if ($state.params.conceptId === null || $state.params.conceptId === '') {
     $state.go('cms-concepts');
@@ -29,7 +29,7 @@ function ConceptsQuestionsEditCmsCtrl (
     console.error(error);
   });
 
-  $scope.processConceptQuestionForm = function() {
+  $scope.processConceptQuestionForm = function () {
     ConceptsFBService.modifyQuestionForConcept($scope.concept, $scope.conceptQuestion).then(function () {
       $state.go('cms-concepts-view', {id: $scope.concept.$id});
     }, function (error) {

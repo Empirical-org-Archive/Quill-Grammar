@@ -23,7 +23,7 @@ function ConceptQuestionFormCtrl (
   $scope.conceptQuestionTemplate = require('../models/conceptQuestion.js');
   $scope.conceptQuestionAnswerTemplate = require('../models/conceptQuestionAnswer.js');
 
-  $scope.removeAnswerFromConceptQuestion = function(a) {
+  $scope.removeAnswerFromConceptQuestion = function (a) {
     if ($scope.conceptQuestion.answers) {
       $scope.conceptQuestion.answers = _.without(
         $scope.conceptQuestion.answers, a
@@ -31,7 +31,7 @@ function ConceptQuestionFormCtrl (
     }
   };
 
-  $scope.addAnotherAnswerToConceptQuestion = function() {
+  $scope.addAnotherAnswerToConceptQuestion = function () {
     $scope.conceptQuestion.answers.push({});
   };
 };

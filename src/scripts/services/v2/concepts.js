@@ -33,13 +33,13 @@ angular.module('quill-grammar.services.firebase.concepts', [
     return conceptQuestions(concept.$id).$add(conceptQuestion);
   };
 
-  this.getQuestionForConcept = function(concept, conceptQuestionId) {
+  this.getQuestionForConcept = function (concept, conceptQuestionId) {
     return conceptQuestions(concept.$id).$loaded().then(function (q) {
       return q.$getRecord(conceptQuestionId);
     });
   };
 
-  this.modifyQuestionForConcept = function(concept, conceptQuestion) {
+  this.modifyQuestionForConcept = function (concept, conceptQuestion) {
     return conceptQuestions(concept.$id).$loaded().then(function (qs) {
       var index = qs.$indexFor(conceptQuestion.$id);
       qs[index] = conceptQuestion;

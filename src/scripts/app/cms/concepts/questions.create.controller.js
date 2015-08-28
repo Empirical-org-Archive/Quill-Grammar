@@ -20,7 +20,7 @@ function ConceptsQuestionsCreateCmsCtrl (
   $scope.conceptQuestion = {};
   $scope.conceptQuestion.answers = [{}];
 
-  $scope.processConceptQuestionForm = function() {
+  $scope.processConceptQuestionForm = function () {
     ConceptsFBService.addQuestionToConcept($scope.concept, $scope.conceptQuestion).then(function () {
       $state.go('cms-concepts-view', {id: $scope.concept.$id});
     }, function (error) {
