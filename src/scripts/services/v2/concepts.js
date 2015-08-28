@@ -1,12 +1,12 @@
 'use strict';
 
 module.exports =
-/*@ngInject*/
 angular.module('quill-grammar.services.firebase.concepts', [
   'firebase',
+  'underscore',
   require('./../../../../.tmp/config.js').name,
 ])
-
+/*@ngInject*/
 .factory('ConceptsFBService', function (firebaseUrl, $firebaseArray, _) {
   function ref() {
     return $firebaseArray(new Firebase(firebaseUrl + '/concepts'));
