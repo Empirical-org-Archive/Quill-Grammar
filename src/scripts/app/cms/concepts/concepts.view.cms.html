@@ -17,10 +17,10 @@
 </ul>
 
 <h4>Questions</h4>
-<ul ng-repeat="q in concept.questions">
+<ul ng-repeat="(id, q) in concept.questions">
   <li>
     <p>{{q.prompt}}</p>
-    <a ui-sref="cms-concepts-questions-edit({conceptId: concept.$id, conceptQuestionId: q.$id})">edit</a>
+    <a ui-sref="cms-concepts-questions-edit({conceptId: concept.$id, conceptQuestionId: id})">edit</a>
   </li>
 </ul>
 

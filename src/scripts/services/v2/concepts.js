@@ -14,6 +14,7 @@ angular.module('quill-grammar.services.firebase.concepts', [
   function conceptQuestions(id) {
     return $firebaseArray(new Firebase(firebaseUrl + '/concepts/' + id + '/questions'));
   }
+
   this.get = function () {
     return ref().$loaded();
   };
@@ -31,5 +32,20 @@ angular.module('quill-grammar.services.firebase.concepts', [
   this.addQuestionToConcept = function (concept, conceptQuestion) {
     return conceptQuestions(concept.$id).$add(conceptQuestion);
   };
+
+  this.getQuestionForConcept = function(concept, conceptQuestionId) {
+    return conceptQuestions(concept.$id).$loaded().then(function (q) {
+      return q.$getRecord(conceptQuestionId);
+    });
+  };
+
+  this.modifyQuestionForConcept = function(concept, conceptQuestion) {
+    return conceptQuestions(concept.$id).$loaded().then(function (qs) {
+      var index = qs.$indexFor(conceptQuestion.$id);
+      qs[index] = conceptQuestion;
+      return qs.$save(index);
+    });
+  };
+
   return this;
 });

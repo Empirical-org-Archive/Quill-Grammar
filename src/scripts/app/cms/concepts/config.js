@@ -33,5 +33,11 @@ function configure ($stateProvider) {
     templateUrl: 'concepts.questions.create.cms.html',
     controller: 'ConceptsQuestionsCreateCmsCtrl',
     url: '/:conceptId/questions/create'
+  })
+  .state('cms-concepts-questions-edit', {
+    parent: 'cms-concepts-base',
+    templateUrl: 'concepts.questions.edit.cms.html',
+    controller: 'ConceptsQuestionsEditCmsCtrl',
+    url: '/:conceptId/questions/:conceptQuestionId'
   });
 };
