@@ -1,13 +1,13 @@
 'use strict';
 
 module.exports =
-/*@ngInject*/
 angular.module('quill-grammar.services.firebase.concepts', [
   'firebase',
+  'underscore',
   require('./../../../../.tmp/config.js').name,
 ])
-
-.factory('ConceptsFBService', function (firebaseUrl, $firebaseArray) {
+/*@ngInject*/
+.factory('ConceptsFBService', function (firebaseUrl, $firebaseArray, _) {
   function ref() {
     return $firebaseArray(new Firebase(firebaseUrl + '/concepts'));
   }
@@ -26,7 +26,25 @@ angular.module('quill-grammar.services.firebase.concepts', [
   };
 
   this.add = function (record) {
-    return ref().$add(record);
+    return ref().$loaded().then(function (concepts) {
+      var maxRule = _.max(concepts, function (c) {
+        return c.ruleNumber;
+      });
+      if (_.isNumber(maxRule.ruleNumber)) {
+        record.ruleNumber = maxRule.ruleNumber + 1;
+      } else {
+        record.ruleNumber = 0;
+      }
+      return concepts.$add(record);
+    });
+  };
+
+  this.update = function (record) {
+    return ref().$loaded().then(function (concepts) {
+      var index = concepts.$indexFor(record.$id);
+      concepts[index] = record;
+      return concepts.$save(index);
+    });
   };
 
   this.addQuestionToConcept = function (concept, conceptQuestion) {

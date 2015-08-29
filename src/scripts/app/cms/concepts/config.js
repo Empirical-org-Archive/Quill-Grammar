@@ -28,6 +28,12 @@ function configure ($stateProvider) {
     controller: 'ConceptsViewCmsCtrl',
     url: '/:id'
   })
+  .state('cms-concepts-edit', {
+    parent: 'cms-concepts-base',
+    templateUrl: 'concepts.edit.cms.html',
+    controller: 'ConceptsEditCmsCtrl',
+    url: '/:id/edit'
+  })
   .state('cms-concepts-questions-create', {
     parent: 'cms-concepts-base',
     templateUrl: 'concepts.questions.create.cms.html',
