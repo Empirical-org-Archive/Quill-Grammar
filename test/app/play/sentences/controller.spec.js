@@ -8,6 +8,7 @@ describe('SentencePlayCtrl', function () {
       ctrl,
       scope,
       fakeFinalizeService,
+      conceptResultService,
       $q,
       $rootScope,
       $timeout,
@@ -20,10 +21,11 @@ describe('SentencePlayCtrl', function () {
     sandbox = sinon.sandbox.create();
     fakeFinalizeService = sandbox.stub();
 
-    inject(function ($controller, _$rootScope_, _$q_, _$state_, _$timeout_, AnalyticsService, SentenceLocalStorage) {
+    inject(function ($controller, _$rootScope_, _$q_, _$state_, _$timeout_, AnalyticsService, SentenceLocalStorage, ConceptResult) {
       $rootScope = _$rootScope_;
       $state = _$state_;
       $timeout = _$timeout_;
+      conceptResultService = ConceptResult;
       scope = $rootScope.$new();
       stateSpy = sandbox.stub($state, 'go');
       localStorageSpy = sandbox.stub(SentenceLocalStorage, 'saveResults');
@@ -40,16 +42,30 @@ describe('SentencePlayCtrl', function () {
   });
 
   describe('answerRuleQuestion event', function () {
+    var conceptResultSaveSpy;
     beforeEach(function () {
+      conceptResultSaveSpy = sandbox.stub(conceptResultService, 'saveToFirebase');
       $state.params.passageId = 'fake-passage-id';
     });
 
-    it('does things', function () {
-      var ruleQuestion = {};
-      var answer = 'gooble gobble';
-      var isCorrect = true;
+    describe('when the student is not anonymous', function () {
+      beforeEach(function () {
+        scope.sessionId = 'fake-session-id';
+      });
 
-      $rootScope.$broadcast('answerRuleQuestion', ruleQuestion, answer, isCorrect);
+      it('saves concept results to firebase', function () {
+        var ruleQuestion = {
+          conceptUid: 'abcde12345'
+        };
+        var answer = 'gooble gobble';
+        var isCorrect = true;
+
+        $rootScope.$broadcast('answerRuleQuestion', ruleQuestion, answer, isCorrect);
+        expect(conceptResultSaveSpy).to.have.been.calledWith(scope.sessionId, ruleQuestion.conceptUid, {
+          answer: answer,
+          correct: 1
+        });
+      });
     });
   });
 

@@ -24,7 +24,9 @@ module.exports = function (config) {
     files: [
       'build/vendors*.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/mockfirebase/browser/mockfirebase.js',
       'build/app**.js',
+      'test/test_helper.js',
       'test/**/*.spec.js'
     ],
 

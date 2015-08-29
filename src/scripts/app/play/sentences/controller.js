@@ -5,7 +5,7 @@ module.exports =
 /*@ngInject*/
 function SentencePlayCtrl (
   $scope, $state, SentenceWritingService, RuleService, _,
-  ConceptTagResult, ActivitySession, SentenceLocalStorage, $analytics,
+  ConceptResult, SentenceLocalStorage, $analytics,
   AnalyticsService, finalizeService
 ) {
   $scope.$watch('currentRuleQuestion', function (crq) {
@@ -29,13 +29,10 @@ function SentencePlayCtrl (
     if (!answer || !crq) {
       throw new Error('We need a rule question and answer');
     }
+    //we only need to communicate with the LMS for non-anonymous sessions
     if ($scope.sessionId) {
-      //we only need to communicate with the LMS if there is a valid session
-      ConceptTagResult.save($scope.sessionId, {
-        concept_tag: crq.conceptTag,
-        concept_class: crq.conceptClass,
-        concept_category: crq.conceptCategory,
-        concept_id: crq.conceptId,
+      // FIXME: conceptUid is not a field on the ruleQuestion. How can we get to the point where this works?
+      ConceptResult.saveToFirebase($scope.sessionId, crq.conceptUid, {
         answer: answer,
         correct: correct ? 1 : 0
       });

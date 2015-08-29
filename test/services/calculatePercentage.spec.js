@@ -10,9 +10,9 @@ describe('calculatePercentageService', function () {
   }));
 
   it('calculates a percentage', function () {
-    var fakeConceptTagResults = [
-      {foo: 'bar', correct: 0},
-      {foo: 'bar', correct: 1}
+    var fakeConceptResultsList = [
+      {concept_uid: 'foo', metadata: {correct: 1}},
+      {concept_uid: 'bar', metadata: {correct: 0}}
     ];
 
     var fakePfResults = [
@@ -28,7 +28,7 @@ describe('calculatePercentageService', function () {
       }
     ];
 
-    var percentage = calculatePercentageService(fakeConceptTagResults, fakePfResults);
+    var percentage = calculatePercentageService(fakeConceptResultsList, fakePfResults);
     expect(percentage).to.eq(0.3);
   });
 });
