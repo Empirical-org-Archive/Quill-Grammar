@@ -2,6 +2,23 @@
   <input type="text" placeholder="Enter Search"></input>
   <button>Search</button>
 </div>
+<div class="concept-list">
+  <table>
+    <tr>
+      <th>Standard</th>
+      <th>Category</th>
+      <th>Concept</th>
+      <th>Questions</th>
+      <th>View</th>
+    </tr>
+    <tr ng-repeat="c in concepts">
+      <td>{{c.standard.title}}</td>
+      <td>{{c.standard_level.title}}</td>
+      <td>{{c.title}}</td>
+      <td>{{getQuestionLength(c.questions)}}</td>
+      <td><a ui-sref="cms-concepts-view({id: c.$id})">View</a></td>
+    </tr>
+  </table>
 <div class="concept-create">
   <a ui-sref="cms-concepts-create()"><button>Create Concepts</button></a>
 </div>

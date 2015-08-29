@@ -17,6 +17,10 @@
     "concept_results": {
       ".write":"(((((!newData.exists()||newData.hasChildren())))))",
       ".read":"true"
+    },
+    "v2": {
+      ".write":"(((((!newData.exists()||newData.hasChildren())))))",
+      ".read":"true"
     }
   }
 }

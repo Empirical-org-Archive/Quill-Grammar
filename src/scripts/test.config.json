@@ -1,6 +1,6 @@
 {
   "environment": "development",
-  "firebaseUrl": "https://quillgrammarstaging.firebaseio.com/",
+  "firebaseUrl": "https://quillgrammarstaging.firebaseio.com/v2",
   "empiricalBaseURL": "http://server/api/v1",
   "portholeProxy": "http://server/porthole_proxy",
   "firebaseApp": "quill-grammar-test",

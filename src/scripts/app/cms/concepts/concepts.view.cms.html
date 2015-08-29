@@ -1,0 +1,29 @@
+<h3>Concept View</h3>
+<a ui-sref="cms-concepts-edit({id: concept.$id})"><button>Edit Concept</button></a>
+<h3>{{concept.title}}</h3>
+
+<p>{{concept.explanation}}</p>
+
+<h4>Concepts</h4>
+<ul>
+  <li>{{concept.concept_level_1.title}}</li>
+  <li>{{concept.concept_level_2.title}}</li>
+</ul>
+
+<h4>CCSS Standard</h4>
+<ul>
+  <li>{{concept.standard.title}}</li>
+  <li>{{concept.standard_level.title}}</li>
+</ul>
+
+<h4>Questions</h4>
+<ul ng-repeat="(id, q) in concept.questions">
+  <li>
+    <p>{{q.prompt}}</p>
+    <a ui-sref="cms-concepts-questions-edit({conceptId: concept.$id, conceptQuestionId: id})">edit</a>
+  </li>
+</ul>
+
+<a ui-sref="cms-concepts-questions-create({conceptId: concept.$id})"><button>Create Question</button</a>
+
+
