@@ -5,12 +5,10 @@ describe('ConceptService', function () {
   beforeEach(module('quill-grammar.services.lms.concept'));
 
   var conceptService;
-  var timeout;
 
   beforeEach(function () {
-    inject(function (ConceptService, $timeout) {
+    inject(function (ConceptService) {
       conceptService = ConceptService;
-      timeout = $timeout;
     });
   });
 
@@ -28,7 +26,6 @@ describe('ConceptService', function () {
         });
         done();
       });
-      timeout.flush();
     });
   });
 });

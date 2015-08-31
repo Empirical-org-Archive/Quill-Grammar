@@ -23,6 +23,7 @@ function ConceptsFormCtrl (
   $scope.conceptTemplate = require('../models/concept.js');
 
   ConceptService.get().then(function (concepts) {
+    debugger;
     $scope.concepts = concepts;
   });
 
