@@ -6,7 +6,7 @@ angular.module('quill-grammar.services.lms.concept', [
   require('../../../../.tmp/config').name,
 ])
 /*@ngInject*/
-.factory('ConceptService', function (empiricalBaseURL, $http) {
+.factory('ConceptService', function (_, empiricalBaseURL, $http) {
   var url = empiricalBaseURL + '/concepts';
 
   this.get = function () {
