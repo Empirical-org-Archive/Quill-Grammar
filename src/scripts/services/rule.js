@@ -13,7 +13,7 @@ angular.module('quill-grammar.services.rule', [
   _
 ) {
   var crud = new CrudService('rules', [
-    'title', 'description', 'ruleNumber', 'classification', 'ruleQuestions'
+    'title', 'description', 'ruleNumber', 'ruleQuestions'
   ], 'cms');
 
   this.updateRule = function (rule) {
@@ -21,16 +21,6 @@ angular.module('quill-grammar.services.rule', [
   };
 
   this.saveRule = function (rule) {
-    function getClassification(rule) {
-      return ClassificationService.getClassificationIdByString(rule.classification)
-        .then(function (cid) {
-          rule.classification = cid;
-          return rule;
-        }, function (error) {
-          return error;
-        });
-    }
-
     function addRuleNumber(rule) {
       var ruleNumber = new CrudService('ruleNumberCounter', [], 'cms').getRef();
       ruleNumber.$transaction(function (currentRuleNumber) {
@@ -55,8 +45,7 @@ angular.module('quill-grammar.services.rule', [
       return d.promise;
     }
 
-    return getClassification(rule)
-      .then(addRuleNumber)
+    return addRuleNumber(rule)
       .then(crud.save);
   };
   this.deleteRule = function (category, rule) {
@@ -109,29 +98,8 @@ angular.module('quill-grammar.services.rule', [
       return rqp.promise;
     }
 
-    function getClassificationForRules(rules) {
-      var cfr = $q.defer();
-      var cls = [];
-      _.each(rules, function (rule) {
-        cls.push(ClassificationService.getClassification(rule.classification));
-      });
-      $q.all(cls).then(function (classifications) {
-        _.each(rules, function (rule, index) {
-          if (rule && classifications[index]) {
-            rule.resolvedClassification = classifications[index];
-          }
-        });
-        cfr.resolve(rules);
-      }, function (error) {
-        console.log(error);
-        cfr.resolve(rules);
-      });
-      return cfr.promise;
-    }
-
     $q.all(promises)
     .then(getRuleQuestionsForRules)
-    .then(getClassificationForRules)
     .then(function (rules) {
       d.resolve(rules);
     }, function (error) {
