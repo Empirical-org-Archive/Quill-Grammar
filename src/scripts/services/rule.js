@@ -4,15 +4,12 @@ module.exports =
 angular.module('quill-grammar.services.rule', [
   require('./crud.js').name,
   require('./ruleQuestion.js').name,
-  require('./classification.js').name,
 ])
 
 .factory('RuleService', function (
   CrudService,
-  CategoryService,
   RuleQuestionService,
   $q,
-  ClassificationService,
   _
 ) {
   var crud = new CrudService('rules', [
