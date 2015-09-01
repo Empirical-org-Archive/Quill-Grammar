@@ -85,14 +85,14 @@ angular.module('quill-grammar.services.crud', [
 
     function get(entityId) {
       var d = $q.defer();
-      var entityRef = new Firebase(baseRoute + '/' + entityId);
+      var refUrl = baseRoute + '/' + entityId;
+      var entityRef = new Firebase(refUrl);
       var entity = $firebaseObject(entityRef);
       entity.$loaded().then(function (entityData) {
         if (isValid(entityData)) {
           d.resolve(entityData);
         } else {
-          console.error(entityId);
-          console.error(entityData);
+          console.error('There was an error loading the entity at: ', refUrl, entityData);
           d.reject(new Error('Entity did not meet the properties requirement'));
         }
       }, function (error) {
