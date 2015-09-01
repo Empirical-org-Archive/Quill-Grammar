@@ -32,10 +32,10 @@ function SentencePlayCtrl (
     //we only need to communicate with the LMS for non-anonymous sessions
     if ($scope.sessionId) {
       // FIXME: conceptUid is not a field on the ruleQuestion. How can we get to the point where this works?
-      ConceptResult.saveToFirebase($scope.sessionId, crq.conceptUid, {
-        answer: answer,
-        correct: correct ? 1 : 0
-      });
+      // ConceptResult.saveToFirebase($scope.sessionId, crq.conceptUid, {
+      //   answer: answer,
+      //   correct: correct ? 1 : 0
+      // });
     }
 
     if (correct || crq.attempts >= $scope.numAttempts) {
