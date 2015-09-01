@@ -2,23 +2,15 @@
 
 module.exports =
 angular.module('quill-grammar.services.lms.standard', [
+  require('../../../../.tmp/config').name,
 ])
-.factory('StandardService', function ($timeout) {
+.factory('StandardService', function (empiricalBaseURL, $http) {
+  var url = empiricalBaseURL + '/topics';
+
   this.get = function () {
-    return $timeout(function () {
-      return [
-        {
-          uid: 'standard-uid-1',
-          title: 'standard1'
-        }, {
-          uid: 'standard-uid-2',
-          title: 'standard2'
-        }, {
-          uid: 'standard-uid-3',
-          title: 'standard3'
-        }
-      ];
-    }, 200);
+    return $http.get(url).then(function (response) {
+      return response.data.topics;
+    });
   };
   return this;
 });

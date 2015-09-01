@@ -3,8 +3,8 @@
 module.exports = [
   {
     type: 'text',
-    label: 'Title',
-    model: 'title',
+    label: 'Name',
+    model: 'name',
     required: true
   },
   {

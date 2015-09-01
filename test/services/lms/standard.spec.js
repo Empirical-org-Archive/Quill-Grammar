@@ -4,27 +4,41 @@
 describe('StandardService', function () {
   beforeEach(module('quill-grammar.services.lms.standard'));
 
-  var standardService;
-  var timeout;
+  var standardService,
+      $httpBackend;
 
   beforeEach(function () {
-    inject(function (StandardService, $timeout) {
+    module(function ($provide) {
+      $provide.constant('empiricalBaseURL', 'http://foo.bar/api/v1');
+    });
+
+    inject(function (StandardService, _$httpBackend_) {
       standardService = StandardService;
-      timeout = $timeout;
+      $httpBackend = _$httpBackend_;
     });
   });
 
-  describe('API Standards', function () {
+  describe('#get', function () {
+    var fakeTopicsResponse = [
+      {name: 'foobar', uid: 'baz'},
+      {name: 'buzzbar', uid: 'quux'}
+    ];
+
+    beforeEach(function () {
+      $httpBackend.expectGET('http://foo.bar/api/v1/topics')
+                  .respond(fakeTopicsResponse);
+    });
+
     it('gets all standards', function (done) {
       standardService.get().then(function (standards) {
         _.each(standards, function (t) {
           expect(t).to.be.an('object');
           expect(t.uid).to.be.a('string');
-          expect(t.title).to.be.a('string');
+          expect(t.name).to.be.a('string');
         });
         done();
       });
-      timeout.flush();
+      $httpBackend.flush();
     });
   });
 });
