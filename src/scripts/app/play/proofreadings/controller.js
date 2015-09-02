@@ -336,7 +336,7 @@ function ProofreadingPlayCtrl (
   /*
    * Mapping results for analytics
    */
-   // TODO: -> ProofreadingPassage model
+  // TODO: -> ProofreadingPassage model
   function sendResultsAnalytics(results) {
     var event = 'Press Check Answer';
     var passageResults = _.chain(results)
