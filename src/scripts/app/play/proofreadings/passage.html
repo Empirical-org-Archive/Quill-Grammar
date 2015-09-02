@@ -5,7 +5,7 @@
       autofocus="$first"
       ng-show="!isBr(word.responseText)"
       type="text"
-      ng-class="{focused: word.isFocused, incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), changed: word.text !== word.responseText, correct: hasCorrect(word), underlined: needsUnderlining(word), tooltipped: word.tooltip.style}"
+      ng-class="{focused: word.isFocused, incorrectError: word.hasIncorrectError(), notNecessaryError: word.hasNotNecessaryError(), changed: word.text !== word.responseText, correct: word.hasCorrect(), underlined: needsUnderlining(word), tooltipped: word.tooltip.style}"
       ng-readonly="passage.submitted"
       ng-focus="word.isFocused = true"
       ng-change="onInputChange(word)"
@@ -14,22 +14,22 @@
       ng-trim="false"
       ng-model="word.responseText">
     </input>
-    <div ng-class="getErrorTooltipClass(index)" ng-show="!isBr(word.responseText) && hasErrorToShow(word)"
+    <div ng-class="getErrorTooltipClass(index)" ng-show="!isBr(word.responseText) && word.hasErrorToShow()"
       ng-style="word.tooltip.style">
-      <div ng-class="{incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), correct: hasCorrect(word)}">
+      <div ng-class="{incorrectError: word.hasIncorrectError(), notNecessaryError: word.hasNotNecessaryError(), correct: word.hasCorrect()}">
         <div ng-class="getErrorTooltipTopClass(answerImageName(word.type))">
           <div class="img-div">
             <img ng-src="/assets/images/{{answerImageName(word.type)}}_icon.png" alt="{{word.type}}"></img>
           </div>
           <h4>{{word.type}}</h4>
-          <p class="counter">{{errorCounter(word)}}</p>
+          <p class="counter">{{word.errorCounter()}}</p>
         </div>
         <div class="bottom-panel">
           <h4>Correct Edit:</h4>
           <p ng-show="word.plus">{{word.plus}}</p>
           <p ng-show="!word.plus">{{word.text}}</p>
-          <h4 ng-show="!hasNotNecessaryError(word)">Grammatical Concept:</h4>
-          <p ng-show="!hasNotNecessaryError(word)">{{getGrammaticalConceptForWord(word)}}</p>
+          <h4 ng-show="!word.hasNotNecessaryError()">Grammatical Concept:</h4>
+          <p ng-show="!word.hasNotNecessaryError()">{{word.getGrammaticalConcept(referencedRules)}}</p>
           <button ng-click="word.nextAction.fn()">{{word.nextAction.title}} ➞</button>
         </div>
       </div>

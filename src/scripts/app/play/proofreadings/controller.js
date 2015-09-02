@@ -6,7 +6,7 @@ module.exports =
 function ProofreadingPlayCtrl (
   $scope, $state, RuleService, _,
   $location, localStorageService, $document, $timeout,
-  ProofreaderActivity,
+  ProofreaderActivity, PassageWord,
   $analytics
 ) {
   $scope.id = $state.params.uid;
@@ -62,37 +62,6 @@ function ProofreadingPlayCtrl (
     }
   };
 
-  /*
-   * Functions for interacting with the referenced rules in the
-   * passage questions.
-   */
-
-  $scope.getRuleInfoBy = function (ruleNumber) {
-    return _.findWhere($scope.referencedRules, {ruleNumber: Number(ruleNumber)}).title;
-  };
-
-  /*
-   * These functions below handle submission errors
-   * and state/$scope updates after the student has submitted
-   * their passage.
-   */
-
-  $scope.INCORRECT_ERROR = 'Incorrect';
-  $scope.NOT_NECESSARY_ERROR = 'Not Necessary';
-  $scope.CORRECT = 'Correct';
-
-  $scope.hasNotNecessaryError = function (word) {
-    return word.type === $scope.NOT_NECESSARY_ERROR;
-  };
-
-  $scope.hasIncorrectError = function (word) {
-    return word.type === $scope.INCORRECT_ERROR;
-  };
-
-  $scope.hasCorrect = function (word) {
-    return word.type === $scope.CORRECT;
-  };
-
   $scope.submitPassage = function () {
     var passage = $scope.pf.passage;
     function isValid(passageEntry) {
@@ -105,7 +74,7 @@ function ProofreadingPlayCtrl (
       }
     }
     function getErrorType(passageEntry) {
-      return _.has(passageEntry, 'minus') ? $scope.INCORRECT_ERROR : $scope.NOT_NECESSARY_ERROR;
+      return _.has(passageEntry, 'minus') ? PassageWord.INCORRECT_ERROR : PassageWord.NOT_NECESSARY_ERROR;
     }
     $scope.results = [];
     _.each(passage, function (p, i) {
@@ -113,7 +82,7 @@ function ProofreadingPlayCtrl (
         $scope.results.push({index: i, passageEntry: p, type: getErrorType(p)});
       }
       if (isValid(p) && _.has(p, 'minus')) {
-        $scope.results.push({index: i, passageEntry: p, type: $scope.CORRECT});
+        $scope.results.push({index: i, passageEntry: p, type: PassageWord.CORRECT});
       }
     });
     var numErrors = _.keys($scope.passageQuestions).length;
@@ -128,7 +97,7 @@ function ProofreadingPlayCtrl (
   };
 
   function getNumCorrect(results) {
-    return _.where(results, {type: $scope.CORRECT}).length;
+    return _.where(results, {type: PassageWord.CORRECT}).length;
   }
 
   $scope.getNumErrors = function () {
@@ -313,10 +282,6 @@ function ProofreadingPlayCtrl (
     return obj;
   };
 
-  $scope.errorCounter = function (word) {
-    return 'Edit ' + String(word.resultIndex + 1) + ' of ' + word.totalResults;
-  };
-
   $scope.answerImageName = function (t) {
     if (!t) {
       return;
@@ -336,26 +301,6 @@ function ProofreadingPlayCtrl (
     return ProofreaderActivity.htmlMatches(text) !== null;
   };
 
-  $scope.hasErrorToShow = function (word) {
-    return _.any([$scope.hasNotNecessaryError, $scope.hasCorrect, $scope.hasIncorrectError], function (fn) {
-      return fn(word);
-    });
-  };
-
-  /*
-   * Function to return the grammatical concept for a word
-   * With v1, we are just using the rule title. In the future
-   * we will make a data model change.
-   */
-  $scope.getGrammaticalConceptForWord = function (word) {
-    if (word.ruleNumber) {
-      var rule = _.findWhere($scope.referencedRules, {ruleNumber: Number(word.ruleNumber)});
-      if (rule && rule.title) {
-        return rule.title;
-      }
-    }
-  };
-
   function showResults(passageResults) {
     _.each(passageResults, function (pr, i) {
       $scope.pf.passage[pr.index].type = pr.type;
@@ -367,7 +312,7 @@ function ProofreadingPlayCtrl (
     var ruleNumbers = _.chain(passageResults)
       .pluck('passageEntry')
       .reject(function (r) {
-        return r.type !== $scope.INCORRECT_ERROR;
+        return r.type !== PassageWord.INCORRECT_ERROR;
       })
       .pluck('ruleNumber')
       .reject(_.isUndefined)
@@ -375,7 +320,9 @@ function ProofreadingPlayCtrl (
       .value();
     generateLesson(ruleNumbers);
     $scope.focusResult(0, passageResults[0].index);
+    // TODO: -> ProofreadingPassage model
     sendResultsAnalytics(passageResults);
+    // TODO: -> ProofreadingPassage model
     saveResults(getLocalResults(passageResults));
     $scope.pf.passage.submitted = true;
   }
@@ -389,6 +336,7 @@ function ProofreadingPlayCtrl (
   /*
    * Mapping results for analytics
    */
+   // TODO: -> ProofreadingPassage model
   function sendResultsAnalytics(results) {
     var event = 'Press Check Answer';
     var passageResults = _.chain(results)
@@ -398,10 +346,10 @@ function ProofreadingPlayCtrl (
       })
       .value();
     var correct = _.filter(passageResults, function (pr) {
-      return pr.type === $scope.CORRECT;
+      return pr.type === PassageWord.CORRECT;
     });
     var incorrect = _.filter(passageResults, function (pr) {
-      return pr.type !== $scope.CORRECT;
+      return pr.type !== PassageWord.CORRECT;
     });
 
     var correctWords = _.map(correct, function (c) {
@@ -447,7 +395,7 @@ function ProofreadingPlayCtrl (
         var rule = _.findWhere(rules, {ruleNumber: Number(pe.ruleNumber)});
         return {
           title: rule.title,
-          correct: pe.type === $scope.CORRECT
+          correct: pe.type === PassageWord.CORRECT
         };
       })
       .groupBy('title')

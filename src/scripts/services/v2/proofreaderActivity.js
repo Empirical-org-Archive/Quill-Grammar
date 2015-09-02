@@ -14,10 +14,11 @@ module.exports =
 angular.module('quill-grammar.services.firebase.proofreaderActivity', [
   'firebase',
   'underscore',
+  require('./passageWord.js').name,
   require('./../../../../.tmp/config.js').name,
 ])
 /*@ngInject*/
-.factory('ProofreaderActivity', function (firebaseUrl, $firebaseObject, _, uuid4, RuleService) {
+.factory('ProofreaderActivity', function (firebaseUrl, $firebaseObject, _, uuid4, RuleService, PassageWord) {
   function ProofreaderModel(data) {
     if (data) {
       _.extend(this, data);
@@ -49,18 +50,18 @@ angular.module('quill-grammar.services.firebase.proofreaderActivity', [
       return w;
     }
 
-    function splitPassageIntoObjects(w) {
+    function splitPassageIntoWords(w) {
       var passageQuestion = questions[w];
       if (passageQuestion) {
         var c = _.clone(passageQuestion);
         c.text = c.minus;
         c.responseText = c.text;
-        return c;
+        return new PassageWord(c);
       } else {
-        return {
+        return new PassageWord({
           text: w,
           responseText: w
-        };
+        });
       }
     }
 
@@ -80,7 +81,7 @@ angular.module('quill-grammar.services.firebase.proofreaderActivity', [
       .flatten()
       .map(parseHangingPassageQuestionsWithNoSpace)
       .flatten()
-      .map(splitPassageIntoObjects)
+      .map(splitPassageIntoWords)
       .map(trimSpecialObjects)
       .filter(removeLeftoverSpaces)
       .value();
