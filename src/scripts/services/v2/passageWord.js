@@ -39,6 +39,20 @@ angular.module('quill-grammar.services.passageWord', [
     });
   };
 
+  PassageWord.prototype.getErrorType = function () {
+    return _.has(this, 'minus') ? PassageWord.INCORRECT_ERROR : PassageWord.NOT_NECESSARY_ERROR;
+  }
+
+  PassageWord.prototype.isValid = function () {
+    if (_.has(this, 'minus')) {
+      //A grammar entry
+      return this.responseText === this.plus;
+    } else {
+      //A regular word
+      return this.text === this.responseText;
+    }
+  };
+
   /*
    * Function to return the grammatical concept for a word
    * With v1, we are just using the rule title. In the future

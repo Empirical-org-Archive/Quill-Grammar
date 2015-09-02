@@ -5,7 +5,7 @@ angular.module('quill-grammar.services.proofreadingPassage', [
   'underscore',
 ])
 /*@ngInject*/
-.factory('ProofreadingPassage', function (_, uuid4, PassageWord, RuleService) {
+.factory('ProofreadingPassage', function (_, uuid4, PassageWord, RuleService, $analytics) {
   function ProofreadingPassage(data) {
     if (data) {
       _.extend(this, data);
@@ -23,9 +23,14 @@ angular.module('quill-grammar.services.proofreadingPassage', [
     return text.match(/<\s*br\s*?\/>/g);
   };
 
+  /*
+   * Convert a string of text from Firebase into a ProofreadingPassage object.
+   */
   ProofreadingPassage.fromPassageString = function (passage) {
     var proofreadingPassage = new ProofreadingPassage({
-      passage: passage
+      passage: passage,
+      numChanges: 0,
+      madeChange: false
     });
 
     extractQuestionsFromPassage(proofreadingPassage);
@@ -88,9 +93,59 @@ angular.module('quill-grammar.services.proofreadingPassage', [
     return _.keys(this.questions).length;
   };
 
+  ProofreadingPassage.prototype.getNumErrorsToSolve = function () {
+    return Math.floor(this.getNumErrors() / 2);
+  }
+
+  ProofreadingPassage.prototype.getNumCorrect = function () {
+    return _.where(this.results, {type: PassageWord.CORRECT}).length;
+  }
+
   ProofreadingPassage.prototype.getRules = function () {
     var ruleIds = _.pluck(this.questions, 'ruleNumber');
     return RuleService.getRules(ruleIds);
+  };
+
+  ProofreadingPassage.prototype.submit = function () {
+    var results = [];
+    _.each(this.words, function (word, i) {
+      if (!word.isValid()) {
+        results.push({index: i, passageEntry: word, type: word.getErrorType()});
+      }
+      if (word.isValid() && _.has(word, 'minus')) {
+        results.push({index: i, passageEntry: word, type: PassageWord.CORRECT});
+      }
+    });
+    this.results = results;
+    var numErrors = this.getNumErrors();
+    var numErrorsToSolve = this.getNumErrorsToSolve();
+    var numErrorsFound = this.getNumCorrect();
+    var numEdits = this.numChanges;
+    var isFinished = numErrorsFound >= numErrorsToSolve ||  numEdits >= numErrorsToSolve;
+    return isFinished;
+  };
+
+  ProofreadingPassage.prototype.onInputChange = function (word) {
+    var nc = this.numChanges;
+    if (word.responseText === '') {
+      if (!word.countedChange) {
+        nc++;
+        word.countedChange = true;
+      }
+    } else if (word.responseText !== word.text) {
+      if (!word.countedChange) {
+        nc++;
+      }
+      word.countedChange = true;
+    } else if (word.responseText === word.text && word.countedChange) {
+      nc = Math.max(nc - 1, 0);
+      word.countedChange = false;
+    }
+    this.numChanges = nc;
+    if (!this.madeChange && nc > 0) {
+      this.madeChange = true;
+      $analytics.eventTrack('Edit One Passage Word', word);
+    }
   };
 
   // 'private' methods

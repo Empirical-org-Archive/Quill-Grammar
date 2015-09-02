@@ -1,5 +1,5 @@
 <div class="passage">
-  <div ng-class="{'word':true, 'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="(index, word) in passage" id="error-tooltip-scroll-{{index}}">
+  <div ng-class="{'word':true, 'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="(index, word) in pf.passage" id="error-tooltip-scroll-{{index}}">
     <p ng-bind-html="space" ng-show="isBr(word.responseText)" id="break-binding-point-{{index}}"></p>
     <input
       autofocus="$first"
@@ -8,7 +8,7 @@
       ng-class="{focused: word.isFocused, incorrectError: word.hasIncorrectError(), notNecessaryError: word.hasNotNecessaryError(), changed: word.text !== word.responseText, correct: word.hasCorrect(), underlined: needsUnderlining(word), tooltipped: word.tooltip.style}"
       ng-readonly="passage.submitted"
       ng-focus="word.isFocused = true"
-      ng-change="onInputChange(word)"
+      ng-change="proofreadingPassage.onInputChange(word)"
       ng-blur="word.isFocused = false"
       ng-size="{{word.responseText.length}}"
       ng-trim="false"

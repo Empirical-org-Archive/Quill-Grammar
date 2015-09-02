@@ -40,73 +40,15 @@ function ProofreadingPlayCtrl (
     $scope.referencedRules = rules;
   });
 
-  /*
-   * set number of changes to passage. Functions for incrementing and decrementing
-   * this number.
-   */
-  $scope.numChanges = 0;
-  $scope.madeChange = false;
-
-  $scope.onInputChange = function (word) {
-    var nc = $scope.numChanges;
-    if (word.responseText === '') {
-      if (!word.countedChange) {
-        nc++;
-        word.countedChange = true;
-      }
-    } else if (word.responseText !== word.text) {
-      if (!word.countedChange) {
-        nc++;
-      }
-      word.countedChange = true;
-    } else if (word.responseText === word.text && word.countedChange) {
-      nc = Math.max(nc - 1, 0);
-      word.countedChange = false;
-    }
-    $scope.numChanges = nc;
-    if (!$scope.madeChange && nc > 0) {
-      $scope.madeChange = true;
-      $analytics.eventTrack('Edit One Passage Word', word);
-    }
-  };
-
   $scope.submitPassage = function () {
-    var passage = $scope.pf.passage;
-    function isValid(passageEntry) {
-      if (_.has(passageEntry, 'minus')) {
-        //A grammar entry
-        return passageEntry.responseText === passageEntry.plus;
-      } else {
-        //A regular word
-        return passageEntry.text === passageEntry.responseText;
-      }
-    }
-    function getErrorType(passageEntry) {
-      return _.has(passageEntry, 'minus') ? PassageWord.INCORRECT_ERROR : PassageWord.NOT_NECESSARY_ERROR;
-    }
-    $scope.results = [];
-    _.each(passage, function (p, i) {
-      if (!isValid(p)) {
-        $scope.results.push({index: i, passageEntry: p, type: getErrorType(p)});
-      }
-      if (isValid(p) && _.has(p, 'minus')) {
-        $scope.results.push({index: i, passageEntry: p, type: PassageWord.CORRECT});
-      }
-    });
-    var numErrors = $scope.proofreadingPassage.getNumErrors();
-    var numErrorsToSolve = Math.floor(numErrors / 2);
-    var numErrorsFound = getNumCorrect($scope.results);
-    var numEdits = $scope.numChanges;
-    if (numErrorsFound >= numErrorsToSolve ||  numEdits >= numErrorsToSolve) {
-      showResultsModal($scope.results, numErrorsFound, numErrors);
+    var isFinished = $scope.proofreadingPassage.submit();
+    $scope.results = $scope.proofreadingPassage.results;
+    if (isFinished) {
+      showResultsModal();
     } else {
-      showModalNotEnoughFound(numErrorsToSolve);
+      showModalNotEnoughFound();
     }
   };
-
-  function getNumCorrect(results) {
-    return _.where(results, {type: PassageWord.CORRECT}).length;
-  }
 
   function getNumResults() {
     return _.keys($scope.results).length;
@@ -114,7 +56,8 @@ function ProofreadingPlayCtrl (
   /*
    * Modal settings
    */
-  function showModalNotEnoughFound(needed) {
+  function showModalNotEnoughFound() {
+    var needed = $scope.proofreadingPassage.getNumErrorsToSolve();
     $scope.pf.modal = {
       title: 'Keep Trying!',
       message: 'You must make at least ' + needed + ' edits.',
@@ -126,7 +69,11 @@ function ProofreadingPlayCtrl (
     };
   }
 
-  function showResultsModal(results, numErrorsFound, numErrorsToSolve) {
+  function showResultsModal() {
+    var results = $scope.results;
+    var numErrorsFound = $scope.proofreadingPassage.getNumCorrect();
+    var numErrors = $scope.proofreadingPassage.getNumErrors();
+    var numErrorsToSolve = $scope.proofreadingPassage.getNumErrorsToSolve();
     function createTitle() {
       if (numErrorsFound === numErrorsToSolve) {
         return 'Congratulations!';
@@ -158,7 +105,7 @@ function ProofreadingPlayCtrl (
     if (!$scope.results) {
       return {};
     }
-    var allCorrect = getNumCorrect($scope.results) === $scope.proofreadingPassage.getNumErrors();
+    var allCorrect = $scope.proofreadingPassage.getNumCorrect() === $scope.proofreadingPassage.getNumErrors();
     var na = {
       fn: null,
       title: ''

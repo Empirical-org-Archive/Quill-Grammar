@@ -17,10 +17,6 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
   return {
     restrict: 'E',
     controller: 'ProofreadingPlayCtrl',
-    scope: {
-      passage: '=',
-      numChanges: '=',
-    },
     templateUrl: 'passage.html'
   };
 })
@@ -28,10 +24,6 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
   return {
     restrict: 'E',
     controller: 'ProofreadingPlayCtrl',
-    scope: {
-      pf: '=',
-      numChanges: '=',
-    },
     templateUrl: 'pf-heading.html'
   };
 })
