@@ -72,7 +72,6 @@ function ProofreadingPlayCtrl (
   function showResultsModal() {
     var results = $scope.results;
     var numErrorsFound = $scope.proofreadingPassage.getNumCorrect();
-    var numErrors = $scope.proofreadingPassage.getNumErrors();
     var numErrorsToSolve = $scope.proofreadingPassage.getNumErrorsToSolve();
     function createTitle() {
       if (numErrorsFound === numErrorsToSolve) {

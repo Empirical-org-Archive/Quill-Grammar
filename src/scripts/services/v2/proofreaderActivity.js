@@ -18,7 +18,7 @@ angular.module('quill-grammar.services.firebase.proofreaderActivity', [
   require('./../../../../.tmp/config.js').name,
 ])
 /*@ngInject*/
-.factory('ProofreaderActivity', function (firebaseUrl, $firebaseObject, _, PassageWord) {
+.factory('ProofreaderActivity', function (firebaseUrl, $firebaseObject, _) {
   function ProofreaderModel(data) {
     if (data) {
       _.extend(this, data);

@@ -41,7 +41,7 @@ angular.module('quill-grammar.services.passageWord', [
 
   PassageWord.prototype.getErrorType = function () {
     return _.has(this, 'minus') ? PassageWord.INCORRECT_ERROR : PassageWord.NOT_NECESSARY_ERROR;
-  }
+  };
 
   PassageWord.prototype.isValid = function () {
     if (_.has(this, 'minus')) {

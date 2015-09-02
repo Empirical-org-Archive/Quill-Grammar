@@ -34,7 +34,6 @@ angular.module('quill-grammar.services.proofreadingPassage', [
     });
 
     extractQuestionsFromPassage(proofreadingPassage);
-    var passage = proofreadingPassage.passage;
     var questions = proofreadingPassage.questions;
 
     function parseHangingPassageQuestionsWithNoSpace(w) {
@@ -71,7 +70,7 @@ angular.module('quill-grammar.services.proofreadingPassage', [
       return w.text !== '';
     }
 
-    var words = _.chain(passage.split(/\s/))
+    var words = _.chain(proofreadingPassage.passage.split(/\s/))
       .filter(removeNullWords)
       .map(parseHtmlTokens)
       .flatten()
@@ -95,11 +94,11 @@ angular.module('quill-grammar.services.proofreadingPassage', [
 
   ProofreadingPassage.prototype.getNumErrorsToSolve = function () {
     return Math.floor(this.getNumErrors() / 2);
-  }
+  };
 
   ProofreadingPassage.prototype.getNumCorrect = function () {
     return _.where(this.results, {type: PassageWord.CORRECT}).length;
-  }
+  };
 
   ProofreadingPassage.prototype.getRules = function () {
     var ruleIds = _.pluck(this.questions, 'ruleNumber');
@@ -117,7 +116,6 @@ angular.module('quill-grammar.services.proofreadingPassage', [
       }
     });
     this.results = results;
-    var numErrors = this.getNumErrors();
     var numErrorsToSolve = this.getNumErrorsToSolve();
     var numErrorsFound = this.getNumCorrect();
     var numEdits = this.numChanges;
