@@ -130,7 +130,6 @@ angular.module('quill-grammar.services.proofreadingPassage', [
   ProofreadingPassage.prototype.saveLocalResults = function (id) {
     var results = this.results;
     var rules = this.rules;
-    saveResults(getLocalResults());
 
     function saveResults(r) {
       localStorageService.set('pf-' + id, r);
@@ -141,7 +140,6 @@ angular.module('quill-grammar.services.proofreadingPassage', [
     /*
      * generate passage results for local results
      */
-
     function getLocalResults() {
       return _.chain(results)
         .pluck('passageEntry')
@@ -165,6 +163,8 @@ angular.module('quill-grammar.services.proofreadingPassage', [
         })
         .value();
     }
+
+    saveResults(getLocalResults());
   };
 
   /*
@@ -212,7 +212,7 @@ angular.module('quill-grammar.services.proofreadingPassage', [
       score: Number(correct.length / this.results.length) * 100
     };
     $analytics.eventTrack(event, attrs);
-  }
+  };
 
   ProofreadingPassage.prototype.submit = function () {
     var results = [];
@@ -255,7 +255,7 @@ angular.module('quill-grammar.services.proofreadingPassage', [
     }
   };
 
-    /*
+  /*
    * Function to return the grammatical concept for a word
    * With v1, we are just using the rule title. In the future
    * we will make a data model change.
@@ -268,7 +268,6 @@ angular.module('quill-grammar.services.proofreadingPassage', [
       }
     }
   };
-
 
   // 'private' methods
 
