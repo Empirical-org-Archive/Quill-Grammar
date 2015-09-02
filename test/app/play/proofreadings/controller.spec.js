@@ -11,7 +11,6 @@ describe('SentencePlayCtrl', function () {
       $rootScope,
       $q,
       $state,
-      getActivitySpy,
       fakeActivity,
       fakeStateParams,
       proofreaderActivity;

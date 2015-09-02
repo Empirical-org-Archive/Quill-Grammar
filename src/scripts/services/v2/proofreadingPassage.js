@@ -14,16 +14,6 @@ angular.module('quill-grammar.services.proofreadingPassage', [
     return this;
   }
 
-  // TODO: Copied from old ProofreadingService, clean this up.
-  ProofreadingPassage.htmlMatches = function (text) {
-    /* Returns null or an array of matches */
-    //TODO Only looking for line break tags right now
-    if (!text) {
-      return null;
-    }
-    return text.match(/<\s*br\s*?\/>/g);
-  };
-
   /*
    * Convert a string of text from Firebase into a ProofreadingPassage object.
    */
@@ -302,7 +292,7 @@ angular.module('quill-grammar.services.proofreadingPassage', [
   }
 
   function parseHtmlTokens(w) {
-    var matches = ProofreadingPassage.htmlMatches(w);
+    var matches = PassageWord.htmlMatches(w);
     if (matches) {
       _.each(matches, function (match) {
         if (w !== match) {

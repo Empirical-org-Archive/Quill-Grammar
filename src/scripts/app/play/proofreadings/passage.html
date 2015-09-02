@@ -1,9 +1,9 @@
 <div class="passage">
-  <div ng-class="{'word':true, 'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="(index, word) in proofreadingPassage.words" id="error-tooltip-scroll-{{index}}">
-    <p ng-bind-html="space" ng-show="isBr(word.responseText)" id="break-binding-point-{{index}}"></p>
+  <div ng-class="{'word':true, 'error-tooltip-item': !word.isBr()}" ng-repeat="(index, word) in proofreadingPassage.words" id="error-tooltip-scroll-{{index}}">
+    <p ng-bind-html="space" ng-show="word.isBr()" id="break-binding-point-{{index}}"></p>
     <input
       autofocus="$first"
-      ng-show="!isBr(word.responseText)"
+      ng-show="!word.isBr()"
       type="text"
       ng-class="{focused: word.isFocused, incorrectError: word.hasIncorrectError(), notNecessaryError: word.hasNotNecessaryError(), changed: word.text !== word.responseText, correct: word.hasCorrect(), underlined: needsUnderlining(word), tooltipped: word.tooltip.style}"
       ng-readonly="passage.submitted"
@@ -14,7 +14,7 @@
       ng-trim="false"
       ng-model="word.responseText">
     </input>
-    <div ng-class="getErrorTooltipClass(index)" ng-show="!isBr(word.responseText) && word.hasErrorToShow()"
+    <div ng-class="getErrorTooltipClass(index)" ng-show="!word.isBr() && word.hasErrorToShow()"
       ng-style="word.tooltip.style">
       <div ng-class="{incorrectError: word.hasIncorrectError(), notNecessaryError: word.hasNotNecessaryError(), correct: word.hasCorrect()}">
         <div ng-class="getErrorTooltipTopClass(answerImageName(word.type))">

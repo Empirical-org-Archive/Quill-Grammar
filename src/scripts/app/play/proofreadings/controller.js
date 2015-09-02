@@ -147,7 +147,7 @@ function ProofreadingPlayCtrl (
   function calculateTop(sIndex) {
     var breakIndexes = _.chain($scope.proofreadingPassage.words)
       .map(function (word, index) {
-        return [index, $scope.isBr(word.responseText)];
+        return [index, word.isBr()];
       })
       .filter(function (v) {
         return v[1];
@@ -227,14 +227,13 @@ function ProofreadingPlayCtrl (
     }).join('_');
   };
 
+  // FIXME: I don't think this ever worked, because p (passage word) never has a 'minus' field.
+  // Only passage results have the 'minus' field.
+  // At any rate, this should move to PassageWord#needsUnderlining() at some point.
   $scope.needsUnderlining = function (p) {
     if ($scope.pf && $scope.pf.underlineErrorsInProofreader && _.has(p, 'minus')) {
       return true;
     }
-  };
-
-  $scope.isBr = function (text) {
-    return ProofreadingPassage.htmlMatches(text) !== null;
   };
 
   function showResults() {

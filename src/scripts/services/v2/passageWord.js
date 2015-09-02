@@ -17,6 +17,16 @@ angular.module('quill-grammar.services.passageWord', [
   PassageWord.NOT_NECESSARY_ERROR = 'Not Necessary';
   PassageWord.CORRECT = 'Correct';
 
+  // TODO: Copied from old ProofreadingService, clean this up.
+  PassageWord.htmlMatches = function (text) {
+    /* Returns null or an array of matches */
+    //TODO Only looking for line break tags right now
+    if (!text) {
+      return null;
+    }
+    return text.match(/<\s*br\s*?\/>/g);
+  };
+
   PassageWord.prototype.hasNotNecessaryError = function () {
     return this.type === PassageWord.NOT_NECESSARY_ERROR;
   };
@@ -51,6 +61,10 @@ angular.module('quill-grammar.services.passageWord', [
       //A regular word
       return this.text === this.responseText;
     }
+  };
+
+  PassageWord.prototype.isBr = function () {
+    return PassageWord.htmlMatches(this.responseText) !== null;
   };
 
   return PassageWord;
