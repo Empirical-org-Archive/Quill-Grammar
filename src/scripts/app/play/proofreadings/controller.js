@@ -6,7 +6,9 @@ module.exports =
 function ProofreadingPlayCtrl (
   $scope, $state, RuleService, _,
   $location, localStorageService, $document, $timeout,
-  ProofreaderActivity, PassageWord,
+  ProofreaderActivity,
+  PassageWord,
+  ProofreadingPassage,
   $analytics
 ) {
   $scope.id = $state.params.uid;
@@ -22,11 +24,17 @@ function ProofreadingPlayCtrl (
   ProofreaderActivity.getById($scope.id).then(function (activity) {
     // TODO: This should be a presentation model that we can't save
     console.log('activity', activity);
+    var proofreadingPassage = ProofreadingPassage.fromPassageString(activity.passage);
+
+    $scope.proofreadingPassage = proofreadingPassage;
+
+    // FIXME: These scope assignments are currently here for backwards-compatibility.
+    $scope.passageQuestions = proofreadingPassage.questions;
     $scope.pf = activity;
-    var questions = activity.preparePassage();
-    $scope.passageQuestions = questions;
+    $scope.pf.passage = proofreadingPassage.words;
+
     console.log('passage questions', $scope.passageQuestions);
-    return activity.getRules();
+    return proofreadingPassage.getRules();
   }).then(function (rules) {
     console.log('rules', rules);
     $scope.referencedRules = rules;
@@ -85,7 +93,7 @@ function ProofreadingPlayCtrl (
         $scope.results.push({index: i, passageEntry: p, type: PassageWord.CORRECT});
       }
     });
-    var numErrors = _.keys($scope.passageQuestions).length;
+    var numErrors = $scope.proofreadingPassage.getNumErrors();
     var numErrorsToSolve = Math.floor(numErrors / 2);
     var numErrorsFound = getNumCorrect($scope.results);
     var numEdits = $scope.numChanges;
@@ -99,10 +107,6 @@ function ProofreadingPlayCtrl (
   function getNumCorrect(results) {
     return _.where(results, {type: PassageWord.CORRECT}).length;
   }
-
-  $scope.getNumErrors = function () {
-    return _.keys($scope.passageQuestions).length;
-  };
 
   function getNumResults() {
     return _.keys($scope.results).length;
@@ -154,7 +158,7 @@ function ProofreadingPlayCtrl (
     if (!$scope.results) {
       return {};
     }
-    var allCorrect = getNumCorrect($scope.results) === $scope.getNumErrors();
+    var allCorrect = getNumCorrect($scope.results) === $scope.proofreadingPassage.getNumErrors();
     var na = {
       fn: null,
       title: ''
@@ -298,7 +302,7 @@ function ProofreadingPlayCtrl (
   };
 
   $scope.isBr = function (text) {
-    return ProofreaderActivity.htmlMatches(text) !== null;
+    return ProofreadingPassage.htmlMatches(text) !== null;
   };
 
   function showResults(passageResults) {

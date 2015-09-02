@@ -4,6 +4,7 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
   require('./../../layout/layout.module.js').name, // Need to include this for the parent 'app' route.
   require('./../../../services/v2/proofreaderActivity.js').name,
   require('./../../../services/v2/passageWord.js').name,
+  require('./../../../services/v2/proofreadingPassage.js').name,
   require('./../../../services/finalize.js').name,
   'LocalStorageModule',
   'angulartics',

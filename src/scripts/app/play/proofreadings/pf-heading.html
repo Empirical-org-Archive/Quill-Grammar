@@ -8,5 +8,5 @@
     <img src="/assets/images/information_icon.png" alt="information"></img>
     <p ng-bind-html="pf.instructions | trustedHtml"></p>
   </div>
-  <activity-progress-bar max="getNumErrors()" current="numChanges" title="'Edits Made:'"></activity-progress-bar>
+  <activity-progress-bar max="proofreadingPassage.getNumErrors()" current="numChanges" title="'Edits Made:'"></activity-progress-bar>
 </div>
