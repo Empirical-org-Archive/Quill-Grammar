@@ -1,15 +1,15 @@
-<div ng-class="{proofreading:true}" ng-show="pf">
+<div ng-class="{proofreading:true}" ng-show="proofreadingActivity">
   <quill-grammar-pf-heading ></quill-grammar-pf-heading>
   <quill-grammar-passage></quill-grammar-passage>
   <quill-grammar-passage-submit-panel></quill-grammar-passage-submit-panel>
 
-  <div class="proofreading-modal" ng-show="pf.modal.show">
-    <input class="modal-state" type="checkbox" ng-checked="pf.modal.show"/>
+  <div class="proofreading-modal" ng-show="modal.show">
+    <input class="modal-state" type="checkbox" ng-checked="modal.show"/>
     <div class="modal-window">
       <div class="modal-inner">
-        <h2>{{pf.modal.title}}</h2>
-        <p>{{pf.modal.message}}</p>
-        <button ng-click="pf.modal.buttonClick()">{{pf.modal.buttonMessage}}</button>
+        <h2>{{modal.title}}</h2>
+        <p>{{modal.message}}</p>
+        <button ng-click="modal.buttonClick()">{{modal.buttonMessage}}</button>
       </div>
     </div>
   </div>

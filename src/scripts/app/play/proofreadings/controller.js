@@ -21,14 +21,9 @@ function ProofreadingPlayCtrl (
   };
 
   ProofreaderActivity.getById($scope.id).then(function (activity) {
-    // TODO: This should be a presentation model that we can't save
-    console.log('activity', activity);
     var proofreadingPassage = ProofreadingPassage.fromPassageString(activity.passage);
-
     $scope.proofreadingPassage = proofreadingPassage;
-
-    // FIXME: These scope assignments are currently here for backwards-compatibility.
-    $scope.pf = activity;
+    $scope.proofreadingActivity = activity;
     return proofreadingPassage.getRules();
   });
 
@@ -50,12 +45,12 @@ function ProofreadingPlayCtrl (
    */
   function showModalNotEnoughFound() {
     var needed = $scope.proofreadingPassage.getNumErrorsToSolve();
-    $scope.pf.modal = {
+    $scope.modal = {
       title: 'Keep Trying!',
       message: 'You must make at least ' + needed + ' edits.',
       buttonMessage: 'Find Edits',
       buttonClick: function () {
-        $scope.pf.modal.show = false;
+        $scope.modal.show = false;
       },
       show: true
     };
@@ -75,12 +70,12 @@ function ProofreadingPlayCtrl (
     var nf = numErrorsFound === numErrorsToSolve ? 'all ' + String(numErrorsFound) : String(numErrorsFound) + ' of ' + String(numErrorsToSolve);
     var title = createTitle();
 
-    $scope.pf.modal = {
+    $scope.modal = {
       title: title,
       message: 'You found ' + nf + ' errors.',
       buttonMessage: 'Review Your Work',
       buttonClick: function () {
-        $scope.pf.modal.show = false;
+        $scope.modal.show = false;
         showResults();
       },
       show: true
