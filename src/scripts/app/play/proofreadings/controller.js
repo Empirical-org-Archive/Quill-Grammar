@@ -4,16 +4,12 @@ module.exports =
 
 /*@ngInject*/
 function ProofreadingPlayCtrl (
-  $scope, $state, ProofreadingService, RuleService, _,
+  $scope, $state, RuleService, _,
   $location, localStorageService, $document, $timeout,
+  ProofreaderActivity,
   $analytics
 ) {
   $scope.id = $state.params.uid;
-
-  function error() {
-    console.error(arguments[0].stack);
-    $state.go('index');
-  }
 
   $scope.obscure = function (key) {
     return btoa(key);
@@ -23,11 +19,18 @@ function ProofreadingPlayCtrl (
     return atob(o);
   };
 
-  ProofreadingService.getProofreading($scope.id).then(function (pf) {
-    pf.passage = ProofreadingService.prepareProofreading(pf.passage, $scope);
-    $scope.pf = pf;
-    fetchListedRules();
-  }, error);
+  ProofreaderActivity.getById($scope.id).then(function (activity) {
+    // TODO: This should be a presentation model that we can't save
+    console.log('activity', activity);
+    $scope.pf = activity;
+    var questions = activity.preparePassage();
+    $scope.passageQuestions = questions;
+    console.log('passage questions', $scope.passageQuestions);
+    return activity.getRules();
+  }).then(function (rules) {
+    console.log('rules', rules);
+    $scope.referencedRules = rules;
+  });
 
   /*
    * set number of changes to passage. Functions for incrementing and decrementing
@@ -63,13 +66,6 @@ function ProofreadingPlayCtrl (
    * Functions for interacting with the referenced rules in the
    * passage questions.
    */
-
-  function fetchListedRules() {
-    var ruleIds = _.pluck($scope.passageQuestions, 'ruleNumber');
-    RuleService.getRules(ruleIds).then(function (rules) {
-      $scope.referencedRules = rules;
-    });
-  }
 
   $scope.getRuleInfoBy = function (ruleNumber) {
     return _.findWhere($scope.referencedRules, {ruleNumber: Number(ruleNumber)}).title;
@@ -337,7 +333,7 @@ function ProofreadingPlayCtrl (
   };
 
   $scope.isBr = function (text) {
-    return ProofreadingService.htmlMatches(text) !== null;
+    return ProofreaderActivity.htmlMatches(text) !== null;
   };
 
   $scope.hasErrorToShow = function (word) {

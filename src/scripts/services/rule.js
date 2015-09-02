@@ -48,11 +48,6 @@ angular.module('quill-grammar.services.rule', [
     return addRuleNumber(rule)
       .then(crud.save);
   };
-  this.deleteRule = function (category, rule) {
-    return crud.del(rule).then(function () {
-      return CategoryService.removeRuleFromCategory(category, rule);
-    });
-  };
 
   this.getAllRules = function () {
     return crud.all();
