@@ -5,7 +5,7 @@ angular.module('quill-grammar.services.proofreadingPassage', [
   'underscore',
 ])
 /*@ngInject*/
-.factory('ProofreadingPassage', function (_, uuid4, PassageWord, RuleService, $analytics) {
+.factory('ProofreadingPassage', function (_, uuid4, PassageWord, RuleService, $analytics, localStorageService) {
   function ProofreadingPassage(data) {
     if (data) {
       _.extend(this, data);
@@ -102,8 +102,116 @@ angular.module('quill-grammar.services.proofreadingPassage', [
 
   ProofreadingPassage.prototype.getRules = function () {
     var ruleIds = _.pluck(this.questions, 'ruleNumber');
-    return RuleService.getRules(ruleIds);
+    return RuleService.getRules(ruleIds).then(function (rules) {
+      this.rules = rules;
+      return rules;
+    }.bind(this));
   };
+
+  ProofreadingPassage.prototype.getResultRuleNumbers = function () {
+    var ruleNumbers = _.chain(this.results)
+      .pluck('passageEntry')
+      .reject(function (r) {
+        return r.type !== PassageWord.INCORRECT_ERROR;
+      })
+      .pluck('ruleNumber')
+      .reject(_.isUndefined)
+      .uniq()
+      .value();
+    return ruleNumbers;
+  };
+
+  /*
+   * Save proofreading results to LocalStorage.
+   *
+   * Is there any reason not to save these to Firebase?
+   */
+  ProofreadingPassage.prototype.saveLocalResults = function (id) {
+    var results = this.results;
+    var rules = this.rules;
+    saveResults(getLocalResults());
+
+    function saveResults(r) {
+      localStorageService.set('pf-' + id, r);
+      localStorageService.remove('sw-' + id);
+      localStorageService.remove('sw-temp-' + id);
+    }
+
+    /*
+     * generate passage results for local results
+     */
+
+    function getLocalResults() {
+      return _.chain(results)
+        .pluck('passageEntry')
+        .reject(function (pe) {
+          return _.isUndefined(pe.ruleNumber);
+        })
+        .map(function (pe) {
+          var rule = _.findWhere(rules, {ruleNumber: Number(pe.ruleNumber)});
+          return {
+            title: rule.title,
+            correct: pe.type === PassageWord.CORRECT
+          };
+        })
+        .groupBy('title')
+        .map(function (entries, title) {
+          return {
+            conceptClass: title,
+            total: entries.length,
+            correct: _.filter(entries, function (v) { return v.correct; }).length
+          };
+        })
+        .value();
+    }
+  };
+
+  /*
+   * Mapping results for analytics
+   */
+  // TODO: -> ProofreadingPassage model
+  ProofreadingPassage.prototype.sendResultsAnalytics = function () {
+    var event = 'Press Check Answer';
+    var passageResults = _.chain(this.results)
+      .pluck('passageEntry')
+      .map(function pick (p) {
+        return _.pick(p, ['minus', 'ruleNumber', 'responseText', 'plus', 'type']);
+      })
+      .value();
+    var correct = _.filter(passageResults, function (passageResult) {
+      return passageResult.type === PassageWord.CORRECT;
+    });
+    var incorrect = _.filter(passageResults, function (passageResult) {
+      return passageResult.type !== PassageWord.CORRECT;
+    });
+
+    var correctWords = _.map(correct, function (c) {
+      return c.responseText;
+    });
+
+    var incorrectWords = _.map(incorrect, function (i) {
+      return i.responseText;
+    });
+
+    var correctRuleNumbers = _.map(correct, function (c) {
+      return c.ruleNumber;
+    });
+
+    var incorrectRuleNumbers = _.map(incorrect, function (i) {
+      return i.ruleNumber;
+    });
+
+    var attrs = {
+      correct: correct,
+      incorrect: incorrect,
+      correctWords: correctWords,
+      correctRuleNumbers: correctRuleNumbers,
+      incorrectRuleNumbers: incorrectRuleNumbers,
+      incorrectWords: incorrectWords,
+      score: Number(correct.length / this.results.length) * 100
+    };
+    $analytics.eventTrack(event, attrs);
+  }
 
   ProofreadingPassage.prototype.submit = function () {
     var results = [];
@@ -145,6 +253,21 @@ angular.module('quill-grammar.services.proofreadingPassage', [
       $analytics.eventTrack('Edit One Passage Word', word);
     }
   };
+
+    /*
+   * Function to return the grammatical concept for a word
+   * With v1, we are just using the rule title. In the future
+   * we will make a data model change.
+   */
+  ProofreadingPassage.prototype.getGrammaticalConcept = function (word) {
+    if (word.ruleNumber) {
+      var rule = _.findWhere(this.rules, {ruleNumber: Number(word.ruleNumber)});
+      if (rule && rule.title) {
+        return rule.title;
+      }
+    }
+  };
+
 
   // 'private' methods
 

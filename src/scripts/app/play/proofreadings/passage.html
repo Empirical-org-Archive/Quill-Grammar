@@ -1,5 +1,5 @@
 <div class="passage">
-  <div ng-class="{'word':true, 'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="(index, word) in pf.passage" id="error-tooltip-scroll-{{index}}">
+  <div ng-class="{'word':true, 'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="(index, word) in proofreadingPassage.words" id="error-tooltip-scroll-{{index}}">
     <p ng-bind-html="space" ng-show="isBr(word.responseText)" id="break-binding-point-{{index}}"></p>
     <input
       autofocus="$first"
@@ -29,7 +29,7 @@
           <p ng-show="word.plus">{{word.plus}}</p>
           <p ng-show="!word.plus">{{word.text}}</p>
           <h4 ng-show="!word.hasNotNecessaryError()">Grammatical Concept:</h4>
-          <p ng-show="!word.hasNotNecessaryError()">{{word.getGrammaticalConcept(referencedRules)}}</p>
+          <p ng-show="!word.hasNotNecessaryError()">{{proofreadingPassage.getGrammaticalConcept(word)}}</p>
           <button ng-click="word.nextAction.fn()">{{word.nextAction.title}} ➞</button>
         </div>
       </div>

@@ -53,19 +53,5 @@ angular.module('quill-grammar.services.passageWord', [
     }
   };
 
-  /*
-   * Function to return the grammatical concept for a word
-   * With v1, we are just using the rule title. In the future
-   * we will make a data model change.
-   */
-  PassageWord.prototype.getGrammaticalConcept = function (rules) {
-    if (this.ruleNumber) {
-      var rule = _.findWhere(rules, {ruleNumber: Number(this.ruleNumber)});
-      if (rule && rule.title) {
-        return rule.title;
-      }
-    }
-  };
-
   return PassageWord;
 });

@@ -29,15 +29,8 @@ function ProofreadingPlayCtrl (
     $scope.proofreadingPassage = proofreadingPassage;
 
     // FIXME: These scope assignments are currently here for backwards-compatibility.
-    $scope.passageQuestions = proofreadingPassage.questions;
     $scope.pf = activity;
-    $scope.pf.passage = proofreadingPassage.words;
-
-    console.log('passage questions', $scope.passageQuestions);
     return proofreadingPassage.getRules();
-  }).then(function (rules) {
-    console.log('rules', rules);
-    $scope.referencedRules = rules;
   });
 
   $scope.submitPassage = function () {
@@ -70,7 +63,6 @@ function ProofreadingPlayCtrl (
   }
 
   function showResultsModal() {
-    var results = $scope.results;
     var numErrorsFound = $scope.proofreadingPassage.getNumCorrect();
     var numErrorsToSolve = $scope.proofreadingPassage.getNumErrorsToSolve();
     function createTitle() {
@@ -90,7 +82,7 @@ function ProofreadingPlayCtrl (
       buttonMessage: 'Review Your Work',
       buttonClick: function () {
         $scope.pf.modal.show = false;
-        showResults(results);
+        showResults();
       },
       show: true
     };
@@ -159,7 +151,7 @@ function ProofreadingPlayCtrl (
   };
 
   function calculateTop(sIndex) {
-    var breakIndexes = _.chain($scope.pf.passage)
+    var breakIndexes = _.chain($scope.proofreadingPassage.words)
       .map(function (word, index) {
         return [index, $scope.isBr(word.responseText)];
       })
@@ -189,11 +181,11 @@ function ProofreadingPlayCtrl (
     var p = $scope.results[resultIndex - 1];
     var r = $scope.results[resultIndex];
     if (p) {
-      $scope.pf.passage[p.index].tooltip = {};
+      $scope.proofreadingPassage.words[p.index].tooltip = {};
     }
 
     if (r) {
-      $scope.pf.passage[r.index].tooltip = {
+      $scope.proofreadingPassage.words[r.index].tooltip = {
         style: {
           visibility: 'visible',
           opacity: 1,
@@ -251,112 +243,23 @@ function ProofreadingPlayCtrl (
     return ProofreadingPassage.htmlMatches(text) !== null;
   };
 
-  function showResults(passageResults) {
-    _.each(passageResults, function (pr, i) {
-      $scope.pf.passage[pr.index].type = pr.type;
-      $scope.pf.passage[pr.index].resultIndex = i;
-      $scope.pf.passage[pr.index].ruleNumber = pr.passageEntry.ruleNumber;
-      $scope.pf.passage[pr.index].totalResults = passageResults.length;
-      $scope.pf.passage[pr.index].nextAction = $scope.nextAction($scope.pf.passage[pr.index], pr.index);
+  function showResults() {
+    var proofreadingPassage = $scope.proofreadingPassage;
+    var results = $scope.proofreadingPassage.results;
+    _.each(results, function (passageResult, i) {
+      var word = proofreadingPassage.words[passageResult.index];
+      word.type = passageResult.type;
+      word.resultIndex = i;
+      word.ruleNumber = passageResult.passageEntry.ruleNumber;
+      word.totalResults = results.length;
+      word.nextAction = $scope.nextAction(word, passageResult.index);
     });
-    var ruleNumbers = _.chain(passageResults)
-      .pluck('passageEntry')
-      .reject(function (r) {
-        return r.type !== PassageWord.INCORRECT_ERROR;
-      })
-      .pluck('ruleNumber')
-      .reject(_.isUndefined)
-      .uniq()
-      .value();
-    generateLesson(ruleNumbers);
-    $scope.focusResult(0, passageResults[0].index);
-    // TODO: -> ProofreadingPassage model
-    sendResultsAnalytics(passageResults);
-    // TODO: -> ProofreadingPassage model
-    saveResults(getLocalResults(passageResults));
-    $scope.pf.passage.submitted = true;
-  }
-
-  function saveResults(r) {
-    localStorageService.set('pf-' + $scope.id, r);
-    localStorageService.remove('sw-' + $scope.id);
-    localStorageService.remove('sw-temp-' + $scope.id);
-  }
-
-  /*
-   * Mapping results for analytics
-   */
-  // TODO: -> ProofreadingPassage model
-  function sendResultsAnalytics(results) {
-    var event = 'Press Check Answer';
-    var passageResults = _.chain(results)
-      .pluck('passageEntry')
-      .map(function pick (p) {
-        return _.pick(p, ['minus', 'ruleNumber', 'responseText', 'plus', 'type']);
-      })
-      .value();
-    var correct = _.filter(passageResults, function (pr) {
-      return pr.type === PassageWord.CORRECT;
-    });
-    var incorrect = _.filter(passageResults, function (pr) {
-      return pr.type !== PassageWord.CORRECT;
-    });
-
-    var correctWords = _.map(correct, function (c) {
-      return c.responseText;
-    });
-
-    var incorrectWords = _.map(incorrect, function (i) {
-      return i.responseText;
-    });
-
-    var correctRuleNumbers = _.map(correct, function (c) {
-      return c.ruleNumber;
-    });
-
-    var incorrectRuleNumbers = _.map(incorrect, function (i) {
-      return i.ruleNumber;
-    });
-
-    var attrs = {
-      correct: correct,
-      incorrect: incorrect,
-      correctWords: correctWords,
-      correctRuleNumbers: correctRuleNumbers,
-      incorrectRuleNumbers: incorrectRuleNumbers,
-      incorrectWords: incorrectWords,
-      score: Number(correct.length / results.length) * 100
-    };
-    $analytics.eventTrack(event, attrs);
-  }
-
-  /*
-   * generate passage results for local results
-   */
-
-  function getLocalResults(passageResults) {
-    var rules = $scope.referencedRules;
-    return _.chain(passageResults)
-      .pluck('passageEntry')
-      .reject(function (pe) {
-        return _.isUndefined(pe.ruleNumber);
-      })
-      .map(function (pe) {
-        var rule = _.findWhere(rules, {ruleNumber: Number(pe.ruleNumber)});
-        return {
-          title: rule.title,
-          correct: pe.type === PassageWord.CORRECT
-        };
-      })
-      .groupBy('title')
-      .map(function (entries, title) {
-        return {
-          conceptClass: title,
-          total: entries.length,
-          correct: _.filter(entries, function (v) { return v.correct; }).length
-        };
-      })
-      .value();
+    generateLesson(proofreadingPassage.getResultRuleNumbers());
+    $scope.focusResult(0, results[0].index);
+    proofreadingPassage.sendResultsAnalytics();
+    // ProofreadingPassage is probably doing too much.
+    proofreadingPassage.saveLocalResults($scope.id);
+    proofreadingPassage.submitted = true;
   }
 
   /*

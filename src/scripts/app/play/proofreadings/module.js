@@ -16,21 +16,18 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
 .directive('quillGrammarPassage', function () {
   return {
     restrict: 'E',
-    controller: 'ProofreadingPlayCtrl',
     templateUrl: 'passage.html'
   };
 })
 .directive('quillGrammarPfHeading', function () {
   return {
     restrict: 'E',
-    controller: 'ProofreadingPlayCtrl',
     templateUrl: 'pf-heading.html'
   };
 })
 .directive('quillGrammarPassageSubmitPanel', function () {
   return {
     restrict: 'E',
-    controller: 'ProofreadingPlayCtrl',
     templateUrl: 'pf-submit-panel.html'
   };
 })
