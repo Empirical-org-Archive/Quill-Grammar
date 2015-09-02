@@ -3,6 +3,7 @@
 module.exports =
 angular.module('quill-grammar.services.proofreadingPassage', [
   'underscore',
+  require('./../rule.js').name
 ])
 /*@ngInject*/
 .factory('ProofreadingPassage', function (_, uuid4, PassageWord, RuleService, $analytics, localStorageService) {

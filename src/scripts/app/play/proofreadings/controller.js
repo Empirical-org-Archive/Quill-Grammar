@@ -4,12 +4,11 @@ module.exports =
 
 /*@ngInject*/
 function ProofreadingPlayCtrl (
-  $scope, $state, RuleService, _,
-  $location, localStorageService, $document, $timeout,
+  $scope, $state, _,
+  $location, $document, $timeout,
   ProofreaderActivity,
   PassageWord,
-  ProofreadingPassage,
-  $analytics
+  ProofreadingPassage
 ) {
   $scope.id = $state.params.uid;
 
