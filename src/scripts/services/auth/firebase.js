@@ -31,6 +31,8 @@ module.exports = function ($firebaseAuth, firebaseApp, firebaseUrl, empiricalBas
   // If a token is not provided, fetch and store it.
   var maybeFetchToken = R.ifElse(R.not, R.pipeP(fetchToken, R.tap(storeToken)), R.identity);
 
+  var handleErrors;
+
   function firebaseAuthWithToken(token) {
     // authObj.$onAuth()
     return authObj.$authWithCustomToken(token).then(R.identity, handleErrors);
@@ -41,9 +43,9 @@ module.exports = function ($firebaseAuth, firebaseApp, firebaseUrl, empiricalBas
   var resetAndFetch = R.pipeP(resetToken, fetchAndAuthWithToken);
 
   // If token is expired, try to re-fetch and auth again.
-  var handleErrors = R.cond([R.propEq('code', 'EXPIRED_TOKEN'), resetAndFetch],
-                            [R.propEq('code', 'INVALID_TOKEN'), resetAndFetch],
-                            [R.T, R.identity]); // Fall through to error handlers further down the promise chain.
+  handleErrors = R.cond([R.propEq('code', 'EXPIRED_TOKEN'), resetAndFetch],
+                          [R.propEq('code', 'INVALID_TOKEN'), resetAndFetch],
+                          [R.T, R.identity]); // Fall through to error handlers further down the promise chain.
 
   var reAuthIfLoggedOut = R.ifElse(R.not, fetchAndAuthWithToken, R.identity);
 
