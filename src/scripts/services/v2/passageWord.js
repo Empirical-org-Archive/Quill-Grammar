@@ -44,7 +44,7 @@ angular.module('quill-grammar.services.passageWord', [
   };
 
   PassageWord.prototype.hasErrorToShow = function () {
-    return _.any([this.hasNotNecessaryError.bind(this), this.hasCorrect.bind(this), this.hasIncorrectError.bind(this)], function (fn) {
+    return this.type && _.any([this.hasNotNecessaryError.bind(this), this.hasCorrect.bind(this), this.hasIncorrectError.bind(this)], function (fn) {
       return fn();
     });
   };

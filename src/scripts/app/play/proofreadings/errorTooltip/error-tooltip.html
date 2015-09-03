@@ -1,4 +1,4 @@
-<div ng-class="getErrorTooltipClass(index)" ng-show="!word.isBr() && word.hasErrorToShow()"
+<div ng-class="getErrorTooltipClass(index)" ng-if="!word.isBr() && word.hasErrorToShow()"
   ng-style="word.tooltip.style">
   <div ng-class="{incorrectError: word.hasIncorrectError(), notNecessaryError: word.hasNotNecessaryError(), correct: word.hasCorrect()}">
     <div ng-class="getErrorTooltipTopClass(answerImageName(word.type))">
@@ -10,10 +10,10 @@
     </div>
     <div class="bottom-panel">
       <h4>Correct Edit:</h4>
-      <p ng-show="word.plus">{{word.plus}}</p>
+      <p ng-show="word.plus">{{::word.plus}}</p>
       <p ng-show="!word.plus">{{word.text}}</p>
       <h4 ng-show="!word.hasNotNecessaryError()">Grammatical Concept:</h4>
-      <p ng-show="!word.hasNotNecessaryError()">{{proofreadingPassage.getGrammaticalConcept(word)}}</p>
+      <p ng-show="!word.hasNotNecessaryError()">{{::proofreadingPassage.getGrammaticalConcept(word)}}</p>
       <button ng-click="word.nextAction.fn()">{{word.nextAction.title}} ➞</button>
     </div>
   </div>
