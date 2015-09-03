@@ -1,9 +1,0 @@
-<h2>Sentence Writing</h2>
-<ul ng-repeat="set in sentences">
-  <ul>
-    <li><a ui-sref="play-sw({uid: set.$id})"><h3>{{set.title}}</h3></a></li>
-    <li><a ui-sref="sentences.edit({id: set.$id})">edit</a>
-  </ul>
-</ul>
-
-<a ui-sref="sentences.new.details()">new</a>

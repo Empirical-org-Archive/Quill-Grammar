@@ -1,3 +1,4 @@
+'use strict';
 var utilities = require('empirical-angular-gulp-tasks/utilities');
 
 module.exports = {
