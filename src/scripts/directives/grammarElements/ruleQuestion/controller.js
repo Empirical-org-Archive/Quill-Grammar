@@ -58,6 +58,10 @@ module.exports = function ($scope, _, $timeout) {
     };
   }
 
+  function setMessage(msg) {
+    $scope.ruleQuestion.message = msg;
+  }
+
   $scope.answerText = {
     default: 'Check Work',
     notLongEnough: '<b>Try again!</b>Your answer is not long enough.',
@@ -134,10 +138,6 @@ module.exports = function ($scope, _, $timeout) {
       $scope.checkAnswerText = $scope.answerText.tryAgainButton;
     }
   };
-
-  function setMessage(msg) {
-    $scope.ruleQuestion.message = msg;
-  }
 
   /*
    * Event handler for input paste. This is to

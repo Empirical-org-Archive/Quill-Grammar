@@ -27,19 +27,6 @@ function ProofreadingPlayCtrl (
     return proofreadingPassage.getRules();
   });
 
-  $scope.submitPassage = function () {
-    var isFinished = $scope.proofreadingPassage.submit();
-    $scope.results = $scope.proofreadingPassage.results;
-    if (isFinished) {
-      showResultsModal();
-    } else {
-      showModalNotEnoughFound();
-    }
-  };
-
-  function getNumResults() {
-    return _.keys($scope.results).length;
-  }
   /*
    * Modal settings
    */
@@ -54,6 +41,41 @@ function ProofreadingPlayCtrl (
       },
       show: true
     };
+  }
+
+  /*
+   * Below when handle building the lesson and showing
+   * the appropriate ui.
+   */
+
+  function generateLesson(ruleNumbers) {
+    $scope.goToLesson = function () {
+      $state.go('play-sw-gen', {
+        ids: ruleNumbers,
+        passageId: $scope.id,
+        student: $state.params.student
+      });
+    };
+    $scope.hasLesson = true;
+  }
+
+  function showResults() {
+    var proofreadingPassage = $scope.proofreadingPassage;
+    var results = $scope.proofreadingPassage.results;
+    _.each(results, function (passageResult, i) {
+      var word = proofreadingPassage.words[passageResult.index];
+      word.type = passageResult.type;
+      word.resultIndex = i;
+      word.ruleNumber = passageResult.passageEntry.ruleNumber;
+      word.totalResults = results.length;
+      word.nextAction = $scope.nextAction(word, passageResult.index);
+    });
+    generateLesson(proofreadingPassage.getResultRuleNumbers());
+    $scope.focusResult(0, results[0].index);
+    proofreadingPassage.sendResultsAnalytics();
+    // ProofreadingPassage is probably doing too much.
+    proofreadingPassage.saveLocalResults($scope.id);
+    proofreadingPassage.submitted = true;
   }
 
   function showResultsModal() {
@@ -80,6 +102,20 @@ function ProofreadingPlayCtrl (
       },
       show: true
     };
+  }
+
+  $scope.submitPassage = function () {
+    var isFinished = $scope.proofreadingPassage.submit();
+    $scope.results = $scope.proofreadingPassage.results;
+    if (isFinished) {
+      showResultsModal();
+    } else {
+      showModalNotEnoughFound();
+    }
+  };
+
+  function getNumResults() {
+    return _.keys($scope.results).length;
   }
 
   /*
@@ -206,39 +242,4 @@ function ProofreadingPlayCtrl (
       return true;
     }
   };
-
-  function showResults() {
-    var proofreadingPassage = $scope.proofreadingPassage;
-    var results = $scope.proofreadingPassage.results;
-    _.each(results, function (passageResult, i) {
-      var word = proofreadingPassage.words[passageResult.index];
-      word.type = passageResult.type;
-      word.resultIndex = i;
-      word.ruleNumber = passageResult.passageEntry.ruleNumber;
-      word.totalResults = results.length;
-      word.nextAction = $scope.nextAction(word, passageResult.index);
-    });
-    generateLesson(proofreadingPassage.getResultRuleNumbers());
-    $scope.focusResult(0, results[0].index);
-    proofreadingPassage.sendResultsAnalytics();
-    // ProofreadingPassage is probably doing too much.
-    proofreadingPassage.saveLocalResults($scope.id);
-    proofreadingPassage.submitted = true;
-  }
-
-  /*
-   * Below when handle building the lesson and showing
-   * the appropriate ui.
-   */
-
-  function generateLesson(ruleNumbers) {
-    $scope.goToLesson = function () {
-      $state.go('play-sw-gen', {
-        ids: ruleNumbers,
-        passageId: $scope.id,
-        student: $state.params.student
-      });
-    };
-    $scope.hasLesson = true;
-  }
 };

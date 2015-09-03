@@ -22,6 +22,7 @@ angular.module('quill-grammar.services.rule', [
 
   this.saveRule = function (rule) {
     function addRuleNumber(rule) {
+      var d = $q.defer();
       var ruleNumber = new CrudService('ruleNumberCounter', [], 'cms').getRef();
       ruleNumber.$transaction(function (currentRuleNumber) {
         if (!currentRuleNumber) {
@@ -41,7 +42,6 @@ angular.module('quill-grammar.services.rule', [
       }, function (error) {
         d.reject(error);
       });
-      var d = $q.defer();
       return d.promise;
     }
 

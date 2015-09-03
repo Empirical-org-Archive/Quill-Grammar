@@ -14,6 +14,52 @@ angular.module('quill-grammar.services.proofreadingPassage', [
     return this;
   }
 
+  // 'private' methods
+
+  function extractQuestionsFromPassage(self) {
+    var questions = {};
+    var passage = self.passage;
+
+    passage.replace(/{\+([^-]+)-([^|]+)\|([^}]+)}/g, function (key, plus, minus, ruleNumber) {
+      var genKey = uuid4.generate();
+      questions[genKey] = {
+        plus: plus,
+        minus: minus,
+        ruleNumber: ruleNumber
+      };
+      passage = passage.replace(key, genKey);
+    });
+    passage.replace(/{-([^|]+)\+([^-]+)\|([^}]+)}/g, function (key, minus, plus, ruleNumber) {
+      var genKey = uuid4.generate();
+      questions[genKey] = {
+        plus: plus,
+        minus: minus,
+        ruleNumber: ruleNumber
+      };
+      passage = passage.replace(key, genKey);
+    });
+    self.passage = passage;
+    self.questions = questions;
+  }
+
+  function removeNullWords(n) {
+    return n !== '';
+  }
+
+  function parseHtmlTokens(w) {
+    var matches = PassageWord.htmlMatches(w);
+    if (matches) {
+      _.each(matches, function (match) {
+        if (w !== match) {
+          w = w.replace(new RegExp(match, 'g'), ' ' + match + ' ');
+        }
+      });
+      w = w.trim();
+      return w.split(/\s/);
+    }
+    return w;
+  }
+
   /*
    * Convert a string of text from Firebase into a ProofreadingPassage object.
    */
@@ -258,52 +304,6 @@ angular.module('quill-grammar.services.proofreadingPassage', [
       }
     }
   };
-
-  // 'private' methods
-
-  function extractQuestionsFromPassage(self) {
-    var questions = {};
-    var passage = self.passage;
-
-    passage.replace(/{\+([^-]+)-([^|]+)\|([^}]+)}/g, function (key, plus, minus, ruleNumber) {
-      var genKey = uuid4.generate();
-      questions[genKey] = {
-        plus: plus,
-        minus: minus,
-        ruleNumber: ruleNumber
-      };
-      passage = passage.replace(key, genKey);
-    });
-    passage.replace(/{-([^|]+)\+([^-]+)\|([^}]+)}/g, function (key, minus, plus, ruleNumber) {
-      var genKey = uuid4.generate();
-      questions[genKey] = {
-        plus: plus,
-        minus: minus,
-        ruleNumber: ruleNumber
-      };
-      passage = passage.replace(key, genKey);
-    });
-    self.passage = passage;
-    self.questions = questions;
-  }
-
-  function removeNullWords(n) {
-    return n !== '';
-  }
-
-  function parseHtmlTokens(w) {
-    var matches = PassageWord.htmlMatches(w);
-    if (matches) {
-      _.each(matches, function (match) {
-        if (w !== match) {
-          w = w.replace(new RegExp(match, 'g'), ' ' + match + ' ');
-        }
-      });
-      w = w.trim();
-      return w.split(/\s/);
-    }
-    return w;
-  }
 
   return ProofreadingPassage;
 });
