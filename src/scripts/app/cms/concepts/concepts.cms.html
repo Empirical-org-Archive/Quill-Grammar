@@ -12,8 +12,8 @@
       <th>View</th>
     </tr>
     <tr ng-repeat="c in concepts">
-      <td>{{c.standard.title}}</td>
-      <td>{{c.standard_level.title}}</td>
+      <td>{{c.standard.name}}</td>
+      <td>{{c.standard_level.name}}</td>
       <td>{{c.title}}</td>
       <td>{{getQuestionLength(c.questions)}}</td>
       <td><a ui-sref="cms-concepts-view({id: c.$id})">View</a></td>
