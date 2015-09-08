@@ -6,11 +6,12 @@ module.exports =
 function SentencePlayCtrl (
   $scope, $state, SentenceWritingService, RuleService, _,
   ConceptResult, SentenceLocalStorage, $analytics,
-  AnalyticsService, finalizeService
+  AnalyticsService, finalizeService,
+  GrammarActivity
 ) {
   $scope.$watch('currentRuleQuestion', function (crq) {
     if (_.isObject(crq)) {
-      $scope.currentRule = $scope.swSet[crq.ruleIndex];
+      $scope.currentRule = $scope.sentenceWriting.rulesWithSelectedQuestions[crq.ruleIndex];
     }
   });
 
@@ -86,43 +87,6 @@ function SentencePlayCtrl (
     $scope.currentRuleQuestion = ncrq;
   };
 
-  function errorStateChange() {
-    $state.go('index');
-  }
-
-  /*
-   * Retrieves the corresponding quantity of rule questions
-   * for each rule id. It sets up the $scope parameters at
-   * the first question.
-   */
-  function retrieveNecessaryRules(ruleIds, quantities) {
-    RuleService.getRules(ruleIds).then(function (resolvedRules) {
-      $scope.swSet = _.chain(resolvedRules)
-        .map(function (rr, i) {
-          rr.selectedRuleQuestions = _.chain(rr.resolvedRuleQuestions)
-            .sample(quantities[i])
-            .map(function (rrq) {
-              rrq.ruleIndex = i;
-              return rrq;
-            })
-            .value();
-          return rr;
-        })
-        .value();
-
-      $scope.questions = _.chain($scope.swSet)
-        .pluck('selectedRuleQuestions')
-        .flatten()
-        .value();
-
-      $scope.currentRuleQuestion = $scope.questions[0];
-      $scope.showNextQuestion = false;
-      $scope.showPreviousQuestion = false;
-    }, function () {
-      //errorStateChange();
-    });
-  }
-
   /*
    * Here, we check for the **All Correct from PF Flag**
    */
@@ -146,20 +110,25 @@ function SentencePlayCtrl (
    * If we have ids of rules, we default to a quantity of 3
    * for the max number of rule questions to retrieve.
    */
+  var loadPromise;
   if ($state.params.uid) {
-    SentenceWritingService.getSentenceWriting($state.params.uid).then(function (sw) {
-      $scope.sentenceWriting = sw;
-      var ruleIds = _.pluck(sw.rules, 'ruleId');
-      var quantities = _.pluck(sw.rules, 'quantity');
-      return retrieveNecessaryRules(ruleIds, quantities);
-    }, errorStateChange);
+    loadPromise = GrammarActivity.getById($state.params.uid);
   } else if ($state.params.ids) {
     var ids = _.uniq($state.params.ids.split(','));
-    var quantities = _.chain(ids)
-      .map(function () { return 3; })
-      .value();
-    retrieveNecessaryRules(ids, quantities);
+    loadPromise = GrammarActivity.fromRuleIds(ids);
+  } else {
+    throw new Error('Unable to load sentence writing. Please provide an activity ID or a set of rule IDs.');
   }
+  loadPromise.then(function (grammarActivity) {
+    $scope.sentenceWriting = grammarActivity;
+    return grammarActivity.getQuestions();
+  }).then(function (questions) {
+    // FIXME: Get rid of this scope assignment and just use activity.selectedRuleQuestions.
+    $scope.questions = questions;
+    $scope.currentRuleQuestion = questions[0];
+    $scope.showNextQuestion = false;
+    $scope.showPreviousQuestion = false;
+  });
 
   /*
    * Format Description

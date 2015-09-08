@@ -14,6 +14,8 @@ angular.module('quill-grammar.services.ruleQuestion', [
     'conceptTag', 'conceptClass', 'conceptCategory'
   ], 'cms');
 
+  this.ref = crud.getRef();
+
   this.saveRuleQuestion = function (ruleQuestion) {
     return crud.save(ruleQuestion);
   };
