@@ -33,4 +33,5 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
 })
 .directive('ngSize', require('./ngSize.js'))
 .directive('proofreadingErrorTooltip', require('./errorTooltip/directive.js'))
+.directive('passageWordInput', require('./passageWordInput/directive.js'))
 .controller('ProofreadingPlayCtrl', require('./controller.js'));
