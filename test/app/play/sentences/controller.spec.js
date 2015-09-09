@@ -147,36 +147,6 @@ describe('SentencePlayCtrl', function () {
     });
   });
 
-  describe('answerRuleQuestion event', function () {
-    var conceptResultSaveSpy;
-    beforeEach(function () {
-      subject();
-      conceptResultSaveSpy = sandbox.stub(conceptResultService, 'saveToFirebase');
-      $state.params.passageId = 'fake-passage-id';
-    });
-
-    describe('when the student is not anonymous', function () {
-      beforeEach(function () {
-        scope.sessionId = 'fake-session-id';
-      });
-
-      // FIXME: Uncomment this when the concept results can be saved properly.
-      // it('saves concept results to firebase', function () {
-      //   var ruleQuestion = {
-      //     conceptUid: 'abcde12345'
-      //   };
-      //   var answer = 'gooble gobble';
-      //   var isCorrect = true;
-
-      //   $rootScope.$broadcast('answerRuleQuestion', ruleQuestion, answer, isCorrect);
-      //   expect(conceptResultSaveSpy).to.have.been.calledWith(scope.sessionId, ruleQuestion.conceptUid, {
-      //     answer: answer,
-      //     correct: 1
-      //   });
-      // });
-    });
-  });
-
   describe('#finish', function () {
     beforeEach(function () {
       subject();
