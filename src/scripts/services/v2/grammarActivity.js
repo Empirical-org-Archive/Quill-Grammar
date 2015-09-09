@@ -7,9 +7,11 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   'underscore',
   require('./../../../../.tmp/config.js').name,
   require('./../rule.js').name,
+  require('./../localStorage.js').name,
+  require('./question.js').name,
 ])
 /*@ngInject*/
-.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, _, RuleService, $q) {
+.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, _, RuleService, $q, Question, SentenceLocalStorage) {
   function GrammarActivity(data) {
     if (data) {
       _.extend(this, data);
@@ -29,16 +31,17 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   };
 
   /*
-   * Create a grammar activity from a custom set of rule IDs.
+   * Create a grammar activity from a custom set of rule IDs and a passage ID.
    *
    * This should only be used during play session, not for
    * creating activities to save to firebase.
    *
    * Returns a promise to match the API of GrammarActivity.getById().
    */
-  GrammarActivity.fromRuleIds = function (ruleIds) {
+  GrammarActivity.fromPassageResults = function (ruleIds, passageId) {
     return new $q(function (resolve) {
       var activity = new GrammarActivity({
+        passageId: passageId,
         rules: _.map(ruleIds, function (ruleId) {
           return {
             quantity: GrammarActivity.DEFAULT_QUESTION_QUANTITY,
@@ -66,6 +69,9 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
               rrq.ruleIndex = i;
               return rrq;
             })
+            .map(function (rrq) {
+              return new Question(rrq);
+            })
             .value();
           return rr;
         })
@@ -77,6 +83,14 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
 
       return self.selectedQuestions;
     });
+  };
+
+  GrammarActivity.prototype.submitAnswer = function (question) {
+    // If the activity was generated from passage results.
+    if (this.passageId) {
+      var correct = question.answerIsCorrect();
+      SentenceLocalStorage.storeTempResult(this.passageId, question, question.response, correct);
+    }
   };
 
   return GrammarActivity;

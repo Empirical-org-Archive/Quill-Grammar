@@ -88,9 +88,10 @@ describe('SentencePlayCtrl', function () {
       });
     });
 
-    describe('when the app generates a custom activity based on a set of rules from the passage', function () {
+    describe('when the app generates a custom activity based on results from the passage', function () {
       beforeEach(function () {
         $state.params.ids = 'abcdef,ghijkl,12345';
+        $state.params.passageId = 'fake-passage-id';
       });
 
       it('creates a custom grammar activity', function () {
@@ -113,6 +114,7 @@ describe('SentencePlayCtrl', function () {
         subject();
         $rootScope.$digest();
         expect(scope.sentenceWriting.rules[0]).to.deep.equal(customActivityWithRules.rules[0]);
+        expect(scope.sentenceWriting.passageId).to.equal('fake-passage-id');
       });
     });
   });

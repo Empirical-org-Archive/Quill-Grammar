@@ -1,3 +1,4 @@
+/* jshint expr:true */
 'use strict';
 
 describe('GrammarActivity', function () {
@@ -7,6 +8,8 @@ describe('GrammarActivity', function () {
       fakeGrammarActivityData,
       fakeGrammarActivityId,
       RuleService,
+      Question,
+      SentenceLocalStorage,
       $rootScope,
       $q,
       sandbox;
@@ -14,10 +17,12 @@ describe('GrammarActivity', function () {
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
 
-    inject(function (_GrammarActivity_, _$rootScope_, _RuleService_, _$q_) {
+    inject(function (_GrammarActivity_, _$rootScope_, _RuleService_, _$q_, _Question_, _SentenceLocalStorage_) {
       GrammarActivity = _GrammarActivity_;
       $rootScope = _$rootScope_;
       RuleService = _RuleService_;
+      Question = _Question_;
+      SentenceLocalStorage = _SentenceLocalStorage_;
       $q = _$q_;
     });
 
@@ -45,8 +50,9 @@ describe('GrammarActivity', function () {
     sandbox.verifyAndRestore();
   });
 
-  describe('.fromRuleIds', function () {
-    it('builds a custom grammar activity from a set of rule numbers', function (done) {
+  describe('.fromPassageResults', function () {
+    it('builds a custom grammar activity from a set of rule numbers and a passage ID', function (done) {
+      var fakePassageId = 'abcdef6789';
       var expectedActivityData = {
         rules: [
           {
@@ -63,8 +69,9 @@ describe('GrammarActivity', function () {
           }
         ]
       };
-      GrammarActivity.fromRuleIds([1, 2, 3]).then(function (customGrammarActivity) {
+      GrammarActivity.fromPassageResults([1, 2, 3], fakePassageId).then(function (customGrammarActivity) {
         expect(customGrammarActivity.rules).to.deep.equal(expectedActivityData.rules);
+        expect(customGrammarActivity.passageId).to.equal(fakePassageId);
         done();
       });
       $rootScope.$digest();
@@ -129,6 +136,57 @@ describe('GrammarActivity', function () {
         done();
       });
       $rootScope.$digest();
+    });
+  });
+
+  describe('#submitAnswer', function () {
+    var grammarActivity,
+        fakePassageId,
+        question,
+        localStorageSpy;
+
+    // FIXME: This is commented out for the time being because
+    // the concept UID is not properly associated with the
+    // question.
+    // it('saves a concept result to firebase', function () {
+    //we only need to communicate with the LMS for non-anonymous sessions
+    // if ($scope.sessionId) {
+    // FIXME: conceptUid is not a field on the ruleQuestion. How can we get to the point where this works?
+    // ConceptResult.saveToFirebase($scope.sessionId, crq.conceptUid, {
+    //   answer: answer,
+    //   correct: correct ? 1 : 0
+    // });
+    // }
+
+    // });
+
+    beforeEach(function () {
+      localStorageSpy = sandbox.stub(SentenceLocalStorage, 'storeTempResult');
+    });
+
+    describe('when the grammar activity was generated from a passage', function () {
+      beforeEach(function () {
+        fakePassageId = 'abcdef123';
+        grammarActivity = new GrammarActivity({passageId: fakePassageId});
+        question = new Question({response: 'incorrect response', body: ['correct response']});
+      });
+
+      it('saves temporary results to local storage', function () {
+        grammarActivity.submitAnswer(question);
+        expect(localStorageSpy).to.have.been.calledWith(fakePassageId, question, 'incorrect response', false);
+      });
+    });
+
+    describe('when the grammar activity was not generated from a passage', function () {
+      beforeEach(function () {
+        grammarActivity = new GrammarActivity({});
+        question = new Question({response: 'incorrect response', body: ['correct response']});
+      });
+
+      it('does nothing', function () {
+        grammarActivity.submitAnswer(question);
+        expect(localStorageSpy).not.to.have.been.called;
+      });
     });
   });
 });
