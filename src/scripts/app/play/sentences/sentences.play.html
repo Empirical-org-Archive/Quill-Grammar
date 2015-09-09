@@ -1,4 +1,4 @@
-<div ng-class="{'sentence-writing': true}" ng-show="swSet.length">
+<div ng-class="{'sentence-writing': true}" ng-show="questions.length">
   <div class="passage-heading" ng-show="passageTitle && passageImageUrl">
     <img ng-src="/assets/images/{{passageImageUrl}}" alt="passageTitle"></img>
     <p>{{passageTitle}}</p>
@@ -13,7 +13,6 @@
       <activity-progress-bar title="'Sentence Completed:'" max="questions.length" current="number"></activity-progress-bar>
     </div>
   </div>
-  <grammar-rule-question rule-question="currentRuleQuestion">
-    <sentence-writing-submit-panel></sentence-writing-submit-panel>
+  <grammar-rule-question rule-question="currentRuleQuestion" next="nextQuestion(currentRuleQuestion)" submit="sentenceWriting.submitAnswer(currentRuleQuestion)">
   </grammar-rule-question>
 </div>

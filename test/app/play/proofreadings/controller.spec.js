@@ -1,7 +1,7 @@
 /* jshint expr:true */
 'use strict';
 
-describe('SentencePlayCtrl', function () {
+describe('ProofreadingPlayCtrl', function () {
   beforeEach(module('quill-grammar.play.proofreadings'));
 
   var sandbox,

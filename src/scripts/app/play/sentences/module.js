@@ -8,6 +8,7 @@ angular.module('quill-grammar.play.sentences', [
   require('./../../../services/analytics.js').name,
   require('./../../../services/localStorage.js').name,
   require('./../../../services/lms/conceptResult.js').name,
+  require('./../../../services/v2/grammarActivity.js').name,
   'ui.router',
 ])
 .config(require('./config.js'))
@@ -15,12 +16,6 @@ angular.module('quill-grammar.play.sentences', [
   return {
     restrict: 'E',
     templateUrl: 'sentences.concept-overview.html'
-  };
-})
-.directive('sentenceWritingSubmitPanel', function () {
-  return {
-    restrict: 'E',
-    templateUrl: 'sentences.submit-panel.html',
   };
 })
 .controller('ResultsController', require('./results.controller.js'))

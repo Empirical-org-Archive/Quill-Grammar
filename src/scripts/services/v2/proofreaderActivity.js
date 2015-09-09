@@ -14,7 +14,6 @@ module.exports =
 angular.module('quill-grammar.services.firebase.proofreaderActivity', [
   'firebase',
   'underscore',
-  require('./passageWord.js').name,
   require('./../../../../.tmp/config.js').name,
 ])
 /*@ngInject*/

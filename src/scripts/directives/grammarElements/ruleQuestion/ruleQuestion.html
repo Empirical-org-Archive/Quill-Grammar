@@ -12,7 +12,7 @@
     </div>
     <div ng-class="{'no-message': !ruleQuestion.message, message: ruleQuestion.message}">
       <button ng-show="showCheckAnswerButton" ng-click="checkAnswer()">{{checkAnswerText}}</button>
-      <ng-transclude></ng-transclude>
+      <button ng-show="showNextQuestion" ng-click="nextProblem()">Next Problem</button>
     </div>
   </div>
 </div>

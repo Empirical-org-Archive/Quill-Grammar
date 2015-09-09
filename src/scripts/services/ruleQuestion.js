@@ -4,15 +4,18 @@ module.exports =
 angular.module('quill-grammar.services.ruleQuestion', [
   require('./crud.js').name,
   require('./instruction.js').name,
+  require('./v2/question.js').name,
 ])
 
 .factory('RuleQuestionService', function (
-  CrudService, InstructionService, $q, _
+  CrudService, InstructionService, $q, _, Question
 ) {
   var crud = new CrudService('ruleQuestions', [
     'body', 'hint', 'instructions', 'prompt',
     'conceptTag', 'conceptClass', 'conceptCategory'
   ], 'cms');
+
+  this.ref = crud.getRef();
 
   this.saveRuleQuestion = function (ruleQuestion) {
     return crud.save(ruleQuestion);
@@ -39,7 +42,11 @@ angular.module('quill-grammar.services.ruleQuestion', [
   }
 
   this._getAllRuleQuestionsWithInstructions = function () {
-    return crud.all().then(getInstructionForRuleQuestion);
+    return crud.all().then(function (ruleQuestionsData) {
+      return _.map(ruleQuestionsData, function (rqData) {
+        return new Question(rqData);
+      });
+    }).then(getInstructionForRuleQuestion);
   };
 
   this.getRuleQuestions = function (ruleQuestionIds) {
@@ -53,7 +60,10 @@ angular.module('quill-grammar.services.ruleQuestion', [
 
     $q.all(promises)
     .then(getInstructionForRuleQuestion)
-    .then(function (ruleQuestions) {
+    .then(function (ruleQuestionsData) {
+      var ruleQuestions = _.map(ruleQuestionsData, function (rqData) {
+        return new Question(rqData);
+      });
       d.resolve(ruleQuestions);
     }, function (error) {
       d.reject(error);
