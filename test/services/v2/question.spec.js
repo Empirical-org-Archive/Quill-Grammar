@@ -6,10 +6,10 @@ describe('Question', function () {
   var Question,
       $rootScope,
       sandbox,
-      question,
-      CORRECT_ANSWER = 'Here is the right answer.',
-      NON_STRICT_CORRECT_ANSWER = 'Here is something almost right.';
+      question;
 
+  var CORRECT_ANSWER = 'Here is the right answer.';
+  var NON_STRICT_CORRECT_ANSWER = 'Here is something almost right.';
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
 

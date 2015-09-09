@@ -69,9 +69,6 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
               rrq.ruleIndex = i;
               return rrq;
             })
-            .map(function (rrq) {
-              return new Question(rrq);
-            })
             .value();
           return rr;
         })
