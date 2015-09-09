@@ -4,7 +4,7 @@ module.exports = [
   {
     type: 'text',
     label: 'Answer',
-    model: 'body',
+    model: 'text',
     required: true
   }
 ];

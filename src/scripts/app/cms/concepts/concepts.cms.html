@@ -5,15 +5,17 @@
 <div class="concept-list">
   <table>
     <tr>
-      <th>Standard</th>
-      <th>Category</th>
-      <th>Concept</th>
+      <th>Concept Level 2</th>
+      <th>Concept Level 1</th>
+      <th>Concept Level 0</th>
+      <th>Concept Name</th>
       <th>Questions</th>
       <th>View</th>
     </tr>
     <tr ng-repeat="c in concepts">
-      <td>{{c.standard.title}}</td>
-      <td>{{c.standard_level.title}}</td>
+      <td>{{c.concept_level_2.name}}</td>
+      <td>{{c.concept_level_1.name}}</td>
+      <td>{{c.concept_level_0.name}}</td>
       <td>{{c.title}}</td>
       <td>{{getQuestionLength(c.questions)}}</td>
       <td><a ui-sref="cms-concepts-view({id: c.$id})">View</a></td>
