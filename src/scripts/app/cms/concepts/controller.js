@@ -15,13 +15,12 @@ function ConceptsCmsCtrl (
     return _.keys(questions).length;
   };
 
-  $scope.getTotalConcepts = function(concepts) {
+  $scope.getTotalConcepts = function (concepts) {
     return _.keys(concepts).length;
   };
 
-  $scope.getTotalQuestions = function(concepts) {
-    return _.reduce(concepts, function(sum, c) {
-
+  $scope.getTotalQuestions = function (concepts) {
+    return _.reduce(concepts, function (sum, c) {
       if (_.isNaN(sum)) {
         sum = 0;
       }
