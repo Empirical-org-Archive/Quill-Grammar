@@ -84,7 +84,7 @@ describe('SentencePlayCtrl', function () {
         subject();
         $rootScope.$digest();
         expect(loadActivitySpy).to.have.been.calledWith(fakeGrammarActivityId);
-        expect(scope.sentenceWriting).to.deep.equal(fakeGrammarActivity);
+        expect(scope.grammarActivity).to.deep.equal(fakeGrammarActivity);
       });
     });
 
@@ -113,8 +113,8 @@ describe('SentencePlayCtrl', function () {
         };
         subject();
         $rootScope.$digest();
-        expect(scope.sentenceWriting.rules[0]).to.deep.equal(customActivityWithRules.rules[0]);
-        expect(scope.sentenceWriting.passageId).to.equal('fake-passage-id');
+        expect(scope.grammarActivity.rules[0]).to.deep.equal(customActivityWithRules.rules[0]);
+        expect(scope.grammarActivity.passageId).to.equal('fake-passage-id');
       });
     });
   });
@@ -128,7 +128,7 @@ describe('SentencePlayCtrl', function () {
     it('updates the current rule', function () {
       subject();
       $rootScope.$digest();
-      scope.sentenceWriting = {
+      scope.grammarActivity = {
         rulesWithSelectedQuestions: [
           {
             title: 'not this one'

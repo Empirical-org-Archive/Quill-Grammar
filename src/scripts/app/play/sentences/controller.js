@@ -11,7 +11,7 @@ function SentencePlayCtrl (
 ) {
   $scope.$watch('currentRuleQuestion', function (crq) {
     if (_.isObject(crq)) {
-      $scope.currentRule = $scope.sentenceWriting.rulesWithSelectedQuestions[crq.ruleIndex];
+      $scope.currentRule = $scope.grammarActivity.rulesWithSelectedQuestions[crq.ruleIndex];
     }
   });
 
@@ -89,7 +89,7 @@ function SentencePlayCtrl (
     throw new Error('Unable to load sentence writing. Please provide an activity ID or a set of rule IDs.');
   }
   loadPromise.then(function (grammarActivity) {
-    $scope.sentenceWriting = grammarActivity;
+    $scope.grammarActivity = grammarActivity;
     return grammarActivity.getQuestions();
   }).then(function (questions) {
     // FIXME: Get rid of this scope assignment and just use activity.selectedRuleQuestions.
