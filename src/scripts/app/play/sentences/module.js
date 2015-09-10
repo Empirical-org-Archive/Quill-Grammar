@@ -3,7 +3,6 @@
 module.exports =
 
 angular.module('quill-grammar.play.sentences', [
-  require('./../../../services/sentenceWriting.js').name,
   require('./../../../services/rule.js').name,
   require('./../../../services/analytics.js').name,
   require('./../../../services/localStorage.js').name,

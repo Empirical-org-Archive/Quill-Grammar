@@ -4,7 +4,7 @@ module.exports =
 
 /*@ngInject*/
 function SentencePlayCtrl (
-  $scope, $state, SentenceWritingService, RuleService, _,
+  $scope, $state, RuleService, _,
   ConceptResult, SentenceLocalStorage, $analytics,
   AnalyticsService, finalizeService,
   GrammarActivity
