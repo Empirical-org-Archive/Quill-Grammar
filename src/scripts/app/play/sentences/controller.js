@@ -5,7 +5,7 @@ module.exports =
 /*@ngInject*/
 function SentencePlayCtrl (
   $scope, $state, _,
-  ConceptResult, SentenceLocalStorage,
+  SentenceLocalStorage,
   AnalyticsService, finalizeService,
   GrammarActivity
 ) {

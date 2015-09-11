@@ -72,6 +72,7 @@
     .value('concept2RuleNumber', concept2RuleNumber)
     .value('concept1Question1Json', concept1Question1Json)
     .value('concept1Json', concept1Json)
+    .value('allConceptsJson', allConcepts)
     .service('setupMockFirebaseData', function (GrammarActivity, ConceptsFBService) {
       function setup() {
         var grammarActivityRef = GrammarActivity.ref;
