@@ -3,7 +3,7 @@ module.exports = function () {
   return {
     restrict: 'E',
     scope: {
-      ruleQuestion: '=',
+      question: '=',
       next: '&',
       submit: '&'
     },

@@ -5,14 +5,14 @@
   </div>
   <div class="sentence-writing-heading">
     <div class="left">
-      <h2>{{currentRule.title}}</h2>
+      <h2>{{currentConcept.concept_level_0.name}}</h2>
       <sentence-writing-concept-overview></sentence-writing-concept-overview>
-      <sentence-writing-instructions current-rule="currentRule"></sentence-writing-instructions>
+      <sentence-writing-instructions current-rule="currentConcept"></sentence-writing-instructions>
     </div>
     <div class="right">
       <activity-progress-bar title="'Sentence Completed:'" max="questions.length" current="number"></activity-progress-bar>
     </div>
   </div>
-  <grammar-rule-question rule-question="currentRuleQuestion" next="nextQuestion(currentRuleQuestion)" submit="grammarActivity.submitAnswer(currentRuleQuestion)">
+  <grammar-rule-question question="currentQuestion" next="nextQuestion(currentQuestion)" submit="grammarActivity.submitAnswer(currentQuestion)">
   </grammar-rule-question>
 </div>

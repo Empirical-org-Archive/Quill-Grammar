@@ -27,6 +27,7 @@ module.exports = function (config) {
       'bower_components/mockfirebase/browser/mockfirebase.js',
       'build/app**.js',
       'test/test_helper.js',
+      'test/fixtures.js',
       'test/**/*.spec.js'
     ],
 

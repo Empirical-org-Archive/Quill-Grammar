@@ -1,16 +1,16 @@
-<div class="ruleQuestion">
+<div class="question">
   <div class="information">
     <img src="/assets/images/information_icon.png" alt="information_icon"/>
-    <p ng-bind-html="ruleQuestion.resolvedInstructions | trustedHtml"></p>
+    <p ng-bind-html="question.instructions | trustedHtml"></p>
   </div>
-  <p class="prompt" ng-bind-html="ruleQuestion.prompt | formatPrompt | trustedHtml"></p>
-  <textarea class="student-input" type="text" ng-model="ruleQuestion.response" ng-paste="capturePasteEvent($event)"></textarea>
-  <div class="rule-question-sentence-bar" ng-class="ruleQuestionClass">
+  <p class="prompt" ng-bind-html="question.prompt | formatPrompt | trustedHtml"></p>
+  <textarea class="student-input" type="text" ng-model="question.response" ng-paste="capturePasteEvent($event)"></textarea>
+  <div class="rule-question-sentence-bar" ng-class="questionClass">
     <div class="message-panel">
-      <img ng-src="/assets/images/{{ruleQuestionClass}}_icon.png" alt="ruleQuestion.message" ng-show="ruleQuestionClass && ruleQuestionClass != 'default'"></img>
-      <p ng-show="ruleQuestion.message" ng-bind-html="ruleQuestion.message | trustedHtml"></p>
+      <img ng-src="/assets/images/{{questionClass}}_icon.png" alt="question.message" ng-show="questionClass && questionClass != 'default'"></img>
+      <p ng-show="question.message" ng-bind-html="question.message | trustedHtml"></p>
     </div>
-    <div ng-class="{'no-message': !ruleQuestion.message, message: ruleQuestion.message}">
+    <div ng-class="{'no-message': !question.message, message: question.message}">
       <button ng-show="showCheckAnswerButton" ng-click="checkAnswer()">{{checkAnswerText}}</button>
       <button ng-show="showNextQuestion" ng-click="nextProblem()">Next Problem</button>
     </div>

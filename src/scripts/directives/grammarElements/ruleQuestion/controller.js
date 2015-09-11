@@ -3,7 +3,7 @@
 /*@ngInject*/
 module.exports = function ($scope, _, $timeout, Question) {
   function setMessage(msg) {
-    $scope.ruleQuestion.message = msg;
+    $scope.question.message = msg;
   }
 
   var CheckButtonText = {
@@ -11,31 +11,32 @@ module.exports = function ($scope, _, $timeout, Question) {
     TRY_AGAIN: 'Recheck Work'
   };
 
-  $scope.$watch('ruleQuestion.$id', function () {
+  $scope.$watch('question.$id', function () {
     $scope.checkAnswerText = CheckButtonText.DEFAULT;
-    $scope.ruleQuestionClass = 'default';
+    $scope.questionClass = 'default';
     $scope.showCheckAnswerButton = true;
     $timeout.cancel($scope.shortAnswerPromise);
   });
 
   $scope.checkAnswer = function () {
-    var rq = $scope.ruleQuestion;
+    var rq = $scope.question;
     rq.checkAnswer();
+    console.log(rq.status);
     setMessage(rq.getResponseMessage());
     $timeout.cancel($scope.shortAnswerPromise);
     switch (rq.status) {
       case Question.ResponseStatus.NO_ANSWER: {
-        $scope.ruleQuestionClass = 'try_again';
+        $scope.questionClass = 'try_again';
         $scope.checkAnswerText = CheckButtonText.TRY_AGAIN;
         $scope.shortAnswerPromise = $timeout(function () {
           setMessage('');
-          $scope.ruleQuestionClass = 'default';
+          $scope.questionClass = 'default';
         }, 3000);
         break;
       }
       case Question.ResponseStatus.CORRECT: {
         $scope.checkAnswerText = CheckButtonText.DEFAULT;
-        $scope.ruleQuestionClass = 'correct';
+        $scope.questionClass = 'correct';
         $scope.showCheckAnswerButton = false;
         $scope.showNextQuestion = true;
         $scope.submit();
@@ -43,14 +44,14 @@ module.exports = function ($scope, _, $timeout, Question) {
       }
       case Question.ResponseStatus.TYPING_ERROR_NON_STRICT: {
         $scope.checkAnswerText = CheckButtonText.DEFAULT;
-        $scope.ruleQuestionClass = 'correct';
+        $scope.questionClass = 'correct';
         $scope.showCheckAnswerButton = false;
         $scope.showNextQuestion = true;
         $scope.submit();
         break;
       }
       case Question.ResponseStatus.TOO_MANY_ATTEMPTS: {
-        $scope.ruleQuestionClass = 'incorrect';
+        $scope.questionClass = 'incorrect';
         $scope.checkAnswerText = CheckButtonText.DEFAULT;
         $scope.showCheckAnswerButton = false;
         $scope.showNextQuestion = true;
@@ -58,7 +59,7 @@ module.exports = function ($scope, _, $timeout, Question) {
         break;
       }
       default: {
-        $scope.ruleQuestionClass = 'try_again';
+        $scope.questionClass = 'try_again';
         $scope.checkAnswerText = CheckButtonText.TRY_AGAIN;
       }
     }

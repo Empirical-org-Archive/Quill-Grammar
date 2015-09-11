@@ -3,10 +3,13 @@
 
 describe('GrammarActivity', function () {
   beforeEach(module('quill-grammar.services.firebase.grammarActivity'));
+  beforeEach(module('test.fixtures.firebase'));
 
   var GrammarActivity,
-      fakeGrammarActivityData,
-      fakeGrammarActivityId,
+      ConceptsFBService,
+      grammarActivityJson,
+      concept1Json,
+      grammarActivity1Id,
       RuleService,
       Question,
       SentenceLocalStorage,
@@ -17,33 +20,22 @@ describe('GrammarActivity', function () {
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
 
-    inject(function (_GrammarActivity_, _$rootScope_, _RuleService_, _$q_, _Question_, _SentenceLocalStorage_) {
+    inject(function (_GrammarActivity_,
+      _$rootScope_, _RuleService_, _$q_, _Question_, _SentenceLocalStorage_,
+      _grammarActivityJson_, setupMockFirebaseData,
+      _ConceptsFBService_, _concept1Json_, _grammarActivity1Id_) {
       GrammarActivity = _GrammarActivity_;
+      ConceptsFBService = _ConceptsFBService_;
+      grammarActivityJson = _grammarActivityJson_;
       $rootScope = _$rootScope_;
       RuleService = _RuleService_;
       Question = _Question_;
       SentenceLocalStorage = _SentenceLocalStorage_;
       $q = _$q_;
+      concept1Json = _concept1Json_;
+      setupMockFirebaseData();
+      grammarActivity1Id = _grammarActivity1Id_;
     });
-
-    // FIXME: As part of the migration to the new data format #148,
-    // the structure of this fake activity should be changed to match
-    // the new data format. Failing tests will point to areas that
-    // need fixing.
-    fakeGrammarActivityData = {
-      rules: [
-        {
-          quantity: 1,
-          ruleId: 123
-        },
-        {
-          quantity: 2,
-          ruleId: 456
-        }
-      ]
-    };
-
-    fakeGrammarActivityId = 'abcdef123';
   });
 
   afterEach(function () {
@@ -51,90 +43,84 @@ describe('GrammarActivity', function () {
   });
 
   describe('.fromPassageResults', function () {
-    it('builds a custom grammar activity from a set of rule numbers and a passage ID', function (done) {
+    var concept1RuleNumber,
+      concept2RuleNumber,
+      concept1Question1Json;
+    beforeEach(inject(function (_concept1RuleNumber_, _concept2RuleNumber_, _concept1Question1Json_) {
+      concept1RuleNumber = _concept1RuleNumber_;
+      concept2RuleNumber = _concept2RuleNumber_;
+      concept1Question1Json = _concept1Question1Json_;
+    }));
+
+    it('builds a custom grammar activity', function (done) {
+      GrammarActivity.fromPassageResults([concept1RuleNumber, concept2RuleNumber], '').then(function (customGrammarActivity) {
+        expect(customGrammarActivity).to.be.ok;
+        done();
+      });
+      ConceptsFBService.ref.flush();
+      $rootScope.$digest();
+    });
+
+    it('includes the passage ID on the generated activity', function (done) {
       var fakePassageId = 'abcdef6789';
-      var expectedActivityData = {
-        rules: [
-          {
-            quantity: 3,
-            ruleId: 1
-          },
-          {
-            quantity: 3,
-            ruleId: 2
-          },
-          {
-            quantity: 3,
-            ruleId: 3
-          }
-        ]
-      };
-      GrammarActivity.fromPassageResults([1, 2, 3], fakePassageId).then(function (customGrammarActivity) {
-        expect(customGrammarActivity.rules).to.deep.equal(expectedActivityData.rules);
+      GrammarActivity.fromPassageResults([concept1RuleNumber, concept2RuleNumber], fakePassageId).then(function (customGrammarActivity) {
         expect(customGrammarActivity.passageId).to.equal(fakePassageId);
         done();
       });
+      ConceptsFBService.ref.flush();
+      $rootScope.$digest();
+    });
+
+    it('loads questions for use by the activity', function (done) {
+      GrammarActivity.fromPassageResults([concept1RuleNumber, concept2RuleNumber], '').then(function (customGrammarActivity) {
+        expect(customGrammarActivity.questions[0].answers).to.deep.equal(concept1Question1Json.answers);
+        done();
+      });
+      ConceptsFBService.ref.flush();
+      $rootScope.$digest();
+    });
+
+    it('loads the concepts referenced by the given rule numbers', function (done) {
+      GrammarActivity.fromPassageResults([concept1RuleNumber, concept2RuleNumber], '').then(function (customGrammarActivity) {
+        expect(customGrammarActivity.concepts[0].ruleNumber).to.equal(concept1RuleNumber);
+        done();
+      });
+      ConceptsFBService.ref.flush();
       $rootScope.$digest();
     });
   });
 
   describe('#getById', function () {
     it('loads the activity data from firebase', function (done) {
-      GrammarActivity.ref.child(fakeGrammarActivityId).set(fakeGrammarActivityData);
-      GrammarActivity.getById(fakeGrammarActivityId).then(function (activity) {
-        expect(activity.rules[0]).to.deep.equal(fakeGrammarActivityData.rules[0]);
+      GrammarActivity.getById(grammarActivity1Id).then(function (activity) {
+        expect(activity.title).to.equal(grammarActivityJson.title);
         done();
       });
-      $rootScope.$digest();
       GrammarActivity.ref.flush();
       $rootScope.$digest();
-    });
-  });
-
-  describe('#getQuestions', function () {
-    // FIXME: This data format will break when fixing #148.
-    var fakeRules = [
-      {
-        ruleNumber: 123,
-        resolvedRuleQuestions: [
-          {
-            hint: 'rule 123 question 1',
-            prompt: 'No prompt'
-          },
-          {
-            hint: 'rule 123 question 2',
-            prompt: 'Another prompt'
-          }
-        ]
-      },
-      {
-        ruleNumber: 456,
-        resolvedRuleQuestions: [
-          {
-            hint: 'rule 456 question 1',
-            prompt: 'No prompt'
-          },
-          {
-            hint: 'rule 456 question 2',
-            prompt: 'Another prompt'
-          }
-        ]
-      }
-    ];
-
-    beforeEach(function () {
-      sandbox.mock(RuleService)
-        .expects('getRules')
-        .withArgs([123, 456])
-        .returns($q.when(fakeRules));
+      ConceptsFBService.ref.flush();
+      $rootScope.$digest();
     });
 
-    it('loads a sample of questions for the correct rule IDs and questions', function (done) {
-      var grammarActivity = new GrammarActivity(fakeGrammarActivityData);
-      grammarActivity.getQuestions().then(function (questions) {
-        expect(questions).to.have.length(3);
+    it('loads the appropriate concepts from firebase', function (done) {
+      GrammarActivity.getById(grammarActivity1Id).then(function (activity) {
+        expect(activity.concepts[0].ruleNumber).to.deep.equal(concept1Json.ruleNumber);
         done();
       });
+      GrammarActivity.ref.flush();
+      $rootScope.$digest();
+      ConceptsFBService.ref.flush();
+      $rootScope.$digest();
+    });
+
+    it('loads a sample of questions based on activity concepts and quantities', function (done) {
+      GrammarActivity.getById(grammarActivity1Id).then(function (activity) {
+        expect(activity.questions).to.have.length.above(0);
+        done();
+      });
+      GrammarActivity.ref.flush();
+      $rootScope.$digest();
+      ConceptsFBService.ref.flush();
       $rootScope.$digest();
     });
   });
@@ -157,7 +143,6 @@ describe('GrammarActivity', function () {
     //   correct: correct ? 1 : 0
     // });
     // }
-
     // });
 
     beforeEach(function () {
