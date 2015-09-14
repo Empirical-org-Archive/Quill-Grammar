@@ -16,9 +16,8 @@ angular.module('quill-grammar.services.proofreadingPassage', [
 
   // 'private' methods
 
-  function extractQuestionsFromPassage(self) {
+  function extractQuestionsFromPassage(passage) {
     var questions = {};
-    var passage = self.passage;
 
     passage.replace(/{\+([^-]+)-([^|]+)\|([^}]+)}/g, function (key, plus, minus, ruleNumber) {
       var genKey = uuid4.generate();
@@ -38,8 +37,7 @@ angular.module('quill-grammar.services.proofreadingPassage', [
       };
       passage = passage.replace(key, genKey);
     });
-    self.passage = passage;
-    self.questions = questions;
+    return [questions, passage];
   }
 
   function removeNullWords(n) {
@@ -65,13 +63,13 @@ angular.module('quill-grammar.services.proofreadingPassage', [
    */
   ProofreadingPassage.fromPassageString = function (passage) {
     var proofreadingPassage = new ProofreadingPassage({
-      passage: passage,
       numChanges: 0,
       madeChange: false
     });
 
-    extractQuestionsFromPassage(proofreadingPassage);
-    var questions = proofreadingPassage.questions;
+    var retVal = extractQuestionsFromPassage(passage);
+    var questions = retVal[0];
+    var convertedPassageText = retVal[1];
 
     function parseHangingPassageQuestionsWithNoSpace(w) {
       _.each(questions, function (v, key) {
@@ -83,9 +81,8 @@ angular.module('quill-grammar.services.proofreadingPassage', [
     }
 
     function splitPassageIntoWords(w) {
-      var passageQuestion = questions[w];
-      if (passageQuestion) {
-        var c = _.clone(passageQuestion);
+      if (_.has(questions, w)) {
+        var c = _.clone(questions[w]);
         c.text = c.minus;
         c.responseText = c.text;
         return new PassageWord(c);
@@ -107,7 +104,7 @@ angular.module('quill-grammar.services.proofreadingPassage', [
       return w.text !== '';
     }
 
-    var words = _.chain(proofreadingPassage.passage.split(/\s/))
+    var words = _.chain(convertedPassageText.split(/\s/))
       .filter(removeNullWords)
       .map(parseHtmlTokens)
       .flatten()

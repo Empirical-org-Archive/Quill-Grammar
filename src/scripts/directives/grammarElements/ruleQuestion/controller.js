@@ -21,7 +21,6 @@ module.exports = function ($scope, _, $timeout, Question) {
   $scope.checkAnswer = function () {
     var rq = $scope.question;
     rq.checkAnswer();
-    console.log(rq.status);
     setMessage(rq.getResponseMessage());
     $timeout.cancel($scope.shortAnswerPromise);
     switch (rq.status) {
