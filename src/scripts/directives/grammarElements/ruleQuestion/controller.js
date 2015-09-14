@@ -11,12 +11,15 @@ module.exports = function ($scope, _, $timeout, Question) {
     TRY_AGAIN: 'Recheck Work'
   };
 
-  $scope.$watch('question.$id', function () {
+  // Default values.
+  function resetSubmitPanel() {
     $scope.checkAnswerText = CheckButtonText.DEFAULT;
     $scope.questionClass = 'default';
     $scope.showCheckAnswerButton = true;
     $timeout.cancel($scope.shortAnswerPromise);
-  });
+  }
+
+  resetSubmitPanel();
 
   $scope.checkAnswer = function () {
     var rq = $scope.question;
@@ -66,7 +69,7 @@ module.exports = function ($scope, _, $timeout, Question) {
 
   $scope.nextProblem = function () {
     $scope.showNextQuestion = false;
-    $scope.showCheckAnswerButton = true;
+    resetSubmitPanel();
     $scope.next(); // Defined on the directive.
   };
 
