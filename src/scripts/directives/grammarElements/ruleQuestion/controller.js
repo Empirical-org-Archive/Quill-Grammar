@@ -3,7 +3,7 @@
 /*@ngInject*/
 module.exports = function ($scope, _, $timeout, Question) {
   function setMessage(msg) {
-    $scope.question.message = msg;
+    $scope.responseMessage = msg;
   }
 
   var CheckButtonText = {
@@ -13,10 +13,17 @@ module.exports = function ($scope, _, $timeout, Question) {
 
   // Default values.
   function resetSubmitPanel() {
+    setMessage('');
     $scope.checkAnswerText = CheckButtonText.DEFAULT;
     $scope.questionClass = 'default';
     $scope.showCheckAnswerButton = true;
     $timeout.cancel($scope.shortAnswerPromise);
+  }
+
+  function submitAnswer() {
+    $scope.showCheckAnswerButton = false;
+    $scope.showNextQuestion = true;
+    $scope.submit();
   }
 
   resetSubmitPanel();
@@ -39,25 +46,19 @@ module.exports = function ($scope, _, $timeout, Question) {
       case Question.ResponseStatus.CORRECT: {
         $scope.checkAnswerText = CheckButtonText.DEFAULT;
         $scope.questionClass = 'correct';
-        $scope.showCheckAnswerButton = false;
-        $scope.showNextQuestion = true;
-        $scope.submit();
+        submitAnswer();
         break;
       }
       case Question.ResponseStatus.TYPING_ERROR_NON_STRICT: {
         $scope.checkAnswerText = CheckButtonText.DEFAULT;
         $scope.questionClass = 'correct';
-        $scope.showCheckAnswerButton = false;
-        $scope.showNextQuestion = true;
-        $scope.submit();
+        submitAnswer();
         break;
       }
       case Question.ResponseStatus.TOO_MANY_ATTEMPTS: {
         $scope.questionClass = 'incorrect';
         $scope.checkAnswerText = CheckButtonText.DEFAULT;
-        $scope.showCheckAnswerButton = false;
-        $scope.showNextQuestion = true;
-        $scope.submit();
+        submitAnswer();
         break;
       }
       default: {

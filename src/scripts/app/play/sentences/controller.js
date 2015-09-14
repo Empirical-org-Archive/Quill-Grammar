@@ -10,7 +10,6 @@ function SentencePlayCtrl (
   GrammarActivity
 ) {
   $scope.number = 0;
-  $scope.numAttempts = 2;
 
   //If we have a student param, then we have a valid session
   if ($state.params.student) {
@@ -41,6 +40,8 @@ function SentencePlayCtrl (
   $scope.nextQuestion = function () {
     var nextQuestion = $scope.questions[_.indexOf($scope.questions, $scope.currentQuestion) + 1];
     if (!nextQuestion) {
+      $scope.currentQuestion = null;
+      $scope.currentConcept = null;
       $scope.number = $scope.number + 1;
       $scope.finish();
       return;
@@ -89,7 +90,6 @@ function SentencePlayCtrl (
     $scope.currentQuestion = grammarActivity.questions[0];
     $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
     $scope.showNextQuestion = false;
-    $scope.showPreviousQuestion = false;
   });
 
   /*
