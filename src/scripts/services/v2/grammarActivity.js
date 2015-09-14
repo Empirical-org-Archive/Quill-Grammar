@@ -76,6 +76,9 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
    * Returns a list of questions.
    */
   function loadQuestionsFromConcepts(concepts, quantities) {
+    if (!concepts.length) {
+      throw new Error('Cannot load questions for this activity: no concepts found');
+    }
     var questionsData = _.chain(concepts)
       .map(function (concept, i) {
         _.each(concept.questions, function (question) {
