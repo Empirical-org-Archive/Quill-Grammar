@@ -18,7 +18,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
     }
     return this;
   }
-  GrammarActivity.ref = new Firebase(firebaseUrl + '/v2/grammarActivities');
+  GrammarActivity.ref = new Firebase(firebaseUrl + '/grammarActivities');
 
   GrammarActivity.DEFAULT_QUESTION_QUANTITY = 3;
 

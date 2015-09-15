@@ -3,10 +3,13 @@
 module.exports =
 angular.module('quill-grammar.services.proofreadingPassage', [
   'underscore',
-  require('./../rule.js').name
+  require('./../rule.js').name,
+  require('./passageWord.js').name,
+  'uuid4',
+  'angulartics'
 ])
 /*@ngInject*/
-.factory('ProofreadingPassage', function (_, uuid4, PassageWord, RuleService, $analytics, localStorageService) {
+.factory('ProofreadingPassage', function (_, uuid4, PassageWord, RuleService, $analytics, localStorageService, ConceptsFBService) {
   function ProofreadingPassage(data) {
     if (data) {
       _.extend(this, data);
@@ -117,8 +120,19 @@ angular.module('quill-grammar.services.proofreadingPassage', [
 
     proofreadingPassage.words = words;
     proofreadingPassage.questions = questions;
-    return proofreadingPassage;
+    return loadConcepts(proofreadingPassage).then(function (concepts) {
+      proofreadingPassage.concepts = concepts;
+      return proofreadingPassage;
+    });
   };
+
+  function loadConcepts(proofreadingPassage) {
+    var ruleNumbers = _.chain(proofreadingPassage.questions)
+                        .pluck('ruleNumber')
+                        .map(parseInt)
+                        .value();
+    return ConceptsFBService.getByRuleNumbers(ruleNumbers);
+  }
 
   // 'Instance' methods
 
@@ -132,14 +146,6 @@ angular.module('quill-grammar.services.proofreadingPassage', [
 
   ProofreadingPassage.prototype.getNumCorrect = function () {
     return _.where(this.results, {type: PassageWord.CORRECT}).length;
-  };
-
-  ProofreadingPassage.prototype.getRules = function () {
-    var ruleIds = _.pluck(this.questions, 'ruleNumber');
-    return RuleService.getRules(ruleIds).then(function (rules) {
-      this.rules = rules;
-      return rules;
-    }.bind(this));
   };
 
   ProofreadingPassage.prototype.getResultRuleNumbers = function () {
@@ -162,7 +168,7 @@ angular.module('quill-grammar.services.proofreadingPassage', [
    */
   ProofreadingPassage.prototype.saveLocalResults = function (id) {
     var results = this.results;
-    var rules = this.rules;
+    var concepts = this.concepts;
 
     function saveResults(r) {
       localStorageService.set('pf-' + id, r);
@@ -180,16 +186,19 @@ angular.module('quill-grammar.services.proofreadingPassage', [
           return _.isUndefined(pe.ruleNumber);
         })
         .map(function (pe) {
-          var rule = _.findWhere(rules, {ruleNumber: Number(pe.ruleNumber)});
+          var concept = _.findWhere(concepts, {ruleNumber: Number(pe.ruleNumber)});
+          if (!concept) {
+            throw new Error('Could not find concept corresponding to rule number: ' + pe.ruleNumber);
+          }
           return {
-            title: rule.title,
+            title: concept.concept_level_0.name,
             correct: pe.type === PassageWord.CORRECT
           };
         })
         .groupBy('title')
         .map(function (entries, title) {
           return {
-            conceptClass: title,
+            concept: title,
             total: entries.length,
             correct: _.filter(entries, function (v) { return v.correct; }).length
           };
@@ -295,9 +304,9 @@ angular.module('quill-grammar.services.proofreadingPassage', [
    */
   ProofreadingPassage.prototype.getGrammaticalConcept = function (word) {
     if (word.ruleNumber) {
-      var rule = _.findWhere(this.rules, {ruleNumber: Number(word.ruleNumber)});
-      if (rule && rule.title) {
-        return rule.title;
+      var concept = _.findWhere(this.concepts, {ruleNumber: Number(word.ruleNumber)});
+      if (concept && concept.concept_level_0.name) {
+        return concept.concept_level_0.name;
       }
     }
   };

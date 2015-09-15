@@ -21,10 +21,10 @@ function ProofreadingPlayCtrl (
   };
 
   ProofreaderActivity.getById($scope.id).then(function (activity) {
-    var proofreadingPassage = ProofreadingPassage.fromPassageString(activity.passage);
-    $scope.proofreadingPassage = proofreadingPassage;
     $scope.proofreadingActivity = activity;
-    return proofreadingPassage.getRules();
+    return ProofreadingPassage.fromPassageString(activity.passage);
+  }).then(function (proofreadingPassage) {
+    $scope.proofreadingPassage = proofreadingPassage;
   });
 
   /*

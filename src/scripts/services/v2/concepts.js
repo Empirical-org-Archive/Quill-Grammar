@@ -13,7 +13,7 @@ angular.module('quill-grammar.services.firebase.concepts', [
     return $firebaseArray(self.ref);
   }
 
-  this.ref = new Firebase(firebaseUrl + '/v2/concepts');
+  this.ref = new Firebase(firebaseUrl + '/concepts');
 
   function conceptQuestions(id) {
     return $firebaseArray(new Firebase(firebaseUrl + '/concepts/' + id + '/questions'));

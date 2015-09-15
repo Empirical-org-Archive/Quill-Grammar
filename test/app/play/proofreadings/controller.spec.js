@@ -11,10 +11,13 @@ describe('ProofreadingPlayCtrl', function () {
       $q,
       $state,
       ProofreaderActivity,
+      ConceptsFBService,
       proofreaderActivity1Id;
 
   beforeEach(function () {
-    inject(function (_$controller_, _$rootScope_, _ProofreaderActivity_, _$q_, _$state_, setupMockFirebaseData, _proofreaderActivity1Id_) {
+    inject(function (_$controller_, _$rootScope_, _ProofreaderActivity_,
+      _$q_, _$state_, setupMockFirebaseData, _proofreaderActivity1Id_,
+      _ConceptsFBService_) {
       $controller = _$controller_;
       $rootScope = _$rootScope_;
       $q = _$q_;
@@ -25,6 +28,7 @@ describe('ProofreadingPlayCtrl', function () {
       };
       scope = $rootScope.$new();
       ProofreaderActivity = _ProofreaderActivity_;
+      ConceptsFBService = _ConceptsFBService_;
       setupMockFirebaseData();
     });
   });
@@ -35,6 +39,8 @@ describe('ProofreadingPlayCtrl', function () {
        $state: $state});
     ProofreaderActivity.ref.flush();
     $rootScope.$apply(); // Resolve any promises kicked off on initialization.
+    ConceptsFBService.ref.flush();
+    $rootScope.$apply();
   }
 
   describe('initialization', function () {

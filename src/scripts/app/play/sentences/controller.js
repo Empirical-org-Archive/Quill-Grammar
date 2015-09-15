@@ -80,17 +80,19 @@ function SentencePlayCtrl (
   } else if ($state.params.ids) {
     var ids = _.map(_.uniq($state.params.ids.split(',')), parseInt);
     loadPromise = GrammarActivity.fromPassageResults(ids, $state.params.passageId);
-  } else {
+  } else if (!$state.params.pfAllCorrect) {
     throw new Error('Unable to load sentence writing. Please provide an activity ID or a set of rule IDs.');
   }
-  loadPromise.then(function (grammarActivity) {
-    $scope.grammarActivity = grammarActivity;
-    // FIXME: Get rid of this scope assignment and just use activity.selectedRuleQuestions.
-    $scope.questions = grammarActivity.questions;
-    $scope.currentQuestion = grammarActivity.questions[0];
-    $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
-    $scope.showNextQuestion = false;
-  });
+  if (loadPromise) {
+    loadPromise.then(function (grammarActivity) {
+      $scope.grammarActivity = grammarActivity;
+      // FIXME: Get rid of this scope assignment and just use activity.selectedRuleQuestions.
+      $scope.questions = grammarActivity.questions;
+      $scope.currentQuestion = grammarActivity.questions[0];
+      $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
+      $scope.showNextQuestion = false;
+    });
+  }
 
   /*
    * Format Description

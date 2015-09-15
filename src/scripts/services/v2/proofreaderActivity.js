@@ -24,7 +24,7 @@ angular.module('quill-grammar.services.firebase.proofreaderActivity', [
     }
     return this;
   }
-  ProofreaderModel.ref = new Firebase(firebaseUrl + '/v2/passageProofreadings');
+  ProofreaderModel.ref = new Firebase(firebaseUrl + '/passageProofreadings');
 
   // 'Class' methods
 
