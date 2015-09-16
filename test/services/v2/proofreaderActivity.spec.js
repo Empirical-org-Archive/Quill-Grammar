@@ -21,13 +21,26 @@ describe('ProofreaderActivity', function () {
       proofreaderActivity1Json = _proofreaderActivity1Json_;
     }));
 
-    it('gets the activity from firebase', function (done) {
-      ProofreaderActivity.getById(proofreaderActivity1Id).then(function (activity) {
-        expect(activity.title).to.equal(proofreaderActivity1Json.title);
-        done();
+    describe('when the activity exists', function () {
+      it('gets the activity from firebase', function (done) {
+        ProofreaderActivity.getById(proofreaderActivity1Id).then(function (activity) {
+          expect(activity.title).to.equal(proofreaderActivity1Json.title);
+          done();
+        });
+        ProofreaderActivity.ref.flush();
+        $rootScope.$digest();
       });
-      ProofreaderActivity.ref.flush();
-      $rootScope.$digest();
+    });
+
+    describe('when the activity does not exist', function () {
+      it('rejects the promise with an error', function (done) {
+        ProofreaderActivity.getById('garbage-fake-id').catch(function (err) {
+          expect(err).to.be.instanceof(Error);
+          done();
+        });
+        ProofreaderActivity.ref.flush();
+        $rootScope.$digest();
+      });
     });
   });
 });

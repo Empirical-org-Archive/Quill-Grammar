@@ -5,7 +5,7 @@ module.exports =
 /*@ngInject*/
 function ProofreadingPlayCtrl (
   $scope, $state, _,
-  $location, $document, $timeout,
+  $location, $document, $timeout, $window,
   ProofreaderActivity,
   PassageWord,
   ProofreadingPassage
@@ -20,9 +20,11 @@ function ProofreadingPlayCtrl (
     return atob(o);
   };
 
-  ProofreaderActivity.getById($scope.id).then(function (activity) {
+  ProofreaderActivity.getById($scope.id).then(function onSuccess (activity) {
     $scope.proofreadingActivity = activity;
     return ProofreadingPassage.fromPassageString(activity.passage);
+  }, function onLoadError (err) {
+    $window.alert(err);
   }).then(function (proofreadingPassage) {
     $scope.proofreadingPassage = proofreadingPassage;
   });
