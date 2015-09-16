@@ -9,9 +9,10 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   require('./../rule.js').name,
   require('./../localStorage.js').name,
   require('./question.js').name,
+  require('./../lms/conceptResult.js').name
 ])
 /*@ngInject*/
-.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, _, RuleService, $q, Question, SentenceLocalStorage, ConceptsFBService) {
+.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, _, RuleService, $q, Question, SentenceLocalStorage, ConceptsFBService, ConceptResult) {
   function GrammarActivity(data) {
     if (data) {
       _.extend(this, data);
@@ -104,11 +105,19 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
     return this.concepts[question.conceptIndex];
   };
 
-  GrammarActivity.prototype.submitAnswer = function (question) {
+  GrammarActivity.prototype.submitAnswer = function (question, sessionId) {
+    var correct = question.answerIsCorrect();
+
     // If the activity was generated from passage results.
     if (this.passageId) {
-      var correct = question.answerIsCorrect();
       SentenceLocalStorage.storeTempResult(this.passageId, question, question.response, correct);
+    }
+
+    if (sessionId) {
+      ConceptResult.saveToFirebase(sessionId, question.conceptUid, {
+        answer: question.response,
+        correct: correct ? 1 : 0
+      });
     }
   };
 

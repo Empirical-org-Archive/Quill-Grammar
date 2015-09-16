@@ -8,11 +8,12 @@
   var concept2RuleNumber = 456;
 
   var concept1Question1Id = 'question-1-fixture-uid';
+  var concept1Level0Uid = '9gB_Y50t1a3w33SMASSorQ';
 
   var concept1Json = {
     concept_level_0: {
       name: 'You\'re',
-      uid: '9gB_Y50t1a3w33SMASSorQ'
+      uid: concept1Level0Uid
     },
     concept_level_1: {},
     concept_level_2: {},
@@ -94,6 +95,7 @@
     ])
     .value('grammarActivityJson', grammarActivityJson)
     .value('grammarActivity1Id', grammarActivity1Id)
+    .value('concept1Level0Uid', concept1Level0Uid)
     .value('concept1RuleNumber', concept1RuleNumber)
     .value('concept2RuleNumber', concept2RuleNumber)
     .value('concept1Question1Json', concept1Question1Json)
