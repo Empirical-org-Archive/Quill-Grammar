@@ -23,7 +23,7 @@ function configure ($stateProvider) {
     parent: 'app',
     templateUrl: 'sentences.results.html',
     controller: 'ResultsController',
-    url: '/play/sw/gen-results?passageId'
+    url: '/play/sw/gen-results?passageId&student'
   })
   .state('play-sw-gen', {
     parent: 'app',
