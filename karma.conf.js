@@ -23,9 +23,11 @@ module.exports = function (config) {
     // File load order: Vendors (includes angular) -> angular-mocks -> app -> specs
     files: [
       'build/vendors*.js',
+      {pattern: 'build/vendors**.js.map', served: true, watched: true, included: false},
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/mockfirebase/browser/mockfirebase.js',
       'build/app**.js',
+      {pattern: 'build/app**.js.map', served: true, watched: true, included: false},
       'test/test_helper.js',
       'test/**/*.spec.js'
     ],
