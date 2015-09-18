@@ -4,7 +4,7 @@ module.exports =
 
 /*@ngInject*/
 function GrammarActivitiesCreateCmsCtrl (
-  $scope, _, GrammarActivity
+  $scope, _, GrammarActivity, $state
 ) {
   $scope.grammarActivity = {};
   $scope.grammarActivity.question_set = [{}];
@@ -22,18 +22,19 @@ function GrammarActivitiesCreateCmsCtrl (
   }
 
   $scope.processGrammarActivityForm = function () {
-    console.log('Processing ', $scope.grammarActivity);
     var ga = $scope.grammarActivity;
     var newGrammarActivity = {
       title: ga.title,
       description: ga.description,
-      concepts: buildConcepts(ga.question_set)
+      concepts: buildConcepts(ga.question_set),
+      standard: ga.standard,
+      standard_level: ga.standard_level,
+      theme: ga.theme
     };
 
-    console.log(newGrammarActivity);
 
     GrammarActivity.addToFB(newGrammarActivity).then(function () {
-      console.log('Added', newGrammarActivity);
+      $state.go('cms-grammar-activities');
     });
   };
 };
