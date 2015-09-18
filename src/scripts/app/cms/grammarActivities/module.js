@@ -8,4 +8,5 @@ angular.module('quill-grammar.cms.grammarActivities', [
 .config(require('./config.js'))
 .controller('GrammarActivitiesCmsCtrl', require('./controller.js'))
 .controller('GrammarActivitiesCreateCmsCtrl', require('./create.controller.js'))
+.controller('GrammarActivitiesEditCmsCtrl', require('./edit.controller.js'))
 ;

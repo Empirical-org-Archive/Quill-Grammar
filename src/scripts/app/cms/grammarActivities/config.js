@@ -21,5 +21,11 @@ function configure ($stateProvider) {
     templateUrl: 'grammar.activities.create.cms.html',
     controller: 'GrammarActivitiesCreateCmsCtrl',
     url: '/create'
+  })
+  .state('cms-grammar-activities-edit', {
+    parent: 'cms-grammar-activities-base',
+    templateUrl: 'grammar.activities.edit.cms.html',
+    controller: 'GrammarActivitiesEditCmsCtrl',
+    url: '/:id'
   });
 };
