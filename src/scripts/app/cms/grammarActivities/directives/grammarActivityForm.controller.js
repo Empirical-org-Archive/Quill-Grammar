@@ -12,7 +12,7 @@ module.exports =
 /*@ngInject*/
 function GrammarActivityFormCtrl (
   $scope, _, ThemeService, ConceptService,
-  StandardService, StandardLevelService
+  StandardService, StandardLevelService, ConceptsFBService
 ) {
   if (_.isUndefined($scope.grammarActivity) || !_.isObject($scope.grammarActivity)) {
     throw new Error('Please define grammarActivity object in controller scope');
@@ -35,6 +35,10 @@ function GrammarActivityFormCtrl (
   ConceptService.get().then(function (concepts) {
     $scope.concepts.concept_level_2 = concepts.concept_level_2;
     $scope.concepts.concept_level_1 = concepts.concept_level_1;
+  });
+
+  ConceptsFBService.get().then(function (level0Concepts) {
+    $scope.concepts.concept_level_0 = level0Concepts;
   });
 
   StandardService.get().then(function (standards) {
