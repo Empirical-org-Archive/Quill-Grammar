@@ -9,16 +9,17 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   require('./../rule.js').name,
   require('./../localStorage.js').name,
   require('./question.js').name,
+  require('./../lms/conceptResult.js').name
 ])
 /*@ngInject*/
-.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, _, RuleService, $q, Question, SentenceLocalStorage) {
+.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, _, RuleService, $q, Question, SentenceLocalStorage, ConceptsFBService, ConceptResult) {
   function GrammarActivity(data) {
     if (data) {
       _.extend(this, data);
     }
     return this;
   }
-  GrammarActivity.ref = new Firebase(firebaseUrl + '/activities/sentenceWritings');
+  GrammarActivity.ref = new Firebase(firebaseUrl + '/grammarActivities');
 
   GrammarActivity.DEFAULT_QUESTION_QUANTITY = 3;
 
@@ -27,7 +28,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   GrammarActivity.getById = function (id) {
     return $firebaseObject(GrammarActivity.ref.child(id)).$loaded().then(function (data) {
       return new GrammarActivity(data);
-    });
+    }).then(loadQuestionsForFirebaseActivity);
   };
 
   /*
@@ -38,55 +39,85 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
    *
    * Returns a promise to match the API of GrammarActivity.getById().
    */
-  GrammarActivity.fromPassageResults = function (ruleIds, passageId) {
-    return new $q(function (resolve) {
+  GrammarActivity.fromPassageResults = function (ruleNumbers, passageId) {
+    return ConceptsFBService.getByRuleNumbers(ruleNumbers).then(function (concepts) {
       var activity = new GrammarActivity({
         passageId: passageId,
-        rules: _.map(ruleIds, function (ruleId) {
-          return {
-            quantity: GrammarActivity.DEFAULT_QUESTION_QUANTITY,
-            ruleId: ruleId
-          };
-        })
+        concepts: concepts
       });
-      resolve(activity);
+      var quantities = _.times(concepts.length, function () {return GrammarActivity.DEFAULT_QUESTION_QUANTITY; });
+      activity.questions = loadQuestionsFromConcepts(concepts, quantities);
+      return activity;
+    }, function onError (err) {
+      console.error('Error loading concepts from Firebase', err);
     });
   };
 
-  // Retrieve rule questions for the activity's rule numbers and in the right quantities.
-  // TODO: This will need to change to support the new data structure outlined in #148.
-  GrammarActivity.prototype.getQuestions = function () {
-    var ruleIds = _.pluck(this.rules, 'ruleId');
-    var quantities = _.pluck(this.rules, 'quantity');
-    var self = this;
-    return RuleService.getRules(ruleIds).then(function (rules) {
-      // Ported directly from SentencePlayCtrl.
-      self.rulesWithSelectedQuestions = _.chain(rules)
-        .map(function (rr, i) {
-          rr.selectedRuleQuestions = _.chain(rr.resolvedRuleQuestions)
-            .sample(quantities[i])
-            .map(function (rrq) {
-              rrq.ruleIndex = i;
-              return rrq;
-            })
-            .value();
-          return rr;
-        })
-        .value();
-      self.selectedQuestions = _.chain(self.rulesWithSelectedQuestions)
-        .pluck('selectedRuleQuestions')
-        .flatten()
-        .value();
-
-      return self.selectedQuestions;
+  function loadQuestionsForFirebaseActivity(activity) {
+    var quantities = _.pluck(activity.concepts, 'quantity');
+    var conceptIds = _.keys(activity.concepts);
+    return ConceptsFBService.getByIds(conceptIds).then(function (concepts) {
+      activity.concepts = concepts;
+      return loadQuestionsFromConcepts(concepts, quantities);
+    }).then(function (questions) {
+      activity.questions = questions;
+      return activity;
     });
+  }
+
+  /*
+   * Return a list of questions to use in the play session.
+   *
+   * 1st arg is an array of concepts that have already been loaded
+   * from Firebase.
+   * 2nd arg is a array of integers where each entry corresponds
+   * to the number of questions to return for the corresponding concept
+   * in the first list.
+   *
+   * Returns a list of questions.
+   */
+  function loadQuestionsFromConcepts(concepts, quantities) {
+    if (!concepts.length) {
+      throw new Error('Cannot load questions for this activity: no concepts found');
+    }
+    var questionsData = _.chain(concepts)
+      .map(function (concept, i) {
+        _.each(concept.questions, function (question) {
+          question.conceptUid = concept.concept_level_0.uid;
+          question.conceptIndex = i; // For lookup in getConceptForQuestion()
+        });
+        return concept.questions;
+      })
+      .map(function (questionSets, i) {
+        return _.sample(questionSets, quantities[i]);
+      })
+      .flatten()
+      .value();
+
+    var questionModels = _.map(questionsData, function (questionData) {
+      return new Question(questionData);
+    });
+
+    return questionModels;
+  }
+
+  GrammarActivity.prototype.getConceptForQuestion = function (question) {
+    return this.concepts[question.conceptIndex];
   };
 
-  GrammarActivity.prototype.submitAnswer = function (question) {
+  GrammarActivity.prototype.submitAnswer = function (question, sessionId) {
+    var correct = question.answerIsCorrect();
+
     // If the activity was generated from passage results.
     if (this.passageId) {
-      var correct = question.answerIsCorrect();
       SentenceLocalStorage.storeTempResult(this.passageId, question, question.response, correct);
+    }
+
+    if (sessionId) {
+      ConceptResult.saveToFirebase(sessionId, question.conceptUid, {
+        answer: question.response,
+        correct: correct ? 1 : 0
+      });
     }
   };
 

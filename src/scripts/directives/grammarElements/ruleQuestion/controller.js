@@ -3,7 +3,7 @@
 /*@ngInject*/
 module.exports = function ($scope, _, $timeout, Question) {
   function setMessage(msg) {
-    $scope.ruleQuestion.message = msg;
+    $scope.responseMessage = msg;
   }
 
   var CheckButtonText = {
@@ -11,54 +11,58 @@ module.exports = function ($scope, _, $timeout, Question) {
     TRY_AGAIN: 'Recheck Work'
   };
 
-  $scope.$watch('ruleQuestion.$id', function () {
+  // Default values.
+  function resetSubmitPanel() {
+    setMessage('');
     $scope.checkAnswerText = CheckButtonText.DEFAULT;
-    $scope.ruleQuestionClass = 'default';
+    $scope.questionClass = 'default';
     $scope.showCheckAnswerButton = true;
     $timeout.cancel($scope.shortAnswerPromise);
-  });
+  }
+
+  function submitAnswer() {
+    $scope.showCheckAnswerButton = false;
+    $scope.showNextQuestion = true;
+    $scope.submit();
+  }
+
+  resetSubmitPanel();
 
   $scope.checkAnswer = function () {
-    var rq = $scope.ruleQuestion;
+    var rq = $scope.question;
     rq.checkAnswer();
     setMessage(rq.getResponseMessage());
     $timeout.cancel($scope.shortAnswerPromise);
     switch (rq.status) {
       case Question.ResponseStatus.NO_ANSWER: {
-        $scope.ruleQuestionClass = 'try_again';
+        $scope.questionClass = 'try_again';
         $scope.checkAnswerText = CheckButtonText.TRY_AGAIN;
         $scope.shortAnswerPromise = $timeout(function () {
           setMessage('');
-          $scope.ruleQuestionClass = 'default';
+          $scope.questionClass = 'default';
         }, 3000);
         break;
       }
       case Question.ResponseStatus.CORRECT: {
         $scope.checkAnswerText = CheckButtonText.DEFAULT;
-        $scope.ruleQuestionClass = 'correct';
-        $scope.showCheckAnswerButton = false;
-        $scope.showNextQuestion = true;
-        $scope.submit();
+        $scope.questionClass = 'correct';
+        submitAnswer();
         break;
       }
       case Question.ResponseStatus.TYPING_ERROR_NON_STRICT: {
         $scope.checkAnswerText = CheckButtonText.DEFAULT;
-        $scope.ruleQuestionClass = 'correct';
-        $scope.showCheckAnswerButton = false;
-        $scope.showNextQuestion = true;
-        $scope.submit();
+        $scope.questionClass = 'correct';
+        submitAnswer();
         break;
       }
       case Question.ResponseStatus.TOO_MANY_ATTEMPTS: {
-        $scope.ruleQuestionClass = 'incorrect';
+        $scope.questionClass = 'incorrect';
         $scope.checkAnswerText = CheckButtonText.DEFAULT;
-        $scope.showCheckAnswerButton = false;
-        $scope.showNextQuestion = true;
-        $scope.submit();
+        submitAnswer();
         break;
       }
       default: {
-        $scope.ruleQuestionClass = 'try_again';
+        $scope.questionClass = 'try_again';
         $scope.checkAnswerText = CheckButtonText.TRY_AGAIN;
       }
     }
@@ -66,7 +70,7 @@ module.exports = function ($scope, _, $timeout, Question) {
 
   $scope.nextProblem = function () {
     $scope.showNextQuestion = false;
-    $scope.showCheckAnswerButton = true;
+    resetSubmitPanel();
     $scope.next(); // Defined on the directive.
   };
 

@@ -36,7 +36,7 @@ angular.module('quill-grammar.services.question', [
   Question.ResponseMessages[Question.ResponseStatus.INCORRECT] = '<b>Try Again!</b> Unfortunately, that answer is incorrect.';
   Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT] = 'You are correct, but you have some typing errors. You may correct them or continue.';
   Question.ResponseMessages[Question.ResponseStatus.TOO_MANY_ATTEMPTS] = function (question) {
-    return '<b>Incorrect.</b> Correct Answer: ' + getCorrectString(question.body);
+    return '<b>Incorrect.</b> Correct Answer: ' + getCorrectString(_.pluck(question.answers, 'text'));
   };
   Question.ResponseMessages[Question.ResponseStatus.CORRECT] = '<b>Well done!</b> That\'s the correct answer.';
   Question.ResponseMessages[Question.ResponseStatus.NO_ANSWER] = 'You must enter a sentence for us to check.';
@@ -60,7 +60,7 @@ angular.module('quill-grammar.services.question', [
     return '<ul><li>' + answers.join('</li><li>') + '</ul>';
   }
 
-  function compareEntireAnswerToBody(answer) {
+  function compareEntireAnswerToAnswers(answer) {
     return function (b) {
       var cleaned = removeDelimeters(b);
       return answer === cleaned;
@@ -69,14 +69,14 @@ angular.module('quill-grammar.services.question', [
 
   Question.prototype.ensureLengthIsProper = function (answer) {
     var threshold = 0.8;
-    return function (body) {
-      var b = body.replace(delim.open, '').replace(delim.close, '');
+    return function (possibleAnswer) {
+      var b = possibleAnswer.replace(delim.open, '').replace(delim.close, '');
       return (answer.length / b.length) >= threshold;
     };
   };
 
-  Question.prototype.compareGrammarElementToBody = function (answer) {
-    var b = this.body;
+  Question.prototype.compareGrammarElementToAnswers = function (answer) {
+    var b = this.getPossibleAnswers();
     if (!answer) {
       return false;
     }
@@ -105,12 +105,13 @@ angular.module('quill-grammar.services.question', [
       this.status = Question.ResponseStatus.NO_ANSWER;
       return;
     }
-    var exactMatch = _.any(this.body, compareEntireAnswerToBody(answer));
+    var possibleAnswers = this.getPossibleAnswers();
+    var exactMatch = _.any(possibleAnswers, compareEntireAnswerToAnswers(answer));
     if (exactMatch) {
       this.status = Question.ResponseStatus.CORRECT;
-    } else if (!_.every(this.body, this.ensureLengthIsProper(answer))) {
+    } else if (!_.every(possibleAnswers, this.ensureLengthIsProper(answer))) {
       this.status = Question.ResponseStatus.NOT_LONG_ENOUGH;
-    } else if (this.compareGrammarElementToBody(answer)) {
+    } else if (this.compareGrammarElementToAnswers(answer)) {
       this.status = Question.ResponseStatus.TYPING_ERROR_NON_STRICT;
     } else {
       this.status = Question.ResponseStatus.INCORRECT;
@@ -128,6 +129,10 @@ angular.module('quill-grammar.services.question', [
       }
     }
     return;
+  };
+
+  Question.prototype.getPossibleAnswers = function () {
+    return _.pluck(this.answers, 'text');
   };
 
   Question.prototype.getResponseMessage = function () {

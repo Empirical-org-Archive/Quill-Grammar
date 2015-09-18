@@ -4,19 +4,12 @@ module.exports =
 
 /*@ngInject*/
 function SentencePlayCtrl (
-  $scope, $state, SentenceWritingService, RuleService, _,
-  ConceptResult, SentenceLocalStorage, $analytics,
+  $scope, $state, _,
+  SentenceLocalStorage,
   AnalyticsService, finalizeService,
   GrammarActivity
 ) {
-  $scope.$watch('currentRuleQuestion', function (crq) {
-    if (_.isObject(crq)) {
-      $scope.currentRule = $scope.sentenceWriting.rulesWithSelectedQuestions[crq.ruleIndex];
-    }
-  });
-
   $scope.number = 0;
-  $scope.numAttempts = 2;
 
   //If we have a student param, then we have a valid session
   if ($state.params.student) {
@@ -45,15 +38,17 @@ function SentencePlayCtrl (
    * the pointer on the list of questions.
    */
   $scope.nextQuestion = function () {
-    var crq = $scope.currentRuleQuestion;
-    var ncrq = $scope.questions[_.indexOf($scope.questions, crq) + 1];
-    if (!ncrq) {
+    var nextQuestion = $scope.questions[_.indexOf($scope.questions, $scope.currentQuestion) + 1];
+    if (!nextQuestion) {
+      $scope.currentQuestion = null;
+      $scope.currentConcept = null;
       $scope.number = $scope.number + 1;
       $scope.finish();
       return;
     }
     $scope.number = $scope.number + 1;
-    $scope.currentRuleQuestion = ncrq;
+    $scope.currentQuestion = nextQuestion;
+    $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
   };
 
   /*
@@ -83,21 +78,19 @@ function SentencePlayCtrl (
   if ($state.params.uid) {
     loadPromise = GrammarActivity.getById($state.params.uid);
   } else if ($state.params.ids) {
-    var ids = _.uniq($state.params.ids.split(','));
+    var ids = _.map(_.uniq($state.params.ids.split(',')), parseInt);
     loadPromise = GrammarActivity.fromPassageResults(ids, $state.params.passageId);
   } else if (!$state.params.pfAllCorrect) {
     throw new Error('Unable to load sentence writing. Please provide an activity ID or a set of rule IDs.');
   }
   if (loadPromise) {
     loadPromise.then(function (grammarActivity) {
-      $scope.sentenceWriting = grammarActivity;
-      return grammarActivity.getQuestions();
-    }).then(function (questions) {
+      $scope.grammarActivity = grammarActivity;
       // FIXME: Get rid of this scope assignment and just use activity.selectedRuleQuestions.
-      $scope.questions = questions;
-      $scope.currentRuleQuestion = questions[0];
+      $scope.questions = grammarActivity.questions;
+      $scope.currentQuestion = grammarActivity.questions[0];
+      $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
       $scope.showNextQuestion = false;
-      $scope.showPreviousQuestion = false;
     });
   }
 
