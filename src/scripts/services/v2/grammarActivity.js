@@ -39,6 +39,13 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   };
 
   /*
+   * Get all Grammar Activities from Firebase
+   */
+  GrammarActivity.getAllFromFB = function () {
+    return $firebaseArray(GrammarActivity.ref).$loaded();
+  };
+
+  /*
    * Create a grammar activity from a custom set of rule IDs and a passage ID.
    *
    * This should only be used during play session, not for
