@@ -3,7 +3,7 @@
 module.exports =
 
   /*
-   * This directive expects grammarActivity, grammarActivity.question_set,
+   * This directive expects grammarActivity, grammarActivity.concepts,
    * and processGrammarActivityForm to be set in scope. The use cases here
    * are the create grammar activity and edit grammar activity controller
    * modules.
@@ -16,8 +16,8 @@ function GrammarActivityFormCtrl (
 ) {
   if (_.isUndefined($scope.grammarActivity) || !_.isObject($scope.grammarActivity)) {
     throw new Error('Please define grammarActivity object in controller scope');
-  } else if (_.isUndefined($scope.grammarActivity.question_set) || !_.isArray($scope.grammarActivity.question_set)) {
-    throw new Error('Please define grammarActivity.question_set array in controller scope');
+  } else if (_.isUndefined($scope.grammarActivity.concepts) || !_.isArray($scope.grammarActivity.concepts)) {
+    throw new Error('Please define grammarActivity.concepts array in controller scope');
   }
 
   if (_.isUndefined($scope.processGrammarActivityForm) || !_.isFunction($scope.processGrammarActivityForm)) {
@@ -50,13 +50,13 @@ function GrammarActivityFormCtrl (
   });
 
   $scope.removeQuestionFromSet = function (qs) {
-    if ($scope.grammarActivity.question_set) {
-      $scope.grammarActivity.question_set = _.without(
-        $scope.grammarActivity.question_set, qs
+    if ($scope.grammarActivity.concepts) {
+      $scope.grammarActivity.concepts = _.without(
+        $scope.grammarActivity.concepts, qs
       );
     }
   };
   $scope.addAnotherQuestionToSet = function () {
-    $scope.grammarActivity.question_set.push({});
+    $scope.grammarActivity.concepts.push({});
   };
 };

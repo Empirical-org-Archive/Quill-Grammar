@@ -7,7 +7,7 @@ function GrammarActivitiesCreateCmsCtrl (
   $scope, _, GrammarActivity, $state
 ) {
   $scope.grammarActivity = {};
-  $scope.grammarActivity.question_set = [{}];
+  $scope.grammarActivity.concepts = [{}];
 
   function buildConcepts(set) {
     return _.chain(set)
@@ -26,7 +26,7 @@ function GrammarActivitiesCreateCmsCtrl (
     var newGrammarActivity = {
       title: ga.title,
       description: ga.description,
-      concepts: buildConcepts(ga.question_set),
+      concepts: buildConcepts(ga.concepts),
       standard: ga.standard,
       standard_level: ga.standard_level,
       theme: ga.theme
