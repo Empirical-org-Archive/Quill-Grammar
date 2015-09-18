@@ -9,7 +9,12 @@ function GrammarActivitiesEditCmsCtrl (
   $scope.grammarActivity = {};
   $scope.grammarActivity.concepts = {};
 
-  GrammarActivity.getActivityByIdFromFB($state.id).then(function (ga) {
+  GrammarActivity.getById($state.params.id).then(function (ga) {
+    console.log(ga);
     $scope.grammarActivity = ga;
   });
+
+  $scope.processGrammarActivityForm = function (ga) {
+    console.log(ga);
+  };
 };

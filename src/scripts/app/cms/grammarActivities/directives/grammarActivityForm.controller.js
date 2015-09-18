@@ -17,7 +17,9 @@ function GrammarActivityFormCtrl (
   if (_.isUndefined($scope.grammarActivity) || !_.isObject($scope.grammarActivity)) {
     throw new Error('Please define grammarActivity object in controller scope');
   } else if (_.isUndefined($scope.grammarActivity.concepts) || !_.isArray($scope.grammarActivity.concepts)) {
-    throw new Error('Please define grammarActivity.concepts array in controller scope');
+    if (!_.isObject($scope.grammarActivity.concepts)) {
+      throw new Error('Please define grammarActivity.concepts array in controller scope');
+    }
   }
 
   if (_.isUndefined($scope.processGrammarActivityForm) || !_.isFunction($scope.processGrammarActivityForm)) {
