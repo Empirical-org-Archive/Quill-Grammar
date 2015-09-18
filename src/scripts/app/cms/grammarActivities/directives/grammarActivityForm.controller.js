@@ -26,12 +26,15 @@ function GrammarActivityFormCtrl (
   $scope.grammarActivityTemplate = require('../models/grammar.activity.js');
   $scope.grammarActivityQuestionSetTemplate = require('../models/question.set.js');
 
+  $scope.concepts = {};
+
   ThemeService.get().then(function (themes) {
     $scope.themes = themes;
   });
 
   ConceptService.get().then(function (concepts) {
-    $scope.concepts = concepts;
+    $scope.concepts.concept_level_2 = concepts.concept_level_2;
+    $scope.concepts.concept_level_1 = concepts.concept_level_1;
   });
 
   StandardService.get().then(function (standards) {
