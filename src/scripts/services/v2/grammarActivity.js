@@ -12,7 +12,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   require('./../lms/conceptResult.js').name
 ])
 /*@ngInject*/
-.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, _, RuleService, $q, Question, SentenceLocalStorage, ConceptsFBService, ConceptResult) {
+.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, $firebaseArray, _, RuleService, $q, Question, SentenceLocalStorage, ConceptsFBService, ConceptResult) {
   function GrammarActivity(data) {
     if (data) {
       _.extend(this, data);
@@ -29,6 +29,13 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
     return $firebaseObject(GrammarActivity.ref.child(id)).$loaded().then(function (data) {
       return new GrammarActivity(data);
     }).then(loadQuestionsForFirebaseActivity);
+  };
+
+  /*
+   * Create a new grammar activity in Firebase
+   */
+  GrammarActivity.addToFB = function (ga) {
+    return $firebaseArray(GrammarActivity.ref).$add(ga);
   };
 
   /*

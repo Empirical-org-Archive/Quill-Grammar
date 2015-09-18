@@ -4,7 +4,7 @@ module.exports =
 
 /*@ngInject*/
 function GrammarActivitiesCreateCmsCtrl (
-  $scope, _
+  $scope, _, GrammarActivity
 ) {
   $scope.grammarActivity = {};
   $scope.grammarActivity.question_set = [{}];
@@ -32,5 +32,8 @@ function GrammarActivitiesCreateCmsCtrl (
 
     console.log(newGrammarActivity);
 
+    GrammarActivity.addToFB(newGrammarActivity).then(function () {
+      console.log('Added', newGrammarActivity);
+    });
   };
 };
