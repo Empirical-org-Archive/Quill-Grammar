@@ -13,6 +13,7 @@
       <th>Concept Level 0</th>
       <th>Concept Name</th>
       <th>Questions</th>
+      <th>Rule Number</th>
       <th>View</th>
     </tr>
     <tr ng-repeat="c in concepts">
@@ -21,6 +22,7 @@
       <td>{{c.concept_level_0.name}}</td>
       <td>{{c.name}}</td>
       <td>{{getQuestionLength(c.questions)}}</td>
+      <td>{{c.ruleNumber}}</td>
       <td><a ui-sref="cms-concepts-view({id: c.$id})">View</a></td>
     </tr>
   </table>
