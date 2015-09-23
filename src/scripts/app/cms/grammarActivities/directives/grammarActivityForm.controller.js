@@ -11,7 +11,7 @@ module.exports =
 
 /*@ngInject*/
 function GrammarActivityFormCtrl (
-  $scope, _, ThemeService, ConceptService,
+  $scope, _, TopicCategoryService, ConceptService,
   StandardService, StandardLevelService, ConceptsFBService
 ) {
   if (_.isUndefined($scope.grammarActivity) || !_.isObject($scope.grammarActivity)) {
@@ -30,8 +30,8 @@ function GrammarActivityFormCtrl (
 
   $scope.concepts = {};
 
-  ThemeService.get().then(function (themes) {
-    $scope.themes = themes;
+  TopicCategoryService.get().then(function (topicCategories) {
+    $scope.topicCategories = topicCategories;
   });
 
   ConceptService.get().then(function (concepts) {

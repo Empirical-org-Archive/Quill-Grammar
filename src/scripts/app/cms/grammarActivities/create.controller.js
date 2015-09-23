@@ -4,7 +4,8 @@ module.exports =
 
 /*@ngInject*/
 function GrammarActivitiesCreateCmsCtrl (
-  $scope, _, GrammarActivity, $state
+  $scope, _, GrammarActivity, $state,
+  Activity, grammarActivityClassificationUid
 ) {
   $scope.grammarActivity = {};
   $scope.grammarActivity.concepts = [{}];
@@ -29,11 +30,23 @@ function GrammarActivitiesCreateCmsCtrl (
       concepts: buildConcepts(ga.concepts),
       standard: ga.standard,
       standard_level: ga.standard_level,
-      theme: ga.theme
+      topicCategory: ga.topicCategory
     };
 
-
-    GrammarActivity.addToFB(newGrammarActivity).then(function () {
+    GrammarActivity.addToFB(newGrammarActivity).then(function (ref) {
+      var grammarActivityUid = ref.key();
+      var lmsActivity = new Activity({
+        uid: grammarActivityUid,
+        name: newGrammarActivity.title,
+        description: newGrammarActivity.description,
+        topic_uid: newGrammarActivity.standard.uid,
+        activity_classification_uid: grammarActivityClassificationUid
+      });
+      if (!lmsActivity.isValid()) {
+        throw new Error(lmsActivity.errorMessages);
+      }
+      return lmsActivity.create();
+    }).then(function () {
       $state.go('cms-grammar-activities');
     });
   };
