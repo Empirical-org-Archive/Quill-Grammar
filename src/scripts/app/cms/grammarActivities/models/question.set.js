@@ -7,6 +7,6 @@ module.exports = [
   {
     type: 'number',
     label: 'Number of Questions',
-    model: 'number_of_questions'
+    model: 'quantity'
   }
 ];
