@@ -9,8 +9,14 @@ module.exports = [
   },
   {
     type: 'textarea',
-    label: 'Explanation',
-    model: 'explanation',
+    label: 'Rule Description',
+    model: 'ruleDescription',
+    required: true
+  },
+  {
+    type: 'text',
+    label: 'Rule Number',
+    model: 'ruleNumber',
     required: true
   },
   require('./../../base_models/standard.model.js'),
