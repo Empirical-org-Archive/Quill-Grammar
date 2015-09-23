@@ -29,6 +29,12 @@ angular.module('quill-grammar.services.firebase.concepts', [
     });
   };
 
+  this.deleteById = function (id) {
+    return ref().$loaded().then(function (concepts) {
+      return concepts.$remove(concepts.$indexFor(id));
+    });
+  };
+
   this.getByIds = function (ids) {
     var baseRef = this.ref;
     var promises = _.map(ids, function (id) {

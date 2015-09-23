@@ -1,5 +1,6 @@
 <h3>Concept View</h3>
 <a ui-sref="cms-concepts-edit({id: concept.$id})"><button>Edit Concept</button></a>
+<button ng-click="confirmDelete(concept.$id)">Delete Concept</button>
 <h3>{{concept.name}} ({{concept.ruleNumber}})</h3>
 
 <p>{{concept.ruleDescription}}</p>
