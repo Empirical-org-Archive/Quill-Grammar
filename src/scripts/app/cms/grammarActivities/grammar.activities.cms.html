@@ -18,7 +18,7 @@
     <tr ng-repeat="g in grammarActivities">
       <td>{{g.standard.name}}</td>
       <td>{{g.title}}</td>
-      <td>{{g.theme.title}}</td>
+      <td>{{g.topicCategory.name}}</td>
       <td>{{calculateNumberOfQuestions(g)}}</td>
       <td><a ui-sref="cms-grammar-activities-edit({id: g.$id})">Edit</a></td>
     </tr>

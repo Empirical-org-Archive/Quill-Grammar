@@ -1,30 +1,35 @@
 'use strict';
-/* globals _ */
 
-describe('ThemeService', function () {
-  beforeEach(module('quill-grammar.services.lms.theme'));
+describe('TopicCategoryService', function () {
+  beforeEach(module('quill-grammar.services.lms.topicCategory'));
 
-  var themeService;
-  var timeout;
+  var TopicCategoryService,
+      $httpBackend;
 
   beforeEach(function () {
-    inject(function (ThemeService, $timeout) {
-      themeService = ThemeService;
-      timeout = $timeout;
+    module(function ($provide) {
+      $provide.constant('empiricalBaseURL', 'http://foo.bar/api/v1');
+    });
+
+    inject(function (_TopicCategoryService_, _$httpBackend_) {
+      TopicCategoryService = _TopicCategoryService_;
+      $httpBackend = _$httpBackend_;
     });
   });
 
-  describe('API Themes', function () {
-    it('gets all themes', function (done) {
-      themeService.get().then(function (themes) {
-        _.each(themes, function (t) {
-          expect(t).to.be.an('object');
-          expect(t.uid).to.be.a('string');
-          expect(t.title).to.be.a('string');
-        });
+  describe('API TopicCategory', function () {
+    it('gets all', function (done) {
+      var responseData = {
+        topic_categories: 'foobar'
+      };
+      $httpBackend.expectGET('http://foo.bar/api/v1/topic_categories')
+                  .respond(responseData);
+
+      TopicCategoryService.get().then(function (topicCategories) {
+        expect(topicCategories).to.equal('foobar');
         done();
       });
-      timeout.flush();
+      $httpBackend.flush();
     });
   });
 });
