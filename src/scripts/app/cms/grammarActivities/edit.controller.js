@@ -4,17 +4,20 @@ module.exports =
 
 /*@ngInject*/
 function GrammarActivitiesEditCmsCtrl (
-  $scope, GrammarActivity, $state
+  $scope, GrammarActivity, $state, _
 ) {
   $scope.grammarActivity = {};
-  $scope.grammarActivity.concepts = {};
+  $scope.grammarActivity.concepts = [];
 
   GrammarActivity.getOneByIdFromFB($state.params.id).then(function (ga) {
-    console.log(ga);
     $scope.grammarActivity = ga;
+    $scope.grammarActivity.concepts = _.map($scope.grammarActivity.concepts, function(c, k) {
+      c.fb_concept_key = k;
+      return c;
+    });
   });
 
-  $scope.processGrammarActivityForm = function (ga) {
-    console.log(ga);
+  $scope.processGrammarActivityForm = function () {
+
   };
 };
