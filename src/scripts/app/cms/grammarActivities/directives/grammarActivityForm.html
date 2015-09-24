@@ -8,17 +8,20 @@
     <select
       ng-options="c.name for c in concepts.concept_level_2 track by c.uid"
       ng-model="qs.concept_level_2"
-    ></select>
+      ng-required="true"
+    ><option value="">Choose Concept Level 2</option></select>
     <select
       ng-show="qs.concept_level_2"
       ng-options="c.name for c in (concepts.concept_level_1 | filterConcepts:qs.concept_level_2.id) track by c.uid"
       ng-model="qs.concept_level_1"
-    ></select>
+      ng-required="true"
+    ><option value="">Choose Concept Level 1</option></select>
     <select
       ng-show="qs.concept_level_1"
       ng-options="c.name for c in (concepts.concept_level_0 | filterFBConcepts:qs.concept_level_1.id) track by c.uid"
       ng-model="qs.concept_level_0"
-    ></select>
+      ng-required="true"
+      ><option value="">Choose Concept Level 0</option></select>
     <input type="text" ng-model="qs.quantity" placeholder="Quantity"></input>
     <button ng-click="removeQuestionFromSet(qs)">X</button>
   </li>

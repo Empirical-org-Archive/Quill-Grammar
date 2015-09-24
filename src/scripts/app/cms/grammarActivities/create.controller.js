@@ -14,7 +14,7 @@ function GrammarActivitiesCreateCmsCtrl (
     return _.chain(set)
       .map(function (s) {
         return [s.concept_level_0.$id, {
-          quantity: s.number_of_questions,
+          quantity: Number(s.quantity),
           ruleNumber: s.concept_level_0.ruleNumber
         }];
       })
