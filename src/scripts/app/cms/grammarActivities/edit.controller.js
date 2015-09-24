@@ -12,7 +12,7 @@ function GrammarActivitiesEditCmsCtrl (
   GrammarActivity.getOneByIdFromFB($state.params.id).then(function (ga) {
     $scope.grammarActivity = ga;
     $scope.grammarActivity.concepts = _.map($scope.grammarActivity.concepts, function(c, k) {
-      c.fb_concept_key = k;
+      c.$id = k;
       ConceptsFBService.getById(k).then(function (cfb) {
         if (cfb) {
           c.concept_level_2 = cfb.concept_level_2;
