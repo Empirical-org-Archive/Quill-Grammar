@@ -7,10 +7,14 @@ angular.module('quill-grammar.services.firebase.concepts', [
   require('./../../../../.tmp/config.js').name,
 ])
 /*@ngInject*/
-.factory('ConceptsFBService', function (firebaseUrl, $firebaseArray, _) {
+.factory('ConceptsFBService', function (firebaseUrl, $firebaseArray, _, $q, $firebaseObject) {
+  var self = this;
   function ref() {
-    return $firebaseArray(new Firebase(firebaseUrl + '/concepts'));
+    return $firebaseArray(self.ref);
   }
+
+  this.ref = new Firebase(firebaseUrl + '/concepts');
+
   function conceptQuestions(id) {
     return $firebaseArray(new Firebase(firebaseUrl + '/concepts/' + id + '/questions'));
   }
@@ -22,6 +26,31 @@ angular.module('quill-grammar.services.firebase.concepts', [
   this.getById = function (id) {
     return ref().$loaded().then(function (concepts) {
       return concepts.$getRecord(id);
+    });
+  };
+
+  this.deleteById = function (id) {
+    return ref().$loaded().then(function (concepts) {
+      return concepts.$remove(concepts.$indexFor(id));
+    });
+  };
+
+  this.getByIds = function (ids) {
+    var baseRef = this.ref;
+    var promises = _.map(ids, function (id) {
+      return $firebaseObject(baseRef.child(id)).$loaded();
+    });
+
+    return $q.all(promises);
+  };
+
+  this.getByRuleNumbers = function (ruleNumbers) {
+    // This is the really slow way to do this,
+    // but I can't seem to get orderByChild() working properly
+    return ref().$loaded().then(function (concepts) {
+      return _.filter(concepts, function (concept) {
+        return _.contains(ruleNumbers, concept.ruleNumber);
+      });
     });
   };
 

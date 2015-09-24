@@ -3,10 +3,14 @@
 
 describe('GrammarActivity', function () {
   beforeEach(module('quill-grammar.services.firebase.grammarActivity'));
+  beforeEach(module('test.fixtures.firebase'));
 
   var GrammarActivity,
-      fakeGrammarActivityData,
-      fakeGrammarActivityId,
+      ConceptsFBService,
+      ConceptResult,
+      grammarActivityJson,
+      concept1Json,
+      grammarActivity1Id,
       RuleService,
       Question,
       SentenceLocalStorage,
@@ -17,33 +21,24 @@ describe('GrammarActivity', function () {
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
 
-    inject(function (_GrammarActivity_, _$rootScope_, _RuleService_, _$q_, _Question_, _SentenceLocalStorage_) {
+    inject(function (_GrammarActivity_,
+      _$rootScope_, _RuleService_, _$q_, _Question_, _SentenceLocalStorage_,
+      _grammarActivityJson_, setupMockFirebaseData,
+      _ConceptsFBService_, _concept1Json_, _grammarActivity1Id_,
+      _ConceptResult_) {
       GrammarActivity = _GrammarActivity_;
+      ConceptsFBService = _ConceptsFBService_;
+      ConceptResult = _ConceptResult_;
+      grammarActivityJson = _grammarActivityJson_;
       $rootScope = _$rootScope_;
       RuleService = _RuleService_;
       Question = _Question_;
       SentenceLocalStorage = _SentenceLocalStorage_;
       $q = _$q_;
+      concept1Json = _concept1Json_;
+      setupMockFirebaseData();
+      grammarActivity1Id = _grammarActivity1Id_;
     });
-
-    // FIXME: As part of the migration to the new data format #148,
-    // the structure of this fake activity should be changed to match
-    // the new data format. Failing tests will point to areas that
-    // need fixing.
-    fakeGrammarActivityData = {
-      rules: [
-        {
-          quantity: 1,
-          ruleId: 123
-        },
-        {
-          quantity: 2,
-          ruleId: 456
-        }
-      ]
-    };
-
-    fakeGrammarActivityId = 'abcdef123';
   });
 
   afterEach(function () {
@@ -51,90 +46,95 @@ describe('GrammarActivity', function () {
   });
 
   describe('.fromPassageResults', function () {
-    it('builds a custom grammar activity from a set of rule numbers and a passage ID', function (done) {
+    var concept1RuleNumber,
+      concept2RuleNumber,
+      concept1Question1Json,
+      concept1Level0Uid;
+    beforeEach(inject(function (_concept1RuleNumber_, _concept2RuleNumber_, _concept1Question1Json_, _concept1Level0Uid_) {
+      concept1RuleNumber = _concept1RuleNumber_;
+      concept2RuleNumber = _concept2RuleNumber_;
+      concept1Question1Json = _concept1Question1Json_;
+      concept1Level0Uid = _concept1Level0Uid_;
+    }));
+
+    it('builds a custom grammar activity', function (done) {
+      GrammarActivity.fromPassageResults([concept1RuleNumber, concept2RuleNumber], '').then(function (customGrammarActivity) {
+        expect(customGrammarActivity).to.be.ok;
+        done();
+      });
+      ConceptsFBService.ref.flush();
+      $rootScope.$digest();
+    });
+
+    it('includes the passage ID on the generated activity', function (done) {
       var fakePassageId = 'abcdef6789';
-      var expectedActivityData = {
-        rules: [
-          {
-            quantity: 3,
-            ruleId: 1
-          },
-          {
-            quantity: 3,
-            ruleId: 2
-          },
-          {
-            quantity: 3,
-            ruleId: 3
-          }
-        ]
-      };
-      GrammarActivity.fromPassageResults([1, 2, 3], fakePassageId).then(function (customGrammarActivity) {
-        expect(customGrammarActivity.rules).to.deep.equal(expectedActivityData.rules);
+      GrammarActivity.fromPassageResults([concept1RuleNumber, concept2RuleNumber], fakePassageId).then(function (customGrammarActivity) {
         expect(customGrammarActivity.passageId).to.equal(fakePassageId);
         done();
       });
+      ConceptsFBService.ref.flush();
+      $rootScope.$digest();
+    });
+
+    it('loads questions for use by the activity', function (done) {
+      GrammarActivity.fromPassageResults([concept1RuleNumber, concept2RuleNumber], '').then(function (customGrammarActivity) {
+        expect(customGrammarActivity.questions[0].answers).to.deep.equal(concept1Question1Json.answers);
+        done();
+      });
+      ConceptsFBService.ref.flush();
+      $rootScope.$digest();
+    });
+
+    it('tacks on a conceptUid property to each loaded question', function (done) {
+      GrammarActivity.fromPassageResults([concept1RuleNumber, concept2RuleNumber], '').then(function (customGrammarActivity) {
+        expect(customGrammarActivity.questions[0].conceptUid).to.equal(concept1Level0Uid);
+        done();
+      });
+      ConceptsFBService.ref.flush();
+      $rootScope.$digest();
+    });
+
+    it('loads the concepts referenced by the given rule numbers', function (done) {
+      GrammarActivity.fromPassageResults([concept1RuleNumber, concept2RuleNumber], '').then(function (customGrammarActivity) {
+        expect(customGrammarActivity.concepts[0].ruleNumber).to.equal(concept1RuleNumber);
+        done();
+      });
+      ConceptsFBService.ref.flush();
       $rootScope.$digest();
     });
   });
 
   describe('#getById', function () {
     it('loads the activity data from firebase', function (done) {
-      GrammarActivity.ref.child(fakeGrammarActivityId).set(fakeGrammarActivityData);
-      GrammarActivity.getById(fakeGrammarActivityId).then(function (activity) {
-        expect(activity.rules[0]).to.deep.equal(fakeGrammarActivityData.rules[0]);
+      GrammarActivity.getById(grammarActivity1Id).then(function (activity) {
+        expect(activity.title).to.equal(grammarActivityJson.title);
         done();
       });
-      $rootScope.$digest();
       GrammarActivity.ref.flush();
       $rootScope.$digest();
-    });
-  });
-
-  describe('#getQuestions', function () {
-    // FIXME: This data format will break when fixing #148.
-    var fakeRules = [
-      {
-        ruleNumber: 123,
-        resolvedRuleQuestions: [
-          {
-            hint: 'rule 123 question 1',
-            prompt: 'No prompt'
-          },
-          {
-            hint: 'rule 123 question 2',
-            prompt: 'Another prompt'
-          }
-        ]
-      },
-      {
-        ruleNumber: 456,
-        resolvedRuleQuestions: [
-          {
-            hint: 'rule 456 question 1',
-            prompt: 'No prompt'
-          },
-          {
-            hint: 'rule 456 question 2',
-            prompt: 'Another prompt'
-          }
-        ]
-      }
-    ];
-
-    beforeEach(function () {
-      sandbox.mock(RuleService)
-        .expects('getRules')
-        .withArgs([123, 456])
-        .returns($q.when(fakeRules));
+      ConceptsFBService.ref.flush();
+      $rootScope.$digest();
     });
 
-    it('loads a sample of questions for the correct rule IDs and questions', function (done) {
-      var grammarActivity = new GrammarActivity(fakeGrammarActivityData);
-      grammarActivity.getQuestions().then(function (questions) {
-        expect(questions).to.have.length(3);
+    it('loads the appropriate concepts from firebase', function (done) {
+      GrammarActivity.getById(grammarActivity1Id).then(function (activity) {
+        expect(activity.concepts[0].ruleNumber).to.deep.equal(concept1Json.ruleNumber);
         done();
       });
+      GrammarActivity.ref.flush();
+      $rootScope.$digest();
+      ConceptsFBService.ref.flush();
+      $rootScope.$digest();
+    });
+
+    it('loads a sample of questions based on activity concepts and quantities', function (done) {
+      GrammarActivity.getById(grammarActivity1Id).then(function (activity) {
+        expect(activity.questions).to.have.length.above(0);
+        done();
+      });
+      GrammarActivity.ref.flush();
+      $rootScope.$digest();
+      ConceptsFBService.ref.flush();
       $rootScope.$digest();
     });
   });
@@ -143,32 +143,46 @@ describe('GrammarActivity', function () {
     var grammarActivity,
         fakePassageId,
         question,
-        localStorageSpy;
-
-    // FIXME: This is commented out for the time being because
-    // the concept UID is not properly associated with the
-    // question.
-    // it('saves a concept result to firebase', function () {
-    //we only need to communicate with the LMS for non-anonymous sessions
-    // if ($scope.sessionId) {
-    // FIXME: conceptUid is not a field on the ruleQuestion. How can we get to the point where this works?
-    // ConceptResult.saveToFirebase($scope.sessionId, crq.conceptUid, {
-    //   answer: answer,
-    //   correct: correct ? 1 : 0
-    // });
-    // }
-
-    // });
+        localStorageSpy,
+        conceptResultSpy;
 
     beforeEach(function () {
+      question = new Question({
+        response: 'incorrect response',
+        body: ['correct response'],
+        conceptUid: 'abcdef' // generated by loadQuestionsFromConcepts().
+      });
+      grammarActivity = new GrammarActivity(grammarActivityJson);
       localStorageSpy = sandbox.stub(SentenceLocalStorage, 'storeTempResult');
+      conceptResultSpy = sandbox.spy(ConceptResult, 'saveToFirebase');
+    });
+
+    describe('concept results', function () {
+      describe('when the gameplay session is anonymous', function () {
+        it('does not save any concept results', function () {
+          grammarActivity.submitAnswer(question, null);
+          expect(conceptResultSpy).not.to.have.been.called;
+        });
+      });
+
+      describe('when the gameplay is associated with an activity session', function () {
+        it('saves a concept result for the answer', function () {
+          grammarActivity.submitAnswer(question, 'fake-session-id');
+          $rootScope.$digest();
+          ConceptResult.ref.flush();
+          $rootScope.$digest();
+          expect(conceptResultSpy).to.have.been.calledWith('fake-session-id', 'abcdef', {
+            answer: 'incorrect response',
+            correct: 0
+          });
+        });
+      });
     });
 
     describe('when the grammar activity was generated from a passage', function () {
       beforeEach(function () {
         fakePassageId = 'abcdef123';
-        grammarActivity = new GrammarActivity({passageId: fakePassageId});
-        question = new Question({response: 'incorrect response', body: ['correct response']});
+        grammarActivity.passageId = fakePassageId;
       });
 
       it('saves temporary results to local storage', function () {
@@ -179,7 +193,6 @@ describe('GrammarActivity', function () {
 
     describe('when the grammar activity was not generated from a passage', function () {
       beforeEach(function () {
-        grammarActivity = new GrammarActivity({});
         question = new Question({response: 'incorrect response', body: ['correct response']});
       });
 

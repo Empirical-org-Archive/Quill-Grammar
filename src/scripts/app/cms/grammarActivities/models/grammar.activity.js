@@ -4,20 +4,22 @@ module.exports = [
   {
     type: 'text',
     label: 'Title',
-    model: 'title'
+    model: 'title',
+    required: true
   },
   {
     type: 'textarea',
     label: 'Description',
-    model: 'description'
+    model: 'description',
+    required: true
   },
   require('./../../base_models/standard.model.js'),
   require('./../../base_models/standards_level.model.js'),
   {
     type: 'select',
-    label: 'Theme',
-    autoOptions: 'theme.title for theme in themes track by theme.uid',
-    model: 'theme'
+    label: 'Topic Category',
+    autoOptions: 'topicCategory.name for topicCategory in topicCategories track by topicCategory.uid',
+    model: 'topicCategory'
   },
   {
     type: 'submit',

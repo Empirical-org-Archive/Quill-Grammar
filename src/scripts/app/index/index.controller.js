@@ -2,26 +2,33 @@
 module.exports =
 
 /*@ngInject*/
-function index ($scope, RuleQuestionService) {
-  RuleQuestionService._getAllRuleQuestionsWithInstructions().then(function (questions) {
+function index ($scope, ConceptsFBService, _, Question) {
+  ConceptsFBService.get().then(function (concepts) {
     var i = 0;
+    var currentConcept = concepts[i];
+    function questionFromConcept(concept) {
+      var randomQuestionData = _.sample(concept.questions);
+      return new Question(randomQuestionData);
+    }
     $scope.showNextQuestion = false;
     $scope.showPreviousQuestion = false;
-    $scope.currentRuleQuestion = questions[i];
+    $scope.currentQuestion = questionFromConcept(currentConcept);
     $scope.nextQuestion = function () {
-      $scope.currentRuleQuestion = questions[++i];
+      currentConcept = concepts[++i];
+      $scope.currentQuestion = questionFromConcept(currentConcept);
     };
     $scope.previousQuestion = function () {
-      $scope.currentRuleQuestion = questions[--i];
+      currentConcept = concepts[--i];
+      $scope.currentQuestion = questionFromConcept(currentConcept);
     };
 
-    $scope.$watch('currentRuleQuestion', function () {
-      if (!$scope.currentRuleQuestion) {
+    $scope.$watch('currentQuestion', function () {
+      if (!$scope.currentQuestion) {
         $scope.finish();
       }
       $scope.showNextQuestion =
-        i < questions.length &&
-        ($scope.currentRuleQuestion && $scope.currentRuleQuestion.correct);
+        i < concepts.length &&
+        ($scope.currentQuestion && $scope.currentQuestion.correct);
 
       $scope.showPreviousQuestion = i > 0;
     }, true);

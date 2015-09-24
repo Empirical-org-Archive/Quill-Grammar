@@ -2,20 +2,24 @@
 
 describe('Question', function () {
   beforeEach(module('quill-grammar.services.question'));
+  beforeEach(module('test.fixtures.firebase'));
 
   var Question,
       $rootScope,
       sandbox,
-      question;
+      question,
+      concept1Question1Json;
 
-  var CORRECT_ANSWER = 'Here is the right answer.';
-  var NON_STRICT_CORRECT_ANSWER = 'Here is something almost right.';
+  var CORRECT_ANSWER = 'Tom ironed his shirt because it was wrinkly.';
+  var NON_STRICT_CORRECT_ANSWER = 'Tom blarg blarg shirt because it was wrinkly.';
+  var TOO_SHORT_CORRECT_ANSWER = 'it was wrinkly.';
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
 
-    inject(function (_Question_, _$rootScope_) {
+    inject(function (_Question_, _$rootScope_, _concept1Question1Json_) {
       Question = _Question_;
       $rootScope = _$rootScope_;
+      concept1Question1Json = _concept1Question1Json_;
     });
   });
 
@@ -24,9 +28,7 @@ describe('Question', function () {
   });
 
   beforeEach(function () {
-    question = new Question({
-      body: ['Here {is} the right answer.']
-    });
+    question = new Question(concept1Question1Json);
   });
 
   describe('#checkAnswer', function () {
@@ -55,7 +57,7 @@ describe('Question', function () {
 
     describe('when the response is not long enough', function () {
       it('sets the status to NOT_LONG_ENOUGH', function () {
-        question.response = 'Here is';
+        question.response = TOO_SHORT_CORRECT_ANSWER;
         question.checkAnswer();
         expect(question.status).to.equal(Question.ResponseStatus.NOT_LONG_ENOUGH);
       });
@@ -80,7 +82,7 @@ describe('Question', function () {
 
     describe('when the response is totally wrong', function () {
       it('sets the status to INCORRECT', function () {
-        question.response = 'I like ice cream to eat.';
+        question.response = 'I like ice cream to eat sometimes when it is hot.';
         question.checkAnswer();
         expect(question.status).to.equal(Question.ResponseStatus.INCORRECT);
       });
@@ -107,7 +109,7 @@ describe('Question', function () {
 
       describe('for anything else', function () {
         it('sets the status to TOO_MANY_ATTEMPTS', function () {
-          question.response = 'Hot garbage';
+          question.response = TOO_SHORT_CORRECT_ANSWER;
           question.checkAnswer();
           expect(question.status).to.equal(Question.ResponseStatus.TOO_MANY_ATTEMPTS);
         });
@@ -123,7 +125,7 @@ describe('Question', function () {
 
     it('even works for functions', function () {
       question.status = Question.ResponseStatus.TOO_MANY_ATTEMPTS;
-      expect(question.getResponseMessage()).to.include('Here is the right answer.');
+      expect(question.getResponseMessage()).to.include(CORRECT_ANSWER);
     });
   });
 });

@@ -3,63 +3,42 @@
 
 describe('SentencePlayCtrl', function () {
   beforeEach(module('quill-grammar.play.sentences'));
+  beforeEach(module('test.fixtures.firebase'));
 
   var sandbox,
       scope,
       fakeFinalizeService,
-      conceptResultService,
       $controller,
       $q,
       $rootScope,
-      $timeout,
       $state,
       stateSpy,
       analyticsSpy,
       localStorageSpy,
       GrammarActivity,
-      loadActivitySpy,
-      fakeGrammarActivity,
-      fakeGrammarActivityId;
+      grammarActivityJson, // Firebase fixture data.
+      grammarActivity1Id;
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
     fakeFinalizeService = sandbox.stub();
 
     inject(function (_$controller_, _$rootScope_, _$q_, _$state_, _$timeout_,
-      AnalyticsService, SentenceLocalStorage, ConceptResult, _GrammarActivity_) {
+      AnalyticsService, SentenceLocalStorage, ConceptResult, _GrammarActivity_,
+      _grammarActivityJson_, _grammarActivity1Id_, setupMockFirebaseData) {
       $controller = _$controller_;
       $rootScope = _$rootScope_;
       $state = _$state_;
-      $timeout = _$timeout_;
-      conceptResultService = ConceptResult;
       GrammarActivity = _GrammarActivity_;
       scope = $rootScope.$new();
       stateSpy = sandbox.stub($state, 'go');
       localStorageSpy = sandbox.stub(SentenceLocalStorage, 'saveResults');
       analyticsSpy = sandbox.stub(AnalyticsService, 'trackSentenceWritingSubmission');
-      loadActivitySpy = sandbox.stub(GrammarActivity, 'getById');
+      grammarActivityJson = _grammarActivityJson_;
       $q = _$q_;
+      setupMockFirebaseData();
+      grammarActivity1Id = _grammarActivity1Id_;
     });
-
-    // FIXME: As part of the migration to the new data format #148,
-    // the structure of this fake activity should be changed to match
-    // the new data format. Failing tests will point to areas that
-    // need fixing.
-    fakeGrammarActivity = new GrammarActivity({
-      rules: [
-        {
-          quantity: 1,
-          ruleId: 123
-        },
-        {
-          quantity: 2,
-          ruleId: 456
-        }
-      ]
-    });
-
-    $state.params.ids = '1,2,3';
-    fakeGrammarActivityId = 'abcdef123';
   });
 
   afterEach(function () {
@@ -74,81 +53,51 @@ describe('SentencePlayCtrl', function () {
   }
 
   describe('initialize', function () {
+    var ConceptsFBService;
+    beforeEach(inject(function (_ConceptsFBService_) {
+      ConceptsFBService = _ConceptsFBService_;
+    }));
+
     describe('when the user loads a specific activity', function () {
       beforeEach(function () {
-        $state.params.uid = fakeGrammarActivityId;
+        $state.params.uid = grammarActivity1Id;
       });
 
       it('loads the grammar activity from firebase', function () {
-        loadActivitySpy.returns($q.when(fakeGrammarActivity));
         subject();
+        GrammarActivity.ref.flush();
         $rootScope.$digest();
-        expect(loadActivitySpy).to.have.been.calledWith(fakeGrammarActivityId);
-        expect(scope.sentenceWriting).to.deep.equal(fakeGrammarActivity);
+        ConceptsFBService.ref.flush();
+        $rootScope.$digest();
+        expect(scope.grammarActivity).to.be.ok;
+        expect(scope.grammarActivity.title).to.equal(grammarActivityJson.title);
       });
     });
 
     describe('when the app generates a custom activity based on results from the passage', function () {
-      beforeEach(function () {
-        $state.params.ids = 'abcdef,ghijkl,12345';
+      var concept1RuleNumber,
+          concept1Json;
+
+      beforeEach(inject(function (_concept1RuleNumber_, _concept1Json_) {
+        concept1RuleNumber = _concept1RuleNumber_;
+        concept1Json = _concept1Json_;
+        $state.params.ids = '' + concept1RuleNumber; // Should be coming in as a string.
         $state.params.passageId = 'fake-passage-id';
-      });
+      }));
 
       it('creates a custom grammar activity', function () {
-        var customActivityWithRules = {
-          rules: [
-            {
-              quantity: 3,
-              ruleId: 'abcdef'
-            },
-            {
-              quantity: 3,
-              ruleId: 'ghijkl'
-            },
-            {
-              quantity: 3,
-              ruleId: '12345'
-            }
-          ]
-        };
         subject();
+        ConceptsFBService.ref.flush();
         $rootScope.$digest();
-        expect(scope.sentenceWriting.rules[0]).to.deep.equal(customActivityWithRules.rules[0]);
-        expect(scope.sentenceWriting.passageId).to.equal('fake-passage-id');
+        expect(scope.grammarActivity.concepts[0].concept_level_0.name).to.equal(concept1Json.concept_level_0.name);
+        expect(scope.grammarActivity.passageId).to.equal('fake-passage-id');
       });
-    });
-  });
-
-  // FIXME: This event should go away in favor of just maintaining
-  // current rule/question state on the grammarActivity and calling
-  // nextQuestion() on the activity to move forward.
-  //
-  // This is here until that behavior gets fixed.
-  describe('currentRuleQuestion watcher', function () {
-    it('updates the current rule', function () {
-      subject();
-      $rootScope.$digest();
-      scope.sentenceWriting = {
-        rulesWithSelectedQuestions: [
-          {
-            title: 'not this one'
-          },
-          {
-            title: 'select this one'
-          }
-        ]
-      };
-
-      scope.currentRuleQuestion = {
-        ruleIndex: 1
-      };
-      $rootScope.$digest();
-      expect(scope.currentRule.title).to.equal('select this one');
     });
   });
 
   describe('#finish', function () {
     beforeEach(function () {
+      $state.params.ids = '1,2,3'; // Suppress initialization error.
       subject();
       fakeFinalizeService.returns($q.when());
     });

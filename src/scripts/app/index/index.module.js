@@ -4,7 +4,7 @@ module.exports =
 angular
   .module('quill-grammar.index', [
     require('./../../directives/grammarElements/ruleQuestion/').name,
-    require('./../../services/ruleQuestion.js').name
+    'ui.router',
   ])
   .config(require('./index.config.js'))
   .controller('index', require('./index.controller.js'));

@@ -29,6 +29,7 @@ module.exports = function (config) {
       'build/app**.js',
       {pattern: 'build/app**.js.map', served: true, watched: true, included: false},
       'test/test_helper.js',
+      'test/fixtures.js',
       'test/**/*.spec.js'
     ],
 
