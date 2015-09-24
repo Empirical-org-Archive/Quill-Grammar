@@ -4,7 +4,7 @@ module.exports =
 
 /*@ngInject*/
 function GrammarActivitiesEditCmsCtrl (
-  $scope, GrammarActivity, $state, _
+  $scope, GrammarActivity, $state, _, ConceptsFBService
 ) {
   $scope.grammarActivity = {};
   $scope.grammarActivity.concepts = [];
@@ -13,6 +13,13 @@ function GrammarActivitiesEditCmsCtrl (
     $scope.grammarActivity = ga;
     $scope.grammarActivity.concepts = _.map($scope.grammarActivity.concepts, function(c, k) {
       c.fb_concept_key = k;
+      ConceptsFBService.getById(k).then(function (cfb) {
+        if (cfb) {
+          c.concept_level_2 = cfb.concept_level_2;
+          c.concept_level_1 = cfb.concept_level_1;
+          c.concept_level_0 = cfb.concept_level_0;
+        }
+      });
       return c;
     });
   });
