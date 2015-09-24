@@ -17,7 +17,7 @@ function GrammarActivitiesEditCmsCtrl (
         if (cfb) {
           c.concept_level_2 = cfb.concept_level_2;
           c.concept_level_1 = cfb.concept_level_1;
-          c.concept_level_0 = cfb.concept_level_0;
+          c.concept_level_0 = cfb;
         }
       });
       return c;
