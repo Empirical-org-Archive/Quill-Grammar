@@ -61,6 +61,14 @@ angular.module('quill-grammar.services.proofreadingPassage', [
     return w;
   }
 
+  function loadConcepts(proofreadingPassage) {
+    var ruleNumbers = _.chain(proofreadingPassage.questions)
+                        .pluck('ruleNumber')
+                        .map(parseInt)
+                        .value();
+    return ConceptsFBService.getByRuleNumbers(ruleNumbers);
+  }
+
   /*
    * Convert a string of text from Firebase into a ProofreadingPassage object.
    */
@@ -125,14 +133,6 @@ angular.module('quill-grammar.services.proofreadingPassage', [
       return proofreadingPassage;
     });
   };
-
-  function loadConcepts(proofreadingPassage) {
-    var ruleNumbers = _.chain(proofreadingPassage.questions)
-                        .pluck('ruleNumber')
-                        .map(parseInt)
-                        .value();
-    return ConceptsFBService.getByRuleNumbers(ruleNumbers);
-  }
 
   // 'Instance' methods
 

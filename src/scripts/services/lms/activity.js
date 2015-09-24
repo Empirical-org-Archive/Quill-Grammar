@@ -25,16 +25,6 @@ angular.module('quill-grammar.services.lms.activity', [
     return $http.post(url, this.data);
   };
 
-  Activity.prototype.isValid = function () {
-    var missingKeys = missingRequiredKeys(this.data);
-    if (missingKeys) {
-      this.errorMessages = 'Activity cannot be submitted without required keys';
-      return false;
-    }
-
-    return true;
-  };
-
   function missingRequiredKeys(data) {
     var requiredKeys = [
       'name',
@@ -52,6 +42,16 @@ angular.module('quill-grammar.services.lms.activity', [
 
     return false;
   }
+
+  Activity.prototype.isValid = function () {
+    var missingKeys = missingRequiredKeys(this.data);
+    if (missingKeys) {
+      this.errorMessages = 'Activity cannot be submitted without required keys';
+      return false;
+    }
+
+    return true;
+  };
 
   return Activity;
 });

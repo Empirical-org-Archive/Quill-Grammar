@@ -30,17 +30,6 @@ angular.module('quill-grammar.services.question', [
     TOO_MANY_ATTEMPTS: 8,
   };
 
-  Question.ResponseMessages = {};
-  Question.ResponseMessages[Question.ResponseStatus.DEFAULT] = 'Check Work';
-  Question.ResponseMessages[Question.ResponseStatus.NOT_LONG_ENOUGH] = '<b>Try again!</b>Your answer is not long enough.';
-  Question.ResponseMessages[Question.ResponseStatus.INCORRECT] = '<b>Try Again!</b> Unfortunately, that answer is incorrect.';
-  Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT] = 'You are correct, but you have some typing errors. You may correct them or continue.';
-  Question.ResponseMessages[Question.ResponseStatus.TOO_MANY_ATTEMPTS] = function (question) {
-    return '<b>Incorrect.</b> Correct Answer: ' + getCorrectString(_.pluck(question.answers, 'text'));
-  };
-  Question.ResponseMessages[Question.ResponseStatus.CORRECT] = '<b>Well done!</b> That\'s the correct answer.';
-  Question.ResponseMessages[Question.ResponseStatus.NO_ANSWER] = 'You must enter a sentence for us to check.';
-
   var delim = {
     open: '{',
     close: '}'
@@ -59,6 +48,17 @@ angular.module('quill-grammar.services.question', [
       .value();
     return '<ul><li>' + answers.join('</li><li>') + '</ul>';
   }
+
+  Question.ResponseMessages = {};
+  Question.ResponseMessages[Question.ResponseStatus.DEFAULT] = 'Check Work';
+  Question.ResponseMessages[Question.ResponseStatus.NOT_LONG_ENOUGH] = '<b>Try again!</b>Your answer is not long enough.';
+  Question.ResponseMessages[Question.ResponseStatus.INCORRECT] = '<b>Try Again!</b> Unfortunately, that answer is incorrect.';
+  Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT] = 'You are correct, but you have some typing errors. You may correct them or continue.';
+  Question.ResponseMessages[Question.ResponseStatus.TOO_MANY_ATTEMPTS] = function (question) {
+    return '<b>Incorrect.</b> Correct Answer: ' + getCorrectString(_.pluck(question.answers, 'text'));
+  };
+  Question.ResponseMessages[Question.ResponseStatus.CORRECT] = '<b>Well done!</b> That\'s the correct answer.';
+  Question.ResponseMessages[Question.ResponseStatus.NO_ANSWER] = 'You must enter a sentence for us to check.';
 
   function compareEntireAnswerToAnswers(answer) {
     return function (b) {

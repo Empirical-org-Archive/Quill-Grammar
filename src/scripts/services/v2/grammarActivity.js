@@ -23,6 +23,54 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
 
   GrammarActivity.DEFAULT_QUESTION_QUANTITY = 3;
 
+  /*
+   * Return a list of questions to use in the play session.
+   *
+   * 1st arg is an array of concepts that have already been loaded
+   * from Firebase.
+   * 2nd arg is a array of integers where each entry corresponds
+   * to the number of questions to return for the corresponding concept
+   * in the first list.
+   *
+   * Returns a list of questions.
+   */
+  function loadQuestionsFromConcepts(concepts, quantities) {
+    if (!concepts.length) {
+      throw new Error('Cannot load questions for this activity: no concepts found');
+    }
+    var questionsData = _.chain(concepts)
+      .map(function (concept, i) {
+        _.each(concept.questions, function (question) {
+          question.conceptUid = concept.concept_level_0.uid;
+          question.conceptIndex = i; // For lookup in getConceptForQuestion()
+        });
+        return concept.questions;
+      })
+      .map(function (questionSets, i) {
+        return _.sample(questionSets, quantities[i]);
+      })
+      .flatten()
+      .value();
+
+    var questionModels = _.map(questionsData, function (questionData) {
+      return new Question(questionData);
+    });
+
+    return questionModels;
+  }
+
+  function loadQuestionsForFirebaseActivity(activity) {
+    var quantities = _.pluck(activity.concepts, 'quantity');
+    var conceptIds = _.keys(activity.concepts);
+    return ConceptsFBService.getByIds(conceptIds).then(function (concepts) {
+      activity.concepts = concepts;
+      return loadQuestionsFromConcepts(concepts, quantities);
+    }).then(function (questions) {
+      activity.questions = questions;
+      return activity;
+    });
+  }
+
   // 'Class' methods
 
   GrammarActivity.getById = function (id) {
@@ -73,54 +121,6 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
       console.error('Error loading concepts from Firebase', err);
     });
   };
-
-  function loadQuestionsForFirebaseActivity(activity) {
-    var quantities = _.pluck(activity.concepts, 'quantity');
-    var conceptIds = _.keys(activity.concepts);
-    return ConceptsFBService.getByIds(conceptIds).then(function (concepts) {
-      activity.concepts = concepts;
-      return loadQuestionsFromConcepts(concepts, quantities);
-    }).then(function (questions) {
-      activity.questions = questions;
-      return activity;
-    });
-  }
-
-  /*
-   * Return a list of questions to use in the play session.
-   *
-   * 1st arg is an array of concepts that have already been loaded
-   * from Firebase.
-   * 2nd arg is a array of integers where each entry corresponds
-   * to the number of questions to return for the corresponding concept
-   * in the first list.
-   *
-   * Returns a list of questions.
-   */
-  function loadQuestionsFromConcepts(concepts, quantities) {
-    if (!concepts.length) {
-      throw new Error('Cannot load questions for this activity: no concepts found');
-    }
-    var questionsData = _.chain(concepts)
-      .map(function (concept, i) {
-        _.each(concept.questions, function (question) {
-          question.conceptUid = concept.concept_level_0.uid;
-          question.conceptIndex = i; // For lookup in getConceptForQuestion()
-        });
-        return concept.questions;
-      })
-      .map(function (questionSets, i) {
-        return _.sample(questionSets, quantities[i]);
-      })
-      .flatten()
-      .value();
-
-    var questionModels = _.map(questionsData, function (questionData) {
-      return new Question(questionData);
-    });
-
-    return questionModels;
-  }
 
   GrammarActivity.prototype.getConceptForQuestion = function (question) {
     return this.concepts[question.conceptIndex];
