@@ -10,11 +10,13 @@
       ng-model="qs.concept_level_2"
     ></select>
     <select
-      ng-options="c.name for c in concepts.concept_level_1 track by c.uid"
+      ng-show="qs.concept_level_2"
+      ng-options="c.name for c in concepts.concept_level_1 | filterConcepts:qs.concept_level_2.id"
       ng-model="qs.concept_level_1"
     ></select>
     <select
-      ng-options="c.name for c in concepts.concept_level_0 track by c.uid"
+      ng-show="qs.concept_level_1"
+      ng-options="c.name for c in concepts.concept_level_0 | filterFBConcepts:qs.concept_level_1.id"
       ng-model="qs.concept_level_0"
     ></select>
     <input type="text" ng-model="qs.quantity" placeholder="Quantity"></input>
