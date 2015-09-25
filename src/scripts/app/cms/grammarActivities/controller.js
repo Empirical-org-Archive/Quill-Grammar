@@ -11,9 +11,8 @@ function GrammarActivitiesCmsCtrl (
   });
 
   $scope.calculateNumberOfQuestions = function (ga) {
-    var quantities = _.pluck(ga.concepts, 'quantity');
-    return _.reduce(quantities, function (a, b) {
-      return a + b;
-    }, 0);
+    return _.map(ga.concepts, function (c) {
+      return String(c.quantity) + '(' + String(c.ruleNumber) + ')';
+    }).join(', ');
   };
 };
