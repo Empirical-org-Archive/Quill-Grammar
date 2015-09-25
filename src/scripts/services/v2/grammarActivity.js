@@ -94,6 +94,16 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   };
 
   /*
+   * Update a grammar activity
+   */
+  GrammarActivity.updateToFB = function(id, ga) {
+    return $firebaseObject(GrammarActivity.ref).$loaded().then(function (gas) {
+      gas[id] = ga;
+      return gas.$save();
+    });
+  };
+
+  /*
    * Get a single Grammar Activity from Firebase
    */
   GrammarActivity.getOneByIdFromFB = function (id) {
