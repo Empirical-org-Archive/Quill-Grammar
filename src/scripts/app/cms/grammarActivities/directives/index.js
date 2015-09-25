@@ -8,6 +8,7 @@ angular.module('quill-grammar.cms.grammarActivities.directives', [
   require('../../../../services/lms/concept.js').name,
   require('../../../../services/lms/standard.js').name,
   require('../../../../services/lms/standard_level.js').name,
+  require('../../base_directives/index.js').name,
 ])
 .controller('GrammarActivityFormCtrl', require('./grammarActivityForm.controller.js'))
 .directive('grammarActivityForm', require('./grammarActivityForm.directive.js'))
