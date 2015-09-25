@@ -1,7 +1,7 @@
 <dynamic-form template="grammarActivityTemplate"
-  ng-model="grammarActivity"
-  ng-submit="processGrammarActivityForm()">
+  ng-model="grammarActivity">
 </dynamic-form>
+<standards-selector model="grammarActivity"></standards-selector>
 <h3>Concept Question Set</h3>
 <ul>
   <li ng-repeat="qs in grammarActivity.concepts">
@@ -11,4 +11,5 @@
   </li>
 </ul>
 <button ng-click="addAnotherQuestionToSet()">Add Another Question</button>
+<button type="submit" ng-click="processGrammarActivityForm()">Submit Grammar Activity</button>
 
