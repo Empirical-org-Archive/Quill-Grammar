@@ -11,7 +11,7 @@ function GrammarActivitiesEditCmsCtrl (
 
   GrammarActivity.getOneByIdFromFB($state.params.id).then(function (ga) {
     $scope.grammarActivity = ga;
-    $scope.grammarActivity.concepts = _.map($scope.grammarActivity.concepts, function(c, k) {
+    $scope.grammarActivity.concepts = _.map($scope.grammarActivity.concepts, function (c, k) {
       c.$id = k;
       ConceptsFBService.getById(k).then(function (cfb) {
         if (cfb) {
