@@ -1,4 +1,5 @@
 <dynamic-form template="conceptTemplate"
-  ng-model="concept"
-  ng-submit="processConceptForm()">
+  ng-model="concept">
 </dynamic-form>
+<concepts-selector model="concept" levels="[1,2]"></concepts-selector>
+<button ng-click="processConceptForm()">Update Concept</button>
