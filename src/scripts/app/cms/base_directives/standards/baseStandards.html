@@ -1,0 +1,12 @@
+<select
+  ng-options="s.name for s in (standards | orderBy:'name') track by s.uid"
+  ng-model="model.standard"
+  >
+  <option value="">Select Standard</option>
+</select>
+<select
+  ng-options="s.name for s in (standardLevels | orderBy:'name') track by s.uid"
+  ng-model="model.standardLevel"
+  >
+  <option value="">Select Standard Level</option>
+</select>

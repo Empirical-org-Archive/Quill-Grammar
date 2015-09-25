@@ -9,8 +9,7 @@ module.exports =
 
 /*@ngInject*/
 function ConceptsFormCtrl (
-  $scope, _, ConceptService, StandardService,
-  StandardLevelService
+  $scope, _
 ) {
   if (_.isUndefined($scope.concept) || !_.isObject($scope.concept)) {
     throw new Error('Please define concept object in controller scope');
@@ -21,16 +20,4 @@ function ConceptsFormCtrl (
   }
 
   $scope.conceptTemplate = require('../models/concept.js');
-
-  ConceptService.get().then(function (concepts) {
-    $scope.concepts = concepts;
-  });
-
-  StandardService.get().then(function (standards) {
-    $scope.standards = standards;
-  });
-
-  StandardLevelService.get().then(function (standardLevels) {
-    $scope.standard_levels = standardLevels;
-  });
 };

@@ -11,8 +11,7 @@ module.exports =
 
 /*@ngInject*/
 function GrammarActivityFormCtrl (
-  $scope, _, TopicCategoryService, ConceptService,
-  StandardService, StandardLevelService, ConceptsFBService
+  $scope, _, TopicCategoryService, ConceptService, ConceptsFBService
 ) {
   if (_.isUndefined($scope.grammarActivity) || !_.isObject($scope.grammarActivity)) {
     throw new Error('Please define grammarActivity object in controller scope');
@@ -26,7 +25,6 @@ function GrammarActivityFormCtrl (
     throw new Error('Please define processGrammarActivityForm function in controller scope');
   }
   $scope.grammarActivityTemplate = require('../models/grammar.activity.js');
-  $scope.grammarActivityQuestionSetTemplate = require('../models/question.set.js');
 
   $scope.concepts = {};
 
@@ -41,14 +39,6 @@ function GrammarActivityFormCtrl (
 
   ConceptsFBService.get().then(function (level0Concepts) {
     $scope.concepts.concept_level_0 = level0Concepts;
-  });
-
-  StandardService.get().then(function (standards) {
-    $scope.standards = standards;
-  });
-
-  StandardLevelService.get().then(function (standardLevels) {
-    $scope.standard_levels = standardLevels;
   });
 
   $scope.removeQuestionFromSet = function (qs) {

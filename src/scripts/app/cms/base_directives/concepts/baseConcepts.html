@@ -1,0 +1,18 @@
+<select
+  ng-show="hasLevel(2)"
+  ng-options="c.name for c in (concepts.concept_level_2 | orderBy:'name') track by c.uid"
+  ng-model="model.concept_level_2"
+  ng-required="true"
+><option value="">Choose Concept Level 2</option></select>
+<select
+  ng-show="model.concept_level_2 && hasLevel(1)"
+  ng-options="c.name for c in (concepts.concept_level_1 | filterConcepts:model.concept_level_2.id | orderBy:'name') track by c.uid"
+  ng-model="model.concept_level_1"
+  ng-required="true"
+><option value="">Choose Concept Level 1</option></select>
+<select
+  ng-show="model.concept_level_1 && hasLevel(0)"
+  ng-options="c.name for c in (concepts.concept_level_0 | filterFBConcepts:model.concept_level_1.id | orderBy:'name') track by c.uid"
+  ng-model="model.concept_level_0"
+  ng-required="true"
+  ><option value="">Choose Concept Level 0</option></select>
