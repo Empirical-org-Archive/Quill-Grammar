@@ -3,10 +3,9 @@
 /*@ngInject*/
 module.exports =
 
-function StandardsDirectiveCtrl(
+function StandardsDirectiveCtrl (
   $scope, StandardService, StandardLevelService
 ) {
-
   StandardService.get().then(function (standards) {
     $scope.standards = standards;
   });
@@ -14,5 +13,4 @@ function StandardsDirectiveCtrl(
   StandardLevelService.get().then(function (standardLevels) {
     $scope.standardLevels = standardLevels;
   });
-
 };

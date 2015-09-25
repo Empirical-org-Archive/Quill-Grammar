@@ -6,7 +6,7 @@ angular.module('quill-grammar.cms.baseDirectives.Concept', [
   'underscore',
 ])
 .controller('ConceptsDirectiveController', require('./concepts.ctrl.js'))
-.directive('conceptsSelector', function() {
+.directive('conceptsSelector', function () {
   return {
     restrict: 'E',
     templateUrl: 'baseConcepts.html',

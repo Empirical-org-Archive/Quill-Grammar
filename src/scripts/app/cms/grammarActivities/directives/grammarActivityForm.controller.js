@@ -25,7 +25,6 @@ function GrammarActivityFormCtrl (
     throw new Error('Please define processGrammarActivityForm function in controller scope');
   }
   $scope.grammarActivityTemplate = require('../models/grammar.activity.js');
-  $scope.grammarActivityQuestionSetTemplate = require('../models/question.set.js');
 
   $scope.concepts = {};
 

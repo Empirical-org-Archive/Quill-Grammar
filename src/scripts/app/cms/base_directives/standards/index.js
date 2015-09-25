@@ -6,7 +6,7 @@ angular.module('quill-grammar.cms.baseDirectives.Standards', [
   'underscore',
 ])
 .controller('StandardsDirectiveController', require('./standards.ctrl.js'))
-.directive('standardsSelector', function() {
+.directive('standardsSelector', function () {
   return {
     restrict: 'E',
     templateUrl: 'baseStandards.html',

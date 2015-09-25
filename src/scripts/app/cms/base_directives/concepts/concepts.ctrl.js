@@ -3,7 +3,7 @@
 /*@ngInject*/
 module.exports =
 
-function ConceptsDirectiveCtrl(
+function ConceptsDirectiveCtrl (
   ConceptService, ConceptsFBService, $scope, _
 ) {
   $scope.concepts = {};
@@ -21,7 +21,7 @@ function ConceptsDirectiveCtrl(
    * of concept to show. If they've not provided a levels
    * variable we assume that all concept levels are allowed.
    */
-  $scope.hasLevel = function(level) {
+  $scope.hasLevel = function (level) {
     if ($scope.levels && _.isArray($scope.levels)) {
       return _.contains($scope.levels, level);
     } else {
