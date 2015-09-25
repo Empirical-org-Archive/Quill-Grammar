@@ -3,7 +3,7 @@
 module.exports =
 angular.module('quill-grammar.cms.concepts.directives', [
   'dynform',
-  require('./../../base_directives/index.js').name,
+  require('./../../base_directives/concepts/index.js').name,
 ])
 .controller('ConceptFormCtrl', require('./conceptForm.controller.js'))
 .directive('conceptForm', require('./conceptForm.directive.js'))
