@@ -12,11 +12,5 @@ module.exports = [
     label: 'Description',
     model: 'description',
     required: true
-  },
-  {
-    type: 'select',
-    label: 'Topic Category',
-    autoOptions: 'topicCategory.name for topicCategory in topicCategories track by topicCategory.uid',
-    model: 'topicCategory'
   }
 ];
