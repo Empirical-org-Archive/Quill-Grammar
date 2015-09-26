@@ -1,5 +1,7 @@
 'use strict';
 
+/* globals confirm */
+
 module.exports =
 
 /*@ngInject*/
@@ -51,5 +53,16 @@ function GrammarActivitiesEditCmsCtrl (
     GrammarActivity.updateToFB(id, updatedGrammarActivity).then(function () {
       $state.go('cms-grammar-activities');
     });
+  };
+
+  $scope.confirmDelete = function (id) {
+    var d = confirm('Are you absolutely sure you want to delete activity: ' + id + '?');
+    if (d) {
+      GrammarActivity.deleteByIdFromFB(id).then(function () {
+        $state.go('cms-grammar-activities');
+      }, function (err) {
+        throw err;
+      });
+    }
   };
 };

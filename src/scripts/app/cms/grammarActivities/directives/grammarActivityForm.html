@@ -1,6 +1,8 @@
-<dynamic-form template="grammarActivityTemplate"
-  ng-model="grammarActivity">
-</dynamic-form>
+<label for="title">Title</label>
+<input label="title" ng-model="grammarActivity.title" type="text" ng-required="true"></input>
+<label for="description">Description</label>
+<textarea label="description" ng-model="grammarActivity.description" ng-required="true"></textarea>
+<topic-category-selector model="grammarActivity"></topic-category-selector>
 <standards-selector model="grammarActivity"></standards-selector>
 <h3>Concept Question Set</h3>
 <ul>

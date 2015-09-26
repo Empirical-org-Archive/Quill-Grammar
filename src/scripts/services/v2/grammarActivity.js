@@ -104,6 +104,15 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   };
 
   /*
+   * Delete a single grammar activity
+   */
+  GrammarActivity.deleteByIdFromFB = function (id) {
+    return $firebaseObject(GrammarActivity.ref).$loaded().then(function (gas) {
+      gas[id] = null;
+      return gas.$save();
+    });
+  };
+  /*
    * Get a single Grammar Activity from Firebase
    */
   GrammarActivity.getOneByIdFromFB = function (id) {

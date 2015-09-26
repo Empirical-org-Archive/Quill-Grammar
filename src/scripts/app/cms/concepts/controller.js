@@ -8,7 +8,6 @@ function ConceptsCmsCtrl (
 ) {
   ConceptsFBService.get().then(function (c) {
     $scope.concepts = c;
-    console.log(c);
   });
 
   $scope.getQuestionLength = function (questions) {
