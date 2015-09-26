@@ -13,8 +13,6 @@ module.exports =
 function GrammarActivityFormCtrl (
   $scope, _, TopicCategoryService
 ) {
-  $scope.grammarActivityTemplate = require('../models/grammar.activity.js');
-
   $scope.concepts = {};
 
   TopicCategoryService.get().then(function (topicCategories) {
