@@ -4,6 +4,8 @@
 module.exports =
 angular.module('quill-grammar.cms.baseDirectives.Concept', [
   'underscore',
+  require('./../../../../services/v2/concepts.js').name,
+  require('./../../../../services/lms/concept.js').name,
 ])
 .controller('ConceptsDirectiveController', require('./concepts.ctrl.js'))
 .directive('conceptsSelector', function () {
