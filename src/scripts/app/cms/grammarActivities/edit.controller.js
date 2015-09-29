@@ -1,7 +1,7 @@
 'use strict';
 
 /* globals confirm */
-
+/* globals alert */
 module.exports =
 
 /*@ngInject*/
@@ -29,10 +29,21 @@ function GrammarActivitiesEditCmsCtrl (
   function buildConcepts(set) {
     return _.chain(set)
       .map(function (s) {
-        return [s.concept_level_0.$id, {
-          quantity: Number(s.quantity),
-          ruleNumber: s.concept_level_0.ruleNumber
-        }];
+        if (s.concept_level_0 && s.concept_level_0.$id) {
+          return [s.concept_level_0.$id, {
+            quantity: Number(s.quantity),
+            ruleNumber: s.concept_level_0.ruleNumber
+          }];
+        } else {
+          if (s.$id && _.isNumber(s.quantity) && _.isNumber(s.ruleNumber)) {
+            return [s.$id, {
+              quantity: Number(s.quantity),
+              ruleNumber: Number(s.ruleNumber)
+            }];
+          } else {
+            return [s.$id, {}];
+          }
+        }
       })
       .object()
       .value();
@@ -52,6 +63,8 @@ function GrammarActivitiesEditCmsCtrl (
 
     GrammarActivity.updateToFB(id, updatedGrammarActivity).then(function () {
       $state.go('cms-grammar-activities');
+    }, function (err) {
+      alert(err);
     });
   };
 
