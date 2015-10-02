@@ -1,0 +1,17 @@
+<label for="title">Title</label>
+<input label="title" ng-model="proofreaderActivity.title" type="text" ng-required="true"></input>
+<label for="description">Description</label>
+<textarea label="description" ng-model="proofreaderActivity.description" ng-required="true"></textarea>
+<topic-category-selector model="proofreaderActivity"></topic-category-selector>
+<standards-selector model="proofreaderActivity"></standards-selector>
+<h3>Concept Question Set</h3>
+<ul>
+  <li ng-repeat="qs in proofreaderActivity.concepts">
+    <concepts-selector model="qs" levels="[0,1,2]"></concepts-selector>
+    <input type="text" ng-model="qs.quantity" placeholder="Quantity"></input>
+    <button ng-click="removeQuestionFromSet(qs)">X</button>
+  </li>
+</ul>
+<button ng-click="addAnotherQuestionToSet()">Add Another Question</button>
+<button type="submit" ng-click="processProofreaderActivityForm()">Submit Proofreader Activity</button>
+
