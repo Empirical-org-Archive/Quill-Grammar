@@ -12,14 +12,12 @@
       <th>Standard</th>
       <th>Title</th>
       <th>Theme</th>
-      <th>Questions</th>
       <th>Edit</th>
     </tr>
     <tr ng-repeat="p in proofreaderActivities">
-      <td>{{g.standard.name}}</td>
-      <td>{{g.title}}</td>
-      <td>{{g.topicCategory.name}}</td>
-      <td>{{calculateNumberOfQuestions(g)}}</td>
+      <td>{{p.standard.name}}</td>
+      <td>{{p.title}}</td>
+      <td>{{p.topicCategory.name}}</td>
       <td><a ui-sref="cms-proofreader-activities-edit({id: g.$id})">Edit</a></td>
     </tr>
   </table>

@@ -7,31 +7,11 @@ function ProofreaderActivitiesCreateCmsCtrl (
   $scope, _, ProofreaderActivity, $state,
   Activity, proofreaderActivityClassificationUid
 ) {
-  $scope.proofreaderActivity = {};
-  $scope.proofreaderActivity.concepts = [{}];
 
-  function buildConcepts(set) {
-    return _.chain(set)
-      .map(function (s) {
-        return [s.concept_level_0.$id, {
-          quantity: Number(s.quantity),
-          ruleNumber: s.concept_level_0.ruleNumber
-        }];
-      })
-      .object()
-      .value();
-  }
+  $scope.proofreaderActivity = {};
 
   $scope.processProofreaderActivityForm = function () {
-    var ga = $scope.proofreaderActivity;
-    var newProofreaderActivity = {
-      title: ga.title,
-      description: ga.description,
-      concepts: buildConcepts(ga.concepts),
-      standard: ga.standard,
-      standard_level: ga.standard_level,
-      topicCategory: ga.topicCategory
-    };
+    var newProofreaderActivity = $scope.proofreaderActivity;
 
     ProofreaderActivity.addToFB(newProofreaderActivity).then(function (ref) {
       var proofreaderActivityUid = ref.key();
