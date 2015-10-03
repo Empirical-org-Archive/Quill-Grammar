@@ -3,7 +3,7 @@
   "firebaseUrl": "https://quillgrammarstaging.firebaseio.com/v2",
   "empiricalBaseURL": "http://localhost:3000/api/v1/",
   "grammarActivityClassificationUid": "",
-  "proofreadingActivityClassificationUid": "",
+  "proofreaderActivityClassificationUid": "",
   "portholeProxy": "http://localhost:3000/porthole_proxy",
   "firebaseApp": "",
   "oauthClientId": ""

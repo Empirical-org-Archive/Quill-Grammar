@@ -4,7 +4,7 @@
   "firebaseApp": "quillgrammarstaging",
   "empiricalBaseURL": "https://staging.quill.org/api/v1",
   "grammarActivityClassificationUid": "s2u3tVuguhfUjOQxDP-7RA",
-  "proofreadingActivityClassificationUid": "IACa8Egt7CvVYgtHPtEn2w",
+  "proofreaderActivityClassificationUid": "IACa8Egt7CvVYgtHPtEn2w",
   "portholeProxy": "https://staging.quill.org/porthole_proxy",
   "oauthClientId": "f1db4e00727649d1a7d59d3690c0baf30f6ed6514883d0171b37fe8c31166a0d"
 }

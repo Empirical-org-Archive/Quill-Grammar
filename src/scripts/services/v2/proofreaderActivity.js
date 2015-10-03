@@ -17,7 +17,7 @@ angular.module('quill-grammar.services.firebase.proofreaderActivity', [
   require('./../../../../.tmp/config.js').name,
 ])
 /*@ngInject*/
-.factory('ProofreaderActivity', function (firebaseUrl, $firebaseObject, _, $q) {
+.factory('ProofreaderActivity', function (firebaseUrl, $firebaseObject, _, $q, $firebaseArray) {
   function ProofreaderModel(data) {
     if (data) {
       _.extend(this, data);
@@ -41,5 +41,11 @@ angular.module('quill-grammar.services.firebase.proofreaderActivity', [
     });
   };
 
+  /*
+   * Get all Proofreader Activities from Firebase
+   */
+  ProofreaderModel.getAllFromFB = function () {
+    return $firebaseArray(ProofreaderModel.ref).$loaded();
+  };
   return ProofreaderModel;
 });
