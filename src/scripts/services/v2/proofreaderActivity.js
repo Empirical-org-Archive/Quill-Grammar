@@ -55,5 +55,15 @@ angular.module('quill-grammar.services.firebase.proofreaderActivity', [
     return $firebaseArray(ProofreaderModel.ref).$add(pa);
   };
 
+  /*
+   * Update one Proofreader Activity to Firebase
+   */
+  ProofreaderModel.updateToFB = function (id, pa) {
+    return $firebaseObject(ProofreaderModel.ref).$loaded().then(function (pas) {
+      pas[id] = pa;
+      return pas.$save();
+    });
+  };
+
   return ProofreaderModel;
 });
