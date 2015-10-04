@@ -7,7 +7,6 @@ function ProofreaderActivitiesCreateCmsCtrl (
   $scope, _, ProofreaderActivity, $state,
   Activity, proofreaderActivityClassificationUid
 ) {
-
   $scope.proofreaderActivity = {};
 
   $scope.processProofreaderActivityForm = function () {
