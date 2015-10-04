@@ -1,1 +1,24 @@
-<a ui-sref="cms-proofreader-activities()"><h3>Proofreader Activities</h3></a>
+<div class="activity-search">
+  <input type="text" placeholder="Enter Search"></input>
+  <button>Search</button>
+</div>
+<div class="activity-create">
+  <a ui-sref="cms-proofreader-activities-create()"><button>Create Activity</button></a>
+</div>
+
+<div class="proofreader-activities-list">
+  <table>
+    <tr>
+      <th>Standard</th>
+      <th>Title</th>
+      <th>Theme</th>
+      <th>Edit</th>
+    </tr>
+    <tr ng-repeat="p in proofreaderActivities">
+      <td>{{p.standard.name}}</td>
+      <td>{{p.title}}</td>
+      <td>{{p.topicCategory.name}}</td>
+      <td><a ui-sref="cms-proofreader-activities-edit({id: p.$id})">Edit</a></td>
+    </tr>
+  </table>
+</div>
