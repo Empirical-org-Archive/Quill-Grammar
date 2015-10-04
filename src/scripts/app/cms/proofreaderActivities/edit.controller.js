@@ -22,7 +22,8 @@ function ProofreaderActivitiesEditCmsCtrl (
       standard: pa.standard,
       standard_level: pa.standard_level,
       topicCategory: pa.topicCategory,
-      passage: pa.passage
+      passage: pa.passage,
+      underlineErrorsInProofreader: pa.underlineErrorsInProofreader
     };
     var id = $state.params.id;
 
