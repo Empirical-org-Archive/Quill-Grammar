@@ -65,5 +65,15 @@ angular.module('quill-grammar.services.firebase.proofreaderActivity', [
     });
   };
 
+  /*
+   * Delete one Proofreader Activity from Firebase
+   */
+  ProofreaderModel.deleteByIdFromFB = function (id) {
+    return $firebaseObject(ProofreaderModel.ref).$loaded().then(function (pas) {
+      pas[id] = null;
+      return pas.$save();
+    });
+  };
+
   return ProofreaderModel;
 });
