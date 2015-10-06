@@ -6,7 +6,8 @@ module.exports =
 
 /*@ngInject*/
 function GrammarActivitiesEditCmsCtrl (
-  $scope, GrammarActivity, $state, _, ConceptsFBService
+  $scope, GrammarActivity, $state, _, ConceptsFBService, Activity,
+  grammarActivityClassificationUid
 ) {
   $scope.grammarActivity = {};
   $scope.grammarActivity.concepts = [];
@@ -62,8 +63,21 @@ function GrammarActivitiesEditCmsCtrl (
     };
 
     GrammarActivity.updateToFB(id, updatedGrammarActivity).then(function () {
+      var grammarActivityUid = id;
+      var lmsActivity = new Activity({
+        uid: grammarActivityUid,
+        name: updatedGrammarActivity.title,
+        description: updatedGrammarActivity.description,
+        topic_uid: updatedGrammarActivity.standard.uid,
+        activity_classification_uid: grammarActivityClassificationUid
+      });
+      if (!lmsActivity.isValid()) {
+        throw new Error(lmsActivity.errorMessages);
+      }
+      return lmsActivity.create();
+    }).then(function () {
       $state.go('cms-grammar-activities');
-    }, function (err) {
+    }).catch(function (err) {
       alert(err);
     });
   };
