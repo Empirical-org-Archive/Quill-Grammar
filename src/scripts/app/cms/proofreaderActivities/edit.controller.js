@@ -6,7 +6,8 @@ module.exports =
 
 /*@ngInject*/
 function ProofreaderActivitiesEditCmsCtrl (
-  $scope, ProofreaderActivity, $state
+  $scope, ProofreaderActivity, $state, Activity,
+  proofreaderActivityClassificationUid
 ) {
   $scope.proofreaderActivity = {};
 
@@ -28,8 +29,21 @@ function ProofreaderActivitiesEditCmsCtrl (
     var id = $state.params.id;
 
     ProofreaderActivity.updateToFB(id, updatedProofreaderActivity).then(function () {
+      var proofreaderActivityUid = id;
+      var lmsActivity = new Activity({
+        uid: proofreaderActivityUid,
+        name: updatedProofreaderActivity.title,
+        description: updatedProofreaderActivity.description,
+        topic_uid: updatedProofreaderActivity.standard.uid,
+        activity_classification_uid: proofreaderActivityClassificationUid
+      });
+      if (!lmsActivity.isValid()) {
+        throw new Error(lmsActivity.errorMessages);
+      }
+      return lmsActivity.update();
+    }).then(function () {
       $state.go('cms-proofreader-activities');
-    }, function (err) {
+    }).catch(function (err) {
       alert(err);
     });
   };
