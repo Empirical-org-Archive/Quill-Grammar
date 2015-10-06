@@ -10,17 +10,14 @@ function configure ($stateProvider) {
       controller: 'cms',
       abstract: true,
       data: {
-        //authenticateUser: true
+        authenticateUser: true
       }
     })
     .state('cms-list', {
       parent: 'cms',
       url: '',
       templateUrl: 'cms.html',
-      controller: 'cms',
-      data: {
-        //authenticateUser: true
-      }
+      controller: 'cms'
     })
     .state('cms-activities-base', {
       parent: 'cms',

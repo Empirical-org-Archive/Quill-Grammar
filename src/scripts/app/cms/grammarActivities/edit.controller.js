@@ -74,11 +74,11 @@ function GrammarActivitiesEditCmsCtrl (
       if (!lmsActivity.isValid()) {
         throw new Error(lmsActivity.errorMessages);
       }
-      return lmsActivity.create();
+      return lmsActivity.update();
     }).then(function () {
       $state.go('cms-grammar-activities');
     }).catch(function (err) {
-      alert(err);
+      alert(err.toString());
     });
   };
 

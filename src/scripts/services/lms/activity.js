@@ -25,6 +25,10 @@ angular.module('quill-grammar.services.lms.activity', [
     return $http.post(url, this.data);
   };
 
+  Activity.prototype.update = function () {
+    return $http.put(url + '/' + this.data.uid, this.data);
+  };
+
   function missingRequiredKeys(data) {
     var requiredKeys = [
       'name',
