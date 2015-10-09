@@ -7,7 +7,7 @@ module.exports =
 /*@ngInject*/
 function ProofreaderActivitiesEditCmsCtrl (
   $scope, ProofreaderActivity, $state, Activity,
-  proofreaderActivityClassificationUid
+  proofreaderActivityClassificationUid, _
 ) {
   $scope.proofreaderActivity = {};
 
@@ -17,6 +17,9 @@ function ProofreaderActivitiesEditCmsCtrl (
 
   $scope.processProofreaderActivityForm = function () {
     var pa = $scope.proofreaderActivity;
+    if (_.isUndefined(pa.underlineErrorsInProofreader)) {
+      pa.underlineErrorsInProofreader = false;
+    }
     var updatedProofreaderActivity = {
       title: pa.title,
       description: pa.description,
