@@ -13,7 +13,7 @@ function ConceptsDirectiveCtrl (
   });
 
   ConceptsFBService.get().then(function (level0Concepts) {
-    $scope.concepts.concept_level_0 = _.map(level0Concepts, function(c) {
+    $scope.concepts.concept_level_0 = _.map(level0Concepts, function (c) {
       var lmsDetails = c.concept_level_0;
       c.id = lmsDetails.id;
       c.uid = lmsDetails.uid;
