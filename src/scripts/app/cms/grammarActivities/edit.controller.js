@@ -20,6 +20,12 @@ function GrammarActivitiesEditCmsCtrl (
         if (cfb) {
           c.concept_level_2 = cfb.concept_level_2;
           c.concept_level_1 = cfb.concept_level_1;
+          //Shim loaded cfb to have
+          var cfb0 = cfb.concept_level_0;
+          cfb.uid = cfb0.uid;
+          cfb.id = cfb0.id;
+          cfb.parent_id = cfb0.parent_id;
+          cfb.level = cfb0.level;
           c.concept_level_0 = cfb;
         }
       });

@@ -13,7 +13,14 @@ function ConceptsDirectiveCtrl (
   });
 
   ConceptsFBService.get().then(function (level0Concepts) {
-    $scope.concepts.concept_level_0 = level0Concepts;
+    $scope.concepts.concept_level_0 = _.map(level0Concepts, function (c) {
+      var lmsDetails = c.concept_level_0;
+      c.id = lmsDetails.id;
+      c.uid = lmsDetails.uid;
+      c.parent_id = lmsDetails.parent_id;
+      c.level = lmsDetails.level;
+      return c;
+    });
   });
 
   /*
