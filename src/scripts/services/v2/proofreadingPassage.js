@@ -186,7 +186,7 @@ angular.module('quill-grammar.services.proofreadingPassage', [
           return _.isUndefined(pe.ruleNumber);
         })
         .map(function (pe) {
-          var concept = _.find(concepts, function(c) {
+          var concept = _.find(concepts, function (c) {
             var c1 = String(c.ruleNumber);
             var c2 = String(pe.ruleNumber);
             return c1 === c2;
