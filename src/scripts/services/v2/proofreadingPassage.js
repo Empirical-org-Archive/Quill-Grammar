@@ -64,8 +64,12 @@ angular.module('quill-grammar.services.proofreadingPassage', [
   function loadConcepts(proofreadingPassage) {
     var ruleNumbers = _.chain(proofreadingPassage.questions)
                         .pluck('ruleNumber')
-                        .map(parseInt)
+                        .map(function(rn) {
+                          return Number(rn);
+                        })
+                        .uniq()
                         .value();
+    console.log(ruleNumbers);
     return ConceptsFBService.getByRuleNumbers(ruleNumbers);
   }
 

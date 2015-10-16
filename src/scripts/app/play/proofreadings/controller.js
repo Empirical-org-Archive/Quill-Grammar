@@ -26,6 +26,7 @@ function ProofreadingPlayCtrl (
   }, function onLoadError (err) {
     $window.alert(err);
   }).then(function (proofreadingPassage) {
+    console.log(proofreadingPassage);
     $scope.proofreadingPassage = proofreadingPassage;
   });
 
