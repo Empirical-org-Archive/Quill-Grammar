@@ -30,10 +30,10 @@ function ConceptsCmsCtrl (
     });
   };
 
-  function addQuestionCountToConcepts (concepts) {
+  function addQuestionCountToConcepts(concepts) {
     return _.map(concepts, function (c) {
       c.questionCount = _.keys(c.questions).length;
       return c;
     });
-  };
+  }
 };
