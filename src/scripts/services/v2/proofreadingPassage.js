@@ -64,7 +64,7 @@ angular.module('quill-grammar.services.proofreadingPassage', [
   function loadConcepts(proofreadingPassage) {
     var ruleNumbers = _.chain(proofreadingPassage.questions)
                         .pluck('ruleNumber')
-                        .map(function(rn) {
+                        .map(function (rn) {
                           return Number(rn);
                         })
                         .uniq()
