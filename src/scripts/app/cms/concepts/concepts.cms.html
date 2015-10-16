@@ -1,5 +1,5 @@
 <div class="concept-search">
-  <input type="text" placeholder="Enter Search"></input>
+  <input type="text" placeholder="Enter Search" ng-model="searchConcept"></input>
 </div>
 <b>Total Concepts {{getTotalConcepts(concepts)}}</b>
 <p></p>
@@ -10,35 +10,35 @@
       <th>
         <a href="#" ng-click="sortType = 'concept_level_2.name'; sortReverse = !sortReverse">
             Concept Level 2
-            <span ng-show="sortType == 'concept_level_2.name'" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'concept_level_2.name'">{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
         </a>
       </th>
       <th>
         <a href="#" ng-click="sortType = 'concept_level_1.name'; sortReverse = !sortReverse">
             Concept Level 1
-            <span ng-show="sortType == 'concept_level_1.name'" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'concept_level_1.name'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
         </a>
       </th>
       <th>
         <a href="#" ng-click="sortType = 'concept_level_0.name'; sortReverse = !sortReverse">
             Concept Level 0
-            <span ng-show="sortType == 'concept_level_0.name'" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'concept_level_0.name'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
         </a>
       </th>
       <th>
-        <a href="#" ng-click="sortType = 'questions'; sortReverse = !sortReverse">
+        <a href="#" ng-click="sortType = 'questionCount'; sortReverse = !sortReverse">
             Questions
-            <span ng-show="sortType == 'questions'" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'questionCount'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
         </a>
       </th>
       <th>
         <a href="#" ng-click="sortType = 'ruleNumber'; sortReverse = !sortReverse">
             Rule Number
-            <span ng-show="sortType == 'ruleNumber'" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'ruleNumber'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
         </a></th>
       <th>View</th>
     </tr>
-    <tr ng-repeat="c in concepts | orderBy:sortType:sortReverse">
+    <tr ng-repeat="c in concepts | orderBy:sortType:sortReverse | filter:searchConcept">
       <td>{{c.concept_level_2.name}}</td>
       <td>{{c.concept_level_1.name}}</td>
       <td>{{c.concept_level_0.name}}</td>
