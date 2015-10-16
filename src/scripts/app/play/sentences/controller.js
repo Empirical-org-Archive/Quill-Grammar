@@ -78,7 +78,7 @@ function SentencePlayCtrl (
   if ($state.params.uid) {
     loadPromise = GrammarActivity.getById($state.params.uid);
   } else if ($state.params.ids) {
-    var ids = _.map(_.uniq($state.params.ids.split(',')), parseInt);
+    var ids = _.map(_.uniq($state.params.ids.split(',')), Number);
     loadPromise = GrammarActivity.fromPassageResults(ids, $state.params.passageId);
   } else if (!$state.params.pfAllCorrect) {
     throw new Error('Unable to load sentence writing. Please provide an activity ID or a set of rule IDs.');

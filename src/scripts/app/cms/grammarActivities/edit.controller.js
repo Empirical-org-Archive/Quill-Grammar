@@ -39,7 +39,7 @@ function GrammarActivitiesEditCmsCtrl (
         if (s.concept_level_0 && s.concept_level_0.$id) {
           return [s.concept_level_0.$id, {
             quantity: Number(s.quantity),
-            ruleNumber: s.concept_level_0.ruleNumber
+            ruleNumber: Number(s.concept_level_0.ruleNumber)
           }];
         } else {
           if (s.$id && _.isNumber(s.quantity) && _.isNumber(s.ruleNumber)) {
