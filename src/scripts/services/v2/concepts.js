@@ -47,7 +47,6 @@ angular.module('quill-grammar.services.firebase.concepts', [
   this.getByRuleNumbers = function (ruleNumbers) {
     // This is the really slow way to do this,
     // but I can't seem to get orderByChild() working properly
-    console.log(ruleNumbers);
     return ref().$loaded().then(function (concepts) {
       return _.filter(concepts, function (concept) {
         return _.contains(ruleNumbers, Number(concept.ruleNumber));
