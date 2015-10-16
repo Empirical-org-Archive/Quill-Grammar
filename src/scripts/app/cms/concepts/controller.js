@@ -6,6 +6,9 @@ module.exports =
 function ConceptsCmsCtrl (
   $scope, ConceptsFBService, _
 ) {
+  $scope.sortType       = 'concept_level_2.name'; // set the default sort type
+  $scope.sortReverse    = false;  // set the default sort order
+  $scope.searchConcept  = '';     // set the default search/filter term
   ConceptsFBService.get().then(function (c) {
     $scope.concepts = c;
   });
