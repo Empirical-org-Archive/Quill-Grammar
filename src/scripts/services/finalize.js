@@ -4,12 +4,14 @@
 
 module.exports =
 angular.module('quill-grammar.services.finalize', [
-  require('empirical-angular').name,
   require('../../../.tmp/config').name,
   require('./calculatePercentage.js').name,
-  require('./localStorage.js').name
+  require('./localStorage.js').name,
+  require('./lms/conceptResult.js').name,
+  require('./lms/activitySession.js').name,
+  require('./auth').name
 ])
-.factory('finalizeService', function ($q, ConceptTagResult, ActivitySession, calculatePercentageService, localStorageService) {
+.factory('finalizeService', function ($q, ConceptResult, ActivitySession, calculatePercentageService, localStorageService, QuillOAuthService) {
   function finalize(sessionId, passageId) {
     var pfResults;
     if (passageId) {
@@ -20,15 +22,15 @@ angular.module('quill-grammar.services.finalize', [
 
     if (sessionId) {
       //Do LMS logging if we have a sessionId
-      return ConceptTagResult.findAsJsonByActivitySessionId(sessionId).then(function (list) {
+      return ConceptResult.findAsJsonByActivitySessionId(sessionId).then(function (list) {
         return ActivitySession.finish(sessionId, {
-          // FIXME: Uncommenting this line, i.e. sending concept tags to the LMS, is currently broken.
-          // Do not uncomment this line until that part of the integration works on the LMS.
-          // concept_tag_results: list,
+          concept_results: list,
           percentage: calculatePercentageService(list, pfResults)
         });
       }).then(function () {
-        return ConceptTagResult.removeBySessionId(sessionId);
+        return ConceptResult.removeBySessionId(sessionId);
+      }).then(function () {
+        QuillOAuthService.expire();
       }).catch(function (e) {
         console.log('An error occurred while saving results to the LMS', e);
         throw e;

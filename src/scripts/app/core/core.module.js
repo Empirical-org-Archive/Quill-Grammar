@@ -14,6 +14,7 @@ angular
     'duScroll',
     'angulartics',
     'angulartics.mixpanel',
+    require('./../../filters/index.js').name,
     require('../../../../.tmp/config').name,
     require('../../../../.tmp/templates').name,
     require('../../directives/index.js').name,

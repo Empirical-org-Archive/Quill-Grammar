@@ -1,0 +1,15 @@
+<dynamic-form template="conceptQuestionTemplate"
+  ng-model="conceptQuestion"
+  ng-submit="processConceptQuestionForm()">
+</dynamic-form>
+<ul>
+  <li ng-repeat="cqa in conceptQuestion.answers">
+    <dynamic-form template="conceptQuestionAnswerTemplate"
+                  ng-model="cqa">
+    </dynamic-form>
+    <button ng-click="removeAnswerFromConceptQuestion(cqa)">X</button>
+  </li>
+</ul>
+<button ng-click="addAnotherAnswerToConceptQuestion()">Add Another Answer</button>
+
+<a ui-sref="cms-concepts-view({id: concept.$id})"><button>Cancel</button></a>

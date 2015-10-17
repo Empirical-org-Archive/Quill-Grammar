@@ -4,37 +4,27 @@ module.exports =
 angular.module('quill-grammar.services.rule', [
   require('./crud.js').name,
   require('./ruleQuestion.js').name,
-  require('./classification.js').name,
 ])
 
 .factory('RuleService', function (
   CrudService,
-  CategoryService,
   RuleQuestionService,
   $q,
-  ClassificationService,
   _
 ) {
   var crud = new CrudService('rules', [
-    'title', 'description', 'ruleNumber', 'classification', 'ruleQuestions'
+    'title', 'description', 'ruleNumber', 'ruleQuestions'
   ], 'cms');
+
+  this.ref = crud.getRef();
 
   this.updateRule = function (rule) {
     return crud.update(rule);
   };
 
   this.saveRule = function (rule) {
-    function getClassification(rule) {
-      return ClassificationService.getClassificationIdByString(rule.classification)
-        .then(function (cid) {
-          rule.classification = cid;
-          return rule;
-        }, function (error) {
-          return error;
-        });
-    }
-
     function addRuleNumber(rule) {
+      var d = $q.defer();
       var ruleNumber = new CrudService('ruleNumberCounter', [], 'cms').getRef();
       ruleNumber.$transaction(function (currentRuleNumber) {
         if (!currentRuleNumber) {
@@ -54,18 +44,11 @@ angular.module('quill-grammar.services.rule', [
       }, function (error) {
         d.reject(error);
       });
-      var d = $q.defer();
       return d.promise;
     }
 
-    return getClassification(rule)
-      .then(addRuleNumber)
+    return addRuleNumber(rule)
       .then(crud.save);
-  };
-  this.deleteRule = function (category, rule) {
-    return crud.del(rule).then(function () {
-      return CategoryService.removeRuleFromCategory(category, rule);
-    });
   };
 
   this.getAllRules = function () {
@@ -112,29 +95,8 @@ angular.module('quill-grammar.services.rule', [
       return rqp.promise;
     }
 
-    function getClassificationForRules(rules) {
-      var cfr = $q.defer();
-      var cls = [];
-      _.each(rules, function (rule) {
-        cls.push(ClassificationService.getClassification(rule.classification));
-      });
-      $q.all(cls).then(function (classifications) {
-        _.each(rules, function (rule, index) {
-          if (rule && classifications[index]) {
-            rule.resolvedClassification = classifications[index];
-          }
-        });
-        cfr.resolve(rules);
-      }, function (error) {
-        console.log(error);
-        cfr.resolve(rules);
-      });
-      return cfr.promise;
-    }
-
     $q.all(promises)
     .then(getRuleQuestionsForRules)
-    .then(getClassificationForRules)
     .then(function (rules) {
       d.resolve(rules);
     }, function (error) {

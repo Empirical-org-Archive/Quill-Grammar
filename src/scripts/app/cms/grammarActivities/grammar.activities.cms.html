@@ -1,0 +1,26 @@
+<div class="activity-search">
+  <input type="text" placeholder="Enter Search"></input>
+  <button>Search</button>
+</div>
+<div class="activity-create">
+  <a ui-sref="cms-grammar-activities-create()"><button>Create Activity</button></a>
+</div>
+
+<div class="grammar-activities-list">
+  <table>
+    <tr>
+      <th>Standard</th>
+      <th>Title</th>
+      <th>Theme</th>
+      <th>Questions</th>
+      <th>Edit</th>
+    </tr>
+    <tr ng-repeat="g in grammarActivities">
+      <td>{{g.standard.name}}</td>
+      <td>{{g.title}}</td>
+      <td>{{g.topicCategory.name}}</td>
+      <td>{{calculateNumberOfQuestions(g)}}</td>
+      <td><a ui-sref="cms-grammar-activities-edit({id: g.$id})">Edit</a></td>
+    </tr>
+  </table>
+</div>

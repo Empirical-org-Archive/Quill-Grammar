@@ -1,7 +1,9 @@
 {
   "environment": "development",
-  "firebaseUrl": "https://quillgrammarstaging.firebaseio.com/",
+  "firebaseUrl": "https://quillgrammarstaging.firebaseio.com/v2",
   "empiricalBaseURL": "http://server/api/v1",
+  "grammarActivityClassificationUid": "",
+  "proofreaderActivityClassificationUid": "",
   "portholeProxy": "http://server/porthole_proxy",
   "firebaseApp": "quill-grammar-test",
   "oauthClientId": "non-existent-oauth-client-id"

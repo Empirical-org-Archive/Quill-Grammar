@@ -2,14 +2,18 @@
 # AngularFire
 
 [![Build Status](https://travis-ci.org/firebase/angularfire.svg?branch=master)](https://travis-ci.org/firebase/angularfire)
-[![Coverage Status](https://img.shields.io/coveralls/firebase/angularfire.svg)](https://coveralls.io/r/firebase/angularfire)
+[![Coverage Status](https://img.shields.io/coveralls/firebase/angularfire.svg?branch=master&style=flat)](https://coveralls.io/r/firebase/angularfire)
 [![Version](https://badge.fury.io/gh/firebase%2Fangularfire.svg)](http://badge.fury.io/gh/firebase%2Fangularfire)
 
 AngularFire is the officially supported [AngularJS](http://angularjs.org/) binding for
-[Firebase](http://www.firebase.com/?utm_medium=web&utm_source=angularfire). Firebase is a full
-backend so you don't need servers to build your Angular app. AngularFire provides you with the
-`$firebase` service which allows you to easily keep your `$scope` variables in sync with your
-Firebase backend.
+[Firebase](http://www.firebase.com/?utm_medium=web&utm_source=angularfire). Firebase is a
+backend service that provides data storage, authentication, and static website hosting for your Angular app.
+
+AngularFire is a complement to the core Firebase client. It provides you with three Angular
+services:
+  * `$firebaseObject` - synchronized objects
+  * `$firebaseArray` - synchronized collections
+  * `$firebaseAuth` - authentication, user management, routing
 
 
 ## Downloading AngularFire
@@ -18,20 +22,20 @@ In order to use AngularFire in your project, you need to include the following f
 
 ```html
 <!-- AngularJS -->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
 
 <!-- Firebase -->
-<script src="https://cdn.firebase.com/js/client/2.1.0/firebase.js"></script>
+<script src="https://cdn.firebase.com/js/client/2.2.5/firebase.js"></script>
 
 <!-- AngularFire -->
-<script src="https://cdn.firebase.com/libs/angularfire/0.9.1/angularfire.min.js"></script>
+<script src="https://cdn.firebase.com/libs/angularfire/1.1.2/angularfire.min.js"></script>
 ```
 
 Use the URL above to download both the minified and non-minified versions of AngularFire from the
 Firebase CDN. You can also download them from the
 [releases page of this GitHub repository](https://github.com/firebase/angularfire/releases).
 [Firebase](https://www.firebase.com/docs/web/quickstart.html?utm_medium=web&utm_source=angularfire) and
-[Angular](https://angularjs.org/) can be downloaded directly from their respective websites.
+[Angular](https://angularjs.org/) libraries can be downloaded directly from their respective websites.
 
 You can also install AngularFire via npm and Bower and its dependencies will be downloaded
 automatically:
@@ -47,23 +51,17 @@ $ bower install angularfire --save
 Once you've included AngularFire and its dependencies into your project, you will have access to
 the `$firebase` service.
 
-You can also start hacking on AngularFire in a matter of seconds on
-[Nitrous.IO](https://www.nitrous.io/?utm_source=github.com&utm_campaign=angularfire&utm_medium=hackonnitrous):
-
-[![Hack firebase/angularfire on
-Nitrous.IO](https://d3o0mnbgv6k92a.cloudfront.net/assets/hack-l-v1-3cc067e71372f6045e1949af9d96095b.png)](https://www.nitrous.io/hack_button?source=embed&runtime=nodejs&repo=firebase%2Fangularfire&file_to_open=README.md)
-
 
 ## Getting Started with Firebase
 
-AngularFire requires Firebase in order to sync data. You can [sign up here for a free
+AngularFire uses Firebase for data storage and authentication. You can [sign up here for a free
 account](https://www.firebase.com/signup/?utm_medium=web&utm_source=angularfire).
 
 
 ## Documentation
 
 The Firebase docs have a [quickstart](https://www.firebase.com/docs/web/bindings/angular/quickstart.html?utm_medium=web&utm_source=angularfire),
-[guide](https://www.firebase.com/docs/web/bindings/angular/guide.html?utm_medium=web&utm_source=angularfire),
+[guide](https://www.firebase.com/docs/web/bindings/angular/guide?utm_medium=web&utm_source=angularfire),
 and [full API reference](https://www.firebase.com/docs/web/bindings/angular/api.html?utm_medium=web&utm_source=angularfire)
 for AngularFire.
 

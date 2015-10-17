@@ -1,0 +1,12 @@
+<label for="title">Title</label>
+<input label="title" ng-model="proofreaderActivity.title" type="text" ng-required="true"></input>
+<label for="description">Description</label>
+<textarea label="description" ng-model="proofreaderActivity.description" ng-required="true"></textarea>
+<topic-category-selector model="proofreaderActivity"></topic-category-selector>
+<standards-selector model="proofreaderActivity"></standards-selector>
+<label for="passage">Passage</label>
+<textarea label="passage" rows="10" ng-model="proofreaderActivity.passage" ng-required="true"></textarea>
+<input label="ue" type="checkbox" ng-model="proofreaderActivity.underlineErrorsInProofreader">Underline errors in passage</input>
+<br/>
+<button type="submit" ng-click="processProofreaderActivityForm()">Submit Proofreader Activity</button>
+

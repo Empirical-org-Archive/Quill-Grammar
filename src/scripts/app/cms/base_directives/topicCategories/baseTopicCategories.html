@@ -1,0 +1,6 @@
+<select
+  ng-options="tc.name for tc in (topicCategories | orderBy:'name') track by tc.uid"
+  ng-model="model.topicCategory"
+  >
+  <option value="">Select Topic Category</option>
+</select>

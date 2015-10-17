@@ -1,0 +1,30 @@
+<h3>Concept View</h3>
+<a ui-sref="cms-concepts-edit({id: concept.$id})"><button>Edit Concept</button></a>
+<button ng-click="confirmDelete(concept.$id)">Delete Concept</button>
+<h3>{{concept.name}} ({{concept.ruleNumber}})</h3>
+
+<p>{{concept.ruleDescription}}</p>
+
+<h4>Concepts</h4>
+<ul>
+  <li>{{concept.concept_level_1.name}}</li>
+  <li>{{concept.concept_level_2.name}}</li>
+</ul>
+
+<h4>CCSS Standard</h4>
+<ul>
+  <li>{{concept.standard.name}}</li>
+  <li>{{concept.standard_level.name}}</li>
+</ul>
+
+<h4>Questions</h4>
+<ul ng-repeat="(id, q) in concept.questions">
+  <li>
+    <p>{{q.prompt}}</p>
+    <a ui-sref="cms-concepts-questions-edit({conceptId: concept.$id, conceptQuestionId: id})">edit</a>
+  </li>
+</ul>
+
+<a ui-sref="cms-concepts-questions-create({conceptId: concept.$id})"><button>Create Question</button</a>
+
+

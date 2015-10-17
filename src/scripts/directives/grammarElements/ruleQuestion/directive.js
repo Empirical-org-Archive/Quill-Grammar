@@ -2,9 +2,10 @@
 module.exports = function () {
   return {
     restrict: 'E',
-    transclude: true,
     scope: {
-      ruleQuestion: '='
+      question: '=',
+      next: '&',
+      submit: '&'
     },
     templateUrl: 'ruleQuestion.html',
     controller: 'GrammarRuleQuestionCtrl'

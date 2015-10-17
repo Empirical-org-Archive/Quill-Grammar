@@ -1,38 +1,7 @@
 <div class="passage">
-  <div ng-class="{'word':true, 'error-tooltip-item': !isBr(word.responseText)}" ng-repeat="(index, word) in passage" id="error-tooltip-scroll-{{index}}">
-    <p ng-bind-html="space" ng-show="isBr(word.responseText)" id="break-binding-point-{{index}}"></p>
-    <input
-      autofocus="$first"
-      ng-show="!isBr(word.responseText)"
-      type="text"
-      ng-class="{focused: word.isFocused, incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), changed: word.text !== word.responseText, correct: hasCorrect(word), underlined: needsUnderlining(word), tooltipped: word.tooltip.style}"
-      ng-readonly="passage.submitted"
-      ng-focus="word.isFocused = true"
-      ng-change="onInputChange(word)"
-      ng-blur="word.isFocused = false"
-      ng-size="{{word.responseText.length}}"
-      ng-trim="false"
-      ng-model="word.responseText">
-    </input>
-    <div ng-class="getErrorTooltipClass(index)" ng-show="!isBr(word.responseText) && hasErrorToShow(word)"
-      ng-style="word.tooltip.style">
-      <div ng-class="{incorrectError: hasIncorrectError(word), notNecessaryError: hasNotNecessaryError(word), correct: hasCorrect(word)}">
-        <div ng-class="getErrorTooltipTopClass(answerImageName(word.type))">
-          <div class="img-div">
-            <img ng-src="/assets/images/{{answerImageName(word.type)}}_icon.png" alt="{{word.type}}"></img>
-          </div>
-          <h4>{{word.type}}</h4>
-          <p class="counter">{{errorCounter(word)}}</p>
-        </div>
-        <div class="bottom-panel">
-          <h4>Correct Edit:</h4>
-          <p ng-show="word.plus">{{word.plus}}</p>
-          <p ng-show="!word.plus">{{word.text}}</p>
-          <h4 ng-show="!hasNotNecessaryError(word)">Grammatical Concept:</h4>
-          <p ng-show="!hasNotNecessaryError(word)">{{getGrammaticalConceptForWord(word)}}</p>
-          <button ng-click="word.nextAction.fn()">{{word.nextAction.title}} ➞</button>
-        </div>
-      </div>
-    </div>
+  <div ng-class="{'word':true, 'error-tooltip-item': !word.isBr()}" ng-repeat="(index, word) in proofreadingPassage.words" id="error-tooltip-scroll-{{index}}">
+    <p ng-bind-html="space" ng-show="word.isBr()" id="break-binding-point-{{index}}"></p>
+    <passage-word-input></passage-word-input>
+    <proofreading-error-tooltip></proofreading-error-tooltip>
   </div>
 </div>

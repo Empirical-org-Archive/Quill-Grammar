@@ -4,6 +4,10 @@ module.exports =
 
 /*@ngInject*/
 function (QuillFirebaseAuthService, QuillOAuthService, $rootScope) {
+  // Turn off the loading spinner.
+  angular.element(document.getElementsByClassName('loading-spinner'))
+    .css('display', 'none');
+
   // Always authenticate with Firebase.
   QuillFirebaseAuthService.authenticate();
 
