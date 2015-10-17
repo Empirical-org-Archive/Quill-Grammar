@@ -69,7 +69,6 @@ angular.module('quill-grammar.services.proofreadingPassage', [
                         })
                         .uniq()
                         .value();
-    console.log(ruleNumbers);
     return ConceptsFBService.getByRuleNumbers(ruleNumbers);
   }
 
