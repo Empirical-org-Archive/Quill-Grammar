@@ -87,7 +87,7 @@ angular.module('quill-grammar.services.question', [
     if (!answer) {
       return false;
     }
-    return _.any(b, function(possibleAnswer) {
+    return _.any(b, function (possibleAnswer) {
       var reg = new RegExp(matchAllDelimsStr, 'g');
       var grammarElements = [];
       var tmpArray;
