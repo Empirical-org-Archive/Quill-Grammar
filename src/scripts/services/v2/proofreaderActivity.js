@@ -36,7 +36,6 @@ angular.module('quill-grammar.services.firebase.proofreaderActivity', [
       if (!data.passage) {
         return $q.reject(new Error('Error loading activity: activity with ID ' + id + ' does not exist.'));
       }
-
       return new ProofreaderModel(data);
     });
   };
