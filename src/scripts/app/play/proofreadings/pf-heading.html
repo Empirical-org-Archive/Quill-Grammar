@@ -6,7 +6,7 @@
   </div>
   <div class="instructions">
     <img src="/assets/images/information_icon.png" alt="information"></img>
-    <p ng-bind-html="proofreadingActivity.instructions | trustedHtml"></p>
+    <p ng-bind-html="proofreadingActivity.description | trustedHtml"></p>
   </div>
   <activity-progress-bar max="proofreadingPassage.getNumErrors()" current="proofreadingPassage.numChanges" title="'Edits Made:'"></activity-progress-bar>
 </div>
