@@ -75,7 +75,7 @@ angular.module('quill-grammar.services.question', [
   Question.prototype.ensureLengthIsProper = function (answer) {
     var threshold = 0.8;
     return function (possibleAnswer) {
-      var b = possibleAnswer.replace(delim.open, '').replace(delim.close, '');
+      var b = removeDelimeters(possibleAnswer);
       return (answer.length / b.length) >= threshold;
     };
   };
