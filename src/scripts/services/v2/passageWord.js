@@ -67,5 +67,9 @@ angular.module('quill-grammar.services.passageWord', [
     return PassageWord.htmlMatches(this.responseText) !== null;
   };
 
+  PassageWord.prototype.needsUnderlining = function () {
+    return _.has(this, 'minus');
+  };
+
   return PassageWord;
 });
