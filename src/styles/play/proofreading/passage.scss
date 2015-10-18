@@ -54,7 +54,8 @@ div.passage {
     }
 
     &.underlined {
-      text-decoration: underline;
+      border-radius: 0px;
+      border-bottom: 1px solid $underlinedColor !important;
     }
   }
   .error-tooltip-item {
