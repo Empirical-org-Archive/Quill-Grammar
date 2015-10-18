@@ -35,11 +35,16 @@ angular.module('quill-grammar.services.question', [
     close: '}'
   };
 
+  var delimRegEx = {
+    open: new RegExp(delim.open, 'g'),
+    close: new RegExp(delim.close, 'g')
+  };
+
   function removeDelimeters(b) {
     if (typeof (b) !== 'string') {
       throw new Error('Input must be type string removeDelimeters');
     }
-    return b.replace(delim.open, '').replace(delim.close, '');
+    return b.replace(delimRegEx.open, '').replace(delimRegEx.close, '');
   }
 
   function getCorrectString(b) {
