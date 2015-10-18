@@ -35,11 +35,18 @@ angular.module('quill-grammar.services.question', [
     close: '}'
   };
 
+  var delimRegEx = {
+    open: new RegExp(delim.open, 'g'),
+    close: new RegExp(delim.close, 'g')
+  };
+
+  var matchAllDelimsStr = delim.open + '([^' + delim.open + '^' + delim.close + '.]*)' + delim.close;
+
   function removeDelimeters(b) {
     if (typeof (b) !== 'string') {
       throw new Error('Input must be type string removeDelimeters');
     }
-    return b.replace(delim.open, '').replace(delim.close, '');
+    return b.replace(delimRegEx.open, '').replace(delimRegEx.close, '');
   }
 
   function getCorrectString(b) {
@@ -70,7 +77,7 @@ angular.module('quill-grammar.services.question', [
   Question.prototype.ensureLengthIsProper = function (answer) {
     var threshold = 0.8;
     return function (possibleAnswer) {
-      var b = possibleAnswer.replace(delim.open, '').replace(delim.close, '');
+      var b = removeDelimeters(possibleAnswer);
       return (answer.length / b.length) >= threshold;
     };
   };
@@ -80,17 +87,17 @@ angular.module('quill-grammar.services.question', [
     if (!answer) {
       return false;
     }
-    //This regex will only work for one occurence of {hey grammar element}
-    //It needs to be changed for when the grammar elements are more than one
-    //per body line.
-    var reg = new RegExp(delim.open + '(.*)' + delim.close, 'g');
-    //[0]original string [1-n]substring matches
-    var results = reg.exec(b);
-    var grammarElements = _.rest(results);
-
-    return _.every(grammarElements, function (element) {
-      var r = new RegExp('(^|\\W{1,1})' + element + '(\\W{1,1}|$)', 'g');
-      return answer.search(r) !== -1;
+    return _.any(b, function(possibleAnswer) {
+      var reg = new RegExp(matchAllDelimsStr, 'g');
+      var grammarElements = [];
+      var tmpArray;
+      while ((tmpArray = reg.exec(possibleAnswer)) !== null) {
+        grammarElements.push(tmpArray[1]);
+      }
+      return _.every(grammarElements, function (element) {
+        var r = new RegExp('(^|\\W{1,1})' + element + '(\\W{1,1}|$)', 'g');
+        return answer.search(r) !== -1;
+      });
     });
   };
 
