@@ -26,7 +26,6 @@ function ProofreadingPlayCtrl (
   }, function onLoadError (err) {
     $window.alert(err);
   }).then(function (proofreadingPassage) {
-    console.log(proofreadingPassage);
     $scope.proofreadingPassage = proofreadingPassage;
   });
 
@@ -237,12 +236,9 @@ function ProofreadingPlayCtrl (
     }
   };
 
-  // FIXME: I don't think this ever worked, because p (passage word) never has a 'minus' field.
-  // Only passage results have the 'minus' field.
-  // At any rate, this should move to PassageWord#needsUnderlining() at some point.
   $scope.needsUnderlining = function (p) {
-    if ($scope.pf && $scope.pf.underlineErrorsInProofreader && _.has(p, 'minus')) {
-      return true;
+    if ($scope.proofreadingActivity && $scope.proofreadingActivity.underlineErrorsInProofreader) {
+      return p.needsUnderlining();
     }
   };
 };
