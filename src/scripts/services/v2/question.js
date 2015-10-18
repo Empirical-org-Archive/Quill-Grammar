@@ -40,6 +40,8 @@ angular.module('quill-grammar.services.question', [
     close: new RegExp(delim.close, 'g')
   };
 
+  var matchAllDelimsStr = delim.open + '([^' + delim.open + '^' + delim.close + '.]*)' + delim.close;
+
   function removeDelimeters(b) {
     if (typeof (b) !== 'string') {
       throw new Error('Input must be type string removeDelimeters');
@@ -85,17 +87,17 @@ angular.module('quill-grammar.services.question', [
     if (!answer) {
       return false;
     }
-    //This regex will only work for one occurence of {hey grammar element}
-    //It needs to be changed for when the grammar elements are more than one
-    //per body line.
-    var reg = new RegExp(delim.open + '(.*)' + delim.close, 'g');
-    //[0]original string [1-n]substring matches
-    var results = reg.exec(b);
-    var grammarElements = _.rest(results);
-
-    return _.every(grammarElements, function (element) {
-      var r = new RegExp('(^|\\W{1,1})' + element + '(\\W{1,1}|$)', 'g');
-      return answer.search(r) !== -1;
+    return _.any(b, function(possibleAnswer) {
+      var reg = new RegExp(matchAllDelimsStr, 'g');
+      var grammarElements = [];
+      var tmpArray;
+      while ((tmpArray = reg.exec(possibleAnswer)) !== null) {
+        grammarElements.push(tmpArray[1]);
+      }
+      return _.every(grammarElements, function (element) {
+        var r = new RegExp('(^|\\W{1,1})' + element + '(\\W{1,1}|$)', 'g');
+        return answer.search(r) !== -1;
+      });
     });
   };
 
