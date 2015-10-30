@@ -1,6 +1,6 @@
 {
   "name": "quill-grammar",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "private": "true",
   "scripts": {
     "test": "npm run ci",
