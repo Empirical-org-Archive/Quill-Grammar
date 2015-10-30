@@ -12,6 +12,7 @@ module.exports =
 angular.module('quill-grammar.services.analytics', [
   'angulartics',
 ])
+
 .factory('AnalyticsService', function ($q, $analytics) {
   /*
    * Function to map and send analytic information
@@ -38,9 +39,10 @@ angular.module('quill-grammar.services.analytics', [
     trackSentenceWritingSubmission: trackSentenceWritingSubmission
   };
 })
+
 .factory('errorHttpInterceptor', ['$q', '$window', function ($q, $window) {
   return {
-    responseError: function responseError(rejection) {
+    responseError: function responseError (rejection) {
       if ($window.atatus) {
         var message = 'AJAX Error: ' +
           rejection.config.method + ' ' +
@@ -55,16 +57,18 @@ angular.module('quill-grammar.services.analytics', [
     }
   };
 }])
-.config(['$httpProvider', function($httpProvider) {
-    $httpProvider.interceptors.push('errorHttpInterceptor');
+
+.config(['$httpProvider', function ($httpProvider) {
+  $httpProvider.interceptors.push('errorHttpInterceptor');
 }])
+
 .factory('$exceptionHandler', ['$window', function ($window) {
   return function (exception, cause) {
-      if (exception.stack) {
-          exception.stack = exception.stack.replace('new <anonymous>', '<anonymous>');
-      }
-      if ($window.atatus) {
-          $window.atatus.notify(exception);
-      }
+    if (exception.stack) {
+      exception.stack = exception.stack.replace('new <anonymous>', '<anonymous>');
+    }
+    if ($window.atatus) {
+      $window.atatus.notify(exception);
+    }
   };
 }]);
