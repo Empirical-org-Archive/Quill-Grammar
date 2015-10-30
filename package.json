@@ -27,7 +27,8 @@
     "karma-phantomjs-launcher": "^0.2.0",
     "karma-sourcemap-loader": "^0.3.5",
     "mocha": "^2.2.5",
-    "phantomjs": "^1.9.17"
+    "phantomjs": "^1.9.17",
+    "protractor": "^2.5.1"
   },
   "browser": {
     "angular": "./bower_components/angular/angular.min.js",
