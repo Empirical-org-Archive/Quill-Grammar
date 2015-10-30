@@ -1,6 +1,8 @@
 /* global _ */
 /* global _ */
 /* global _ */
+/* global atatus */
+/* jshint unused: vars */
 
 'use strict';
 
