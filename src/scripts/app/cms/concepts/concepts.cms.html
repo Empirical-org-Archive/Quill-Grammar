@@ -1,30 +1,55 @@
 <div class="concept-search">
-  <input type="text" placeholder="Enter Search"></input>
-  <button>Search</button>
+  <input type="text" placeholder="Enter Search" ng-model="searchConcept"></input>
 </div>
 <b>Total Concepts {{getTotalConcepts(concepts)}}</b>
 <p></p>
 <b>Total Questions {{getTotalQuestions(concepts)}}</b>
 <div class="concept-list">
   <table>
-    <tr>
-      <th>Concept Level 2</th>
-      <th>Concept Level 1</th>
-      <th>Concept Level 0</th>
-      <th>Concept Name</th>
-      <th>Questions</th>
-      <th>Rule Number</th>
-      <th>View</th>
-    </tr>
-    <tr ng-repeat="c in concepts">
-      <td>{{c.concept_level_2.name}}</td>
-      <td>{{c.concept_level_1.name}}</td>
-      <td>{{c.concept_level_0.name}}</td>
-      <td>{{c.name}}</td>
-      <td>{{getQuestionLength(c.questions)}}</td>
-      <td>{{c.ruleNumber}}</td>
-      <td><a ui-sref="cms-concepts-view({id: c.$id})">View</a></td>
-    </tr>
+    <thead>
+      <tr>
+        <th>
+          <a href="#" ng-click="sortType = 'concept_level_2.name'; sortReverse = !sortReverse">
+              Concept Level 2
+              <span ng-show="sortType == 'concept_level_2.name'">{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
+          </a>
+        </th>
+        <th>
+          <a href="#" ng-click="sortType = 'concept_level_1.name'; sortReverse = !sortReverse">
+              Concept Level 1
+              <span ng-show="sortType == 'concept_level_1.name'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
+          </a>
+        </th>
+        <th>
+          <a href="#" ng-click="sortType = 'concept_level_0.name'; sortReverse = !sortReverse">
+              Concept Level 0
+              <span ng-show="sortType == 'concept_level_0.name'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
+          </a>
+        </th>
+        <th>
+          <a href="#" ng-click="sortType = 'questionCount'; sortReverse = !sortReverse">
+              Questions
+              <span ng-show="sortType == 'questionCount'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
+          </a>
+        </th>
+        <th>
+          <a href="#" ng-click="sortType = 'ruleNumber'; sortReverse = !sortReverse">
+              Rule Number
+              <span ng-show="sortType == 'ruleNumber'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
+          </a></th>
+        <th>View</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="c in concepts | orderBy:sortType:sortReverse | filter:searchConcept">
+        <td>{{c.concept_level_2.name}}</td>
+        <td>{{c.concept_level_1.name}}</td>
+        <td>{{c.concept_level_0.name}}</td>
+        <td>{{c.questionCount}}</td>
+        <td>{{c.ruleNumber}}</td>
+        <td><a ui-sref="cms-concepts-view({id: c.$id})">View</a></td>
+      </tr>
+    </tbody>
   </table>
 <div class="concept-create">
   <a ui-sref="cms-concepts-create()"><button>Create Concepts</button></a>

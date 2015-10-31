@@ -81,4 +81,17 @@ module.exports = function ($scope, _, $timeout, Question) {
   $scope.capturePasteEvent = function (event) {
     event.preventDefault();
   };
+
+  /*
+   * Event handler for pressing enter while focuesed
+   * in the textarea to check answer or progress to
+   * the next problem
+   */
+  $scope.capturePressEnterEvent = function () {
+    if ($scope.showNextQuestion) {
+      $scope.nextProblem();
+    } else {
+      $scope.checkAnswer();
+    }
+  };
 };

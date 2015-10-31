@@ -1,3 +1,10 @@
+# Supporters
+![Atatus](http://dmc1acwvwny3.cloudfront.net/images/badge_dark.png)
+
+[Atatus | Mobile and Web Performance Monitoring](https://www.atatus.com/?utm_source=badge)
+
+
+
 Quill-Grammar [![Build Status](https://travis-ci.org/empirical-org/Quill-Grammar.svg?branch=master)](https://travis-ci.org/empirical-org/Quill-Grammar)
 =============
 
