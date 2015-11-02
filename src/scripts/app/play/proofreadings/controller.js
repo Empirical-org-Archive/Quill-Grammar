@@ -55,6 +55,8 @@ function ProofreadingPlayCtrl (
       $scope.pf.image = $scope.pfImages[$scope.id];
     }
     fetchListedRules();
+    angular.element(document.getElementsByClassName('loading-spinner'))
+    .css('display', 'none');
   }, error);
 
   /*
