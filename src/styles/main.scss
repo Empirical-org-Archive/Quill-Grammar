@@ -21,5 +21,11 @@ body {
   }
 }
 
+.loading-spinner {
+  text-align: center;
+}
+
+@import "spinner";
+
 @import "play/base.scss";
 @import "my-refills/progress-bar.scss";
