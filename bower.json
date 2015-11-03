@@ -19,7 +19,8 @@
     "oauth-ng": "~0.4.2",
     "angular-mocks": "~1.4.4",
     "angular-dynforms": "~0.0.4",
-    "mockfirebase": "~0.11.0"
+    "mockfirebase": "~0.11.0",
+    "jquery": "~2.1.4"
   },
   "overrides": {
     "porthole": {

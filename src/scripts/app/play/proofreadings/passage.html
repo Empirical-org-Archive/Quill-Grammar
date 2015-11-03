@@ -1,5 +1,5 @@
 <div class="passage">
-  <div ng-class="{'word':true, 'error-tooltip-item': !word.isBr()}" ng-repeat="(index, word) in proofreadingPassage.words" id="error-tooltip-scroll-{{index}}">
+  <div ng-class="{'word':true, 'error-tooltip-item': !word.isBr()}" ng-repeat="(index, word) in words track by index" id="error-tooltip-scroll-{{index}}">
     <p ng-bind-html="space" ng-show="word.isBr()" id="break-binding-point-{{index}}"></p>
     <passage-word-input></passage-word-input>
     <proofreading-error-tooltip ></proofreading-error-tooltip>
