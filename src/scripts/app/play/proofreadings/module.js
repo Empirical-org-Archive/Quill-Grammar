@@ -10,7 +10,7 @@ module.exports = angular.module('quill-grammar.play.proofreadings', [
   'angulartics',
   'angular.filter',
   'ui.router',
-  'uuid4',
+  'uuid4'
 ])
 .config(require('./config.js'))
 .directive('quillGrammarPassage', function () {
