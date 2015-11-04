@@ -29,18 +29,20 @@ function ProofreadingPlayCtrl (
     $window.alert(err);
   }).then(function (proofreadingPassage) {
     $scope.proofreadingPassage = proofreadingPassage;
-    var i = 0;
-    var l = $scope.proofreadingPassage.words.length;
-    (function iterator () {
-      var newWords = $scope.proofreadingPassage.words.slice(i, i + 20);
-      for (var n = 0; n < newWords.length; n++) {
-        $rootScope.words.push(newWords[n]);
-      }
-      i = i + 20;
-      if (i < l) {
-        $timeout(iterator, 150);
-      }
-    })();
+    if ($scope.proofreadingPassage) {
+      var i = 0;
+      var l = $scope.proofreadingPassage.words.length;
+      (function iterator () {
+        var newWords = $scope.proofreadingPassage.words.slice(i, i + 20);
+        for (var n = 0; n < newWords.length; n++) {
+          $rootScope.words.push(newWords[n]);
+        }
+        i = i + 20;
+        if (i < l) {
+          $timeout(iterator, 150);
+        }
+      })();
+    }
   });
 
   /*
