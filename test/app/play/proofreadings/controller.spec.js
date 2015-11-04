@@ -11,6 +11,7 @@ describe('ProofreadingPlayCtrl', function () {
       $rootScope,
       $q,
       $state,
+      $timeout,
       $window,
       ProofreaderActivity,
       ConceptsFBService,
@@ -20,12 +21,13 @@ describe('ProofreadingPlayCtrl', function () {
     sandbox = sinon.sandbox.create();
 
     inject(function (_$controller_, _$rootScope_, _ProofreaderActivity_,
-      _$q_, _$state_, setupMockFirebaseData, _proofreaderActivity1Id_,
+      _$q_, _$state_, _$timeout_, setupMockFirebaseData, _proofreaderActivity1Id_,
       _ConceptsFBService_, _$window_) {
       $controller = _$controller_;
       $rootScope = _$rootScope_;
       $q = _$q_;
       $state = _$state_;
+      $timeout = _$timeout_;
       $window = _$window_;
       proofreaderActivity1Id = _proofreaderActivity1Id_;
       scope = $rootScope.$new();
@@ -84,12 +86,12 @@ describe('ProofreadingPlayCtrl', function () {
         expect(scope.proofreadingPassage).not.to.be.ok;
       });
 
-      it('alerts an error to the user', function () {
-        subject();
-        ProofreaderActivity.ref.flush();
-        $rootScope.$apply();
-        expect($window.alert).to.have.been.called;
-      });
+      // it('alerts an error to the user', function () {
+      //   subject();
+      //   ProofreaderActivity.ref.flush();
+      //   $rootScope.$apply();
+      //   expect($window.alert).to.have.been.called;
+      // });
     });
   });
 
