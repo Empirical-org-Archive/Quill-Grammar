@@ -21,13 +21,15 @@ function ConceptsCmsCtrl (
     return _.keys(concepts).length;
   };
 
-  $scope.getTotalQuestions = function (concepts) {
-    return _.reduce(concepts, function (sum, c) {
-      if (_.isNaN(sum)) {
-        sum = 0;
-      }
-      return Number(sum) + Number(_.keys(c.questions).length);
-    });
+  $scope.getTotalQuestions = function () {
+    if ($scope.concepts) {
+      return _.reduce($scope.concepts, function (sum, c) {
+        if (_.isNaN(sum)) {
+          sum = 0;
+        }
+        return Number(sum) + Number(_.keys(c.questions).length);
+      });
+    }
   };
 
   function addQuestionCountToConcepts(concepts) {
