@@ -37,6 +37,11 @@
               Rule Number
               <span ng-show="sortType == 'ruleNumber'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
           </a></th>
+        <th>
+          <a href="#" ng-click="sortType = 'ruleDescription'; sortReverse = !sortReverse">
+              Rule Description
+              <span ng-show="sortType == 'ruleDescription'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
+          </a></th>
         <th>View</th>
       </tr>
     </thead>
@@ -47,6 +52,7 @@
         <td>{{c.concept_level_0.name}}</td>
         <td>{{c.questionCount}}</td>
         <td>{{c.ruleNumber}}</td>
+        <td>{{c.ruleDescription.length > 0}}</td>
         <td><a ui-sref="cms-concepts-view({id: c.$id})">View</a></td>
       </tr>
     </tbody>
