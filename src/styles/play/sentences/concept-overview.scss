@@ -12,8 +12,8 @@
 .sentence-tooltip {
   @extend .tooltip-reverse-no-arrow;
   @include transition (all 0.2s ease-in-out);
-  height: 400px;
-  width: 341px;
+  // height: 400px;
+  max-width: 500px;
   h2, p {
     text-align: left;
     padding: 25px;
@@ -22,11 +22,9 @@
       padding: 0px;
     }
   }
-  h2 {
-    font-size: 19px;
-  }
+
   p {
-    font-size: 13px;
+    line-height: 1.8em;
   }
 }
 
