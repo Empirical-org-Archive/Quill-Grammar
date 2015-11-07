@@ -3,17 +3,25 @@
   border: none;
   display: inline-block;
   padding: none;
+  border-radius: 0px;
   &:focus,
   &:hover .sentence-tooltip {
     opacity: 1;
     visibility: visible;
+    -webkit-box-shadow: 0px 0px 1000px 996px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 1000px 996px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 1000px 996px rgba(0,0,0,0.75);
+  }
+  .sentence-tooltip {
+    border-radius: 0px;
   }
 }
 .sentence-tooltip {
   @extend .tooltip-reverse-no-arrow;
   @include transition (all 0.2s ease-in-out);
-  height: 400px;
-  width: 341px;
+  // height: 400px;
+  border-radius: 0px;
+  max-width: 500px;
   h2, p {
     text-align: left;
     padding: 25px;
@@ -22,11 +30,9 @@
       padding: 0px;
     }
   }
-  h2 {
-    font-size: 19px;
-  }
+
   p {
-    font-size: 13px;
+    line-height: 1.8em;
   }
 }
 
