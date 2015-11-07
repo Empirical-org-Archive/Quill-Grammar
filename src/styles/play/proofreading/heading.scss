@@ -1,32 +1,28 @@
 .quill-grammar-pf-heading {
   background-color: $gray;
+  padding: 15px 30px;
   div.header-image p {
-    position: relative;
-    top: -55px;
-    left: 30px;
-    margin-bottom: -20px;
     font-weight: bold;
     color: white;
-    line-height: 1;
     font-size: 18px;
     text-shadow: 0px 0px 6px #000;
   }
   @include outer-container;
 
   div.instructions {
-    padding-left: 30px;
+    margin-top: 0.5em;
     @include span-columns(9);
     img {
       @include span-columns(.82);
-      margin-top: 22px;
     }
     p {
       @include span-columns(10);
+      margin-top: 0.4em;
     }
   }
 
   activity-progress-bar {
-    padding-right: 30px;
+    margin-top: 0.5em;
     @include span-columns(3);
   }
 }

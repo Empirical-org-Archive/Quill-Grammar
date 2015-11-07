@@ -1,7 +1,5 @@
 'use strict';
 
-Firebase.enableLogging(true);
-
 var R = require('ramda');
 
 /*@ngInject*/
