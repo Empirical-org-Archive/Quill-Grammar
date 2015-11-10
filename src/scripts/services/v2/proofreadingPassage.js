@@ -318,5 +318,18 @@ angular.module('quill-grammar.services.proofreadingPassage', [
     }
   };
 
+  /*
+   * Eventually this can replace the above function.
+   */
+
+  ProofreadingPassage.prototype.getGrammaticalConceptData = function (word) {
+    if (word.ruleNumber) {
+      var concept = _.findWhere(this.concepts, {ruleNumber: Number(word.ruleNumber)});
+      if (concept && concept.concept_level_0.name) {
+        return concept;
+      }
+    }
+  };
+
   return ProofreadingPassage;
 });
