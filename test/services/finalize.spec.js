@@ -38,30 +38,12 @@ describe('finalizeService', function () {
       {concept_uid: 'bar', metadata: {correct: 0}}
     ];
 
-    var fakePfResults = [
-      {
-        conceptClass: 'cool',
-        correct: 2,
-        total: 3
-      },
-      {
-        conceptClass: 'very cool',
-        correct: 0,
-        total: 5
-      }
-    ];
-
     beforeEach(function () {
       // ConceptResult.findAsJsonByActivitySessionId(...)
       sandbox.mock(conceptResultService)
              .expects('findAsJsonByActivitySessionId')
              .withArgs('fake-session-id')
              .returns($q.when(fakeConceptResultsList));
-
-      sandbox.mock(localStorageService)
-             .expects('get')
-             .withArgs('pf-fake-passage-id')
-             .returns(fakePfResults);
 
       // gets concept tag results from firebase and sends to LMS
 
@@ -70,7 +52,7 @@ describe('finalizeService', function () {
              .expects('finish')
              .withArgs('fake-session-id', {
                concept_results: fakeConceptResultsList,
-               percentage: 0.3
+               percentage: 0.5
              })
              .returns($q.when());
 

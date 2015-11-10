@@ -25,7 +25,7 @@ angular.module('quill-grammar.services.finalize', [
       return ConceptResult.findAsJsonByActivitySessionId(sessionId).then(function (list) {
         return ActivitySession.finish(sessionId, {
           concept_results: list,
-          percentage: calculatePercentageService(list, pfResults)
+          percentage: calculatePercentageService(list)
         });
       }).then(function () {
         return ConceptResult.removeBySessionId(sessionId);
