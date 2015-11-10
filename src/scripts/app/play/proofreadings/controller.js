@@ -8,9 +8,14 @@ function ProofreadingPlayCtrl (
   $location, $document, $timeout, $window,
   ProofreaderActivity,
   PassageWord,
-  ProofreadingPassage
+  ProofreadingPassage,
+  ConceptResult
 ) {
   $scope.id = $state.params.uid;
+
+  if ($state.params.student) {
+    $scope.sessionId = $state.params.student;
+  }
 
   $rootScope.words = [];
 
@@ -84,9 +89,11 @@ function ProofreadingPlayCtrl (
       var word = proofreadingPassage.words[passageResult.index];
       word.type = passageResult.type;
       word.resultIndex = i;
+      word.passageIndex = passageResult.index;
       word.ruleNumber = passageResult.passageEntry.ruleNumber;
       word.totalResults = results.length;
       word.nextAction = $scope.nextAction(word, passageResult.index);
+      submitWord(word);
     });
     generateLesson(proofreadingPassage.getResultRuleNumbers());
     $scope.focusResult(0, results[0].index);
@@ -120,6 +127,30 @@ function ProofreadingPlayCtrl (
       },
       show: true
     };
+  }
+
+  function submitWord(word) {
+    if (word.type === 'Not Necessary') {
+      return;
+    } else {
+      var meta = {
+        answer: word.responseText,
+        prompt: word.text,
+        unchanged: word.text === word.responseText,
+        index: word.passageIndex
+      };
+      if (word.type === 'Correct') {
+        meta.correct = 1;
+      } else {
+        meta.correct = 0;
+      }
+      submitConceptResult($scope.sessionId, word, meta);
+    }
+  }
+
+  function submitConceptResult(sessionId, word, meta) {
+    var conceptUid = $scope.proofreadingPassage.getGrammaticalConceptData(word).concept_level_0.uid;
+    ConceptResult.saveToFirebase(sessionId, conceptUid, meta);
   }
 
   $scope.submitPassage = function () {
