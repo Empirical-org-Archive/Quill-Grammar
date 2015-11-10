@@ -130,16 +130,16 @@ function ProofreadingPlayCtrl (
   }
 
   function submitWord(word) {
-    if (word.type === "Not Necessary") {
-      return
+    if (word.type === 'Not Necessary') {
+      return;
     } else {
       var meta = {
         answer: word.responseText,
         prompt: word.text,
         unchanged: word.text === word.responseText,
         index: word.passageIndex
-      }
-      if (word.type === "Correct") {
+      };
+      if (word.type === 'Correct') {
         meta.correct = 1;
       } else {
         meta.correct = 0;
