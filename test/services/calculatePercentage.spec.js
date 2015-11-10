@@ -15,20 +15,7 @@ describe('calculatePercentageService', function () {
       {concept_uid: 'bar', metadata: {correct: 0}}
     ];
 
-    var fakePfResults = [
-      {
-        conceptClass: 'cool',
-        correct: 2,
-        total: 3
-      },
-      {
-        conceptClass: 'very cool',
-        correct: 0,
-        total: 5
-      }
-    ];
-
-    var percentage = calculatePercentageService(fakeConceptResultsList, fakePfResults);
-    expect(percentage).to.eq(0.3);
+    var percentage = calculatePercentageService(fakeConceptResultsList);
+    expect(percentage).to.eq(0.5);
   });
 });
