@@ -17,6 +17,9 @@ function ($httpProvider, $stateProvider) {
       ].join('&');
       AccessToken.setTokenFromString(hashStr);
       var postAuthenticationRedirect = Storage.delete('postAuthenticationRedirect');
+      if (postAuthenticationRedirect === undefined) {
+        throw new Error('No Post Authentication Redirect state or params found.');
+      }
       $state.go(postAuthenticationRedirect.stateName, postAuthenticationRedirect.stateParams);
     }
   });
