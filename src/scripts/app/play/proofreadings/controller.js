@@ -150,7 +150,9 @@ function ProofreadingPlayCtrl (
 
   function submitConceptResult(sessionId, word, meta) {
     var conceptUid = $scope.proofreadingPassage.getGrammaticalConceptData(word).concept_level_0.uid;
-    ConceptResult.saveToFirebase(sessionId, conceptUid, meta);
+    if (sessionId) {
+      ConceptResult.saveToFirebase(sessionId, conceptUid, meta);
+    }
   }
 
   $scope.submitPassage = function () {
