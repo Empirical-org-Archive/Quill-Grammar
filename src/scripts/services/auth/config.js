@@ -18,9 +18,10 @@ function ($httpProvider, $stateProvider) {
       AccessToken.setTokenFromString(hashStr);
       var postAuthenticationRedirect = Storage.delete('postAuthenticationRedirect');
       if (postAuthenticationRedirect === undefined) {
-        throw new Error('No Post Authentication Redirect state or params found.');
+        parent.postMessage("message", "http://localhost:3000");
+      } else {
+        $state.go(postAuthenticationRedirect.stateName, postAuthenticationRedirect.stateParams);
       }
-      $state.go(postAuthenticationRedirect.stateName, postAuthenticationRedirect.stateParams);
     }
   });
 };
