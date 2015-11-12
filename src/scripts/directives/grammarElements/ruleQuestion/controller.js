@@ -30,40 +30,42 @@ module.exports = function ($scope, _, $timeout, Question) {
 
   $scope.checkAnswer = function () {
     var rq = $scope.question;
-    rq.checkAnswer();
-    setMessage(rq.getResponseMessage());
-    $timeout.cancel($scope.shortAnswerPromise);
-    switch (rq.status) {
-      case Question.ResponseStatus.NO_ANSWER: {
-        $scope.questionClass = 'try_again';
-        $scope.checkAnswerText = CheckButtonText.TRY_AGAIN;
-        $scope.shortAnswerPromise = $timeout(function () {
-          setMessage('');
-          $scope.questionClass = 'default';
-        }, 3000);
-        break;
-      }
-      case Question.ResponseStatus.CORRECT: {
-        $scope.checkAnswerText = CheckButtonText.DEFAULT;
-        $scope.questionClass = 'correct';
-        submitAnswer();
-        break;
-      }
-      case Question.ResponseStatus.TYPING_ERROR_NON_STRICT: {
-        $scope.checkAnswerText = CheckButtonText.DEFAULT;
-        $scope.questionClass = 'correct';
-        submitAnswer();
-        break;
-      }
-      case Question.ResponseStatus.TOO_MANY_ATTEMPTS: {
-        $scope.questionClass = 'incorrect';
-        $scope.checkAnswerText = CheckButtonText.DEFAULT;
-        submitAnswer();
-        break;
-      }
-      default: {
-        $scope.questionClass = 'try_again';
-        $scope.checkAnswerText = CheckButtonText.TRY_AGAIN;
+    if (rq) {
+      rq.checkAnswer();
+      setMessage(rq.getResponseMessage());
+      $timeout.cancel($scope.shortAnswerPromise);
+      switch (rq.status) {
+        case Question.ResponseStatus.NO_ANSWER: {
+          $scope.questionClass = 'try_again';
+          $scope.checkAnswerText = CheckButtonText.TRY_AGAIN;
+          $scope.shortAnswerPromise = $timeout(function () {
+            setMessage('');
+            $scope.questionClass = 'default';
+          }, 3000);
+          break;
+        }
+        case Question.ResponseStatus.CORRECT: {
+          $scope.checkAnswerText = CheckButtonText.DEFAULT;
+          $scope.questionClass = 'correct';
+          submitAnswer();
+          break;
+        }
+        case Question.ResponseStatus.TYPING_ERROR_NON_STRICT: {
+          $scope.checkAnswerText = CheckButtonText.DEFAULT;
+          $scope.questionClass = 'correct';
+          submitAnswer();
+          break;
+        }
+        case Question.ResponseStatus.TOO_MANY_ATTEMPTS: {
+          $scope.questionClass = 'incorrect';
+          $scope.checkAnswerText = CheckButtonText.DEFAULT;
+          submitAnswer();
+          break;
+        }
+        default: {
+          $scope.questionClass = 'try_again';
+          $scope.checkAnswerText = CheckButtonText.TRY_AGAIN;
+        }
       }
     }
   };
