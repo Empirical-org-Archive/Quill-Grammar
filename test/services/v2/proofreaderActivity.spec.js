@@ -3,6 +3,7 @@
 describe('ProofreaderActivity', function () {
   beforeEach(module('quill-grammar.services.firebase.proofreaderActivity'));
   beforeEach(module('test.fixtures.firebase'));
+  beforeEach(module('empirical-angular'));
 
   var $rootScope,
       ProofreaderActivity;

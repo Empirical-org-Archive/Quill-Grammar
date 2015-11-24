@@ -5,6 +5,7 @@ module.exports =
 angular.module('quill-grammar.services.firebase.grammarActivity', [
   'firebase',
   'underscore',
+  'angular-useragent-parser',
   require('./../../../../.tmp/config.js').name,
   require('./../rule.js').name,
   require('./../localStorage.js').name,
@@ -12,7 +13,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   require('./../lms/conceptResult.js').name
 ])
 /*@ngInject*/
-.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, $firebaseArray, _, RuleService, $q, Question, SentenceLocalStorage, ConceptsFBService, ConceptResult) {
+.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, $firebaseArray, _, RuleService, $q, Question, SentenceLocalStorage, ConceptsFBService, ConceptResult, TypingSpeed, UAParser) {
   function GrammarActivity(data) {
     if (data) {
       _.extend(this, data);
@@ -145,9 +146,17 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
     return this.concepts[question.conceptIndex];
   };
 
+  GrammarActivity.prototype.getDeviceInfo = function () {
+    var uaParser = new UAParser();
+    var UA = uaParser.getResult();
+    return {
+      browser: UA.browser.name,
+      os: UA.os.name
+    };
+  };
+
   GrammarActivity.prototype.submitAnswer = function (question, sessionId) {
     var correct = question.answerIsCorrect();
-
     // If the activity was generated from passage results.
     if (this.passageId) {
       SentenceLocalStorage.storeTempResult(this.passageId, question, question.response, correct);
@@ -156,7 +165,11 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
     if (sessionId) {
       ConceptResult.saveToFirebase(sessionId, question.conceptUid, {
         answer: question.response,
-        correct: correct ? 1 : 0
+        correct: correct ? 1 : 0,
+        wpm: TypingSpeed.wordsPerMinute,
+        device: this.getDeviceInfo()
+      }).then(function () {
+        TypingSpeed.reset();
       });
     }
   };

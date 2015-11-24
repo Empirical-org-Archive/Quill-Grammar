@@ -4,6 +4,7 @@
 describe('ProofreadingPlayCtrl', function () {
   beforeEach(module('quill-grammar.play.proofreadings'));
   beforeEach(module('test.fixtures.firebase'));
+  beforeEach(module('empirical-angular'));
 
   var scope,
       sandbox,
@@ -15,20 +16,22 @@ describe('ProofreadingPlayCtrl', function () {
       $window,
       ProofreaderActivity,
       ConceptsFBService,
-      proofreaderActivity1Id;
+      proofreaderActivity1Id,
+      TypingSpeed;
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
 
     inject(function (_$controller_, _$rootScope_, _ProofreaderActivity_,
       _$q_, _$state_, _$timeout_, setupMockFirebaseData, _proofreaderActivity1Id_,
-      _ConceptsFBService_, _$window_) {
+      _ConceptsFBService_, _$window_, _TypingSpeed_) {
       $controller = _$controller_;
       $rootScope = _$rootScope_;
       $q = _$q_;
       $state = _$state_;
       $timeout = _$timeout_;
       $window = _$window_;
+      TypingSpeed = _TypingSpeed_;
       proofreaderActivity1Id = _proofreaderActivity1Id_;
       scope = $rootScope.$new();
       ProofreaderActivity = _ProofreaderActivity_;
