@@ -4,6 +4,7 @@
 describe('GrammarActivity', function () {
   beforeEach(module('quill-grammar.services.firebase.grammarActivity'));
   beforeEach(module('test.fixtures.firebase'));
+  beforeEach(module('empirical-angular'));
 
   var GrammarActivity,
       ConceptsFBService,
@@ -16,7 +17,9 @@ describe('GrammarActivity', function () {
       SentenceLocalStorage,
       $rootScope,
       $q,
-      sandbox;
+      sandbox,
+      TypingSpeed,
+      UAParser;
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
@@ -25,10 +28,12 @@ describe('GrammarActivity', function () {
       _$rootScope_, _RuleService_, _$q_, _Question_, _SentenceLocalStorage_,
       _grammarActivityJson_, setupMockFirebaseData,
       _ConceptsFBService_, _concept1Json_, _grammarActivity1Id_,
-      _ConceptResult_) {
+      _ConceptResult_, _TypingSpeed_, _UAParser_) {
       GrammarActivity = _GrammarActivity_;
       ConceptsFBService = _ConceptsFBService_;
       ConceptResult = _ConceptResult_;
+      TypingSpeed = _TypingSpeed_;
+      UAParser = _UAParser_;
       grammarActivityJson = _grammarActivityJson_;
       $rootScope = _$rootScope_;
       RuleService = _RuleService_;
@@ -162,19 +167,6 @@ describe('GrammarActivity', function () {
         it('does not save any concept results', function () {
           grammarActivity.submitAnswer(question, null);
           expect(conceptResultSpy).not.to.have.been.called;
-        });
-      });
-
-      describe('when the gameplay is associated with an activity session', function () {
-        it('saves a concept result for the answer', function () {
-          grammarActivity.submitAnswer(question, 'fake-session-id');
-          $rootScope.$digest();
-          ConceptResult.ref.flush();
-          $rootScope.$digest();
-          expect(conceptResultSpy).to.have.been.calledWith('fake-session-id', 'abcdef', {
-            answer: 'incorrect response',
-            correct: 0
-          });
         });
       });
     });

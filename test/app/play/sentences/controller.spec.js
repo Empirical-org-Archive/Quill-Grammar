@@ -4,6 +4,7 @@
 describe('SentencePlayCtrl', function () {
   beforeEach(module('quill-grammar.play.sentences'));
   beforeEach(module('test.fixtures.firebase'));
+  beforeEach(module('empirical-angular'));
 
   var sandbox,
       scope,

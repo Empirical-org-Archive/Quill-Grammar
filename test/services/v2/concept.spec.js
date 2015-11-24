@@ -4,6 +4,7 @@
 describe('ConceptFBService', function () {
   beforeEach(module('quill-grammar.services.firebase.concepts'));
   beforeEach(module('test.fixtures.firebase'));
+  beforeEach(module('empirical-angular'));
 
   var conceptService,
       allConceptsJson,
