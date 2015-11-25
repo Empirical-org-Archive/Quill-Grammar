@@ -2,6 +2,7 @@
 
 angular
   .module('quill-grammar', [
+    require('empirical-angular').name,
     require('./core/core.module.js').name,
     require('./index/index.module.js').name,
     require('./cms/cms.module.js').name,

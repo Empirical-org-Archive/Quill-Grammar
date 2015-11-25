@@ -1,7 +1,7 @@
 'use strict';
 
 /*@ngInject*/
-module.exports = function ($scope, _, $timeout, Question) {
+module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
   function setMessage(msg) {
     $scope.responseMessage = msg;
   }
@@ -27,6 +27,10 @@ module.exports = function ($scope, _, $timeout, Question) {
   }
 
   resetSubmitPanel();
+
+  $scope.resetWPM = function () {
+    TypingSpeed.reset();
+  };
 
   $scope.checkAnswer = function () {
     var rq = $scope.question;

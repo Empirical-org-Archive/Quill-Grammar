@@ -1,0 +1,28 @@
+{
+  "name": "angular-useragent-parser",
+  "version": "0.1.0",
+  "homepage": "https://github.com/the-darc/angular-useragent-parser",
+  "authors": [
+    "the-darc <darc.tec@gmail.com>"
+  ],
+  "description": "AngularJS Constant for dependency injection of UAParser.js (whithout registering it in the global scope)",
+  "main": "release/angular-useragent-parser.js",
+  "keywords": [
+    "useragent",
+    "UAParser",
+    "angular"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src",
+    "demo",
+    "package.json",
+    "gulpfile.js"
+  ],
+  "devDependencies": {
+    "ua-parser-js": "^0.7.3"
+  }
+}

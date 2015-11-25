@@ -3,6 +3,7 @@
 describe('ProofreadingPassage', function () {
   beforeEach(module('quill-grammar.services.proofreadingPassage'));
   beforeEach(module('test.fixtures.firebase'));
+  beforeEach(module('empirical-angular'));
 
   var $rootScope,
       sandbox,

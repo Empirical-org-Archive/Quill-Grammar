@@ -4,6 +4,7 @@
 describe('GrammarRuleQuestionCtrl', function () {
   beforeEach(module('quill-grammar.directives.ruleQuestion'));
   beforeEach(module('test.fixtures.firebase'));
+  beforeEach(module('empirical-angular'));
 
   var $rootScope,
       $controller,
