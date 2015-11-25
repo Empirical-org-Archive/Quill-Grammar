@@ -157,6 +157,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
 
   GrammarActivity.prototype.submitAnswer = function (question, sessionId) {
     var correct = question.answerIsCorrect();
+    var devInfo = this.getDeviceInfo();
     // If the activity was generated from passage results.
     if (this.passageId) {
       SentenceLocalStorage.storeTempResult(this.passageId, question, question.response, correct);
@@ -167,7 +168,8 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
         answer: question.response,
         correct: correct ? 1 : 0,
         wpm: TypingSpeed.wordsPerMinute,
-        device: this.getDeviceInfo()
+        browser: devInfo.browser,
+        os: devInfo.os
       }).then(function () {
         TypingSpeed.reset();
       });
