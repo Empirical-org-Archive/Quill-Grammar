@@ -3,7 +3,6 @@ div.question {
     background-color: $gray;
     padding-left: 30px;
     padding-bottom: 10px;
-    @include outer-container;
     img {
       @include span-columns(0.6);
     }
@@ -32,9 +31,10 @@ div.question {
 }
 
 div.rule-question-sentence-bar {
-  @include outer-container;
 
   margin-top: 58px;
+  @include pad;
+  box-shadow: 0 500px 2px 500px $gray;
 
   &.correct {
     background-color: $correctColor;

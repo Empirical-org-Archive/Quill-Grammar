@@ -10,9 +10,12 @@ proofreading {
   @include pad();
 }
 
-div.sentence-writing {
+.inner-container {
   @include outer-container;
-  @include pad();
+  max-width: 60em;
+}
+
+div.sentence-writing {
 }
 
 @import "../my-refills/modal";
