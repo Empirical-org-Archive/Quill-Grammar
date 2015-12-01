@@ -1,8 +1,6 @@
 div.passage {
   background-color: $white;
-  margin-left: 30px;
   margin-top: 30px;
-  @include span-columns(10);
   @include omega();
   input[type="text"] {
     outline: none;

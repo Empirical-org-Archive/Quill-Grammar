@@ -2,6 +2,7 @@ $message-width: 9;
 $button-width: 3;
 div.passage-submit-panel {
   background-color: $gray;
+  box-shadow: 0 500px 2px 500px $gray;
   margin-top: 30px;
   padding-right: 30px;
   height: 116px;
