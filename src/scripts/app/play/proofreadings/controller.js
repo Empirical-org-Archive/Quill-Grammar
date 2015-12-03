@@ -6,6 +6,7 @@ module.exports =
 function ProofreadingPlayCtrl (
   $scope, $rootScope, $state, _,
   $location, $document, $timeout, $window,
+  portholeProxy,
   ProofreaderActivity,
   PassageWord,
   ProofreadingPassage,
@@ -18,6 +19,22 @@ function ProofreadingPlayCtrl (
   }
 
   $rootScope.words = [];
+
+  $scope.$watch(function(){
+    return Math.max(
+        document.body.scrollHeight, document.documentElement.scrollHeight,
+        document.body.offsetHeight, document.documentElement.offsetHeight,
+        document.body.clientHeight, document.documentElement.clientHeight
+    );
+  },function onHeightChange(hght){
+    var windowProxy = new Porthole.WindowProxy(portholeProxy);
+    var postObj = {
+      action: 'size_changed',
+      height: hght
+    };
+
+    windowProxy.post(postObj);
+  });
 
   $scope.obscure = function (key) {
     return btoa(key);
