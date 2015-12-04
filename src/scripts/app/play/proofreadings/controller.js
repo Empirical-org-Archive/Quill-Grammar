@@ -1,3 +1,4 @@
+/*global Porthole*/
 'use strict';
 
 module.exports =
@@ -20,13 +21,13 @@ function ProofreadingPlayCtrl (
 
   $rootScope.words = [];
 
-  $scope.$watch(function(){
+  $scope.$watch(function () {
     return Math.max(
         document.body.scrollHeight, document.documentElement.scrollHeight,
         document.body.offsetHeight, document.documentElement.offsetHeight,
         document.body.clientHeight, document.documentElement.clientHeight
     );
-  },function onHeightChange(hght){
+  }, function onHeightChange (hght) {
     var windowProxy = new Porthole.WindowProxy(portholeProxy);
     var postObj = {
       action: 'size_changed',

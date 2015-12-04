@@ -18,8 +18,8 @@ function ($httpProvider, $stateProvider) {
       AccessToken.setTokenFromString(hashStr);
       var postAuthenticationRedirect = Storage.delete('postAuthenticationRedirect');
       if (postAuthenticationRedirect === undefined) {
-        parent.postMessage({action: "message"}, 'https://www.quill.org');
-        parent.postMessage({action: "message"}, 'http://localhost:3000');
+        parent.postMessage({action: 'message'}, 'https://www.quill.org');
+        parent.postMessage({action: 'message'}, 'http://localhost:3000');
       } else {
         $state.go(postAuthenticationRedirect.stateName, postAuthenticationRedirect.stateParams);
       }
