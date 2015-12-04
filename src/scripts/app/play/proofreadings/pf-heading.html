@@ -1,12 +1,14 @@
 <div class="quill-grammar-pf-heading">
-  <h1 ng-show="!proofreadingActivity.image">{{proofreadingActivity.title}}</h1>
-  <div class="header-image" ng-show="proofreadingActivity.image">
-    <img ng-src="/assets/images/{{proofreadingActivity.image}}" alt="proofreadingActivity.title"></img>
-    <p>{{proofreadingActivity.title}}</p>
+  <div class="inner-container">
+    <h1 ng-show="!proofreadingActivity.image">{{proofreadingActivity.title}}</h1>
+    <div class="header-image" ng-show="proofreadingActivity.image">
+      <img ng-src="/assets/images/{{proofreadingActivity.image}}" alt="proofreadingActivity.title"></img>
+      <p>{{proofreadingActivity.title}}</p>
+    </div>
+    <div class="instructions">
+      <img src="/assets/images/information_icon.png" alt="information"></img>
+      <p ng-bind-html="proofreadingActivity.description | trustedHtml"></p>
+    </div>
+    <activity-progress-bar max="proofreadingPassage.getNumErrors()" current="proofreadingPassage.numChanges" title="'Edits Made:'"></activity-progress-bar>
   </div>
-  <div class="instructions">
-    <img src="/assets/images/information_icon.png" alt="information"></img>
-    <p ng-bind-html="proofreadingActivity.description | trustedHtml"></p>
-  </div>
-  <activity-progress-bar max="proofreadingPassage.getNumErrors()" current="proofreadingPassage.numChanges" title="'Edits Made:'"></activity-progress-bar>
 </div>

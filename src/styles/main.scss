@@ -15,13 +15,14 @@
 
 body {
   overflow-x:hidden;
-  @include outer-container;
+  // @include outer-container;
   p {
     font-size: 15px;
   }
 }
 
 .loading-spinner {
+  margin-top: 2em;
   text-align: center;
 }
 
