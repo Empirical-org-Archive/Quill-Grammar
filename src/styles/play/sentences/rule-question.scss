@@ -75,9 +75,17 @@ div.rule-question-sentence-bar {
   div.no-message {
     @include shift(9);
     @extend .button-panel;
+
+    button {
+      float: right;
+    }
   }
   div.message {
     @include span-columns(3);
     @extend .button-panel;
+
+    button {
+      float: right;
+    }
   }
 }
