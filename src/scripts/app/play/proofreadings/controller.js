@@ -1,4 +1,5 @@
 /*global Porthole*/
+/*global $*/
 'use strict';
 
 module.exports =
@@ -181,6 +182,7 @@ function ProofreadingPlayCtrl (
     } else {
       showModalNotEnoughFound();
     }
+    $document.scrollTo(0,0);
   };
 
   function getNumResults() {
@@ -226,55 +228,6 @@ function ProofreadingPlayCtrl (
 
     return na;
   };
-  var getAbsPosition = function (el) {
-    var el2 = el;
-    var curtop = 0;
-    var curleft = 0;
-    if (document.getElementById || document.all) {
-      do {
-        curleft += el.offsetLeft - el.scrollLeft;
-        curtop += el.offsetTop - el.scrollTop;
-        el = el.offsetParent;
-        el2 = el2.parentNode;
-        while (el2 !== el) {
-          curleft -= el2.scrollLeft;
-          curtop -= el2.scrollTop;
-          el2 = el2.parentNode;
-        }
-      } while (el.offsetParent);
-    } else if (document.layers) {
-      curtop += el.y;
-      curleft += el.x;
-    }
-    return [curtop, curleft];
-  };
-
-  function calculateTop(sIndex) {
-    var breakIndexes = _.chain($scope.proofreadingPassage.words)
-      .map(function (word, index) {
-        return [index, word.isBr()];
-      })
-      .filter(function (v) {
-        return v[1];
-      })
-      .map(function (v) {
-        return v[0];
-      })
-      .sortBy(function (num) {
-        return num;
-      })
-      .value();
-    var indexWithOutGoingOver = _.find(breakIndexes, function (i) {
-      return i >= sIndex;
-    });
-    var scrollId = 'last-chance-tooltip-breakpoint-at-panel';
-    if (indexWithOutGoingOver) {
-      scrollId = 'break-binding-point-' + String(indexWithOutGoingOver);
-    }
-    var elem = document.getElementById(scrollId);
-    var top = getAbsPosition(elem)[0];
-    return String(top) + 'px';
-  }
 
   $scope.focusResult = function (resultIndex, scrollIndex) {
     var p = $scope.results[resultIndex - 1];
@@ -282,24 +235,33 @@ function ProofreadingPlayCtrl (
     if (p) {
       $scope.proofreadingPassage.words[p.index].tooltip = {};
     }
+    var scrollTo = r.index;
+    if (!scrollTo) {
+      scrollTo = scrollIndex;
+    }
 
     if (r) {
       $scope.proofreadingPassage.words[r.index].tooltip = {
         style: {
           visibility: 'visible',
-          opacity: 1,
-          top: calculateTop(r.index)
+          opacity: 1
         }
       };
-    }
-    var scrollTo = r.index;
-    if (!scrollTo) {
-      scrollTo = scrollIndex;
     }
     if (String(scrollTo)) {
       var scrollId = 'error-tooltip-scroll-' + String(scrollTo);
       var elem = angular.element(document.getElementById(scrollId));
-      $document.scrollToElement(elem);
+      if (($( window ).width() - $(elem[0]).offset().left) < 341) {
+        var margin = '-' + (351 - ($( window ).width() - $(elem[0]).offset().left)) + 'px';
+        $scope.proofreadingPassage.words[r.index].tooltip = {
+          style: {
+            visibility: 'visible',
+            opacity: 1,
+            'margin-left': margin
+          }
+        };
+      }
+      $document.scrollToElement(elem, 50);
     }
   };
 
