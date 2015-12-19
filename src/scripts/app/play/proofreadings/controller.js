@@ -182,7 +182,7 @@ function ProofreadingPlayCtrl (
     } else {
       showModalNotEnoughFound();
     }
-    $document.scrollTo(0,0);
+    $document.scrollTo(0, 0);
   };
 
   function getNumResults() {
@@ -251,8 +251,8 @@ function ProofreadingPlayCtrl (
     if (String(scrollTo)) {
       var scrollId = 'error-tooltip-scroll-' + String(scrollTo);
       var elem = angular.element(document.getElementById(scrollId));
-      if (($( window ).width() - $(elem[0]).offset().left) < 341) {
-        var margin = '-' + (351 - ($( window ).width() - $(elem[0]).offset().left)) + 'px';
+      if (($(window).width() - $(elem[0]).offset().left) < 341) {
+        var margin = '-' + (351 - ($(window).width() - $(elem[0]).offset().left)) + 'px';
         $scope.proofreadingPassage.words[r.index].tooltip = {
           style: {
             visibility: 'visible',
