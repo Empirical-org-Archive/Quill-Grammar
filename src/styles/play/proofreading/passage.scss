@@ -58,15 +58,23 @@ div.passage {
   }
   .error-tooltip-item {
     @extend .tooltip-item;
+    position: relative;
     border: none;
     display: inline-block;
     padding: none;
   }
   .error-tooltip {
     @extend .tooltip;
+    top: 2em;
     height: 259px;
     width: 341px;
   }
+
+  .close-to-edge {
+    left: 100%;
+    margin-left: -341px;
+  }
+  
   .error-tooltip-reverse {
     @extend .tooltip-reverse-no-arrow;
     height: 259px;
