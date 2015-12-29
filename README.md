@@ -87,7 +87,7 @@ Once you are up and running the LMS, assuming port 3000 for the LMS,
 head to http://localhost:3000/oauth/applications to tweak your local
 OAuth applications. You'll need to log in with the Admin username/password.
 If an OAuth application does not yet exist for QuillGrammer, then create one, giving it the callback url : 
-`http:://localhost:3001/oauth/callback`.
+`http:://localhost:3001`.
 
 You'll want to fill in the `oauthClientId` in `./src/scripts/development.config.json`
 with the `applicationId` from your new or modified OAuth LMS Application.
