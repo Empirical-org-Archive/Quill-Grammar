@@ -86,6 +86,8 @@ to learn how to set that up.
 Once you are up and running the LMS, assuming port 3000 for the LMS,
 head to http://localhost:3000/oauth/applications to tweak your local
 OAuth applications. You'll need to log in with the Admin username/password.
+If an OAuth application does not yet exist for QuillGrammer, then create one, giving it the callback url : 
+`http:://localhost:3001/oauth/callback`.
 
 You'll want to fill in the `oauthClientId` in `./src/scripts/development.config.json`
 with the `applicationId` from your new or modified OAuth LMS Application.
@@ -109,3 +111,10 @@ Use that `SECRET` in the command below, typed into the rails console -
 ```
 
 Once you've created a FirebaseApp instance in the console, take that 'name' value and plug it into the `firebaseApp` field of your `development.config.json` file, e.g. `"firebaseApp": "quillgrammarstaging"`.
+
+Finally, make sure that the ActivityClassification records in your database have the correct module_url.
+These ActivityClassification records are created when you seed your database (or pull the database from staging).
+The module_url for the ActivityClassification with name "passage" should be : 
+`localhost:3001/play/pf`
+While the module_url for the ActivityClassification with name 'sentence' should be : 
+`localhost:3001/play/sw`
