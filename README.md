@@ -101,10 +101,11 @@ As of writing this, there isn't a UI for managing the LMS firebase applications.
 So, in your local dev environment for the LMS, run `rails c` to fireup a rails
 console.
 
-In the console type:
+You'll need the `SECRET` for your firebase app, which you can get by going to the admin panel of the firebase app and visiting the `secrets` page.
+Use that `SECRET` in the command below, typed into the rails console - 
 
 ```
- FirebaseApp.create :name => "quillgrammarstaging", :secret => "Secret key from firebase"
+ FirebaseApp.create :name => "quillgrammarstaging", :secret => SECRET
 ```
 
-If you need your secret key, go to the `secrets` page of your firebase app admin panel. Once you've created a FirebaseApp instance in the console, take that 'name' value and plug it into the `firebaseApp` field of your `development.config.json` file, e.g. `"firebaseApp": "quillgrammarstaging"`.
+Once you've created a FirebaseApp instance in the console, take that 'name' value and plug it into the `firebaseApp` field of your `development.config.json` file, e.g. `"firebaseApp": "quillgrammarstaging"`.
