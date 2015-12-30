@@ -112,9 +112,13 @@ Use that `SECRET` in the command below, typed into the rails console -
 
 Once you've created a FirebaseApp instance in the console, take that 'name' value and plug it into the `firebaseApp` field of your `development.config.json` file, e.g. `"firebaseApp": "quillgrammarstaging"`.
 
-Finally, make sure that the ActivityClassification records in your database have the correct module_url.
+Also make sure that the ActivityClassification records in your database have the correct module_url.
 These ActivityClassification records are created when you seed your database (or pull the database from staging).
 The module_url for the ActivityClassification with name "passage" should be : 
 `localhost:3001/play/pf`
 While the module_url for the ActivityClassification with name 'sentence' should be : 
 `localhost:3001/play/sw`
+
+When you start the rails server for the LMS with `rails s`, make sure to do this before firing up Quill-Grammar with `gulp --env=development`. This way, the LMS will get port `localhost:3000` and Quill-Grammar will get port `localhost:3001`. If you start Quill-Grammar first, then Quill-Grammar will take `localhost:3000` instead, which conflicts with our configuration.
+
+When running the LMS and Q
