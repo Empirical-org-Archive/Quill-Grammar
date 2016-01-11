@@ -114,18 +114,26 @@ function SentencePlayCtrl (
     if (!des) {
       return;
     }
-    var entries = des.split('.');
-    var phrases = [];
+    des = des.replace(/\.(?!")/gi, '.<br>');
+    des = des.replace(/\."/gi, '."<br>');
+    des = des.replace(/\?(?!")/gi, '?<br>');
+    des = des.replace(/\?"/gi, '?"<br>');
+    des = des.replace(/\!(?!")/gi, '!<br>');
+    des = des.replace(/\!"/gi, '!"<br>');
+    var entries = des.split('<br>');
+    // var phrases = [];
     var sentences = [];
     _.each(entries, function (e) {
-      e = '<li>' + e + '.</li>';
-      if (e.indexOf(':') !== -1) {
-        phrases.push(e);
-      } else {
-        sentences.push(e);
+      if (e.length > 4) {
+        e = '<li>' + e + '</li>';
       }
+      // if (e.indexOf(':') !== -1) {
+      //   phrases.push(e);
+      // } else {
+      sentences.push(e);
+      // }
     });
-    var html = '<ul>' + phrases.join('') + '</ul><hr/><ul>' + sentences.join('') + '</ul>';
+    var html = '<ul>' + sentences.join('') + '</ul><hr/>';
     return html;
   };
 };
