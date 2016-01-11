@@ -86,6 +86,8 @@ to learn how to set that up.
 Once you are up and running the LMS, assuming port 3000 for the LMS,
 head to http://localhost:3000/oauth/applications to tweak your local
 OAuth applications. You'll need to log in with the Admin username/password.
+If an OAuth application does not yet exist for QuillGrammer, then create one, giving it the callback url : 
+`http:://localhost:3001`.
 
 You'll want to fill in the `oauthClientId` in `./src/scripts/development.config.json`
 with the `applicationId` from your new or modified OAuth LMS Application.
@@ -101,10 +103,22 @@ As of writing this, there isn't a UI for managing the LMS firebase applications.
 So, in your local dev environment for the LMS, run `rails c` to fireup a rails
 console.
 
-In the console type:
+You'll need the `SECRET` for your firebase app, which you can get by going to the admin panel of the firebase app and visiting the `secrets` page.
+Use that `SECRET` in the command below, typed into the rails console - 
 
 ```
- FirebaseApp.create :name => "quillgrammarstaging", :secret => "Secret key from firebase"
+ FirebaseApp.create :name => "quillgrammarstaging", :secret => SECRET
 ```
 
-If you need your secret key, go to the `secrets` page of your firebase app admin panel. Once you've created a FirebaseApp instance in the console, take that 'name' value and plug it into the `firebaseApp` field of your `development.config.json` file, e.g. `"firebaseApp": "quillgrammarstaging"`.
+Once you've created a FirebaseApp instance in the console, take that 'name' value and plug it into the `firebaseApp` field of your `development.config.json` file, e.g. `"firebaseApp": "quillgrammarstaging"`.
+
+Also make sure that the ActivityClassification records in your database have the correct module_url.
+These ActivityClassification records are created when you seed your database (or pull the database from staging).
+The module_url for the ActivityClassification with name "passage" should be : 
+`localhost:3001/play/pf`
+While the module_url for the ActivityClassification with name 'sentence' should be : 
+`localhost:3001/play/sw`
+
+When you start the rails server for the LMS with `rails s`, make sure to do this before firing up Quill-Grammar with `gulp --env=development`. This way, the LMS will get port `localhost:3000` and Quill-Grammar will get port `localhost:3001`. If you start Quill-Grammar first, then Quill-Grammar will take `localhost:3000` instead, which conflicts with our configuration.
+
+When running the LMS and Q
