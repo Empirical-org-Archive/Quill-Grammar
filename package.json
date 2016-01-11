@@ -36,7 +36,7 @@
   },
   "browserify-shim": {},
   "dependencies": {
-    "empirical-angular": "git://github.com/empirical-org/empirical-angular.git#master",
+    "empirical-angular": "../empirical-angular",
     "ng-autofocus": "0.0.10",
     "ramda": "^0.15.1"
   }

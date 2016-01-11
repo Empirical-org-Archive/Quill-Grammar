@@ -7,15 +7,20 @@ function SentencePlayCtrl (
   $scope, $state, _,
   SentenceLocalStorage,
   AnalyticsService, finalizeService,
-  GrammarActivity
+  GrammarActivity,
+  TypingSpeed
 ) {
   $scope.number = 0;
+  $scope.previousConcepts = [];
 
   //If we have a student param, then we have a valid session
   if ($state.params.student) {
     $scope.sessionId = $state.params.student;
   }
 
+  $scope.showConceptOverview = false;
+  $scope.$on('showModal', function () {$scope.showConceptOverview = true;});
+  $scope.$on('hideModal', function () {$scope.showConceptOverview = false;});
   //This is what we need to do after a student has completed the set
   $scope.finish = function () {
     var passageId = $state.params.passageId;
@@ -49,6 +54,8 @@ function SentencePlayCtrl (
     $scope.number = $scope.number + 1;
     $scope.currentQuestion = nextQuestion;
     $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
+    $scope.showConceptOverview = (_.indexOf($scope.previousConcepts, $scope.currentConcept) === -1);
+    $scope.previousConcepts.push($scope.currentConcept);
   };
 
   /*
@@ -90,7 +97,10 @@ function SentencePlayCtrl (
       $scope.questions = grammarActivity.questions;
       $scope.currentQuestion = grammarActivity.questions[0];
       $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
+      $scope.showConceptOverview = (_.indexOf($scope.previousConcepts, $scope.currentConcept) === -1);
+      $scope.previousConcepts.push($scope.currentConcept);
       $scope.showNextQuestion = false;
+      TypingSpeed.reset();
     });
   }
 

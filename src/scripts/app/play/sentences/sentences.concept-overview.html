@@ -1,7 +1,10 @@
-<div class="sentence-tooltip-item">
-  <p class="concept-overview">Concept Overview</p>
-  <div class="sentence-tooltip">
-    <h2>Concept Overview</h2>
+<div class="concept-overview-container">
+  <button class="show-hint" ng-click="showConceptOverview = !showConceptOverview"><span ng-hide="showConceptOverview">Show example</span><span ng-show="showConceptOverview">Hide example</span></button>
+
+  <div class="" ng-class="{hiddenExample: !showConceptOverview}" id="myModal" tabindex="-1">
     <p ng-bind-html="formatDescription(currentConcept.ruleDescription) | trustedHtml"></p>
   </div>
+  <!-- <div ng-show="showConceptOverview" class="sentence-tooltip-new">
+
+  </div> -->
 </div>
