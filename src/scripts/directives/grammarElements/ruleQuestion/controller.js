@@ -63,6 +63,7 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
         case Question.ResponseStatus.TOO_MANY_ATTEMPTS: {
           $scope.questionClass = 'incorrect';
           $scope.checkAnswerText = CheckButtonText.DEFAULT;
+          $scope.$emit('showModal');
           submitAnswer();
           break;
         }
@@ -77,6 +78,7 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
   $scope.nextProblem = function () {
     $scope.showNextQuestion = false;
     resetSubmitPanel();
+    $scope.$emit('hideModal');
     $scope.next(); // Defined on the directive.
   };
 
