@@ -8,6 +8,11 @@ angular.module('quill-grammar.services.lms.concept', [
 /*@ngInject*/
 .factory('ConceptService', function (_, empiricalBaseURL, $http) {
   var url = empiricalBaseURL + '/concepts';
+  this.post = function (con) {
+    return $http.post(url, con).then(function (response) {
+      return response;
+    });
+  };
 
   this.get = function () {
     return $http.get(url).then(function (response) {
