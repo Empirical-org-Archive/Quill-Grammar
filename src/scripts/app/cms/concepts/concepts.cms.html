@@ -27,22 +27,25 @@
           </a>
         </th>
         <th>
+          FireBase Key
+        </th>
+        <th width=100>
           <a href="#" ng-click="sortType = 'questionCount'; sortReverse = !sortReverse">
               Questions
               <span ng-show="sortType == 'questionCount'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
           </a>
         </th>
-        <th>
+        <th width=100>
           <a href="#" ng-click="sortType = 'ruleNumber'; sortReverse = !sortReverse">
               Rule Number
               <span ng-show="sortType == 'ruleNumber'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
           </a></th>
-        <th>
+        <th width=150>
           <a href="#" ng-click="sortType = 'ruleDescription'; sortReverse = !sortReverse">
               Rule Description
               <span ng-show="sortType == 'ruleDescription'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
           </a></th>
-        <th>View</th>
+        <th width=40>View</th>
       </tr>
     </thead>
     <tbody>
@@ -50,6 +53,7 @@
         <td>{{c.concept_level_2.name}}</td>
         <td>{{c.concept_level_1.name}}</td>
         <td>{{c.concept_level_0.name}}</td>
+        <td>{{c.$id}}</td>
         <td>{{c.questionCount}}</td>
         <td>{{c.ruleNumber}}</td>
         <td>{{c.ruleDescription.length > 0}}</td>
