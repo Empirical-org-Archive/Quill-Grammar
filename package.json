@@ -1,10 +1,6 @@
 {
   "name": "quill-grammar",
-<<<<<<< HEAD
   "version": "0.7.3",
-=======
-  "version": "0.7.2",
->>>>>>> upstream/develop
   "private": "true",
   "scripts": {
     "test": "npm run ci",
