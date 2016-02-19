@@ -54,6 +54,7 @@ module.exports = function ($firebaseAuth, firebaseApp, firebaseUrl, empiricalBas
       console.log('disabling auth callback');
       offAuth();
     }
+    resetToken();
     var ref = new Firebase(firebaseUrl);
     authObj = $firebaseAuth(ref);
     offAuth = authObj.$onAuth(reAuthIfLoggedOut);
