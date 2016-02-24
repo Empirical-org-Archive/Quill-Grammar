@@ -19,10 +19,12 @@ angular.module('quill-grammar.services.question', [
   }
 
   Question.MAX_NUM_ATTEMPTS = 2;
+  Question.MAX_FIX_ATTEMPTS = 2;
 
   Question.ResponseStatus = {
     DEFAULT: 0,
     TYPING_ERROR_NON_STRICT: 2,
+    TYPING_ERROR_NON_STRICT_UNFIXED: 3,
     INCORRECT: 4,
     CORRECT: 5,
     NO_ANSWER: 6,
@@ -60,7 +62,8 @@ angular.module('quill-grammar.services.question', [
   Question.ResponseMessages[Question.ResponseStatus.DEFAULT] = 'Check Work';
   Question.ResponseMessages[Question.ResponseStatus.NOT_LONG_ENOUGH] = '<b>Try again!</b>Your answer is not long enough.';
   Question.ResponseMessages[Question.ResponseStatus.INCORRECT] = '<b>Try Again!</b> Unfortunately, that answer is incorrect.';
-  Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT] = 'You are correct, but you have some typing errors. You may correct them or continue.';
+  Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT] = 'You are correct, but you have some typing errors. Please correct them to continue.';
+  Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT_UNFIXED] = 'You are correct, but you have some typing errors. You may correct them or continue.';
   Question.ResponseMessages[Question.ResponseStatus.TOO_MANY_ATTEMPTS] = function (question) {
     return '<b>Incorrect.</b> Correct Answer: ' + getCorrectString(_.pluck(question.answers, 'text'));
   };
@@ -119,16 +122,26 @@ angular.module('quill-grammar.services.question', [
     } else if (!_.every(possibleAnswers, this.ensureLengthIsProper(answer))) {
       this.status = Question.ResponseStatus.NOT_LONG_ENOUGH;
     } else if (this.compareGrammarElementToAnswers(answer)) {
-      this.status = Question.ResponseStatus.TYPING_ERROR_NON_STRICT;
+      if (this.fixAttempts) {
+        this.fixAttempts++;
+      } else {
+        this.fixAttempts = 1;
+      }
+      if (this.fixAttempts >= Question.MAX_FIX_ATTEMPTS) {
+        this.status = Question.ResponseStatus.TYPING_ERROR_NON_STRICT_UNFIXED;
+      } else {
+        this.status = Question.ResponseStatus.TYPING_ERROR_NON_STRICT;
+      }
     } else {
       this.status = Question.ResponseStatus.INCORRECT;
+      if (this.attempts) {
+        this.attempts++;
+      } else {
+        this.attempts = 1;
+      }
     }
 
-    if (this.attempts) {
-      this.attempts++;
-    } else {
-      this.attempts = 1;
-    }
+
 
     if (this.attempts >= Question.MAX_NUM_ATTEMPTS) {
       if (!this.answerIsCorrect()) {

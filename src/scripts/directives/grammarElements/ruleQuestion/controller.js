@@ -55,6 +55,12 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
           break;
         }
         case Question.ResponseStatus.TYPING_ERROR_NON_STRICT: {
+          $scope.checkAnswerText = CheckButtonText.TRY_AGAIN;
+          $scope.questionClass = 'default';
+          // submitAnswer();
+          break;
+        }
+        case Question.ResponseStatus.TYPING_ERROR_NON_STRICT_UNFIXED: {
           $scope.checkAnswerText = CheckButtonText.DEFAULT;
           $scope.questionClass = 'correct';
           submitAnswer();
