@@ -6,6 +6,12 @@ module.exports =
 function ConceptsCmsCtrl (
   $scope, ConceptsFBService, _
 ) {
+  function addQuestionCountToConcepts(concepts) {
+    return _.map(concepts, function (c) {
+      c.questionCount = _.keys(c.questions).length;
+      return c;
+    });
+  }
   $scope.sortType       = 'concept_level_2.name'; // set the default sort type
   $scope.sortReverse    = false;  // set the default sort order
   $scope.searchConcept  = '';     // set the default search/filter term
@@ -31,11 +37,4 @@ function ConceptsCmsCtrl (
       });
     }
   };
-
-  function addQuestionCountToConcepts(concepts) {
-    return _.map(concepts, function (c) {
-      c.questionCount = _.keys(c.questions).length;
-      return c;
-    });
-  }
 };

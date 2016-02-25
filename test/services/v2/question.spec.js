@@ -49,7 +49,7 @@ describe('Question', function () {
       it('sets the number of attempts to 1', function () {
         question.response = CORRECT_ANSWER;
         question.checkAnswer();
-        expect(question.attempts).to.equal(1);
+        expect(question.attempts).to.equal(undefined);
       });
 
       it('does everything else');
@@ -74,9 +74,9 @@ describe('Question', function () {
       });
 
       it('increments the number of attempts', function () {
-        question.attempts = 1;
+        question.fixAttempts = 0;
         question.checkAnswer();
-        expect(question.attempts).to.equal(2);
+        expect(question.fixAttempts).to.equal(1);
       });
     });
 
