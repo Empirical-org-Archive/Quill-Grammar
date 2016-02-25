@@ -13,7 +13,33 @@ function ProofreadingPlayCtrl (
   PassageWord,
   ProofreadingPassage,
   ConceptResult
-) {
+  ) {
+  function submitConceptResult(sessionId, word, meta) {
+    var conceptUid = $scope.proofreadingPassage.getGrammaticalConceptData(word).concept_level_0.uid;
+    if (sessionId) {
+      ConceptResult.saveToFirebase(sessionId, conceptUid, meta);
+    }
+  }
+
+  function submitWord(word) {
+    if (word.type === 'Not Necessary') {
+      return;
+    } else {
+      var meta = {
+        answer: word.responseText,
+        prompt: word.text,
+        unchanged: word.text === word.responseText,
+        index: word.passageIndex
+      };
+      if (word.type === 'Correct') {
+        meta.correct = 1;
+      } else {
+        meta.correct = 0;
+      }
+      submitConceptResult($scope.sessionId, word, meta);
+    }
+  }
+
   $scope.id = $state.params.uid;
 
   if ($state.params.student) {
@@ -146,32 +172,6 @@ function ProofreadingPlayCtrl (
       },
       show: true
     };
-  }
-
-  function submitWord(word) {
-    if (word.type === 'Not Necessary') {
-      return;
-    } else {
-      var meta = {
-        answer: word.responseText,
-        prompt: word.text,
-        unchanged: word.text === word.responseText,
-        index: word.passageIndex
-      };
-      if (word.type === 'Correct') {
-        meta.correct = 1;
-      } else {
-        meta.correct = 0;
-      }
-      submitConceptResult($scope.sessionId, word, meta);
-    }
-  }
-
-  function submitConceptResult(sessionId, word, meta) {
-    var conceptUid = $scope.proofreadingPassage.getGrammaticalConceptData(word).concept_level_0.uid;
-    if (sessionId) {
-      ConceptResult.saveToFirebase(sessionId, conceptUid, meta);
-    }
   }
 
   $scope.submitPassage = function () {

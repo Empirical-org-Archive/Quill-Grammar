@@ -17,19 +17,31 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
     $scope.checkAnswerText = CheckButtonText.DEFAULT;
     $scope.questionClass = 'default';
     $scope.showCheckAnswerButton = true;
+    $scope.showCheckOrContinueButton = false;
+    $scope.showNextQuestion = false;
     $timeout.cancel($scope.shortAnswerPromise);
   }
 
   function submitAnswer() {
     $scope.showCheckAnswerButton = false;
+    $scope.showCheckOrContinueButton = false;
     $scope.showNextQuestion = true;
     $scope.submit();
+  }
+
+  function submitLooseAnswer() {
+    $scope.showCheckAnswerButton = false;
+    $scope.showCheckOrContinueButton = true;
   }
 
   resetSubmitPanel();
 
   $scope.resetWPM = function () {
     TypingSpeed.reset();
+  };
+
+  $scope.startEditing = function () {
+    $scope.attempting = true;
   };
 
   $scope.checkAnswer = function () {
@@ -55,9 +67,16 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
           break;
         }
         case Question.ResponseStatus.TYPING_ERROR_NON_STRICT: {
+          $scope.checkAnswerText = CheckButtonText.TRY_AGAIN;
+          $scope.questionClass = 'try_again';
+          // submitAnswer();
+          break;
+        }
+        case Question.ResponseStatus.TYPING_ERROR_NON_STRICT_UNFIXED: {
           $scope.checkAnswerText = CheckButtonText.DEFAULT;
-          $scope.questionClass = 'correct';
-          submitAnswer();
+          $scope.questionClass = 'try_again';
+          $scope.attempting = false;
+          submitLooseAnswer();
           break;
         }
         case Question.ResponseStatus.TOO_MANY_ATTEMPTS: {
@@ -82,6 +101,15 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
     $scope.next(); // Defined on the directive.
   };
 
+  $scope.checkOrContinue = function () {
+    if ($scope.attempting) {
+      $scope.checkAnswer();
+    } else {
+      $scope.submit();
+      $scope.nextProblem();
+    }
+  };
+
   /*
    * Event handler for input paste. This is to
    * prevent students from pasting into this field
@@ -98,6 +126,8 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
   $scope.capturePressEnterEvent = function () {
     if ($scope.showNextQuestion) {
       $scope.nextProblem();
+    } else if ($scope.showCheckOrContinueButton) {
+      $scope.checkOrContinue();
     } else {
       $scope.checkAnswer();
     }
