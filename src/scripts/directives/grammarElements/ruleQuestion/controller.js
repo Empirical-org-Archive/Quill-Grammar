@@ -41,8 +41,8 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
   };
 
   $scope.startEditing = function () {
-    $scope.attempting = true
-  }
+    $scope.attempting = true;
+  };
 
   $scope.checkAnswer = function () {
     var rq = $scope.question;
@@ -103,10 +103,10 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
 
   $scope.checkOrContinue = function () {
     if ($scope.attempting) {
-      $scope.checkAnswer()
+      $scope.checkAnswer();
     } else {
       $scope.submit();
-      $scope.nextProblem()
+      $scope.nextProblem();
     }
   };
 

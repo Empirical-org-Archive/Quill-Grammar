@@ -141,8 +141,6 @@ angular.module('quill-grammar.services.question', [
       }
     }
 
-
-
     if (this.attempts >= Question.MAX_NUM_ATTEMPTS) {
       if (!this.answerIsCorrect()) {
         this.status = Question.ResponseStatus.TOO_MANY_ATTEMPTS;
