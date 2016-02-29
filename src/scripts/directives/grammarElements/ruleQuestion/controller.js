@@ -36,6 +36,10 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
 
   resetSubmitPanel();
 
+  $scope.sendErrorReport = function () {
+
+  };
+
   $scope.resetWPM = function () {
     TypingSpeed.reset();
   };
@@ -132,4 +136,9 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
       $scope.checkAnswer();
     }
   };
+
+  $scope.sendErrorReport = function () {
+    console.log($scope.report);
+    $scope.report();
+  }
 };

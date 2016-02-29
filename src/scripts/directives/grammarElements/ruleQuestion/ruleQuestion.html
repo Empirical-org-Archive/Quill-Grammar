@@ -11,6 +11,20 @@
   <div class="inner-container">
     <textarea class="student-input" type="text" ng-model="question.response" ng-paste="capturePasteEvent($event)" ng-change="startEditing()" ng-enter="capturePressEnterEvent()" ng-timer="resetWPM()" typing-speed autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
   </div>
+  <div class="inner-container">
+    <button class="btn-report" ng-click="showReport = !showReport">Report Error</button>
+    <div ng-show="showReport">
+      <br/>
+      <h4>
+        Found an error for this question?
+      </h4>
+      <p>
+        Please let us know whats wrong, giving as much detail as possible.
+      </p>
+      <textarea ng-model="question.errorReport"></textarea>
+      <button class="btn-report" ng-click="sendErrorReport()">Send Error Report</button>
+    </div>
+  </div>
   <div class="rule-question-sentence-bar" ng-class="questionClass">
     <div class="inner-container">
       <div class="message-panel">
