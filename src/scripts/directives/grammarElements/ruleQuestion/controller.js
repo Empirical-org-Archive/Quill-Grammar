@@ -36,10 +36,6 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
 
   resetSubmitPanel();
 
-  $scope.sendErrorReport = function () {
-
-  };
-
   $scope.resetWPM = function () {
     TypingSpeed.reset();
   };
@@ -100,6 +96,8 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
 
   $scope.nextProblem = function () {
     $scope.showNextQuestion = false;
+    $scope.showConfirmation = false;
+    $scope.errorReport = '';
     resetSubmitPanel();
     $scope.$emit('hideModal');
     $scope.next(); // Defined on the directive.
@@ -138,7 +136,8 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
   };
 
   $scope.sendErrorReport = function () {
-    console.log($scope.report);
     $scope.report();
-  }
+    $scope.showReport = false;
+    $scope.showConfirmation = true;
+  };
 };

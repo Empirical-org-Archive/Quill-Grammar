@@ -43,7 +43,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
     var questionsData = _.chain(concepts)
       .map(function (concept, i) {
         _.each(concept.questions, function (question, key) {
-          question.uid = key
+          question.uid = key;
           question.conceptUid = concept.concept_level_0.uid;
           question.conceptIndex = i; // For lookup in getConceptForQuestion()
         });
@@ -69,7 +69,6 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
       activity.concepts = concepts;
       return loadQuestionsFromConcepts(concepts, quantities);
     }).then(function (questions) {
-      console.log()
       activity.questions = questions;
       return activity;
     });
@@ -179,10 +178,9 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
     }
   };
 
-  GrammarActivity.prototype.submitErrorReport = function (question) {
-    console.log(question.uid, this.concepts[question.conceptIndex].$id, question.errorReport)
-    ErrorReport.saveToFirebase(question.uid, this.concepts[question.conceptIndex].$id, question.errorReport)
-  }
+  GrammarActivity.prototype.submitErrorReport = function (question, sessionId) {
+    ErrorReport.saveToFirebase(question.uid, this.concepts[question.conceptIndex].$id, question.errorReport, sessionId);
+  };
 
   return GrammarActivity;
 });
