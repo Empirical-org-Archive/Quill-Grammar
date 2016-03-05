@@ -34,6 +34,26 @@ body {
   text-align: center;
 }
 
+.card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 1em;
+  margin-bottom: 1em;
+  -webkit-box-shadow: 0 8px 6px -6px #3d3d3d;
+	   -moz-box-shadow: 0 8px 6px -6px #3d3d3d;
+	        box-shadow: 0 8px 6px -6px #3d3d3d;
+
+  &.narrow {
+    max-width: 400px;
+  }
+
+  &.active {
+    -webkit-box-shadow: 0;
+  	   -moz-box-shadow: 0;
+  	        box-shadow: 0;
+  }
+}
+
 @import "spinner";
 
 @import "play/base.scss";

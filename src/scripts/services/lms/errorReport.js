@@ -36,12 +36,13 @@ angular.module('quill-grammar.services.lms.error-reports', [
   // });
   //
   // TODO: Don't store the same result multiple times.
-  errorReport.saveToFirebase = function (questionUid, conceptUid, message, sessionId) {
+  errorReport.saveToFirebase = function (questionUid, conceptUid, message, response, sessionId) {
     getErrorList(questionUid, conceptUid).then(function (list) {
       return list.$add({
         questionUid: questionUid,
         conceptUid: conceptUid,
         message: message,
+        response: response,
         sessionId: (sessionId ? sessionId : null)
       });
     });
