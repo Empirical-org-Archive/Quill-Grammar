@@ -3,16 +3,14 @@
 module.exports =
 
 /*@ngInject*/
-function ConceptsCmsCtrl (
-  $scope, _, firebaseUrl, $firebaseArray, $firebaseObject
+function ErrorReportsCmsCtrl (
+  $scope, _, firebaseUrl, $firebaseArray
 ) {
-  var self = this;
-
   var ref = new Firebase(firebaseUrl + '/errorReports');
 
-  function conceptQuestions() {
+  function errorReports() {
     return $firebaseArray(ref);
   }
 
-  $scope.list = conceptQuestions()
+  $scope.list = errorReports();
 };
