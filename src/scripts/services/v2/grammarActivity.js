@@ -10,10 +10,11 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   require('./../rule.js').name,
   require('./../localStorage.js').name,
   require('./question.js').name,
-  require('./../lms/conceptResult.js').name
+  require('./../lms/conceptResult.js').name,
+  require('./../lms/errorReport.js').name
 ])
 /*@ngInject*/
-.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, $firebaseArray, _, RuleService, $q, Question, SentenceLocalStorage, ConceptsFBService, ConceptResult, TypingSpeed, UAParser) {
+.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, $firebaseArray, _, RuleService, $q, Question, SentenceLocalStorage, ConceptsFBService, ConceptResult, ErrorReport, TypingSpeed, UAParser) {
   function GrammarActivity(data) {
     if (data) {
       _.extend(this, data);
@@ -41,7 +42,8 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
     }
     var questionsData = _.chain(concepts)
       .map(function (concept, i) {
-        _.each(concept.questions, function (question) {
+        _.each(concept.questions, function (question, key) {
+          question.uid = key;
           question.conceptUid = concept.concept_level_0.uid;
           question.conceptIndex = i; // For lookup in getConceptForQuestion()
         });
@@ -174,6 +176,10 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
         TypingSpeed.reset();
       });
     }
+  };
+
+  GrammarActivity.prototype.submitErrorReport = function (question, sessionId) {
+    ErrorReport.saveToFirebase(question.uid, this.concepts[question.conceptIndex].$id, question.errorReport, question.response, sessionId);
   };
 
   return GrammarActivity;

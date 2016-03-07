@@ -5,7 +5,8 @@ module.exports = function () {
     scope: {
       question: '=',
       next: '&',
-      submit: '&'
+      submit: '&',
+      report: '&'
     },
     templateUrl: 'ruleQuestion.html',
     controller: 'GrammarRuleQuestionCtrl'

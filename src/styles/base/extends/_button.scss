@@ -19,4 +19,19 @@
     cursor: not-allowed;
     opacity: 0.5;
   }
+
+}
+
+.btn-report {
+  background-color: #bbb;
+  &:hover {
+    background-color: #aaa;
+  }
+}
+
+.btn-danger {
+  background-color: #fc3e3b;
+  &:hover {
+    background-color: darken(#fc3e3b, 10%);
+  }
 }

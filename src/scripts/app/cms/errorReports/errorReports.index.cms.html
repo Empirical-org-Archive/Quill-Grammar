@@ -1,0 +1,14 @@
+<h3><a ui-sref="cms-error-reports()">Error Reports</a></h3>
+<br/>
+<div style="display: flex">
+  <div class="left" style="display: inline-block">
+    <ul>
+      <li ng-repeat="(key, value) in list" class="card narrow">
+        <a ui-sref="cms-error-view({id: value.$id})"><strong>Message:</strong> {{value.message.substring(0,30)}}...</a>
+      </li>
+    </ul>
+  </div>
+  <div class="right" style="margin-left: 1em">
+    <div ui-view></div>
+  </div>
+</div>
