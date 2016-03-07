@@ -171,7 +171,8 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
         correct: correct ? 1 : 0,
         wpm: TypingSpeed.wordsPerMinute,
         browser: devInfo.browser,
-        os: devInfo.os
+        os: devInfo.os,
+        questionUrl: (window.location.origin + '/cms/concepts/' + this.concepts[question.conceptIndex].$id + '/questions/' + question.uid)
       }).then(function () {
         TypingSpeed.reset();
       });
