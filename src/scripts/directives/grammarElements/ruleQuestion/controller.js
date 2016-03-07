@@ -96,6 +96,8 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
 
   $scope.nextProblem = function () {
     $scope.showNextQuestion = false;
+    $scope.showConfirmation = false;
+    $scope.errorReport = '';
     resetSubmitPanel();
     $scope.$emit('hideModal');
     $scope.next(); // Defined on the directive.
@@ -131,5 +133,11 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
     } else {
       $scope.checkAnswer();
     }
+  };
+
+  $scope.sendErrorReport = function () {
+    $scope.report();
+    $scope.showReport = false;
+    $scope.showConfirmation = true;
   };
 };

@@ -1,0 +1,16 @@
+<div class="card">
+  <p>
+    <strong>Message:</strong> {{errorReport["message"]}}
+    <hr/>
+    <strong>Concept:</strong> {{concept["concept_level_1"]["name"]}} | {{concept["name"]}}
+    <br/>
+    <strong>Question:</strong> {{question.prompt}}
+    <br/>
+    <strong>Answer:</strong> {{question.answers[0].text}}
+    <br/>
+    <strong>User Answer:</strong> {{errorReport["response"]}}
+  </p>
+  <button ui-sref="cms-concepts-view({id: errorReport['conceptUid']})" class="btn">View Concept</button>
+  <button ui-sref="cms-concepts-questions-edit({conceptId: errorReport['conceptUid'], conceptQuestionId: errorReport['questionUid']})">Edit Question</button>
+  <button ng-click="destroy()" class="btn-danger">Delete Error Report</button>
+</div>
