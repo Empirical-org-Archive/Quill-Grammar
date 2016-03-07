@@ -3,8 +3,9 @@
   "firebaseUrl": "https://quillgrammarstaging.firebaseio.com/v2",
   "firebaseApp": "quillgrammarstaging",
   "empiricalBaseURL": "https://staging.quill.org/api/v1",
+  "portholeProxy": "https://staging.quill.org/porthole_proxy",
   "grammarActivityClassificationUid": "s2u3tVuguhfUjOQxDP-7RA",
   "proofreaderActivityClassificationUid": "IACa8Egt7CvVYgtHPtEn2w",
-  "portholeProxy": "https://staging.quill.org/porthole_proxy",
-  "oauthClientId": "f1db4e00727649d1a7d59d3690c0baf30f6ed6514883d0171b37fe8c31166a0d"
+  "firebaseApp": "quillgrammar",
+  "oauthClientId": "2e8c49f66d9ea0ccbd71ea568c75eef96782e6a7510ebab7c537f3c6d563f6f2"
 }
