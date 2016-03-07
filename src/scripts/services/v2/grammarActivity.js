@@ -179,7 +179,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   };
 
   GrammarActivity.prototype.submitErrorReport = function (question, sessionId) {
-    ErrorReport.saveToFirebase(question.uid, this.concepts[question.conceptIndex].$id, question.errorReport, question.response, sessionId);
+    ErrorReport.saveToFirebase(question.uid, this.concepts[question.conceptIndex].$id, question.errorReport, (question.response || ''), sessionId);
   };
 
   return GrammarActivity;
