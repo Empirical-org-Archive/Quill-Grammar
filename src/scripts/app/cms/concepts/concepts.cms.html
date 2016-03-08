@@ -4,6 +4,9 @@
 <b>Total Concepts {{getTotalConcepts(concepts)}}</b>
 <p></p>
 <b>Total Questions {{getTotalQuestions()}}</b>
+<div class="concept-create">
+  <a ui-sref="cms-concepts-create()"><button>Create Concepts</button></a>
+</div>
 <div class="concept-list">
   <table>
     <thead>
@@ -26,8 +29,11 @@
               <span ng-show="sortType == 'concept_level_0.name'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
           </a>
         </th>
-        <th>
-          FireBase Key
+        <th width=120>
+          <a href="#" ng-click="sortType = 'errorCount'; sortReverse = !sortReverse">
+              Error Reports
+              <span ng-show="sortType == 'errorCount'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
+          </a>
         </th>
         <th width=100>
           <a href="#" ng-click="sortType = 'questionCount'; sortReverse = !sortReverse">
@@ -37,12 +43,12 @@
         </th>
         <th width=100>
           <a href="#" ng-click="sortType = 'ruleNumber'; sortReverse = !sortReverse">
-              Rule Number
+              Rule No.
               <span ng-show="sortType == 'ruleNumber'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
           </a></th>
-        <th width=150>
+        <th width=100>
           <a href="#" ng-click="sortType = 'ruleDescription'; sortReverse = !sortReverse">
-              Rule Description
+              Rule Desc.
               <span ng-show="sortType == 'ruleDescription'" >{{ sortReverse ? "&#x25B2;" : "&#x25BC;" }}</span>
           </a></th>
         <th width=40>View</th>
@@ -53,7 +59,7 @@
         <td>{{c.concept_level_2.name}}</td>
         <td>{{c.concept_level_1.name}}</td>
         <td>{{c.concept_level_0.name}}</td>
-        <td>{{c.$id}}</td>
+        <td>{{c.errorCount || 0 }}</td>
         <td>{{c.questionCount}}</td>
         <td>{{c.ruleNumber}}</td>
         <td>{{c.ruleDescription.length > 0}}</td>
@@ -61,6 +67,4 @@
       </tr>
     </tbody>
   </table>
-<div class="concept-create">
-  <a ui-sref="cms-concepts-create()"><button>Create Concepts</button></a>
 </div>
