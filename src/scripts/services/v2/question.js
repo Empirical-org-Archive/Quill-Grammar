@@ -70,10 +70,14 @@ angular.module('quill-grammar.services.question', [
   Question.ResponseMessages[Question.ResponseStatus.CORRECT] = '<b>Well done!</b> That\'s the correct answer.';
   Question.ResponseMessages[Question.ResponseStatus.NO_ANSWER] = 'You must enter a sentence for us to check.';
 
+  function normalize(text) {
+    return text.replace(/[\u2018\u2019]/g, '\u0027').replace(/[\u201C\u201D]/g, '\u0022').replace('‚', ',');
+  }
+
   function compareEntireAnswerToAnswers(answer) {
     return function (b) {
       var cleaned = removeDelimeters(b);
-      return answer === cleaned;
+      return normalize(answer) === normalize(cleaned);
     };
   }
 
@@ -99,7 +103,7 @@ angular.module('quill-grammar.services.question', [
       }
       return _.every(grammarElements, function (element) {
         var r = new RegExp('(^|\\W{1,1})' + element + '(\\W{1,1}|$)', 'g');
-        return answer.search(r) !== -1;
+        return normalize(answer).search(normalize(r)) !== -1;
       });
     });
   };
