@@ -102,8 +102,8 @@ angular.module('quill-grammar.services.question', [
         grammarElements.push(tmpArray[1]);
       }
       return _.every(grammarElements, function (element) {
-        var r = new RegExp('(^|\\W{1,1})' + element + '(\\W{1,1}|$)', 'g');
-        return normalize(answer).search(normalize(r)) !== -1;
+        var r = new RegExp('(^|\\W{1,1})' + normalize(element) + '(\\W{1,1}|$)', 'g');
+        return normalize(answer).search(r) !== -1;
       });
     });
   };
