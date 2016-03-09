@@ -103,7 +103,7 @@ angular.module('quill-grammar.services.question', [
       }
       return _.every(grammarElements, function (element) {
         var r = new RegExp('(^|\\W{1,1})' + element + '(\\W{1,1}|$)', 'g');
-        return answer.search(r) !== -1;
+        return normalize(answer).search(normalize(r)) !== -1;
       });
     });
   };
