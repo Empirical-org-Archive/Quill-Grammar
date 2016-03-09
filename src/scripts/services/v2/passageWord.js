@@ -13,6 +13,10 @@ angular.module('quill-grammar.services.passageWord', [
     return this;
   }
 
+  function normalize(text) {
+    return text.replace(/[\u2018\u2019]/g, '\u0027').replace(/[\u201C\u201D]/g, '\u0022').replace('‚', ',');
+  }
+
   PassageWord.INCORRECT_ERROR = 'Incorrect';
   PassageWord.NOT_NECESSARY_ERROR = 'Not Necessary';
   PassageWord.CORRECT = 'Correct';
@@ -56,10 +60,10 @@ angular.module('quill-grammar.services.passageWord', [
   PassageWord.prototype.isValid = function () {
     if (_.has(this, 'minus')) {
       //A grammar entry
-      return this.responseText === this.plus;
+      return normalize(this.responseText) === normalize(this.plus);
     } else {
       //A regular word
-      return this.text === this.responseText;
+      return normalize(this.text) === normalize(this.responseText);
     }
   };
 
