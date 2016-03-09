@@ -47,11 +47,21 @@ body {
     max-width: 400px;
   }
 
+  &.wide {
+    max-width: 800px;
+  }
+
   &.active {
     -webkit-box-shadow: 0;
   	   -moz-box-shadow: 0;
   	        box-shadow: 0;
   }
+}
+
+.errorReportHeading {
+  width: 150px;
+  text-align: right;
+  padding-right: 1em;
 }
 
 @import "spinner";
