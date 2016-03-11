@@ -94,7 +94,7 @@ angular.module('quill-grammar.services.question', [
     answers = _.map(answers, function(b) {
       return applyDiff(b, response, theirs)
     })
-    return '<ul><li>' + answers.join('</li><li>') + '</ul>';
+    return answers.join('<br/>');
   }
 
   Question.ResponseMessages = {};
@@ -104,7 +104,7 @@ angular.module('quill-grammar.services.question', [
   Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT] = 'You are correct, but you have some typing errors. Please correct them to continue.';
   Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT_UNFIXED] = 'You are correct, but you have some typing errors. You may correct them or continue.';
   Question.ResponseMessages[Question.ResponseStatus.TOO_MANY_ATTEMPTS] = function (question) {
-    return '<b>Incorrect.</b> Your response: ' + getCorrectString(_.pluck(question.answers, 'text'), question.response, "true") + 'Correct response: ' + getCorrectString(_.pluck(question.answers, 'text'), question.response, "false");
+    return '<dl class="horizontal"><dt><span>Your Response</span></dt><dd>' + getCorrectString(_.pluck(question.answers, 'text'), question.response, "true") + '</dd><dt>Correct Response</dt><dd>' + getCorrectString(_.pluck(question.answers, 'text'), question.response, "false") + '</dd></dl>';
   };
   Question.ResponseMessages[Question.ResponseStatus.CORRECT] = '<b>Well done!</b> That\'s the correct answer.';
   Question.ResponseMessages[Question.ResponseStatus.NO_ANSWER] = 'You must enter a sentence for us to check.';

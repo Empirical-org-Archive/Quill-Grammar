@@ -64,6 +64,29 @@ body {
   padding-right: 1em;
 }
 
+dl.horizontal {
+  margin: 0;
+
+  dt {
+    float: left;
+    clear: left;
+    width: 160px;
+    text-align: right;
+    font-weight: bold;
+    margin-top: 0;
+  }
+
+  dt:after {
+    content: ":";
+  }
+
+  dd {
+    padding: 0 0 0.3em 170px;
+  }
+}
+
+
+
 @import "spinner";
 
 @import "play/base.scss";
