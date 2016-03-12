@@ -12,7 +12,7 @@
     <textarea class="student-input" type="text" ng-model="question.response" ng-paste="capturePasteEvent($event)" ng-change="startEditing()" ng-enter="capturePressEnterEvent()" ng-timer="resetWPM()" typing-speed autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
   </div>
   <div class="inner-container">
-    <button class="btn-report" ng-click="showReport = !showReport" ng-hide="showConfirmation">Report Error</button>
+    <a class="a-report" ng-click="showReport = !showReport" ng-hide="showConfirmation">Report Error</a>
     <div ng-show="showReport">
       <br/>
       <h4>

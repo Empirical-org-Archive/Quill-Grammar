@@ -76,7 +76,7 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
           $scope.checkAnswerText = CheckButtonText.DEFAULT;
           $scope.questionClass = 'try_again';
           $scope.attempting = false;
-          submitLooseAnswer();
+          submitAnswer();
           break;
         }
         case Question.ResponseStatus.TOO_MANY_ATTEMPTS: {

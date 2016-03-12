@@ -53,13 +53,9 @@ angular.module('quill-grammar.services.question', [
   }
 
   function applyDiff(answer, response, theirs) {
-    console.log(answer, response, theirs)
     var diff = JsDiff.diffWords(response, answer);
     if (theirs === "true") {
-      console.log("true")
       var spans = diff.map(function(part){
-        // green for additions, red for deletions
-        // grey for common parts
         var weight = part.removed ? 'bold' : 'regular';
         var decoration = part.removed ? 'underline' : 'none';
         var display =  part.added ? 'none' : '';
@@ -67,22 +63,14 @@ angular.module('quill-grammar.services.question', [
         return span;
       });
     } else {
-      console.log("false")
       var spans = diff.map(function(part){
-        // green for additions, red for deletions
-        // grey for common parts
         var weight = part.added ? 'bold' : 'regular';
         var decoration = part.added ? 'underline' : 'none';
         var display = part.removed ? 'none' : '';
-
         var span = "<span style='display: " + display + "; font-weight: " + weight + "; text-decoration: " + decoration + "' >" + part.value + "</span>"
         return span;
       });
     }
-
-
-
-    console.log("Spans: ", spans.join(''))
     return spans.join('')
   }
 
@@ -90,7 +78,6 @@ angular.module('quill-grammar.services.question', [
     var answers = _.chain(b)
       .map(removeDelimeters)
       .value();
-    console.log("Anwers: ", answers);
     answers = _.map(answers, function(b) {
       return applyDiff(b, response, theirs)
     })
@@ -102,7 +89,9 @@ angular.module('quill-grammar.services.question', [
   Question.ResponseMessages[Question.ResponseStatus.NOT_LONG_ENOUGH] = '<b>Try again!</b> Your answer is not long enough.';
   Question.ResponseMessages[Question.ResponseStatus.INCORRECT] = '<b>Try Again!</b> Unfortunately, that answer is incorrect.';
   Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT] = 'You are correct, but you have some typing errors. Please correct them to continue.';
-  Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT_UNFIXED] = 'You are correct, but you have some typing errors. You may correct them or continue.';
+  Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT_UNFIXED] = function (question) {
+    return '<dl class="horizontal"><dt><span>Your Response</span></dt><dd>' + getCorrectString(_.pluck(question.answers, 'text'), question.response, "true") + '</dd><dt>Correct Response</dt><dd>' + getCorrectString(_.pluck(question.answers, 'text'), question.response, "false") + '</dd></dl>';
+  };
   Question.ResponseMessages[Question.ResponseStatus.TOO_MANY_ATTEMPTS] = function (question) {
     return '<dl class="horizontal"><dt><span>Your Response</span></dt><dd>' + getCorrectString(_.pluck(question.answers, 'text'), question.response, "true") + '</dd><dt>Correct Response</dt><dd>' + getCorrectString(_.pluck(question.answers, 'text'), question.response, "false") + '</dd></dl>';
   };
