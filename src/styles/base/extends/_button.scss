@@ -29,6 +29,13 @@
   }
 }
 
+.a-report {
+  color: #bbb;
+  &:hover {
+    color: #aaa;
+  }
+}
+
 .btn-danger {
   background-color: #fc3e3b;
   &:hover {
