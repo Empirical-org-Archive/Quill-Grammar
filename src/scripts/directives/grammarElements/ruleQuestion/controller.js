@@ -29,11 +29,6 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
     $scope.submit();
   }
 
-  function submitLooseAnswer() {
-    $scope.showCheckAnswerButton = false;
-    $scope.showCheckOrContinueButton = true;
-  }
-
   resetSubmitPanel();
 
   $scope.resetWPM = function () {
