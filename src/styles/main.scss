@@ -47,12 +47,47 @@ body {
     max-width: 400px;
   }
 
+  &.wide {
+    max-width: 800px;
+  }
+
   &.active {
     -webkit-box-shadow: 0;
   	   -moz-box-shadow: 0;
   	        box-shadow: 0;
   }
 }
+
+.errorReportHeading {
+  width: 150px;
+  text-align: right;
+  padding-right: 1em;
+}
+
+dl.horizontal {
+  margin: 0;
+
+  dt {
+    float: left;
+    clear: left;
+    width: 160px;
+    text-align: right;
+    font-weight: bold;
+    margin-top: 0;
+  }
+
+  dt:after {
+    content: ":";
+  }
+
+  dd {
+    padding: 0 0 0 170px;
+    font-family: 'courier new';
+    line-height: 32px;
+  }
+}
+
+
 
 @import "spinner";
 

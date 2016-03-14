@@ -32,8 +32,10 @@ div.question {
 
 div.rule-question-sentence-bar {
 
-  margin-top: 58px;
+  margin-top: 25px;
   @include pad;
+  padding-top: 25px;
+  padding-bottom: 25px;
   box-shadow: 0 500px 2px 500px $gray;
 
   &.correct {
@@ -60,7 +62,7 @@ div.rule-question-sentence-bar {
     p {
       padding-top: 5px;
       font-size: 18px;
-      @include span-columns(9);
+      @include span-columns(11);
     }
   }
   .button-panel {

@@ -29,11 +29,6 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
     $scope.submit();
   }
 
-  function submitLooseAnswer() {
-    $scope.showCheckAnswerButton = false;
-    $scope.showCheckOrContinueButton = true;
-  }
-
   resetSubmitPanel();
 
   $scope.resetWPM = function () {
@@ -76,7 +71,7 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
           $scope.checkAnswerText = CheckButtonText.DEFAULT;
           $scope.questionClass = 'try_again';
           $scope.attempting = false;
-          submitLooseAnswer();
+          submitAnswer();
           break;
         }
         case Question.ResponseStatus.TOO_MANY_ATTEMPTS: {

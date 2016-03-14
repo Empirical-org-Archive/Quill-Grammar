@@ -1,5 +1,5 @@
 'use strict';
-
+var JsDiff = require('diff');
 /*
  * This is a wrapper around what is currently called
  * 'ruleQuestion'.
@@ -51,21 +51,51 @@ angular.module('quill-grammar.services.question', [
     return b.replace(delimRegEx.open, '').replace(delimRegEx.close, '');
   }
 
-  function getCorrectString(b) {
+  function applyDiff(answer, response, theirs) {
+    answer = answer || '';
+    response = response || '';
+    var diff = JsDiff.diffWords(response, answer);
+    var spans;
+    if (theirs) {
+      spans = diff.map(function (part) {
+        var weight = part.removed ? 'bold' : 'regular';
+        var decoration = part.removed ? 'underline' : 'none';
+        var display =  part.added ? 'none' : '';
+        var span = '<span style="display: ' + display + '; font-weight: ' + weight + '; text-decoration: ' + decoration + '" >' + part.value + '</span>';
+        return span;
+      });
+    } else {
+      spans = diff.map(function (part) {
+        var weight = part.added ? 'bold' : 'regular';
+        var decoration = part.added ? 'underline' : 'none';
+        var display = part.removed ? 'none' : '';
+        var span = '<span style="display: ' + display + '; font-weight: ' + weight + '; text-decoration: ' + decoration + '" >' + part.value + '</span>';
+        return span;
+      });
+    }
+    return spans.join('');
+  }
+
+  function getCorrectString(b, response, theirs) {
     var answers = _.chain(b)
       .map(removeDelimeters)
       .value();
-    return '<ul><li>' + answers.join('</li><li>') + '</ul>';
+    answers = _.map(answers, function (b) {
+      return applyDiff(b, response, theirs);
+    });
+    return answers.join('<br/>');
   }
 
   Question.ResponseMessages = {};
   Question.ResponseMessages[Question.ResponseStatus.DEFAULT] = 'Check Work';
-  Question.ResponseMessages[Question.ResponseStatus.NOT_LONG_ENOUGH] = '<b>Try again!</b>Your answer is not long enough.';
+  Question.ResponseMessages[Question.ResponseStatus.NOT_LONG_ENOUGH] = '<b>Try again!</b> Your answer is not long enough.';
   Question.ResponseMessages[Question.ResponseStatus.INCORRECT] = '<b>Try Again!</b> Unfortunately, that answer is incorrect.';
   Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT] = 'You are correct, but you have some typing errors. Please correct them to continue.';
-  Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT_UNFIXED] = 'You are correct, but you have some typing errors. You may correct them or continue.';
+  Question.ResponseMessages[Question.ResponseStatus.TYPING_ERROR_NON_STRICT_UNFIXED] = function (question) {
+    return '<dl class="horizontal"><dt><span>Your Response</span></dt><dd>' + getCorrectString(_.pluck(question.answers, 'text'), question.response, true) + '</dd><dt>Correct Response</dt><dd>' + getCorrectString(_.pluck(question.answers, 'text'), question.response, false) + '</dd></dl>';
+  };
   Question.ResponseMessages[Question.ResponseStatus.TOO_MANY_ATTEMPTS] = function (question) {
-    return '<b>Incorrect.</b> Correct Answer: ' + getCorrectString(_.pluck(question.answers, 'text'));
+    return '<dl class="horizontal"><dt><span>Your Response</span></dt><dd>' + getCorrectString(_.pluck(question.answers, 'text'), question.response, true) + '</dd><dt>Correct Response</dt><dd>' + getCorrectString(_.pluck(question.answers, 'text'), question.response, false) + '</dd></dl>';
   };
   Question.ResponseMessages[Question.ResponseStatus.CORRECT] = '<b>Well done!</b> That\'s the correct answer.';
   Question.ResponseMessages[Question.ResponseStatus.NO_ANSWER] = 'You must enter a sentence for us to check.';
