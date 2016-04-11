@@ -1,6 +1,6 @@
 {
   "name": "quill-grammar",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "private": "true",
   "scripts": {
     "test": "npm run ci",
@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "chai": "^3.0.0",
+    "diff": "^2.2.2",
     "empirical-angular-gulp-tasks": "^0.6.0",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
