@@ -138,8 +138,13 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
 
   $scope.speak = function (text) {
     if ('speechSynthesis' in window) {
-      var msg = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/gi, ""));
-      window.speechSynthesis.speak(msg);
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel()
+      } else {
+        var msg = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/gi, ""));
+        msg.rate = 0.9;
+        window.speechSynthesis.speak(msg);
+      }
     }
   }
 };
