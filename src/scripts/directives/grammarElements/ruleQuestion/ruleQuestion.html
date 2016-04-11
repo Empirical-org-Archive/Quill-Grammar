@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="inner-container">
-    <p class="prompt" ng-bind-html="question.prompt | formatPrompt | trustedHtml"></p>
+    <p class="prompt" ng-click="speak(question.prompt)" ng-bind-html="question.prompt | formatPrompt | trustedHtml"></p>
   </div>
   <div class="inner-container">
     <textarea class="student-input" type="text" ng-model="question.response" ng-paste="capturePasteEvent($event)" ng-change="startEditing()" ng-enter="capturePressEnterEvent()" ng-timer="resetWPM()" typing-speed autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>

@@ -135,4 +135,11 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
     $scope.showReport = false;
     $scope.showConfirmation = true;
   };
+
+  $scope.speak = function (text) {
+    if ('speechSynthesis' in window) {
+      var msg = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/gi, ""));
+      window.speechSynthesis.speak(msg);
+    }
+  }
 };
