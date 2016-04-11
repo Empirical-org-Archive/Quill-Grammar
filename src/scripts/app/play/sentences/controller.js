@@ -1,3 +1,5 @@
+/* global SpeechSynthesisUtterance */
+
 'use strict';
 
 module.exports =
@@ -140,12 +142,12 @@ function SentencePlayCtrl (
   $scope.speak = function (text) {
     if ('speechSynthesis' in window) {
       if (window.speechSynthesis.speaking) {
-        window.speechSynthesis.cancel()
+        window.speechSynthesis.cancel();
       } else {
-        var msg = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/gi, ""));
+        var msg = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/gi, ''));
         msg.rate = 0.9;
         window.speechSynthesis.speak(msg);
       }
     }
-  }
+  };
 };
