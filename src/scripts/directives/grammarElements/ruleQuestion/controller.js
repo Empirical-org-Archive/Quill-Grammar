@@ -1,3 +1,5 @@
+/* global SpeechSynthesisUtterance */
+
 'use strict';
 
 /*@ngInject*/
@@ -134,5 +136,17 @@ module.exports = function ($scope, _, $timeout, Question, TypingSpeed) {
     $scope.report();
     $scope.showReport = false;
     $scope.showConfirmation = true;
+  };
+
+  $scope.speak = function (text) {
+    if ('speechSynthesis' in window) {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+      } else {
+        var msg = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/gi, ''));
+        msg.rate = 0.9;
+        window.speechSynthesis.speak(msg);
+      }
+    }
   };
 };
