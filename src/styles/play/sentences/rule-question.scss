@@ -54,14 +54,13 @@ div.rule-question-sentence-bar {
   div.message-panel {
     display: flex;
     align-items: center;
-    @include span-columns(12);
     img {
-      @include span-columns(1);
+      max-width: 32px;
+      margin-right: 15px;
     }
     p {
       margin: 0;
       font-size: 18px;
-      @include span-columns(11);
     }
   }
   .button-panel {
