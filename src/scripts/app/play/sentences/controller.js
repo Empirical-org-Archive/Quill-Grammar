@@ -1,5 +1,4 @@
 /* global SpeechSynthesisUtterance */
-
 'use strict';
 
 module.exports =
@@ -144,9 +143,15 @@ function SentencePlayCtrl (
       if (window.speechSynthesis.speaking) {
         window.speechSynthesis.cancel();
       } else {
-        var msg = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/gi, ''));
-        msg.rate = 0.9;
-        window.speechSynthesis.speak(msg);
+        var timer = setInterval(function () {
+          var voices = window.speechSynthesis.getVoices();
+          if (voices.length !== 0) {
+            var msg = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/gi, ''));
+            msg.voice = _.where(voices, {name: 'Samantha'})[0];
+            window.speechSynthesis.speak(msg);
+            clearInterval(timer);
+          }
+        }, 200);
       }
     }
   };
