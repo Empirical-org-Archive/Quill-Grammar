@@ -107,12 +107,13 @@ function SentencePlayCtrl (
             return _.indexOf(completedQuestionIds, question.uid) !== -1 ? 'answered' : 'unanswered';
           });
           console.log("Results: ", grouped);
-          console.log(grouped.answered.concat(grouped.unanswered));
-          $scope.questions = grouped.answered.concat(grouped.unanswered);
-          $scope.currentQuestion = grammarActivity.questions[value.length - 1];
+          console.log((grouped.answered || []).concat(grouped.unanswered));
+
+          $scope.questions = (grouped.answered || []).concat(grouped.unanswered);
+          $scope.currentQuestion = $scope.questions[value.length];
           $scope.number = value.length;
         } else {
-          $scope.currentQuestion = grammarActivity.questions[0];
+          $scope.currentQuestion = $scope.questions[0];
         }
 
         // return value
