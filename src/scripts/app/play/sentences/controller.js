@@ -96,12 +96,41 @@ function SentencePlayCtrl (
       $scope.grammarActivity = grammarActivity;
       // FIXME: Get rid of this scope assignment and just use activity.selectedRuleQuestions.
       $scope.questions = grammarActivity.questions;
-      $scope.currentQuestion = grammarActivity.questions[0];
-      $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
-      $scope.showConceptOverview = (_.indexOf($scope.previousConcepts, $scope.currentConcept) === -1);
-      $scope.previousConcepts.push($scope.currentConcept);
-      $scope.showNextQuestion = false;
-      TypingSpeed.reset();
+      // Get partial session here.
+      $scope.grammarActivity.getSession($state.params.student).then(function (value) {
+        console.log(value.length)
+        if (value.length > 0) {
+          var completedQuestionIds = _.map(value, function(val) { return val.metadata.questionUid } );
+          console.log(completedQuestionIds)
+          var grouped =  _.groupBy(grammarActivity.questions, function(question){
+            console.log(question.uid);
+            return _.indexOf(completedQuestionIds, question.uid) !== -1 ? 'answered' : 'unanswered';
+          });
+          console.log("Results: ", grouped);
+          console.log(grouped.answered.concat(grouped.unanswered));
+          $scope.questions = grouped.answered.concat(grouped.unanswered);
+          $scope.currentQuestion = grammarActivity.questions[value.length - 1];
+          $scope.number = value.length;
+        } else {
+          $scope.currentQuestion = grammarActivity.questions[0];
+        }
+
+        // return value
+
+
+        $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
+        $scope.showConceptOverview = (_.indexOf($scope.previousConcepts, $scope.currentConcept) === -1);
+        $scope.previousConcepts.push($scope.currentConcept);
+        $scope.showNextQuestion = false;
+        TypingSpeed.reset();
+      })
+      // console.log("Returned val: ", )
+      // $scope.currentQuestion = grammarActivity.questions[0];
+      // $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
+      // $scope.showConceptOverview = (_.indexOf($scope.previousConcepts, $scope.currentConcept) === -1);
+      // $scope.previousConcepts.push($scope.currentConcept);
+      // $scope.showNextQuestion = false;
+      // TypingSpeed.reset();
     });
   }
 
