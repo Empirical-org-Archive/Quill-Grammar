@@ -79,6 +79,45 @@ function ProofreadingPlayCtrl (
     $window.alert(err);
   }).then(function (proofreadingPassage) {
     $scope.proofreadingPassage = proofreadingPassage;
+    if ($state.params.student) {
+      decideState()
+    } else {
+      displayParagraph()
+    }
+  });
+
+  function decideState() {
+    $scope.proofreadingPassage.getSession($state.params.student).then(function (value) {
+      var pfConcepts = getPassageConceptResults(value)
+      if (pfConcepts.length > 0) {
+        resumeLesson(pfConcepts)
+      } else  {
+        displayParagraph()
+      }
+    })
+  }
+
+  function getPassageConceptResults(conceptResults) {
+    return _.reject(conceptResults, function (val) {
+      return val.metadata.wpm
+    })
+  }
+
+  function convertUIDsToRuleNumbers(uids) {
+    return uids.map(function (uid) {
+      return $scope.proofreadingPassage.getRuleNumberFromUID(uid);
+    })
+  }
+
+  function resumeLesson(conceptResults) {
+    var uids = $scope.proofreadingPassage.getResultRuleNumbersFromConceptResults(conceptResults)
+    var ruleNumbers = convertUIDsToRuleNumbers(uids);
+    generateLesson(ruleNumbers);
+    $scope.proofreadingPassage.submitted = true;
+    $scope.goToLesson();
+  }
+
+  function displayParagraph() {
     if ($scope.proofreadingPassage) {
       var i = 0;
       var l = $scope.proofreadingPassage.words.length;
@@ -93,7 +132,7 @@ function ProofreadingPlayCtrl (
         }
       })();
     }
-  });
+  }
 
   /*
    * Modal settings
@@ -117,6 +156,7 @@ function ProofreadingPlayCtrl (
    */
 
   function generateLesson(ruleNumbers) {
+    console.log("moving to sw");
     $scope.goToLesson = function () {
       $state.go('play-sw-gen', {
         ids: ruleNumbers,
