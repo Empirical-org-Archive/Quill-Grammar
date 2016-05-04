@@ -87,13 +87,20 @@ function ProofreadingPlayCtrl (
   });
 
   function decideState() {
+    $scope.resuming = true;
     $scope.proofreadingPassage.getSession($state.params.student).then(function (value) {
       var pfConcepts = getPassageConceptResults(value)
       if (pfConcepts.length > 0) {
         resumeLesson(pfConcepts)
+        setTimeout(function() {
+          $scope.resuming = false;
+          $scope.$apply()
+        }, 500)
       } else  {
         displayParagraph()
+        $scope.resuming = false;
       }
+
     })
   }
 
@@ -114,7 +121,9 @@ function ProofreadingPlayCtrl (
     var ruleNumbers = convertUIDsToRuleNumbers(uids);
     generateLesson(ruleNumbers);
     $scope.proofreadingPassage.submitted = true;
-    $scope.goToLesson();
+    setTimeout(function() {
+      $scope.goToLesson();
+    }, 500)
   }
 
   function displayParagraph() {
