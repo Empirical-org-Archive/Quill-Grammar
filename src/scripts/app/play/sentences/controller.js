@@ -24,6 +24,7 @@ function SentencePlayCtrl (
   $scope.$on('hideModal', function () {$scope.showConceptOverview = false;});
   //This is what we need to do after a student has completed the set
   $scope.finish = function () {
+    $scope.saving = true;
     var passageId = $state.params.passageId;
     if (passageId) { // Prevent explosions when there is no passage ID (started 'Sentence Writing' activity).
       var tempResults = SentenceLocalStorage.saveResults(passageId);
@@ -35,7 +36,12 @@ function SentencePlayCtrl (
       $state.go('.results', {
         student: $state.params.student
       });
-    });
+    }).catch(function (e) {
+      console.log('An error occurred while saving results to the LMS inside controller', e);
+      $scope.saving = false;
+      $scope.error = true;
+      throw e;
+    });;
   };
 
   /*
@@ -111,7 +117,11 @@ function SentencePlayCtrl (
     $scope.resuming = true;
     $scope.grammarActivity.getSession($state.params.student).then(function (value) {
       var swConcepts = getSentenceWritingConceptResults(value)
-      if (swConcepts.length > 0) {
+      if (swConcepts.length >= $scope.questions.length) {
+        $scope.resuming = false;
+        $scope.finish();
+      }
+      else if (swConcepts.length > 0) {
         resumeLesson(swConcepts)
         displayActivity()
         setTimeout(function() {

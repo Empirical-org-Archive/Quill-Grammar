@@ -14,6 +14,8 @@ function ProofreadingPlayCtrl (
   ProofreadingPassage,
   ConceptResult
   ) {
+
+  $scope.loading = true;
   function submitConceptResult(sessionId, word, meta) {
     var conceptUid = $scope.proofreadingPassage.getGrammaticalConceptData(word).concept_level_0.uid;
     if (sessionId) {
@@ -87,11 +89,12 @@ function ProofreadingPlayCtrl (
   });
 
   function decideState() {
+    $scope.loading = false;
     $scope.resuming = true;
     $scope.proofreadingPassage.getSession($state.params.student).then(function (value) {
       var pfConcepts = getPassageConceptResults(value)
       if (pfConcepts.length > 0) {
-        resumeLesson(pfConcepts)
+        resumeLesson(pfConcepts);
         setTimeout(function() {
           $scope.resuming = false;
           $scope.$apply()
@@ -119,7 +122,11 @@ function ProofreadingPlayCtrl (
   function resumeLesson(conceptResults) {
     var uids = $scope.proofreadingPassage.getResultRuleNumbersFromConceptResults(conceptResults)
     var ruleNumbers = convertUIDsToRuleNumbers(uids);
-    generateLesson(ruleNumbers);
+    if (ruleNumbers.length === 0) {
+      skipToScore();
+    } else {
+      generateLesson(ruleNumbers);
+    }
     $scope.proofreadingPassage.submitted = true;
     setTimeout(function() {
       $scope.goToLesson();
@@ -141,6 +148,7 @@ function ProofreadingPlayCtrl (
         }
       })();
     }
+    $scope.loading = false;
   }
 
   /*
@@ -165,11 +173,22 @@ function ProofreadingPlayCtrl (
    */
 
   function generateLesson(ruleNumbers) {
-    console.log("moving to sw");
     $scope.goToLesson = function () {
       $state.go('play-sw-gen', {
         ids: ruleNumbers,
         passageId: $scope.id,
+        student: $state.params.student
+      });
+    };
+    $scope.hasLesson = true;
+  }
+
+  function skipToScore() {
+    $scope.goToLesson = function () {
+      $state.go('play-sw-gen', {
+        ids: [],
+        passageId: $scope.id,
+        pfAllCorrect: true,
         student: $state.params.student
       });
     };

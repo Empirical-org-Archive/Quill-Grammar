@@ -87,14 +87,17 @@ dl.horizontal {
   }
 }
 
-.resuming {
+.resuming, .loading, .saving {
   text-align: center;
   font-family: 'adelle-sans';
   font-weight: bold;
   font-size: 24px;
 }
 
-
+.error {
+  margin-top: 2em;
+  text-align: center;
+}
 
 @import "spinner";
 
