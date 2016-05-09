@@ -158,8 +158,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   };
 
   GrammarActivity.prototype.getSession = function (sessionId) {
-    return ConceptResult.getResultList(sessionId)
-
+    return ConceptResult.getResultList(sessionId);
   };
 
   GrammarActivity.prototype.submitAnswer = function (question, sessionId) {

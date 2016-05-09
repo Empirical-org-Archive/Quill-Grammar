@@ -153,7 +153,6 @@ angular.module('quill-grammar.services.proofreadingPassage', [
   };
 
   ProofreadingPassage.prototype.getResultRuleNumbersFromConceptResults = function (crs) {
-    console.log(crs);
     var ruleNumbers = _.chain(crs)
       .reject(function (r) {
         return r.metadata.correct === 1;
@@ -161,11 +160,7 @@ angular.module('quill-grammar.services.proofreadingPassage', [
       .pluck('concept_uid')
       .reject(_.isUndefined)
       .uniq()
-      // .map(function (r) {
-      //   return ProofreadingPassage.prototype.getRuleNumberFromUID(r)
-      // })
       .value();
-    console.log("rule numbers: ",ruleNumbers)
     return ruleNumbers;
   };
 
@@ -339,14 +334,11 @@ angular.module('quill-grammar.services.proofreadingPassage', [
   // convert concept UID to rule number. This is useful for restoring state
   // from concept results
 
-
   ProofreadingPassage.prototype.getRuleNumberFromUID = function (uid) {
-    console.log("concepts: ",this.concepts)
-    var concept = _.find(this.concepts, function (concept){
-      return concept.concept_level_0.uid === uid}
-    );
+    var concept = _.find(this.concepts, function (concept) {
+      return concept.concept_level_0.uid === uid;
+    });
     if (concept && concept.ruleNumber) {
-      console.log("found rule number: ", concept.ruleNumber)
       return concept.ruleNumber;
     }
   };
@@ -365,8 +357,7 @@ angular.module('quill-grammar.services.proofreadingPassage', [
   };
 
   ProofreadingPassage.prototype.getSession = function (sessionId) {
-    return ConceptResult.getResultList(sessionId)
-
+    return ConceptResult.getResultList(sessionId);
   };
 
   return ProofreadingPassage;

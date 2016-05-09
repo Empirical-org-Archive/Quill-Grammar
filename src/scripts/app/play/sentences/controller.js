@@ -11,6 +11,62 @@ function SentencePlayCtrl (
   GrammarActivity,
   TypingSpeed
 ) {
+  function displayActivity() {
+    $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
+    $scope.showConceptOverview = (_.indexOf($scope.previousConcepts, $scope.currentConcept) === -1);
+    $scope.previousConcepts.push($scope.currentConcept);
+    $scope.showNextQuestion = false;
+    TypingSpeed.reset();
+  }
+
+  function groupQuestionsByAnsweredState(completedQuestionIds) {
+    return _.groupBy($scope.grammarActivity.questions, function (question) {
+      return _.indexOf(completedQuestionIds, question.uid) !== -1 ? 'answered' : 'unanswered';
+    });
+  }
+
+  function getQuestionIDs(values) {
+    return _.map(values, function (val) {
+      return val.metadata.questionUid;
+    });
+  }
+
+  function resumeLesson(swConcepts) {
+    var completedQuestionIds = getQuestionIDs(swConcepts);
+    var grouped =  groupQuestionsByAnsweredState(completedQuestionIds);
+    $scope.questions = (grouped.answered || []).concat(grouped.unanswered);
+    $scope.currentQuestion = $scope.questions[swConcepts.length];
+    $scope.number = swConcepts.length;
+  }
+
+  function getSentenceWritingConceptResults(value) {
+    return _.reject(value, function (val) {
+      return val.metadata.index;
+    });
+  }
+
+  function decideState() {
+    $scope.resuming = true;
+    $scope.grammarActivity.getSession($state.params.student).then(function (value) {
+      var swConcepts = getSentenceWritingConceptResults(value);
+      if (swConcepts.length >= $scope.questions.length) {
+        $scope.resuming = false;
+        $scope.finish();
+      } else if (swConcepts.length > 0) {
+        resumeLesson(swConcepts);
+        displayActivity();
+        setTimeout(function () {
+          $scope.resuming = false;
+          $scope.$apply();
+        }, 1000);
+      } else {
+        $scope.currentQuestion = $scope.questions[0];
+        displayActivity();
+        $scope.resuming = false;
+      }
+    });
+  }
+
   $scope.number = 0;
   $scope.previousConcepts = [];
 
@@ -41,7 +97,7 @@ function SentencePlayCtrl (
       $scope.saving = false;
       $scope.error = true;
       throw e;
-    });;
+    });
   };
 
   /*
@@ -104,68 +160,12 @@ function SentencePlayCtrl (
       $scope.questions = grammarActivity.questions;
       // Get partial session here.
       if ($state.params.student) {
-        decideState()
+        decideState();
       } else {
         $scope.currentQuestion = $scope.questions[0];
-        displayActivity()
+        displayActivity();
         $scope.resuming = false;
       }
-    });
-  }
-
-  function decideState() {
-    $scope.resuming = true;
-    $scope.grammarActivity.getSession($state.params.student).then(function (value) {
-      var swConcepts = getSentenceWritingConceptResults(value)
-      if (swConcepts.length >= $scope.questions.length) {
-        $scope.resuming = false;
-        $scope.finish();
-      }
-      else if (swConcepts.length > 0) {
-        resumeLesson(swConcepts)
-        displayActivity()
-        setTimeout(function() {
-          $scope.resuming = false;
-          $scope.$apply()
-        }, 1000)
-      } else {
-        $scope.currentQuestion = $scope.questions[0];
-        displayActivity()
-        $scope.resuming = false;
-      }
-
-    })
-  }
-
-  function displayActivity() {
-    $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
-    $scope.showConceptOverview = (_.indexOf($scope.previousConcepts, $scope.currentConcept) === -1);
-    $scope.previousConcepts.push($scope.currentConcept);
-    $scope.showNextQuestion = false;
-    TypingSpeed.reset();
-  }
-
-  function resumeLesson(swConcepts) {
-    var completedQuestionIds = getQuestionIDs(swConcepts)
-    var grouped =  groupQuestionsByAnsweredState(completedQuestionIds)
-    $scope.questions = (grouped.answered || []).concat(grouped.unanswered);
-    $scope.currentQuestion = $scope.questions[swConcepts.length];
-    $scope.number = swConcepts.length;
-  }
-
-  function getQuestionIDs(values) {
-    return _.map(values, function(val) { return val.metadata.questionUid } );
-  }
-
-  function getSentenceWritingConceptResults(value) {
-    return _.reject(value, function (val) {
-      return val.metadata.index
-    })
-  }
-
-  function groupQuestionsByAnsweredState(completedQuestionIds) {
-    return _.groupBy($scope.grammarActivity.questions, function(question){
-      return _.indexOf(completedQuestionIds, question.uid) !== -1 ? 'answered' : 'unanswered';
     });
   }
 

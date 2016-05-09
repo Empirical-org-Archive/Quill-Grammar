@@ -31,7 +31,7 @@ angular.module('quill-grammar.services.finalize', [
         console.log('An error occurred while saving results to the LMS', e);
         throw e;
       }).then(function () {
-        console.log("removing session from fb");
+        console.log('Removing session from Firebase');
         return ConceptResult.removeBySessionId(sessionId);
       }).then(function () {
         QuillOAuthService.expire();
