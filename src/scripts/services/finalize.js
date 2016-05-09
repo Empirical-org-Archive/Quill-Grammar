@@ -27,13 +27,14 @@ angular.module('quill-grammar.services.finalize', [
           concept_results: list,
           percentage: calculatePercentageService(list)
         });
-      }).then(function () {
-        return ConceptResult.removeBySessionId(sessionId);
-      }).then(function () {
-        QuillOAuthService.expire();
       }).catch(function (e) {
         console.log('An error occurred while saving results to the LMS', e);
         throw e;
+      }).then(function () {
+        console.log('Removing session from Firebase');
+        return ConceptResult.removeBySessionId(sessionId);
+      }).then(function () {
+        QuillOAuthService.expire();
       });
     } else {
       // Finalize always returns a promise, so anonymous sessions will

@@ -12,6 +12,11 @@
     <textarea class="student-input" type="text" ng-model="question.response" ng-paste="capturePasteEvent($event)" ng-change="startEditing()" ng-enter="capturePressEnterEvent()" ng-timer="resetWPM()" typing-speed autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
   </div>
   <div class="inner-container">
+    <div style="float: right" ng-class="{'no-message': !responseMessage, message: responseMessage}">
+      <button ng-show="showCheckAnswerButton" ng-click="checkAnswer()">{{checkAnswerText}}</button>
+      <button ng-show="showCheckOrContinueButton" ng-click="checkOrContinue()">Retry or Continue</button>
+      <button ng-show="showNextQuestion" ng-click="nextProblem()">Next Problem</button>
+    </div>
     <a class="a-report" ng-click="showReport = !showReport" ng-hide="showConfirmation">Report Error</a>
     <div ng-show="showReport">
       <br/>
@@ -29,17 +34,13 @@
         Thank you. Please continue the lesson for now.
       </p>
     </div>
+
   </div>
   <div class="rule-question-sentence-bar" ng-class="questionClass">
     <div class="inner-container">
       <div class="message-panel">
         <img ng-src="/assets/images/{{questionClass}}_icon.png" alt="responseMessage" ng-show="questionClass && questionClass != 'default'"></img>
         <p ng-show="responseMessage" ng-bind-html="responseMessage | trustedHtml"></p>
-      </div>
-      <div ng-class="{'no-message': !responseMessage, message: responseMessage}">
-        <button ng-show="showCheckAnswerButton" ng-click="checkAnswer()">{{checkAnswerText}}</button>
-        <button ng-show="showCheckOrContinueButton" ng-click="checkOrContinue()">Retry or Continue</button>
-        <button ng-show="showNextQuestion" ng-click="nextProblem()">Next Problem</button>
       </div>
     </div>
   </div>
