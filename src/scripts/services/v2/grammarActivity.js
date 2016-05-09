@@ -157,6 +157,10 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
     };
   };
 
+  GrammarActivity.prototype.getSession = function (sessionId) {
+    return ConceptResult.getResultList(sessionId);
+  };
+
   GrammarActivity.prototype.submitAnswer = function (question, sessionId) {
     var correct = question.answerIsCorrect();
     var devInfo = this.getDeviceInfo();
@@ -172,6 +176,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
         wpm: TypingSpeed.wordsPerMinute,
         browser: devInfo.browser,
         os: devInfo.os,
+        questionUid: question.uid,
         questionUrl: (window.location.origin + '/cms/concepts/' + this.concepts[question.conceptIndex].$id + '/questions/' + question.uid)
       }).then(function () {
         TypingSpeed.reset();

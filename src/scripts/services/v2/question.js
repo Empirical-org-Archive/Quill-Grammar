@@ -101,7 +101,7 @@ angular.module('quill-grammar.services.question', [
   Question.ResponseMessages[Question.ResponseStatus.NO_ANSWER] = 'You must enter a sentence for us to check.';
 
   function normalize(text) {
-    return text.replace(/[\u2018\u2019]/g, '\u0027').replace(/[\u201C\u201D]/g, '\u0022').replace('‚', ',');
+    return text.replace(/[\u00B4\u0060\u2018\u2019]/g, '\u0027').replace(/[\u201C\u201D]/g, '\u0022').replace('‚', ',');
   }
 
   function compareEntireAnswerToAnswers(answer) {

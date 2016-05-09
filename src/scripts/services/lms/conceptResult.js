@@ -18,6 +18,8 @@ angular.module('quill-grammar.services.lms.concept-result', [
     return resultList.$loaded();
   }
 
+  conceptResult.getResultList = getResultList;
+
   // All concept tag results should be stored in firebase as
   // arrays that are keyed off the activity session ID.
   //

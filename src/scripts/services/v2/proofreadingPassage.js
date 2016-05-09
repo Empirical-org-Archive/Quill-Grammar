@@ -5,11 +5,12 @@ angular.module('quill-grammar.services.proofreadingPassage', [
   'underscore',
   require('./../rule.js').name,
   require('./passageWord.js').name,
+  require('./../lms/conceptResult.js').name,
   'uuid4',
   'angulartics'
 ])
 /*@ngInject*/
-.factory('ProofreadingPassage', function (_, uuid4, PassageWord, RuleService, $analytics, localStorageService, ConceptsFBService) {
+.factory('ProofreadingPassage', function (_, uuid4, PassageWord, RuleService, ConceptResult, $analytics, localStorageService, ConceptsFBService) {
   function ProofreadingPassage(data) {
     if (data) {
       _.extend(this, data);
@@ -149,6 +150,18 @@ angular.module('quill-grammar.services.proofreadingPassage', [
 
   ProofreadingPassage.prototype.getNumCorrect = function () {
     return _.where(this.results, {type: PassageWord.CORRECT}).length;
+  };
+
+  ProofreadingPassage.prototype.getResultRuleNumbersFromConceptResults = function (crs) {
+    var ruleNumbers = _.chain(crs)
+      .reject(function (r) {
+        return r.metadata.correct === 1;
+      })
+      .pluck('concept_uid')
+      .reject(_.isUndefined)
+      .uniq()
+      .value();
+    return ruleNumbers;
   };
 
   ProofreadingPassage.prototype.getResultRuleNumbers = function () {
@@ -318,6 +331,18 @@ angular.module('quill-grammar.services.proofreadingPassage', [
     }
   };
 
+  // convert concept UID to rule number. This is useful for restoring state
+  // from concept results
+
+  ProofreadingPassage.prototype.getRuleNumberFromUID = function (uid) {
+    var concept = _.find(this.concepts, function (concept) {
+      return concept.concept_level_0.uid === uid;
+    });
+    if (concept && concept.ruleNumber) {
+      return concept.ruleNumber;
+    }
+  };
+
   /*
    * Eventually this can replace the above function.
    */
@@ -329,6 +354,10 @@ angular.module('quill-grammar.services.proofreadingPassage', [
         return concept;
       }
     }
+  };
+
+  ProofreadingPassage.prototype.getSession = function (sessionId) {
+    return ConceptResult.getResultList(sessionId);
   };
 
   return ProofreadingPassage;
