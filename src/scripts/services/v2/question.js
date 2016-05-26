@@ -8,9 +8,10 @@ var JsDiff = require('diff');
 module.exports =
 angular.module('quill-grammar.services.question', [
   'underscore',
+  require('../normalizer.js').name
 ])
 /*@ngInject*/
-.factory('Question', function (_) {
+.factory('Question', function (_, Normalizer) {
   function Question(data) {
     if (data) {
       _.extend(this, data);
@@ -100,14 +101,10 @@ angular.module('quill-grammar.services.question', [
   Question.ResponseMessages[Question.ResponseStatus.CORRECT] = '<b>Well done!</b> That\'s the correct answer.';
   Question.ResponseMessages[Question.ResponseStatus.NO_ANSWER] = 'You must enter a sentence for us to check.';
 
-  function normalize(text) {
-    return text.replace(/[\u00B4\u0060\u2018\u2019]/g, '\u0027').replace(/[\u201C\u201D]/g, '\u0022').replace('‚', ',');
-  }
-
   function compareEntireAnswerToAnswers(answer) {
     return function (b) {
       var cleaned = removeDelimeters(b);
-      return normalize(answer) === normalize(cleaned);
+      return Normalizer.superNormalize(answer) === Normalizer.superNormalize(cleaned);
     };
   }
 
@@ -132,8 +129,8 @@ angular.module('quill-grammar.services.question', [
         grammarElements.push(tmpArray[1]);
       }
       return _.every(grammarElements, function (element) {
-        var r = new RegExp('(^|\\W{1,1})' + normalize(element) + '(\\W{1,1}|$)', 'g');
-        return normalize(answer).search(r) !== -1;
+        var r = new RegExp('(^|\\W{1,1})' + Normalizer.superNormalize(element) + '(\\W{1,1}|$)', 'g');
+        return Normalizer.superNormalize(answer).search(r) !== -1;
       });
     });
   };
