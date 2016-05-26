@@ -93,6 +93,7 @@ function SentencePlayCtrl (
         student: $state.params.student
       });
     }).catch(function (e) {
+      AnalyticsService.trackFailedToSaveActivity($scope.sessionId);
       console.log('An error occurred while saving results to the LMS inside controller', e);
       $scope.saving = false;
       $scope.error = true;

@@ -35,8 +35,18 @@ angular.module('quill-grammar.services.analytics', [
     $analytics.eventTrack(event, attrs);
   }
 
+  function trackFailedToSaveActivity(sessionId) {
+    var event = 'Failed to save activity';
+    var attrs = {
+      uid: sessionId
+    };
+
+    $analytics.eventTrack(event, attrs);
+  }
+
   return {
-    trackSentenceWritingSubmission: trackSentenceWritingSubmission
+    trackSentenceWritingSubmission: trackSentenceWritingSubmission,
+    trackFailedToSaveActivity: trackFailedToSaveActivity
   };
 })
 
