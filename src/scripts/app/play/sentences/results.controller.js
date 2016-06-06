@@ -11,6 +11,7 @@ module.exports = function ($scope, $state, portholeProxy) {
   if ($state.params.student) {
     postObj.id = $state.params.student;
   }
+  window.location.href = "http://localhost:3000/activity_sessions/" + $state.params.student 
 
   windowProxy.post(postObj);
 };
