@@ -88,9 +88,10 @@ function SentencePlayCtrl (
     } else {
       passageId = null;
     }
-    return finalizeService($scope.sessionId, passageId).then(function () {
+    return finalizeService($scope.sessionId, passageId).then(function (e) {
+      console.log(e)
       $state.go('.results', {
-        student: $state.params.student
+        student: $state.params.student || e.uid
       });
     }).catch(function (e) {
       AnalyticsService.trackFailedToSaveActivity($scope.sessionId);

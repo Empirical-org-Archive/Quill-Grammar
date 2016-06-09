@@ -4,4 +4,6 @@
 module.exports =
 angular.module('quill-grammar.directives', [])
 .directive('activityProgressBar', require('./progressBar.js').directive)
-.controller('ProgressBarCtrl', require('./progressBar.js').controller);
+.directive('navbar', require('./navbar.js').directive)
+.controller('ProgressBarCtrl', require('./progressBar.js').controller)
+.controller('NavbarCtrl', require('./navbar.js').controller);

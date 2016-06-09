@@ -181,6 +181,16 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
       }).then(function () {
         TypingSpeed.reset();
       });
+    } else {
+      SentenceLocalStorage.storeAnonResult(this.passageId, question.conceptUid, {
+        answer: question.response,
+        correct: correct ? 1 : 0,
+        wpm: TypingSpeed.wordsPerMinute,
+        browser: devInfo.browser,
+        os: devInfo.os,
+        questionUid: question.uid,
+        questionUrl: (window.location.origin + '/cms/concepts/' + this.concepts[question.conceptIndex].$id + '/questions/' + question.uid)
+      })
     }
   };
 

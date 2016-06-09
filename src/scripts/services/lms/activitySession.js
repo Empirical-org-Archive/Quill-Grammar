@@ -14,6 +14,10 @@ angular.module('quill-grammar.services.lms.activity-session', [])
     return $http.put(activitySessionUrl(id), putData);
   }
 
+  function createAnon(postData) {
+    return $http.post(activitySessionUrl(""), postData);
+  }
+
   /*
    * Mark the activity session as finished. The promise receives
    * the activity session JSON returned from the LMS.
@@ -29,6 +33,13 @@ angular.module('quill-grammar.services.lms.activity-session', [])
   activitySession.finish = function (sessionId, putData) {
     putData.state = 'finished';
     return update(sessionId, putData).then(function next (response) {
+      return response.data.activity_session;
+    });
+  };
+
+  activitySession.create = function (postData) {
+    postData.state = 'finished';
+    return createAnon(postData).then(function next (response) {
       return response.data.activity_session;
     });
   };

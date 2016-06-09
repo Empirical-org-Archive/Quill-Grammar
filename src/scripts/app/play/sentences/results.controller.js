@@ -2,16 +2,13 @@
 'use strict';
 
 /*@ngInject*/
-module.exports = function ($scope, $state, portholeProxy) {
-  var windowProxy = new Porthole.WindowProxy(portholeProxy);
-  var postObj = {
-    action: 'activity_complete',
-  };
-
+module.exports = function ($scope, $state, empiricalBaseURL) {
   if ($state.params.student) {
-    postObj.id = $state.params.student;
+    var uid = $state.params.student;
+    $state.returnUrl = empiricalBaseURL.split('api')[0] + "activity_sessions/" + uid
+  } else {
+    $state.returnUrl = empiricalBaseURL.split('api')[0]
   }
-  window.location.href = "http://localhost:3000/activity_sessions/" + $state.params.student 
 
-  windowProxy.post(postObj);
+  window.location.href = $state.returnUrl
 };
