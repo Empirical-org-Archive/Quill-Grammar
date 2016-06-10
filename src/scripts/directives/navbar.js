@@ -12,6 +12,6 @@ module.exports.directive = function () {
 /*@ngInject*/
 module.exports.controller = function ($scope, empiricalBaseURL) {
   $scope.baseRoute = function () {
-    return empiricalBaseURL.split("api")[0];
+    return empiricalBaseURL.split('api')[0];
   };
 };
