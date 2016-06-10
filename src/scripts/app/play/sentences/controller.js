@@ -11,6 +11,9 @@ function SentencePlayCtrl (
   GrammarActivity,
   TypingSpeed
 ) {
+
+  $scope.activityUID = $state.params.uid;
+
   function displayActivity() {
     $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
     $scope.showConceptOverview = (_.indexOf($scope.previousConcepts, $scope.currentConcept) === -1);
@@ -88,8 +91,7 @@ function SentencePlayCtrl (
     } else {
       passageId = null;
     }
-    return finalizeService($scope.sessionId, passageId).then(function (e) {
-      console.log(e)
+    return finalizeService($scope.sessionId, passageId, $state.params.uid).then(function (e) {
       $state.go('.results', {
         student: $state.params.student || e.uid
       });

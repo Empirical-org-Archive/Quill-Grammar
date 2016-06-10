@@ -161,7 +161,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
     return ConceptResult.getResultList(sessionId);
   };
 
-  GrammarActivity.prototype.submitAnswer = function (question, sessionId) {
+  GrammarActivity.prototype.submitAnswer = function (question, sessionId, activityUID) {
     var correct = question.answerIsCorrect();
     var devInfo = this.getDeviceInfo();
     // If the activity was generated from passage results.
@@ -182,7 +182,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
         TypingSpeed.reset();
       });
     } else {
-      SentenceLocalStorage.storeAnonResult(this.passageId, question.conceptUid, {
+      SentenceLocalStorage.storeAnonResult(this.passageId || activityUID, question.conceptUid, {
         answer: question.response,
         correct: correct ? 1 : 0,
         wpm: TypingSpeed.wordsPerMinute,
@@ -190,7 +190,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
         os: devInfo.os,
         questionUid: question.uid,
         questionUrl: (window.location.origin + '/cms/concepts/' + this.concepts[question.conceptIndex].$id + '/questions/' + question.uid)
-      })
+      });
     }
   };
 

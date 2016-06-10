@@ -12,8 +12,7 @@ function ProofreadingPlayCtrl (
   ProofreaderActivity,
   PassageWord,
   ProofreadingPassage,
-  ConceptResult,
-  SentenceLocalStorage
+  ConceptResult
   ) {
   $scope.loading = true;
   function submitConceptResult(sessionId, word, meta) {

@@ -7,7 +7,7 @@ angular.module('quill-grammar.services.lms.concept-result', [
 ])
 /*@ngInject*/
 // Save/retrieve concept tag results from firebase
-.service('ConceptResult', function ConceptResult ($firebaseArray, firebaseUrl, $q, localStorageService) {
+.service('ConceptResult', function ConceptResult ($firebaseArray, firebaseUrl, $q) {
   var conceptResult = this;
   conceptResult.ref = new Firebase(firebaseUrl + '/concept_results');
 

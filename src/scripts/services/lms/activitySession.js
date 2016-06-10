@@ -15,7 +15,7 @@ angular.module('quill-grammar.services.lms.activity-session', [])
   }
 
   function createAnon(postData) {
-    return $http.post(activitySessionUrl(""), postData);
+    return $http.post(activitySessionUrl(''), postData);
   }
 
   /*

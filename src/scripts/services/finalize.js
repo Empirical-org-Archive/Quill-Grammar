@@ -12,10 +12,12 @@ angular.module('quill-grammar.services.finalize', [
   require('./auth').name
 ])
 .factory('finalizeService', function ($q, ConceptResult, ActivitySession, calculatePercentageService, localStorageService, QuillOAuthService) {
-  function finalize(sessionId, passageId) {
+  function finalize(sessionId, passageId, activityUID) {
     var pfResults;
     if (passageId) {
       pfResults = localStorageService.get('anon-' + passageId);
+    } else if (activityUID) {
+      pfResults = localStorageService.get('anon-' + activityUID);
     } else {
       pfResults = [];
     }
@@ -41,17 +43,15 @@ angular.module('quill-grammar.services.finalize', [
       var list = pfResults;
       console.log(list);
       return ActivitySession.create({
-        activity_uid: passageId,
+        activity_uid: passageId || activityUID,
         concept_results: list,
         percentage: calculatePercentageService(list)
       }).then(function (e) {
         console.log('Removing session from Localhost');
-        localStorageService.set('anon-' + passageId, [])
-        return e
-      })
-      // Finalize always returns a promise, so anonymous sessions will
-      // return a resolved promise.
-      // return $q.when();
+        localStorageService.set('anon-' + passageId, []);
+        localStorageService.set('anon-' + activityUID, []);
+        return e;
+      });
     }
   }
 
