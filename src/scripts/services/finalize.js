@@ -39,7 +39,6 @@ angular.module('quill-grammar.services.finalize', [
         QuillOAuthService.expire();
       });
     } else {
-
       var list = pfResults;
       console.log(list);
       return ActivitySession.create({
