@@ -11,6 +11,9 @@ function SentencePlayCtrl (
   GrammarActivity,
   TypingSpeed
 ) {
+
+  $scope.activityUID = $state.params.uid;
+
   function displayActivity() {
     $scope.currentConcept = $scope.grammarActivity.getConceptForQuestion($scope.currentQuestion);
     $scope.showConceptOverview = (_.indexOf($scope.previousConcepts, $scope.currentConcept) === -1);
@@ -88,11 +91,12 @@ function SentencePlayCtrl (
     } else {
       passageId = null;
     }
-    return finalizeService($scope.sessionId, passageId).then(function () {
+    return finalizeService($scope.sessionId, passageId, $state.params.uid).then(function (e) {
       $state.go('.results', {
-        student: $state.params.student
+        student: $state.params.student || e.uid
       });
     }).catch(function (e) {
+      AnalyticsService.trackFailedToSaveActivity($scope.sessionId);
       console.log('An error occurred while saving results to the LMS inside controller', e);
       $scope.saving = false;
       $scope.error = true;
