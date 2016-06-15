@@ -1,3 +1,4 @@
+<navbar></navbar>
 <div ng-class="{'sentence-writing': true}" ng-show="questions.length" ng-hide="resuming || saving || error">
   <div class="passage-heading" ng-show="passageTitle && passageImageUrl">
     <img ng-src="/assets/images/{{passageImageUrl}}" alt="passageTitle"></img>
@@ -14,7 +15,7 @@
       </div>
     </div>
   </div>
-  <grammar-rule-question question="currentQuestion" next="nextQuestion(currentQuestion)" submit="grammarActivity.submitAnswer(currentQuestion, sessionId)" report="grammarActivity.submitErrorReport(currentQuestion, sessionId)">
+  <grammar-rule-question question="currentQuestion" next="nextQuestion(currentQuestion)" submit="grammarActivity.submitAnswer(currentQuestion, sessionId, activityUID)" report="grammarActivity.submitErrorReport(currentQuestion, sessionId)">
   </grammar-rule-question>
 </div>
 <div ng-show="resuming">
