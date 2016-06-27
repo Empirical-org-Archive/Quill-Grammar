@@ -13,15 +13,16 @@ function ProofreadingPlayCtrl (
   PassageWord,
   ProofreadingPassage,
   ConceptResult,
-  SentenceLocalStorage
+  SentenceLocalStorage,
+  proofreaderActivityClassificationId
   ) {
   $scope.loading = true;
   function submitConceptResult(sessionId, word, meta) {
     var conceptUid = $scope.proofreadingPassage.getGrammaticalConceptData(word).concept_level_0.uid;
     if (sessionId) {
-      ConceptResult.saveToFirebase(sessionId, conceptUid, meta);
+      ConceptResult.saveToFirebase(sessionId, conceptUid, proofreaderActivityClassificationId, meta);
     } else {
-      SentenceLocalStorage.storeAnonResult($scope.id, conceptUid, meta);
+      SentenceLocalStorage.storeAnonResult($scope.id, conceptUid, proofreaderActivityClassificationId, meta);
     }
   }
 

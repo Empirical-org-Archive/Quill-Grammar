@@ -14,7 +14,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
   require('./../lms/errorReport.js').name
 ])
 /*@ngInject*/
-.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, $firebaseArray, _, RuleService, $q, Question, SentenceLocalStorage, ConceptsFBService, ConceptResult, ErrorReport, TypingSpeed, UAParser) {
+.factory('GrammarActivity', function (firebaseUrl, $firebaseObject, $firebaseArray, _, RuleService, $q, Question, SentenceLocalStorage, ConceptsFBService, ConceptResult, ErrorReport, TypingSpeed, UAParser, grammarActivityClassificationId) {
   function GrammarActivity(data) {
     if (data) {
       _.extend(this, data);
@@ -170,7 +170,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
     }
 
     if (sessionId) {
-      ConceptResult.saveToFirebase(sessionId, question.conceptUid, {
+      ConceptResult.saveToFirebase(sessionId, question.conceptUid, grammarActivityClassificationId, {
         answer: question.response,
         correct: correct ? 1 : 0,
         wpm: TypingSpeed.wordsPerMinute,
@@ -182,7 +182,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
         TypingSpeed.reset();
       });
     } else {
-      SentenceLocalStorage.storeAnonResult(this.passageId || activityUID, question.conceptUid, {
+      SentenceLocalStorage.storeAnonResult(this.passageId || activityUID, question.conceptUid, grammarActivityClassificationId, {
         answer: question.response,
         correct: correct ? 1 : 0,
         wpm: TypingSpeed.wordsPerMinute,
