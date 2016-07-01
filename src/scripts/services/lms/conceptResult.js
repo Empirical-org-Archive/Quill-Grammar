@@ -31,10 +31,11 @@ angular.module('quill-grammar.services.lms.concept-result', [
   // });
   //
   // TODO: Don't store the same result multiple times.
-  conceptResult.saveToFirebase = function (activitySessionId, conceptUid, metadata) {
+  conceptResult.saveToFirebase = function (activitySessionId, conceptUid, activityClassificationId, metadata) {
     return getResultList(activitySessionId).then(function (list) {
       return list.$add({
         concept_uid: conceptUid,
+        activity_classification_id: activityClassificationId,
         metadata: metadata
       });
     });
