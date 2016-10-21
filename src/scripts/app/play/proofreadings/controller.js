@@ -19,9 +19,9 @@ function ProofreadingPlayCtrl (
   function submitConceptResult(sessionId, word, meta) {
     var conceptUid = $scope.proofreadingPassage.getGrammaticalConceptData(word).concept_level_0.uid;
     if (sessionId) {
-      ConceptResult.saveToFirebase(sessionId, conceptUid, meta);
+      ConceptResult.saveToFirebase(sessionId, conceptUid, meta, 'passage-proofreader');
     } else {
-      SentenceLocalStorage.storeAnonResult($scope.id, conceptUid, meta);
+      SentenceLocalStorage.storeAnonResult($scope.id, conceptUid, meta, 'passage-proofreader');
     }
   }
 

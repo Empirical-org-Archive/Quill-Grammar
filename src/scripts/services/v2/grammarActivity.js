@@ -166,7 +166,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
     var devInfo = this.getDeviceInfo();
     // If the activity was generated from passage results.
     if (this.passageId) {
-      SentenceLocalStorage.storeTempResult(this.passageId, question, question.response, correct);
+      SentenceLocalStorage.storeTempResult(this.passageId, question, question.response, correct, 'sentence-writing');
     }
 
     if (sessionId) {
@@ -178,7 +178,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
         os: devInfo.os,
         questionUid: question.uid,
         questionUrl: (window.location.origin + '/cms/concepts/' + this.concepts[question.conceptIndex].$id + '/questions/' + question.uid)
-      }).then(function () {
+      }, 'sentence-writing').then(function () {
         TypingSpeed.reset();
       });
     } else {
