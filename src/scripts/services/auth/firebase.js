@@ -20,7 +20,7 @@ module.exports = function ($firebaseAuth, firebaseApp, firebaseUrl, empiricalBas
   }
 
   function resetToken() {
-    console.log('resetting the token');
+    // console.log('resetting the token');
     storeToken(null);
   }
 

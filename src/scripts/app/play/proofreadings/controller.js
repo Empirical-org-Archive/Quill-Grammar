@@ -33,7 +33,8 @@ function ProofreadingPlayCtrl (
         answer: word.responseText,
         prompt: word.text,
         unchanged: word.text === word.responseText,
-        index: word.passageIndex
+        index: word.passageIndex,
+        instructions: 'Find and correct the errors in this passage.'
       };
       if (word.type === 'Correct') {
         meta.correct = 1;

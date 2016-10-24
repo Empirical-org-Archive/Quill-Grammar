@@ -168,7 +168,7 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
     if (this.passageId) {
       SentenceLocalStorage.storeTempResult(this.passageId, question, question.response, correct, 'sentence-writing');
     }
-
+    var sanitizedPrompt = question.prompt.replace(/(<([^>]+)>)/ig, "");
     if (sessionId) {
       ConceptResult.saveToFirebase(sessionId, question.conceptUid, {
         answer: question.response,
@@ -177,6 +177,8 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
         browser: devInfo.browser,
         os: devInfo.os,
         questionUid: question.uid,
+        directions: question.instructions,
+        prompt: sanitizedPrompt,
         questionUrl: (window.location.origin + '/cms/concepts/' + this.concepts[question.conceptIndex].$id + '/questions/' + question.uid)
       }, 'sentence-writing').then(function () {
         TypingSpeed.reset();
@@ -188,6 +190,8 @@ angular.module('quill-grammar.services.firebase.grammarActivity', [
         wpm: TypingSpeed.wordsPerMinute,
         browser: devInfo.browser,
         os: devInfo.os,
+        directions: question.instructions,
+        prompt: sanitizedPrompt,
         questionUid: question.uid,
         questionUrl: (window.location.origin + '/cms/concepts/' + this.concepts[question.conceptIndex].$id + '/questions/' + question.uid)
       });
