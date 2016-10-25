@@ -19,9 +19,9 @@ function ProofreadingPlayCtrl (
   function submitConceptResult(sessionId, word, meta) {
     var conceptUid = $scope.proofreadingPassage.getGrammaticalConceptData(word).concept_level_0.uid;
     if (sessionId) {
-      ConceptResult.saveToFirebase(sessionId, conceptUid, meta);
+      ConceptResult.saveToFirebase(sessionId, conceptUid, meta, 'passage-proofreader');
     } else {
-      SentenceLocalStorage.storeAnonResult($scope.id, conceptUid, meta);
+      SentenceLocalStorage.storeAnonResult($scope.id, conceptUid, meta, 'passage-proofreader');
     }
   }
 
@@ -33,7 +33,8 @@ function ProofreadingPlayCtrl (
         answer: word.responseText,
         prompt: word.text,
         unchanged: word.text === word.responseText,
-        index: word.passageIndex
+        index: word.passageIndex,
+        instructions: 'Find and correct the errors in this passage.'
       };
       if (word.type === 'Correct') {
         meta.correct = 1;

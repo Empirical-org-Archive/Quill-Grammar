@@ -26,7 +26,7 @@ angular.module('quill-grammar.services.localStorage', [
   /*
    * Function to store anonymous session in local storage.
    */
-  function storeAnonResult(uid, conceptUid, metadata) {
+  function storeAnonResult(uid, conceptUid, metadata, questionType) {
     var key = 'anon-' + uid;
     var rs = localStorageService.get(key);
     if (!rs) {
@@ -34,7 +34,8 @@ angular.module('quill-grammar.services.localStorage', [
     }
     rs.push({
       concept_uid: conceptUid,
-      metadata: metadata
+      metadata: metadata,
+      question_type: questionType || null
     });
     localStorageService.set(key, rs);
   }

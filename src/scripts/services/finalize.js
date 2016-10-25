@@ -25,6 +25,7 @@ angular.module('quill-grammar.services.finalize', [
     if (sessionId) {
       //Do LMS logging if we have a sessionId
       return ConceptResult.findAsJsonByActivitySessionId(sessionId).then(function (list) {
+        list.forEach(function(conRes,index){conRes.metadata.questionNumber = index + 1});
         return ActivitySession.finish(sessionId, {
           concept_results: list,
           percentage: calculatePercentageService(list)
