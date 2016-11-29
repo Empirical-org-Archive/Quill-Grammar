@@ -3,18 +3,15 @@
 module.exports =
 angular.module('quill-grammar.services.passageWord', [
   'underscore',
+  require('../normalizer.js').name
 ])
 /*@ngInject*/
-.factory('PassageWord', function (_) {
+.factory('PassageWord', function (_, Normalizer) {
   function PassageWord(data) {
     if (data) {
       _.extend(this, data);
     }
     return this;
-  }
-
-  function normalize(text) {
-    return text.replace(/[\u00B4\u0060\u2018\u2019]/g, '\u0027').replace(/[\u201C\u201D]/g, '\u0022').replace('‚', ',');
   }
 
   PassageWord.INCORRECT_ERROR = 'Incorrect';
@@ -60,10 +57,10 @@ angular.module('quill-grammar.services.passageWord', [
   PassageWord.prototype.isValid = function () {
     if (_.has(this, 'minus')) {
       //A grammar entry
-      return normalize(this.responseText) === normalize(this.plus);
+      return Normalizer.superNormalize(this.responseText) === Normalizer.superNormalize(this.plus);
     } else {
       //A regular word
-      return normalize(this.text) === normalize(this.responseText);
+      return Normalizer.superNormalize(this.text) === Normalizer.superNormalize(this.responseText);
     }
   };
 
