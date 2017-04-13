@@ -114,6 +114,7 @@ function ProofreadingPlayCtrl (
   function decideState() {
     $scope.loading = false;
     $scope.resuming = true;
+    // Check for session finished here.
     $scope.proofreadingPassage.getSession($state.params.student).then(function (value) {
       var pfConcepts = getPassageConceptResults(value);
       if (pfConcepts.length > 0) {

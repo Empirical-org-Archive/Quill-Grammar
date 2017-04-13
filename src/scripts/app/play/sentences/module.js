@@ -5,6 +5,7 @@ module.exports =
 angular.module('quill-grammar.play.sentences', [
   require('./../../../services/analytics.js').name,
   require('./../../../services/localStorage.js').name,
+  require('./../../../services/lms/activitySession.js').name,
   require('./../../../services/lms/conceptResult.js').name,
   require('./../../../services/v2/grammarActivity.js').name,
   'ui.router',

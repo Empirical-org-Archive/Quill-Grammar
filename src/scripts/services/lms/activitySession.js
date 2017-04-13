@@ -10,6 +10,10 @@ angular.module('quill-grammar.services.lms.activity-session', [])
     return empiricalBaseURL + '/activity_sessions/' + id;
   }
 
+  function getSessionInfo(id) {
+    return $http.get(activitySessionUrl(id))
+  }
+
   function update(id, putData) {
     return $http.put(activitySessionUrl(id), putData);
   }
@@ -17,6 +21,12 @@ angular.module('quill-grammar.services.lms.activity-session', [])
   function createAnon(postData) {
     return $http.post(activitySessionUrl(''), postData);
   }
+
+  activitySession.info = function (sessionId) {
+    return getSessionInfo(sessionId).then(function next (response) {
+      return response.data.activity_session;
+    });
+  };
 
   /*
    * Mark the activity session as finished. The promise receives

@@ -5,6 +5,6 @@
   "grammarActivityClassificationUid": "",
   "proofreaderActivityClassificationUid": "",
   "portholeProxy": "http://localhost:3000/porthole_proxy",
-  "firebaseApp": "",
-  "oauthClientId": ""
+  "firebaseApp": "quillgrammarstaging",
+  "oauthClientId": "2e8c49f66d9ea0ccbd71ea568c75eef96782e6a7510ebab7c537f3c6d563f6f2"
 }

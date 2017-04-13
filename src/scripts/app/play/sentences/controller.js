@@ -9,7 +9,8 @@ function SentencePlayCtrl (
   SentenceLocalStorage,
   AnalyticsService, finalizeService,
   GrammarActivity,
-  TypingSpeed
+  TypingSpeed,
+  ActivitySession
 ) {
 
   $scope.activityUID = $state.params.uid;
@@ -50,6 +51,10 @@ function SentencePlayCtrl (
 
   function decideState() {
     $scope.resuming = true;
+    // check for session finished here.
+    ActivitySession.info($state.params.student).then(function (value) {
+      console.log("in the info then block: ", value)
+    });
     $scope.grammarActivity.getSession($state.params.student).then(function (value) {
       var swConcepts = getSentenceWritingConceptResults(value);
       if (swConcepts.length >= $scope.questions.length) {
