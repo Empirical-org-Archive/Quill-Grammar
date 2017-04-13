@@ -9,7 +9,8 @@ function SentencePlayCtrl (
   SentenceLocalStorage,
   AnalyticsService, finalizeService,
   GrammarActivity,
-  TypingSpeed
+  TypingSpeed,
+  ActivitySession
 ) {
 
   $scope.activityUID = $state.params.uid;
@@ -50,6 +51,7 @@ function SentencePlayCtrl (
 
   function decideState() {
     $scope.resuming = true;
+    ActivitySession.redirectIfFinished($state.params.student)
     $scope.grammarActivity.getSession($state.params.student).then(function (value) {
       var swConcepts = getSentenceWritingConceptResults(value);
       if (swConcepts.length >= $scope.questions.length) {
