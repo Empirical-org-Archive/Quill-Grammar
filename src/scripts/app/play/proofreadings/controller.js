@@ -13,7 +13,8 @@ function ProofreadingPlayCtrl (
   PassageWord,
   ProofreadingPassage,
   ConceptResult,
-  SentenceLocalStorage
+  SentenceLocalStorage,
+  ActivitySession
   ) {
   $scope.loading = true;
   function submitConceptResult(sessionId, word, meta) {
@@ -114,7 +115,7 @@ function ProofreadingPlayCtrl (
   function decideState() {
     $scope.loading = false;
     $scope.resuming = true;
-    // Check for session finished here.
+    ActivitySession.redirectIfFinished($state.params.student)
     $scope.proofreadingPassage.getSession($state.params.student).then(function (value) {
       var pfConcepts = getPassageConceptResults(value);
       if (pfConcepts.length > 0) {
