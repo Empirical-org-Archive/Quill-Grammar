@@ -28,6 +28,16 @@ angular.module('quill-grammar.services.lms.activity-session', [])
     });
   };
 
+  activitySession.redirectIfFinished = function(sessionId) {
+    activitySession.info(sessionId).then(function(info) {
+      if (info.state === 'finished') {
+        // slice the url to get rid of the API -- this is the only place we want to
+        // go to a core route without it
+        window.location = `${empiricalBaseURL.slice(0, -8)}/activity_sessions/${info.uid}/play`;
+      }
+    })
+  }
+
   /*
    * Mark the activity session as finished. The promise receives
    * the activity session JSON returned from the LMS.

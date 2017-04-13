@@ -51,10 +51,7 @@ function SentencePlayCtrl (
 
   function decideState() {
     $scope.resuming = true;
-    // check for session finished here.
-    ActivitySession.info($state.params.student).then(function (value) {
-      console.log("in the info then block: ", value)
-    });
+    ActivitySession.redirectIfFinished($state.params.student)
     $scope.grammarActivity.getSession($state.params.student).then(function (value) {
       var swConcepts = getSentenceWritingConceptResults(value);
       if (swConcepts.length >= $scope.questions.length) {
