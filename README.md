@@ -38,7 +38,7 @@ Routes
 * `/play/sw/g/:ids?student&passageId` - Play the comma delimited list of rule ids
 * `/play/partner-pf` - Play the 3 selected Partner Stories.
 
-###CMS Routes
+### CMS Routes
 
 * `/cms` - Entry point for the Quill Grammar CMS system.
 * `/cms/proofreaderActivities` - Entry point for the Proofreader Activities (Passages)
